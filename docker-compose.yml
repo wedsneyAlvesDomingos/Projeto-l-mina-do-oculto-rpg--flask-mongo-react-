@@ -10,6 +10,12 @@ services:
       - ./backend:/app
     networks:
       - my_network
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/mongoLDO
+
+
   web:
     build:
       context: ./frontend
@@ -22,6 +28,22 @@ services:
         target: /app/src/
     environment:
       - REACT_APP_LISTEN_ADDRESS=${REACT_APP_LISTEN_ADDRESS}
+    networks:
+      - my_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongoLDO
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - my_network
+
+volumes:
+  mongo-data:
+
 networks:
   my_network:
     driver: bridge
