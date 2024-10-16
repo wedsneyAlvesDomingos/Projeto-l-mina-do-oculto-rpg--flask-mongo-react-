@@ -1,0 +1,48 @@
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    font-size: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+
+.btn-primary {
+    background-color: #21838f;
+    border-color: #21838f;
+    display: block;
+    width: 100%;
+}
+
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: #6f828f !important;
+    border-color: #6f828f !important;
+}
+
+
+input[type="submit"] {
+    border: none;
+    background: #21838f;
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+/* 
+.caixa {
+   
+    margin-left: 50%;
+    margin-top: 40%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    background-color: #c7c7c711;
+    border-radius: 10px;
+    color: #6e6e6e;
+    text-align: center;
+    box-shadow: rgba(14, 30, 37, 0.02) 0px 2px 4px 0px, rgba(14, 30, 37, 0.12) 0px 2px 16px 0px;
+} */

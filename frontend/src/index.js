@@ -1,11 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
+import './index.css';
 import App from './App';
 
-// Renderiza o componente App dentro do elemento com id 'root'
-ReactDOM.render(
+
+disableReactDevTools();
+
+document.title = "Lâmina do oculto"
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
