@@ -5,7 +5,7 @@ const Darktheme = createTheme({
     palette: {
       mode: 'dark',
       primary: {
-        main: '#21838f',
+        main: '#756A34',
       },
       secondary: {
         main: '#000000',
@@ -20,7 +20,7 @@ const Darktheme = createTheme({
         styleOverrides:
         {
           root: {
-            backgroundColor: '#21838f',
+            backgroundColor: '#756A34',
             backgroundImage: 'none'
           }
   

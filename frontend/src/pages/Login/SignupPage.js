@@ -14,31 +14,22 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import logo from "../../assets/images/LDO.png";
 import { useCallback } from "react";
 
-// Dentro do seu componente:
-
-const LoginPage = () => {
+const SignUpPage = () => {
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
 
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [emailError, setEmailError] = useState("");
     const [loginError, setLoginError] = useState(false);
     const [rememberMe, setRememberMe] = useState(false); // Novo estado para "Lembre-se de mim"
 
     const navigate = useNavigate();
-    const handleNavigateToSignup = useCallback(() => {
-        navigate("/signup");
+    const handleNavigateBack = useCallback(() => {
+        navigate("/login");
     }, [navigate]);
-    // Verificar se há um username armazenado no localStorage
-    useEffect(() => {
-        const savedUsername = localStorage.getItem("rememberedUsername");
-        if (savedUsername) {
-            setUsername(savedUsername);
-            setRememberMe(true);
-        }
-    }, []);
-
     const submitLogin = (e) => {
         e.preventDefault();
         setUsernameError("");
@@ -55,45 +46,54 @@ const LoginPage = () => {
             setPasswordError("Por favor, insira sua senha.");
             return;
         }
+        if (email === "") {
+            setLoginError(false);
+            setEmailError("Por favor, insira sua senha.");
+            return;
+        }
 
-        logIn();
+        signup();
     };
 
-    const logIn = async () => {
-        fetch(`${baseUrl}/login`, {
+    const signup = async () => {
+        // Verifica se o nome, email e senha estão definidos
+        if (!username || !email || !password) {
+            setPasswordError("Por favor, preencha todos os campos."); // Mensagem de erro se os campos estiverem vazios
+            return;
+        }
+    
+        fetch(`${baseUrl}/users`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: username, password })
+            body: JSON.stringify({ name: username, email: email, password: password }) // Incluindo email no corpo da requisição
         })
             .then(r => r.json())
             .then(r => {
-                if (r.message === 'Login successful') {
-                    const { user } = r;
-                    localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id }));
-
+                if (r.id) { // Verifica se o id do usuário foi retornado
+                    localStorage.setItem("user", JSON.stringify({ name: r.name, id: r.id }));
+    
                     // Armazenar o nome de usuário se o checkbox "Lembre-se de mim" estiver marcado
                     if (rememberMe) {
                         localStorage.setItem("rememberedUsername", username);
                     } else {
                         localStorage.removeItem("rememberedUsername");
                     }
-
-                    navigate("/home");
+    
+                    navigate("/home"); // Navega para a página inicial após o cadastro bem-sucedido
                 } else {
-                    setPasswordError(r.error || "Usuário ou senha incorretos.");
+                    setPasswordError(r.error || "Erro ao criar usuário."); // Mensagem de erro se houver algum problema
                     setLoginError(true);
                 }
             })
             .catch(error => {
-                console.error("Error during login:", error);
-                setPasswordError("Ocorreu um erro ao tentar fazer login.");
+                console.error("Error during signup:", error);
+                setPasswordError("Ocorreu um erro ao tentar criar o usuário."); // Mensagem de erro genérica
                 setLoginError(true);
             });
     };
-
-
+    
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -130,6 +130,17 @@ const LoginPage = () => {
                             sx={{ mb: 1, mt: 1, color: 'black' }}
                         />
                         <TextField
+                            error={emailError !== "" || loginError}
+                            helperText={emailError}
+                            value={email}
+                            size="small"
+                            label="Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            sx={{ mb: 1, color: 'black' }}
+                           
+                        />
+                        <TextField
                             error={passwordError !== "" || loginError}
                             helperText={passwordError}
                             value={password}
@@ -154,14 +165,10 @@ const LoginPage = () => {
                                 ),
                             }}
                         />
-                        <FormControlLabel
-                            control={<Checkbox checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />}
-                            label="Lembre-se de mim"
-                            sx={{ mb: 2, mt: 0, width: 'fit-content' }}
-                        />
+
                         <Box sx={{ display: 'flex' }}>
-                            <Button variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
-                            <Button variant="text" onClick={handleNavigateToSignup} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Cadastrar</Button>
+                            <Button variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Cadastrar</Button>
+                            <Button variant="text" onClick={handleNavigateBack} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Voltar</Button>
                         </Box>
                     </form>
                 </Box>
@@ -172,4 +179,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignUpPage;

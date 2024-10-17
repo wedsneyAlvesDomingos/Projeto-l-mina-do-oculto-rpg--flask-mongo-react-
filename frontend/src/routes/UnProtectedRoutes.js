@@ -1,4 +1,5 @@
 import LoginPage from "../pages/Login/LoginPage";
+import SignUpPage from "../pages/Login/SignupPage";
 
 export const auth_routes = [
     { 
@@ -8,5 +9,12 @@ export const auth_routes = [
     { 
         path: "/login", 
         ele: <LoginPage></LoginPage>, 
-    }
+    },
+    {
+        path: "/signup",
+        ele: <>
+            <SignUpPage />
+        </>
+    },
+
 ]

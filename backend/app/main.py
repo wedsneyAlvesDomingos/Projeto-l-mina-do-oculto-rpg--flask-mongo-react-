@@ -106,10 +106,7 @@ class PersonagemService:
 
 
 
-
 personagem_service = PersonagemService(db)
-
-
 
 @app.route('/users/<user_id>/personagens', methods=['POST'])
 def create_personagem(user_id):

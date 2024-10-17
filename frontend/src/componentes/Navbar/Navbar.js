@@ -68,8 +68,6 @@ function ResponsiveAppBar() {
                 <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '100%', boxSizing: 'border-box' }}>
                     <Tabs
                         value={value}
-                        textColor="secondary"
-                        indicatorColor="secondary"
                         aria-label="secondary tabs example"
                     >
                         <Tab
@@ -77,7 +75,7 @@ function ResponsiveAppBar() {
                             value={0}
                             label={'Home'}
                             onClick={() => handleNavigate('/home')}
-                            sx={{ fontWeight: value === 0 ? 'bold' : 'normal' }}
+                            sx={{ fontWeight: value === 0 ? 'bold' : 'normal' ,color:'#fff'}}
                         />
                         
                     </Tabs>
@@ -112,7 +110,7 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
                 </Toolbar>
-                <MaterialUISwitch flow={'column'} />
+                {/* <MaterialUISwitch flow={'column'} /> */}
             </Container>
         </AppBar>
     );
