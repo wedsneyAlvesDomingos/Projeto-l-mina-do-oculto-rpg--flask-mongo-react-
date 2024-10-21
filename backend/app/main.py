@@ -9,10 +9,8 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Configuração do aplicativo
 app.config.from_object('config.Config')
 
-# Configuração do MongoDB com tratamento de exceções
 try:
     client = MongoClient(app.config['MONGO_URI'])
     db = client.get_database()
@@ -67,7 +65,6 @@ class PersonagemService:
         }
 
         try:
-            # Inserir personagem na coleção MongoDB
             result = self.collection.insert_one(personagem)
             return str(result.inserted_id)
         except Exception as e:
@@ -105,7 +102,6 @@ class PersonagemService:
             raise Exception(f"Erro ao deletar personagem: {str(e)}")
 
 
-
 personagem_service = PersonagemService(db)
 
 @app.route('/users/<user_id>/personagens', methods=['POST'])
@@ -113,7 +109,6 @@ def create_personagem(user_id):
     try:
         data = request.get_json()
 
-        # Extrai os dados do corpo da requisição
         nome_personagem = data.get('nome_personagem')
         classe = data.get('classe')
         nivel = data.get('nível')
@@ -125,11 +120,9 @@ def create_personagem(user_id):
         regalias_de_profissao = data.get('regalias_de_profissao', [])
         equipamentos = data.get('equipamentos', [])
 
-        # Validação básica
         if not nome_personagem or not classe or not nivel:
             return jsonify({'error': 'Campos obrigatórios ausentes'}), 400
 
-        # Chama o método da classe para criar o personagem
         personagem_id = personagem_service.criar_personagem(
             user_id=user_id,
             nome_personagem=nome_personagem,

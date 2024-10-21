@@ -14,23 +14,19 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import logo from "../../assets/images/LDO.png";
 import { useCallback } from "react";
 
-// Dentro do seu componente:
-
 const LoginPage = () => {
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [loginError, setLoginError] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false); // Novo estado para "Lembre-se de mim"
+    const [rememberMe, setRememberMe] = useState(false); 
 
     const navigate = useNavigate();
     const handleNavigateToSignup = useCallback(() => {
         navigate("/signup");
     }, [navigate]);
-    // Verificar se há um username armazenado no localStorage
     useEffect(() => {
         const savedUsername = localStorage.getItem("rememberedUsername");
         if (savedUsername) {
@@ -55,7 +51,6 @@ const LoginPage = () => {
             setPasswordError("Por favor, insira sua senha.");
             return;
         }
-
         logIn();
     };
 
@@ -72,8 +67,6 @@ const LoginPage = () => {
                 if (r.message === 'Login successful') {
                     const { user } = r;
                     localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id }));
-
-                    // Armazenar o nome de usuário se o checkbox "Lembre-se de mim" estiver marcado
                     if (rememberMe) {
                         localStorage.setItem("rememberedUsername", username);
                     } else {
@@ -92,9 +85,6 @@ const LoginPage = () => {
                 setLoginError(true);
             });
     };
-
-
-
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
@@ -165,7 +155,6 @@ const LoginPage = () => {
                         </Box>
                     </form>
                 </Box>
-
             </Container>
             <Box sx={{ background: '#40150A', position: 'absolute', bottom: '0px', width: '100%', color: '#fff', textAlign: 'center', fontSize: '10px', p: '4px' }}>© 2024 Lâmina do oculto. All rights reserved.</Box>
         </>

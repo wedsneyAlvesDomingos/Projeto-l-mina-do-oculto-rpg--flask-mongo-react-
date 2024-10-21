@@ -16,7 +16,7 @@ const lightTheme = createTheme({
   },
 
   typography: {
-    fontFamily: 'Inter, Arial, sans-serif', // Aplicando a fonte Inter
+    fontFamily: 'Inter, sans-serif', // Aplicando a fonte Inter
   },
 
   components: {
