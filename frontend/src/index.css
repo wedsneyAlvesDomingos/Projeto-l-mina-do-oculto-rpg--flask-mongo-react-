@@ -2,7 +2,13 @@ body{
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    overflow: scroll;
+}
+body::-webkit-scrollbar{
+    background: #756A34;
+   width: 10px;  
+}
+body::-webkit-scrollbar-thumb{
+    background: #BB8130;
 }
 body::before {
     content: "";
@@ -17,4 +23,5 @@ body::before {
     background-position:center;
     opacity: 0.05;
     z-index: -1;
+    
 }

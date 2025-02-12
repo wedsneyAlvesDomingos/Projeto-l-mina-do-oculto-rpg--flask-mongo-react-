@@ -4,3 +4,18 @@
     font-style: normal !important;
     
 }
+
+.boxText{
+    color: #ffffff;
+    text-align: left;
+    font-size: 18px !important;
+    width: 50%;
+    font-family: "Esteban", serif !important;
+}
+.bigBoxText{
+    color: #ffffff;
+    text-align: left;
+    font-size: 18px !important;
+    width: 60%;
+    font-family: "Esteban", serif !important;
+}

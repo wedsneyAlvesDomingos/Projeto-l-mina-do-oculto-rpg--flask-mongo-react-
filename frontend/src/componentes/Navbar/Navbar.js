@@ -26,44 +26,33 @@ function ResponsiveAppBar() {
     const location = useLocation();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElPopover, setAnchorElPopover] = React.useState(null);
-
     const user = JSON.parse(localStorage.getItem("user"));
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
-
-
-    // Update the tab value based on the current URL
     React.useEffect(() => {
         const path = location.pathname;
         if (path.includes('/home')) {
             setValue(0);
         }
     }, [location.pathname]);
-
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
-
     const handleNavigate = (path) => {
         navigate(path, { replace: true });
     };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
     const logout = () => {
         localStorage.removeItem("user");
         navigate("/login", { replace: true });
     };
-
     const handlePopoverOpen = (event) => {
         setAnchorElPopover(event.currentTarget);
     };
-
     const handlePopoverClose = () => {
         setAnchorElPopover(null);
     };
-
     const openPopover = Boolean(anchorElPopover);
     const idPopover = openPopover ? 'simple-popover' : undefined;
 
@@ -76,17 +65,11 @@ function ResponsiveAppBar() {
                             <path d="M0 -1H-1V0V61V62H0H182.25H182.665L182.959 61.7057L243.709 0.705653L245.407 -1H243H0Z" fill="#D9D9D9" stroke="#BB8130" stroke-width="2" />
                         </svg>
 
-                        {/* <svg width="212" height="63" viewBox="0 0 212 63" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: '0px', left: '0px', zIndex: '1' }}>
-                            <path d="M0 -1H-1V0V61V62H0H155.25H155.713L156.013 61.6469L207.763 0.646922L209.16 -1H207H0Z" fill="#D9D9D9" stroke="#BB8130" stroke-width="2" />
-                        </svg> */}
-
                         <img src={logo} style={{ width: '150px', zIndex: '2' }} alt="logo" />
                         <Tabs
                             value={value}
                             aria-label="secondary tabs example"
-
-                        >
-
+                        > 
                             <Tab
                                 key={'home'}
                                 value={0}
@@ -111,14 +94,10 @@ function ResponsiveAppBar() {
                                 onClick={() => handleNavigate('/home')}
                                 sx={{ fontWeight: value === 0 ? 'bold' : 'normal', color: '#fff' }}
                             />
-
                         </Tabs>
                     </Box>
 
-
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
-
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt={user.name.toUpperCase()} src={UIcon} />
