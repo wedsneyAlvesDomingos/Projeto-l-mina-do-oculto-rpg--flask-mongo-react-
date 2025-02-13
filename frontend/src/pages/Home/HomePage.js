@@ -10,10 +10,9 @@ import LDO from "../../assets/images/LDO.png";
 import feather from "../../assets/images/image-from-rawpixel-id-6605206-png.png";
 import helmet from "../../assets/images/image-from-rawpixel-id-6439958-png.png";
 import puppet from "../../assets/images/image-from-rawpixel-id-6553179-png.png";
+import linkOut from "../../assets/icons/linkout.png";
 
 const HomePage = () => {
-
-
 
     return (
 
@@ -24,35 +23,42 @@ const HomePage = () => {
 
             <Grid container spacing={1} sx={{ p: 4, width: '70%', m: 'auto' }} >
                 <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column wrap', justifyContent: 'space-between' }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%' }}>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={feather} style={{ width: '22%', }} ></img>
+
                         <Typography className="boxText">Como jogar?  Confira o guia
                             de criação de personagens!</Typography>
                     </Paper>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%' }}>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={helmet} style={{ width: '22%', }} ></img>
                         <Typography className="boxText">Dicas de como usar regras para criar o próprio jogo, do seu jeito.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2, }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column', background: '#756A34', minHeight: '300px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '100%' }}>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column', background: '#756A34', minHeight: '300px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '100%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={LDO} style={{ width: '90%', }} ></img>
                         <Typography className="bigBoxText">O que é lâmina do oculto e o porquê criar um novo jogo de interpretação de mesa.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2 }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%' }}>
-                        <img src={puppet} style={{ width: '22%',maxWidth:'' }} ></img>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
+                        <img src={puppet} style={{ width: '22%', maxWidth: '' }} ></img>
                         <Typography className="boxText">Como criar boas histórias e deixar a mecânica ajudar a contar a história.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%' }}>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <Typography className="boxText">Crie e gerencie seus personagem!</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%' }}>
+                    <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
+                        <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <Typography className="boxText">Descubra sobre as regras do jogo em nossa wiki</Typography>
                     </Paper>
                 </Grid>

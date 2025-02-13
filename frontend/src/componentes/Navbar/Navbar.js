@@ -33,6 +33,9 @@ function ResponsiveAppBar() {
         if (path.includes('/home')) {
             setValue(0);
         }
+        if (path.includes('/wiki')) {
+            setValue(2);
+        }
     }, [location.pathname]);
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -91,7 +94,7 @@ function ResponsiveAppBar() {
                                 key={'Wiki'}
                                 value={2}
                                 label={<Box sx={{ display: 'flex', alignItens: 'center' }}><PublicIcon ></PublicIcon><Typography variant="p" sx={{ ml: 1 }}> Wiki</Typography></Box>}
-                                onClick={() => handleNavigate('/home')}
+                                onClick={() => handleNavigate('/wiki')}
                                 sx={{ fontWeight: value === 0 ? 'bold' : 'normal', color: '#fff' }}
                             />
                         </Tabs>
