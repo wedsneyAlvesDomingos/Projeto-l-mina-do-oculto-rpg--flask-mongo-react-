@@ -27,13 +27,13 @@ const HomePage = () => {
                         <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={feather} style={{ width: '22%', }} ></img>
 
-                        <Typography className="boxText">Como jogar?  Confira o guia
+                        <Typography className="boxTextHome">Como jogar?  Confira o guia
                             de criação de personagens!</Typography>
                     </Paper>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
                         <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={helmet} style={{ width: '22%', }} ></img>
-                        <Typography className="boxText">Dicas de como usar regras para criar o próprio jogo, do seu jeito.</Typography>
+                        <Typography className="boxTextHome">Dicas de como usar regras para criar o próprio jogo, do seu jeito.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2, }}>
@@ -47,19 +47,19 @@ const HomePage = () => {
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
                         <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
                         <img src={puppet} style={{ width: '22%', maxWidth: '' }} ></img>
-                        <Typography className="boxText">Como criar boas histórias e deixar a mecânica ajudar a contar a história.</Typography>
+                        <Typography className="boxTextHome">Como criar boas histórias e deixar a mecânica ajudar a contar a história.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
                         <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
-                        <Typography className="boxText">Crie e gerencie seus personagem!</Typography>
+                        <Typography className="boxTextHome">Crie e gerencie seu personagem!</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
                         <img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img>
-                        <Typography className="boxText">Descubra sobre as regras do jogo em nossa wiki</Typography>
+                        <Typography className="boxTextHome">Descubra sobre as regras do jogo em nossa wiki.</Typography>
                     </Paper>
                 </Grid>
             </Grid>

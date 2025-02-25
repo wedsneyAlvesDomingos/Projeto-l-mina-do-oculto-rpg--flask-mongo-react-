@@ -1,4 +1,4 @@
-.boxText {
+.boxTextChar {
     color: #ffffff;
     text-align: center;
     font-size: 24px !important;
@@ -15,6 +15,14 @@
     border-width: 1px !important;
     border-color: #756A34 !important;
     border-radius: 4px 0px 0px 4px !important;
+}
+#criarButtom{
+    min-width: 200px !important;
+    width:fit-content !important;
+    margin-left: 5% !important;
+    border-width: 1px !important;
+    border-color: #756A34 !important;
+    border-radius: 4px  !important;
 }
 
 .MuiButtonBase-root {
