@@ -33,11 +33,14 @@ function ResponsiveAppBar() {
         if (path.includes('/home')) {
             setValue(0);
         }
-        if (path.includes('/character')) {
+        else if (path.includes('/character')) {
             setValue(1);
         }
-        if (path.includes('/wiki')) {
+        else if (path.includes('/wiki')) {
             setValue(2);
+        }
+        else{
+            setValue("none");
         }
       
     }, [location.pathname]);

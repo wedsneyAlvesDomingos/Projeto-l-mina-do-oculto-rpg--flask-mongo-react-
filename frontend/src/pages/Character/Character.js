@@ -30,11 +30,12 @@ const CharPage = () => {
             </Box>
             <Grid container spacing={1} sx={{ p: 4, width: '70%', m: 'auto', minHeight: '700px' }} >
                 <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-                    <Paper sx={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Avatar alt={user.name.toUpperCase()} src={UIcon} sx={{ position: "absolute", left: '10px', width: '70px', height: '70px' }} />
-                        <Typography className="boxTextChar">Ashley Morthos</Typography>
-                    </Paper>
-
+                    <a href="">
+                        <Paper sx={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
+                            <Avatar alt={user.name.toUpperCase()} src={UIcon} sx={{ position: "absolute", left: '10px', width: '60px', height: '60px' }} />
+                            <Typography className="boxTextChar">Ashley Morthos</Typography>
+                        </Paper>
+                    </a>
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
 
