@@ -12,7 +12,7 @@ body::-webkit-scrollbar-thumb{
 }
 body::before {
     content: "";
-    position: absolute;
+    position:fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -20,7 +20,7 @@ body::before {
     background-image: url('../src/assets/images/background.png');
     background-repeat: no-repeat;
     background-size: 110%;
-    background-position:center;
+    background-position: center;
     opacity: 0.05;
     z-index: -1;
     

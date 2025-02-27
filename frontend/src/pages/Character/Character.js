@@ -25,7 +25,7 @@ const CharPage = () => {
                     <TextField label="Pesquisar" size="small" variant="outlined" sx={{ background: '#ffffff', width: "100%" }} id="searchBar" />
 
                     <Button className="esteban" sx={{ background: '#162A22', color: '#ffffff', p: 1, width: '10%' }}><img src={search} style={{ width: '20px' }} /></Button>
-                    <Button id="criarButtom" className="esteban " sx={{ background: '#162A22', color: '#ffffff', p: 1, width: '10%' }}>Criar novo personagem</Button>
+                    <Button id="criarButtom" className="esteban " sx={{ background: '#162A22', color: '#ffffff', p: 1, width: '10%' }}> + Novo personagem</Button>
                 </Box>
             </Box>
             <Grid container spacing={1} sx={{ p: 4, width: '70%', m: 'auto', minHeight: '700px' }} >
