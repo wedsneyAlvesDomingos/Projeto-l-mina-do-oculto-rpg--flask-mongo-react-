@@ -38,7 +38,7 @@ const HomePage = () => {
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2, }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column', background: '#756A34', minHeight: '300px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '100%', position: 'relative' }}>
-                        <a href=""><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
+                        <a href="/whatisLDO"><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
                         <img src={LDO} style={{ width: '90%', }} ></img>
                         <Typography className="bigBoxText">O que é lâmina do oculto e o porquê criar um novo jogo de interpretação de mesa.</Typography>
                     </Paper>

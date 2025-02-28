@@ -1,0 +1,37 @@
+.MainTitle {
+    font-family: "Viaoda_Libre variant0", serif !important;
+    font-weight: 100 !important;
+    font-style: normal !important;
+
+}
+
+.boxTextTitleText {
+    color: #5B1F0F;
+    text-align: left;
+    font-family: "Esteban", serif !important;
+    text-align: justify;
+
+    text-indent: 20px !important;
+    margin-top: 2% !important;
+}
+
+.boxTextTitle {
+    color: #5B1F0F;
+    text-align: left;
+    font-family: "Esteban", serif !important;
+    text-align: center;
+    margin-top: 2% !important;
+}
+
+.bigBoxTextGUIA {
+    font-size: 18px !important;
+    width: 80%;
+    margin: 1% auto !important;
+    font-family: "Esteban", serif !important;
+    text-indent: 20px !important;
+    text-align: justify;
+}
+
+.esteban {
+    font-family: "Esteban", serif !important;
+}

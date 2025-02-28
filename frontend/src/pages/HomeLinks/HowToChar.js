@@ -492,11 +492,13 @@ const HowToMakeCharPage = () => {
                     Um personagem pode escolher até duas especializações, mas pode escolher todas as classes desde que tenha a classe de aprendiz correspondente.
                 </ListItem>
 
-                <ListItem sx={{ px: 0 }} className="esteban">
+                <ListItem sx={{ px: 0, mb:8 }} className="esteban">
                     Além disso, o personagem avança de nível quando atinge o valor de Pontos de Experiência cumulativo equivalente ou através do sistema de marco, que é decidido pelo grupo em conjunto com o mestre. Na tabela fornecida, estão os valores de Pontos de Experiência necessários para cada nível. O mestre pode alterar esses valores de acordo com o seu mundo e modo de jogo.
                 </ListItem>
             </List>
-
+            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
+            </Box>
         </Box >
 
     );
