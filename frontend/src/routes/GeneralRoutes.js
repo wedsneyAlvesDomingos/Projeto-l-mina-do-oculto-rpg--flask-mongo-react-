@@ -5,6 +5,7 @@ import WikiPage from "../pages/Wiki/Wikipage";
 import CharPage from "../pages/Character/Character";
 import HowToMakeCharPage from "../pages/HomeLinks/HowToChar";
 import WhatIsLDO from "../pages/HomeLinks/LDOPresentation";
+import HowToMakeYourOwnGames from "../pages/HomeLinks/HowToMakeYourOwnGames";
 
 export const general_routes = [
     {
@@ -45,6 +46,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <WhatIsLDO />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/HowToMakeYourOwnGames",
+        ele: <>
+            <ResponsiveAppBar />
+            <HowToMakeYourOwnGames />
 
         </>,
         availability: [ur.admin]

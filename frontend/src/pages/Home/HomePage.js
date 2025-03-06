@@ -31,7 +31,7 @@ const HomePage = () => {
                             de criação de personagens!</Typography>
                     </Paper>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '100px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
-                        <a href=""><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
+                        <a href="/HowToMakeYourOwnGames"><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
                         <img src={helmet} style={{ width: '22%', }} ></img>
                         <Typography className="boxTextHome">Dicas de como usar regras para criar o próprio jogo, do seu jeito.</Typography>
                     </Paper>
