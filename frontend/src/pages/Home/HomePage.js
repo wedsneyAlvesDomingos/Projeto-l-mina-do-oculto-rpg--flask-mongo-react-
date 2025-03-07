@@ -45,20 +45,20 @@ const HomePage = () => {
                 </Grid>
                 <Grid item xs={6} sx={{ p: 2 }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
-                        <a href=""><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
+                        <a href="/HowToMakeStories"><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
                         <img src={puppet} style={{ width: '22%', maxWidth: '' }} ></img>
                         <Typography className="boxTextHome">Como criar boas histórias e deixar a mecânica ajudar a contar a história.</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
-                        <a href=""><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
+                        <a href="/character"><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
                         <Typography className="boxTextHome">Crie e gerencie seu personagem!</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} sx={{ p: 2 }}>
                     <Paper sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: '#756A34', minHeight: '200px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '48%', position: 'relative' }}>
-                        <a href=""><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
+                        <a href="/wiki"><img src={linkOut} style={{ width: '15px', position: 'absolute', top: '10px', right: '10px' }} ></img></a>
                         <Typography className="boxTextHome">Descubra sobre as regras do jogo em nossa wiki.</Typography>
                     </Paper>
                 </Grid>
