@@ -8,50 +8,52 @@ const StoryPage = () => {
         {
             title: '1. Use as Habilidades para Criar Obstáculos e Desafios Naturais',
             content: [
-                'Rastreamento: Se os personagens estão tentando seguir uma trilha ou descobrir o paradeiro de um inimigo ou criatura, o uso da habilidade de rastreamento não só resolve a situação, mas também oferece momentos de tensão.',
-                'Percepção e Investigação: Sempre que os jogadores estão em um novo local, você pode usar a percepção para revelar pequenos detalhes sobre o ambiente.',
-                'Sobrevivência: Este é o pilar das aventuras em ambientes selvagens. Você pode usá-la para determinar se os jogadores conseguem caçar, encontrar alimentos, construir abrigo, ou até mesmo identificar um perigo natural.',
-                'Furtividade e Navegação: Ao criar cenas de perseguições ou infiltrações, aproveite as mecânicas de furtividade para tornar esses momentos ainda mais intensos.',
-                'Lidar com Animais: Animais podem ser tanto aliados quanto obstáculos. O mestre pode criar momentos únicos onde os jogadores tentam se comunicar ou domar criaturas selvagens.'
+                'Rastreamento: Quando os personagens tentam seguir uma trilha, seja de um inimigo, uma criatura mítica ou uma presa, use a habilidade de rastreamento para adicionar tensão e drama. Se os personagens falharem, podem ser forçados a seguir uma pista falsa que os leva a uma armadilha ou a um perigo desconhecido.',
+                'Percepção e Investigação: Ao introduzir novos locais, use a percepção para dar aos jogadores a chance de notar detalhes cruciais como sinais de vida, pistas de eventos passados ou até mesmo indicadores de perigo iminente. A investigação pode revelar mais informações contextuais, como registros de um antigo explorador ou vestígios de algo misterioso.',
+                'Sobrevivência: Em ambientes selvagens ou inexplorados, a habilidade de sobrevivência pode ser um pilar central. Ela não se limita a encontrar comida, mas também permite que os jogadores construam abrigos improvisados, analisem o clima para evitar tempestades e identifiquem perigos naturais, como terrenos instáveis ou plantas venenosas.',
+                'Furtividade e Navegação: Durante perseguições ou infiltrações, a furtividade pode criar cenas intensas onde os jogadores precisam calcular com precisão seus movimentos e avaliar o risco. A navegação, por sua vez, pode ser crucial em cenários onde o terreno é hostil ou desconhecido, criando um desafio adicional de orientação e direção.',
+                'Lidar com Animais: Os animais podem ser tanto aliados quanto obstáculos. Os jogadores podem tentar domar ou interagir com criaturas selvagens, seja para obter ajuda ou como parte de um desafio para evitar um ataque. Isso pode ser usado para introduzir elementos dinâmicos, como montar um cavalo selvagem ou negociar com uma besta rara.'
             ]
         },
         {
             title: '2. Use as Habilidades para Enriquecer a História',
             content: [
-                'Durante uma sessão de exploração, você pode descrever a jornada como uma série de tentativas, falhas e sucessos ao usar essas habilidades.',
-                'Conecte as habilidades com os personagens. Se um personagem tem um forte vínculo com a natureza ou com animais, permita que sua habilidade de interação com animais se manifeste de formas interessantes.',
-                'Ao usar a habilidade de investigação, não se limite a simples rolagens de dados. Dê aos jogadores uma narrativa detalhada sobre o que eles descobrem ou falham ao tentar descobrir.'
+                'Durante uma sessão de exploração, trate as habilidades como parte da jornada do grupo. Cada sucesso ou fracasso não é apenas uma rolagem de dados, mas uma narrativa que reflete a determinação e as decisões dos jogadores. Use esses momentos para criar histórias de resistência, descoberta e superação.',
+                'Conecte as habilidades aos backgrounds dos personagens. Se um personagem tem uma ligação forte com animais, pode ser interessante permitir que ele use essa habilidade para acalmar uma fera ameaçadora ou até mesmo para negociar com tribos locais. Isso torna as habilidades mais pessoais e integradas à narrativa do grupo.',
+                'Ao usar a investigação, fuja do simples "sucesso" ou "fracasso" e adicione camadas à descoberta. Em vez de apenas dar a resposta imediata, dê pistas sutis que permitam aos jogadores construir suas próprias teorias ou traçar conexões entre elementos aparentemente desconexos, criando uma história mais rica e envolvente.'
             ]
         },
         {
             title: '3. Deixe os Jogadores Sentirem as Consequências',
             content: [
-                'Se um jogador falha ao rastrear uma criatura, ao invés de simplesmente dizer que não encontra nada, você pode dizer que ele se distrai com uma pista falsa, levando o grupo para uma emboscada ou um atalho perigoso.',
-                'Se um jogador falha em uma habilidade de navegação e se perde, isso pode gerar uma oportunidade de criar um encontro inesperado com uma nova tribo, um inimigo ou uma criatura mística.',
-                'Quando um personagem falha em uma rolagem de furtividade, pode ser interessante adicionar consequências que forçam o grupo a improvisar ou lutar.'
+                'Falhas não devem ser vistas como momentos negativos. Se um jogador falha ao rastrear uma criatura, em vez de simplesmente não encontrar nada, crie uma situação onde a falha gera uma nova complicação. Talvez eles se distraem com uma pista falsa que os leva a uma emboscada, um atalho perigoso, ou até uma luta inesperada.',
+                'Em falhas de navegação, as consequências podem ir além da perda de direção. Se um personagem se perde, ele pode acabar encontrando algo inesperado, como uma tribo desconhecida ou uma criatura mística, gerando novas oportunidades de exploração ou conflito.',
+                'Falhas em furtividade podem resultar em consequências que exigem improvisação. Ao ser detectado, o grupo pode precisar reagir rapidamente, criando uma situação de combate ou uma fuga apressada. Isso pode gerar momentos de tensão que adicionam profundidade à história.'
             ]
         },
         {
             title: '4. Incentive o Trabalho em Equipe',
             content: [
-                'As habilidades de exploração do sistema LDO funcionam muito bem quando o grupo se complementa.',
-                'Deixe-os se envolver com o ambiente e com as consequências das ações uns dos outros.'
+                'O sistema de habilidades no LDO é ideal para promover o trabalho em equipe. Cada membro do grupo pode ter habilidades únicas que se complementam, criando oportunidades para o grupo resolver problemas juntos. Em vez de apenas permitir que um único personagem se destaque, incentive os jogadores a usar suas habilidades de forma colaborativa para alcançar o sucesso.',
+                'Além disso, as consequências das ações de um jogador podem afetar diretamente os outros, o que exige que o grupo trabalhe em conjunto para lidar com os desafios. Por exemplo, se um jogador falha em uma rolagem de navegação, o resto do grupo pode ter que decidir rapidamente como reagir à situação, o que reforça a importância do trabalho em equipe e da tomada de decisões coletivas.'
             ]
         },
         {
             title: '5. Incorpore o Ambiente no Jogo',
             content: [
-                'Lembre-se de que no LDO, o mundo é quase um personagem por si só. Use o ambiente para desafiar os jogadores, criando cenários que exijam uma combinação de habilidades para serem superados.'
+                'No LDO, o ambiente é quase um personagem por si só. Use o cenário não apenas como um pano de fundo, mas como um desafio ativo para os jogadores. Se eles estão explorando uma floresta densa, por exemplo, o ambiente pode afetar a visibilidade, o rastreamento, ou até as habilidades de navegação, criando obstáculos naturais.',
+                'Desafios ambientais podem exigir a combinação de várias habilidades para serem superados. Por exemplo, um terreno perigoso pode exigir uma combinação de sobrevivência para identificar um caminho seguro e percepção para notar sinais de perigo iminente. Isso cria uma experiência de jogo mais imersiva e dinâmica.'
             ]
         },
         {
             title: '6. Seja Flexível e Criativo com as Habilidades',
             content: [
-                'As mecânicas do LDO são projetadas para dar flexibilidade ao mestre. Permita que seus jogadores usem as habilidades de maneiras criativas.',
-                'A exploração é sobre a descoberta, e muitas vezes a solução mais interessante não será a mais óbvia.'
+                'As habilidades no LDO são projetadas para serem flexíveis e permitir que os mestres as adaptem de acordo com a situação. Encoraje os jogadores a pensar fora da caixa e usar suas habilidades de maneiras criativas. Por exemplo, um personagem com habilidade em rastreamento pode usá-la para encontrar vestígios de uma pessoa perdida, mas também para investigar um local abandonado em busca de pistas sobre o que aconteceu ali.',
+                'A exploração não se trata apenas de encontrar objetos ou alcançar objetivos, mas de criar uma experiência única para os jogadores. Deixe que eles experimentem diferentes abordagens e soluções criativas para os problemas que enfrentam. Às vezes, a solução mais interessante não é a mais óbvia, mas a mais criativa.'
             ]
         }
     ];
+    
 
     return (
         <Box maxWidth="lg" sx={{ padding: 3, margin: 'auto', width: '80%',display:"flex",flexFlow:'column',alignItems:'center' }}>
@@ -82,10 +84,6 @@ const StoryPage = () => {
                         </List>
                     </Box>
                 ))}
-
-                <Typography className="bigBoxTextGUIA" >
-                    Ao aplicar essas dicas, você pode criar uma experiência mais rica e imersiva para seus jogadores. Lembre-se, o Lâmina do Oculto é sobre descobertas e crescimento através da exploração. Aproveite as oportunidades que surgem ao longo do caminho e crie histórias que deixem os jogadores empolgados para a próxima aventura!
-                </Typography>
             </Box>
         </Box>
     );

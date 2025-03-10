@@ -7,6 +7,7 @@ import HowToMakeCharPage from "../pages/HomeLinks/HowToChar";
 import WhatIsLDO from "../pages/HomeLinks/LDOPresentation";
 import HowToMakeYourOwnGames from "../pages/HomeLinks/HowToMakeYourOwnGames";
 import StoryPage from "../pages/HomeLinks/HowToMakeStories";
+import ClassesPage from "../pages/Wiki/classes/classes";
 
 export const general_routes = [
     {
@@ -65,6 +66,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <StoryPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes",
+        ele: <>
+            <ResponsiveAppBar />
+            <ClassesPage />
 
         </>,
         availability: [ur.admin]
