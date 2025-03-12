@@ -18,55 +18,49 @@ const StoryPage = () => {
         {
             title: '2. Use as Habilidades para Enriquecer a História',
             content: [
-                'Durante uma sessão de exploração, trate as habilidades como parte da jornada do grupo. Cada sucesso ou fracasso não é apenas uma rolagem de dados, mas uma narrativa que reflete a determinação e as decisões dos jogadores. Use esses momentos para criar histórias de resistência, descoberta e superação.',
-                'Conecte as habilidades aos backgrounds dos personagens. Se um personagem tem uma ligação forte com animais, pode ser interessante permitir que ele use essa habilidade para acalmar uma fera ameaçadora ou até mesmo para negociar com tribos locais. Isso torna as habilidades mais pessoais e integradas à narrativa do grupo.',
-                'Ao usar a investigação, fuja do simples "sucesso" ou "fracasso" e adicione camadas à descoberta. Em vez de apenas dar a resposta imediata, dê pistas sutis que permitam aos jogadores construir suas próprias teorias ou traçar conexões entre elementos aparentemente desconexos, criando uma história mais rica e envolvente.'
+                'Durante uma sessão de exploração, trate as habilidades como parte da jornada do grupo. Cada sucesso ou fracasso não é apenas uma rolagem de dados, mas uma narrativa que reflete a determinação e as decisões dos jogadores. Use esses momentos para criar histórias de resistência, descoberta e superação.Conecte as habilidades aos backgrounds dos personagens. Se um personagem tem uma ligação forte com animais, pode ser interessante permitir que ele use essa habilidade para acalmar uma fera ameaçadora ou até mesmo para negociar com tribos locais. Isso torna as habilidades mais pessoais e integradas à narrativa do grupo.Ao usar a investigação, fuja do simples "sucesso" ou "fracasso" e adicione camadas à descoberta. Em vez de apenas dar a resposta imediata, dê pistas sutis que permitam aos jogadores construir suas próprias teorias ou traçar conexões entre elementos aparentemente desconexos, criando uma história mais rica e envolvente.'
             ]
         },
         {
             title: '3. Deixe os Jogadores Sentirem as Consequências',
             content: [
-                'Falhas não devem ser vistas como momentos negativos. Se um jogador falha ao rastrear uma criatura, em vez de simplesmente não encontrar nada, crie uma situação onde a falha gera uma nova complicação. Talvez eles se distraem com uma pista falsa que os leva a uma emboscada, um atalho perigoso, ou até uma luta inesperada.',
-                'Em falhas de navegação, as consequências podem ir além da perda de direção. Se um personagem se perde, ele pode acabar encontrando algo inesperado, como uma tribo desconhecida ou uma criatura mística, gerando novas oportunidades de exploração ou conflito.',
+                'Falhas não devem ser vistas como momentos negativos. Se um jogador falha ao rastrear uma criatura, em vez de simplesmente não encontrar nada, crie uma situação onde a falha gera uma nova complicação. Talvez eles se distraem com uma pista falsa que os leva a uma emboscada, um atalho perigoso, ou até uma luta inesperada.Em falhas de navegação, as consequências podem ir além da perda de direção. Se um personagem se perde, ele pode acabar encontrando algo inesperado, como uma tribo desconhecida ou uma criatura mística, gerando novas oportunidades de exploração ou conflito.',
                 'Falhas em furtividade podem resultar em consequências que exigem improvisação. Ao ser detectado, o grupo pode precisar reagir rapidamente, criando uma situação de combate ou uma fuga apressada. Isso pode gerar momentos de tensão que adicionam profundidade à história.'
             ]
         },
         {
             title: '4. Incentive o Trabalho em Equipe',
             content: [
-                'O sistema de habilidades no LDO é ideal para promover o trabalho em equipe. Cada membro do grupo pode ter habilidades únicas que se complementam, criando oportunidades para o grupo resolver problemas juntos. Em vez de apenas permitir que um único personagem se destaque, incentive os jogadores a usar suas habilidades de forma colaborativa para alcançar o sucesso.',
-                'Além disso, as consequências das ações de um jogador podem afetar diretamente os outros, o que exige que o grupo trabalhe em conjunto para lidar com os desafios. Por exemplo, se um jogador falha em uma rolagem de navegação, o resto do grupo pode ter que decidir rapidamente como reagir à situação, o que reforça a importância do trabalho em equipe e da tomada de decisões coletivas.'
+                'O sistema de habilidades no LDO é ideal para promover o trabalho em equipe. Cada membro do grupo pode ter habilidades únicas que se complementam, criando oportunidades para o grupo resolver problemas juntos. Em vez de apenas permitir que um único personagem se destaque, incentive os jogadores a usar suas habilidades de forma colaborativa para alcançar o sucesso.Além disso, as consequências das ações de um jogador podem afetar diretamente os outros, o que exige que o grupo trabalhe em conjunto para lidar com os desafios. Por exemplo, se um jogador falha em uma rolagem de navegação, o resto do grupo pode ter que decidir rapidamente como reagir à situação, o que reforça a importância do trabalho em equipe e da tomada de decisões coletivas.'
             ]
         },
         {
             title: '5. Incorpore o Ambiente no Jogo',
             content: [
-                'No LDO, o ambiente é quase um personagem por si só. Use o cenário não apenas como um pano de fundo, mas como um desafio ativo para os jogadores. Se eles estão explorando uma floresta densa, por exemplo, o ambiente pode afetar a visibilidade, o rastreamento, ou até as habilidades de navegação, criando obstáculos naturais.',
-                'Desafios ambientais podem exigir a combinação de várias habilidades para serem superados. Por exemplo, um terreno perigoso pode exigir uma combinação de sobrevivência para identificar um caminho seguro e percepção para notar sinais de perigo iminente. Isso cria uma experiência de jogo mais imersiva e dinâmica.'
+                'No LDO, o ambiente é quase um personagem por si só. Use o cenário não apenas como um pano de fundo, mas como um desafio ativo para os jogadores. Se eles estão explorando uma floresta densa, por exemplo, o ambiente pode afetar a visibilidade, o rastreamento, ou até as habilidades de navegação, criando obstáculos naturais.Desafios ambientais podem exigir a combinação de várias habilidades para serem superados. Por exemplo, um terreno perigoso pode exigir uma combinação de sobrevivência para identificar um caminho seguro e percepção para notar sinais de perigo iminente. Isso cria uma experiência de jogo mais imersiva e dinâmica.'
             ]
         },
         {
             title: '6. Seja Flexível e Criativo com as Habilidades',
             content: [
-                'As habilidades no LDO são projetadas para serem flexíveis e permitir que os mestres as adaptem de acordo com a situação. Encoraje os jogadores a pensar fora da caixa e usar suas habilidades de maneiras criativas. Por exemplo, um personagem com habilidade em rastreamento pode usá-la para encontrar vestígios de uma pessoa perdida, mas também para investigar um local abandonado em busca de pistas sobre o que aconteceu ali.',
-                'A exploração não se trata apenas de encontrar objetos ou alcançar objetivos, mas de criar uma experiência única para os jogadores. Deixe que eles experimentem diferentes abordagens e soluções criativas para os problemas que enfrentam. Às vezes, a solução mais interessante não é a mais óbvia, mas a mais criativa.'
+                'As habilidades no LDO são projetadas para serem flexíveis e permitir que os mestres as adaptem de acordo com a situação. Encoraje os jogadores a pensar fora da caixa e usar suas habilidades de maneiras criativas. Por exemplo, um personagem com habilidade em rastreamento pode usá-la para encontrar vestígios de uma pessoa perdida, mas também para investigar um local abandonado em busca de pistas sobre o que aconteceu ali.A exploração não se trata apenas de encontrar objetos ou alcançar objetivos, mas de criar uma experiência única para os jogadores. Deixe que eles experimentem diferentes abordagens e soluções criativas para os problemas que enfrentam. Às vezes, a solução mais interessante não é a mais óbvia, mas a mais criativa.'
             ]
         }
     ];
     
 
     return (
-        <Box maxWidth="lg" sx={{ padding: 3, margin: 'auto', width: '80%',display:"flex",flexFlow:'column',alignItems:'center' }}>
-            <Typography variant="h2" gutterBottom className="boxTextTitle">
+        <Box maxWidth="lg" sx={{ margin: 'auto', width: '100%',display:"flex",flexFlow:'column',alignItems:'center' }}>
+            <Typography variant="h3" gutterBottom className="boxTextTitle">
                 Criando Histórias Engajantes com Foco nas Habilidades de Exploração
             </Typography>
-            <img style={{margin:'40px', width:'50%'}} src={CoverImg}/>
+            <img style={{margin:'40px', width:'30%'}} src={CoverImg}/>
             <Box sx={{  width: "100%" }}>
 
-                <Typography className="esteban" >
+                <Typography className="esteban" paragraph sx={{textIndent:'20px'}} >
                     Bem-vindo, Mestre! No Lâmina do Oculto (LDO), as histórias não são feitas apenas dos eventos épicos e batalhas intensas, mas também das nuances de exploração, investigação e interação com o mundo ao redor. O sistema coloca uma forte ênfase nas habilidades como rastreamento, percepção, investigação, sobrevivência, furtividade, navegação e interação com animais, e é essencial que você aproveite essas mecânicas para construir narrativas envolventes.
                 </Typography>
-                <Typography className="esteban" >
+                <Typography className="esteban" paragraph sx={{textIndent:'20px'}} >
                     Aqui estão algumas dicas para ajudá-lo a criar histórias ricas e dinâmicas, aproveitando ao máximo as mecânicas de habilidades de exploração.
                 </Typography>
 
@@ -78,7 +72,7 @@ const StoryPage = () => {
                         <List>
                             {tip.content.map((item, idx) => (
                                 <ListItem key={idx}>
-                                    <ListItemText primary={item} />
+                                    <ListItemText className="bigBoxTextGUIA" primary={item} />
                                 </ListItem>
                             ))}
                         </List>

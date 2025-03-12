@@ -1,8 +1,8 @@
-.MainTitle {
+.MainTitleC {
     font-family: "Viaoda_Libre variant0", serif !important;
-    font-weight: 100 !important;
     font-style: normal !important;
-
+    color: #5B1F0F;
+    text-align: center !important;
 }
 
 .boxTextTitleText {
