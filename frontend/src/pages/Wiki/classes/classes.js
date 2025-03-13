@@ -6,6 +6,8 @@ import diagram from "../../../assets/images/classesDiagram.png";
 import classes from "../../../assets/images/classes.png";
 import aprendiz from "../../../assets/images/aprendiz.png";
 import novice from "../../../assets/images/noviço.png";
+import iniciado from "../../../assets/images/iniciado2.png";
+import feiticeiro from "../../../assets/images/feiticeiro.png";
 
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
@@ -179,7 +181,7 @@ const ClassesPage = () => {
             "nome": "Nível 3",
             "descricao": "O personagem ganha um bônus de 3 pontos em Combate a Distância, 1 de Destreza e a utilização da seguinte manobra:"
           },
-          
+
           {
             "nome": "Desarmar",
             "descricao": "Ao realizar um ataque de Combate a distância, o combatente pode escolher desarmar o alvo. Veja as regras na ação Desarmar. Em um acerto o alvo toma o dano e tem 40% de chance de ser desarmado. A arma cai em uma distância de 3 metros do alvo em um sucesso. Custa 4 pontos de Estâmina  e pode aumentar em 5% por cada 1 ponto de Estâmina  a mais gastos no uso da manobra."
@@ -453,7 +455,245 @@ const ClassesPage = () => {
 
     ]
   }
+  const feiticeiroSkillsData = {
 
+    "titulo": "Feiticeiro",
+    "atributos": {
+      "vida": 3,
+      "estamina": 0,
+      "magia": 3
+    },
+    "descricao": "O feiticeiro é uma figura enigmática e poderosa, cuja magia surge de sua própria essência, ao contrário de outras tradições mágicas que dependem de estudo ou artefatos. Esse vínculo natural com as forças arcanas permite ao feiticeiro manipular o mundo ao seu redor de forma fluida e instintiva. Suas habilidades são muitas vezes imprevisíveis, refletindo a intensidade de sua conexão com o arcano, o que pode gerar resultados poderosos, mas também perigosos. No mundo, os feiticeiros são vistos com uma mistura de fascínio e temor, sendo capazes de realizar feitos extraordinários, mas também suscetíveis a perder o controle, com consequências catastróficas. O papel do feiticeiro no mundo varia: ele pode ser um sábio que busca conhecimento oculto, um defensor que usa seus poderes para proteger ou até mesmo um agente do caos, que age sem limites ou escrúpulos. Seu caminho é determinado não apenas pelo poder que possui, mas pelas escolhas que faz em sua jornada. As Regalias de feiticeiro não possuem ordem de compra. Dentro de cada categoria é possível comprar qualquer Regalia na ordem que desejar, diferente das outras classes primárias.",
+    "habilidade": {
+      "nome": "Veia azul",
+      "descricao": "Magia corre em suas veias de maneira natural desde seu nascimento. Ao conjurar qualquer feitiço,  e apenas feitiços, o feiticeiro recebe 2 pontos de feitiçaria. Cada ponto de feitiçaria pode ser adicionado em uma magia para substituir pontos de magia. Porém esses pontos de feitiçaria têm uma duração curta de 1 minuto (10 rodadas) após adquiridos. Cada 1 ponto de feitiçaria pode substituir 1 ponto de magia. Pontos de feitiçaria podem ser acumulados de maneira que seja, no máximo, igual ao valor de ocultismo + ritualismo + arcanismo do feiticeiro. Estes pontos de feitiçaria podem ser trocados  por  outras coisas além de pontos de magia.O feiticeiro pode afetar feitiços através de pontos de feitiçaria uma vez por rodada, e um feitiço pode receber apenas uma das opções acima.  Um feitiço que seja conjurado, ou alterado, por pontos de feitiçaria não geram novos pontos de feitiçaria. Estas opções lhe dão mais versatilidade e utilidade. Essas opções são:",
+      "habilidades": [
+        {
+          "nome": "Acelerar feitiço: ",
+          "descricao": "Ao conjurar um feitiço, o feiticeiro pode gastar 4 pontos de feitiçaria para diminuir em 1 o número de ações necessárias para executá-lo. Essa opção não reduz um feitiço de uma ação a zero.",
+        },
+        {
+          "nome": "Duplicar:",
+          "descricao": "Ao conjurar um feitiço que afete apenas um alvo, o feiticeiro pode escolher atingir outro alvo que esteja a até 9 metros do alvo original do feitiço, essa opção custa 4 pontos de feitiçaria."
+        },
+        {
+          "nome": "Conjuração atrasada: ",
+          "descricao": "Ao gastar 4 pontos de feitiçaria, o feiticeiro pode escolher atrasar um feitiço de ataque a distância em até 12 segundos. Ao fazer isso o feitiço é conjurado normalmente, porém o feiticeiro pode escolher um atraso de 6 ou 12 segundos. Após o tempo escolhido de passar, o feitiço é lançado da posição em que o feiticeiro se encontrava."
+        },
+        {
+          "nome": "Eco Elemental: ",
+          "descricao": "O feiticeiro pode gastar uma ação e 8 pontos de feitiçaria para criar uma duplicata elemental de si ao conjurar um feitiço que envolva um elemento natural específico (fogo, gelo, eletricidade, etc.). Esta duplicata é do elemento do feitiço conjurado, ocupa um espaço desocupado ao lado do feiticeiro e possui 20 pontos de vida. Ela segue o feiticeiro e replica automaticamente o próximo feitiço elemental de ataque que for lançado pelo feiticeiro original, no mesmo lugar ou alvo . O eco elemental desaparece após lançar o feitiço replicado ou no final do turno do feiticeiro original."
+        },
+        {
+          "nome": "Ampliação de Efeito:",
+          "descricao": "O feiticeiro pode gastar 4 pontos de feitiçaria para ampliar o efeito de um feitiço que normalmente afeta uma área específica. Esta habilidade permite que o feiticeiro aumente a área de efeito do feitiço em 50%, afetando mais alvos ou uma área maior do campo de batalha."
+        }
+      ]
+    },
+    "regalias": [
+      {
+        "nome": "Maldição",
+        "descricao": "Escolha entre as opções ",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Intuição, Ocultismo e aprende a seguinte maldição: Enfraquecer(Maldição)(2 Ações)",
+            "descricao": "Este feitiço causa enfraquecimento em um alvo e tem 40% de chance de sucesso. Caso enfeitiçado o alvo possui desvantagens em rolamentos de acerto, além de uma penalidade de 1,5m de velocidade de movimento. Duração de 5 rodadas. Custa 6 pontos de magia e pode aumentar em 5% para cada 2 pontos de magia a mais."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Arcanismo, Ocultismo e aprende a seguinte maldição: Paranóia(Maldição)(2 Ações)",
+            "descricao": " Este feitiço causa surdez e cegueira em seu alvo, tendo 30% de chance de sucesso. Duração de 5 rodadas. Custa 6 pontos de magia e pode aumentar em 5% para cada 3 pontos de magia a mais."
+          },
+          {
+            "nome": "O personagem ganha a seguinte maldição: Olhar Amaldiçoado(Maldição)(2 Ações)",
+            "descricao": "Um feiticeiro mantém seu olhar fixo em uma criatura que esteja a até 9 metros de distância. A criatura tem 50 % de chance de ser afetada pelo olhar e entrar na condição Aterrorizado. Dura 3 turnos Custa 5 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais."
+          }
+        ]
+      },
+      {
+        "nome": "Caos",
+        "descricao": " Escolha entre as opções",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Arcanismo, Natureza e aprende o seguinte feitiço: Aperto do Caos(Feitiço)(2 Ações)",
+            "descricao": "Este feitiço conjura um elemento aleatório ao redor de uma criatura em até 36 metros, tendo 40% de chance de sucesso. Caso enfeitiçado, o alvo durante uma rodada sofre 1d10 pontos de dano do elemento sorteado (Faça um rolamento de 1d6: 1   Fogo, 2   Gelo, 3   Terra, 4   Ar, 5   Raio e 6   Escolha), além de restringir a pessoa deitada no chão. Custa 3 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais. * Dano de gelo tem 20% de chance de aplicar um nível de Congelado. * Dano de fogo tem a mesma chance de aplicar Queimando.* Dano de terra tem um bônus de  20% para deixar o alvo restrito.* Dano de ar causa 2d6 a mais de dano."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Arcanismo, Natureza e aprende o seguinte feitiço: Eletrodança Caótica(Feitiço)(2 Ações)",
+            "descricao": " Conjura em uma área de 3m de raio, uma esfera de lampejos multicoloridos de todos os elementos, causando 1d4+1 pontos de dano de cada elemento (Fogo, Água, Ar, Terra e Raio). Custa 8 pontos de magia. Essa magia tem 40% de chance de aplicar um nível da condição Congelado e Queimando. "
+          },
+          {
+            "nome": "O personagem aprende o seguinte feitiço: Roleta Caótica (Feitiço)(2 Ações)",
+            "descricao": " Conjura um raio elemental com elemento aleatório causando 3d10 de dano a todos inimigos em uma linha de 18 metros de comprimento e 3 metros de largura. Tem 10% de chance de explodir na cara do conjurador, causando o dano da magia em todos a sua volta em até 1,5 metros. Custa 5 pontos de magia."
+          }
+        ]
+      },
+      {
+        "nome": "Rito",
+        "descricao": " Escolha entre as opções",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Percepção, Ritualismo e aprendo o seguinte ritual: Espiritomancia (1 minuto)(ritual) ",
+            "descricao": "Esse Ritual invoca três espíritos aliados que auxiliam na investigação e exploração de ambientes. O Feiticeiro(a) pode controlar e comandar cada espírito em até 100m de distância, além de ver e ouvir através de cada um, mas não ao mesmo tempo.  Custa 5 moedas de ouro em materiais para o ritual. Os espíritos permanecem com o Feiticeiro(a) em duração de uma hora e não podem ser destruídos. Custa 1 ponto de magia."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Ritualismo e aprendo o seguinte ritual: Fantoche (1 minuto)(ritual)",
+            "descricao": " Este ritual anima um pequeno fantoche utilizando um espírito da natureza, este ritual não tem limite de duração, apenas quando o boneco for destruído. O boneco pode atacar usando o Combate Arcano do Feiticeiro(a) e tem um quinto (⅕ ou 20%) dos pontos de vida do mesmo. Seus ataques causam 1d6 de dano necrótico. Custa 5 moedas de ouro em materiais para o ritual. Custa 4 pontos de magia e para cada 1 ponto extra o fantoche recebe mais 1 ponto de vida."
+          },
+          {
+            "nome": "O personagem aprende o seguinte ritual: Comunicar com os mortos(10 minutos)(ritual)",
+            "descricao": " Cria uma área de 6 metros onde é possível comunicar com o espírito de um corpo ou esqueleto de um humanóide morto. Dura 10 minutos ou até o espírito responder 5 perguntas. Custa 5 moedas de ouro em materiais para o ritual. Custa 4 pontos de magia."
+          }
+        ]
+      },
+    
+
+    ]
+  }
+  const iniciadoSkillsData = {
+
+    "titulo": "Iniciado",
+    "atributos": {
+      "vida": 2,
+      "estamina": 0,
+      "magia": 4
+    },
+    "descricao": "O Iniciado é uma classe focada no domínio da magia arcana, adquirindo o poder de manipular energias místicas desde o início de sua jornada. Este personagem usa sua conexão com as forças arcanas para conjurar magias, inicialmente sem grandes custos, mas com a capacidade de aprender e expandir seus conhecimentos mágicos conforme avança.Embora não possua grande resistência física, o Iniciado compensa isso com sua habilidade de manipular magia de forma precisa e eficaz. A magia é sua principal arma, e os Iniciados são conhecidos por sua flexibilidade na conjuração, podendo usar diversos tipos de focos como varinhas, cajados e outros instrumentos. Ao dominar as artes arcanas, o Iniciado pode liberar poderosas magias, desde ataques devastadores até habilidades de defesa e controle mental. O Iniciado pode utilizar diferentes escolas de magia, cada uma oferecendo habilidades únicas que se complementam ao longo do tempo. Essas escolas incluem Evocação, que permite manipular e lançar feitiços de dano, Abjuração, para proteger a si mesmo e aos outros, Encantamento e Ilusão, para manipular mentes e enganar os sentidos, Telecinese, para mover objetos e afetar a mente de inimigos, Invocação, para trazer entidades e objetos mágicos, e Transmutação, que altera a própria matéria. Cada escola exige comprometimento e aprendizado contínuo, com o Iniciado precisando adquirir Regalias em uma sequência específica para aprimorar suas habilidades. Ao seguir essas rotas mágicas, o Iniciado não apenas se torna um mestre da magia, mas também um estrategista capaz de adaptar suas habilidades às situações que enfrenta. Iniciados(as) usam as mãos para conjurar magias, mas podem usar focos como varinhas, instrumentos, ferramentas ou cajados no lugar das mãos. É necessário um foco ou uma mão livre para conjurar magias. Toda magia causa dano arcano. Cada escola de magia possui uma árvore de Regalias, o iniciado deve comprar essas Regalias na ordem que aparece e não pode comprar a segunda antes de comprar a primeira e por aí vai.",
+    "habilidade": {
+      "nome": "Magus",
+      "descricao": "O iniciado pode conjurar as magias aprendidas através da Regalia “Aprendiz de Iniciado” sem custo de pontos de magia um número de vezes igual ao seu valor de Habilidade de arcanismo. Ao conjurar este determinado número de vezes terá que gastar pontos de magias para continuar conjurando-as. Se o Iniciado usar Míssil arcano com esta habilidade deve usar em sua forma mais simples com custo de 1 ponto de mana, mas pode melhorá-la  com sua mana além desse primeiro ponto Recupera essa habilidade após um descanso longo.O feiticeiro pode afetar feitiços através de pontos de feitiçaria uma vez por rodada, e um feitiço pode receber apenas uma das opções acima.  Um feitiço que seja conjurado, ou alterado, por pontos de feitiçaria não geram novos pontos de feitiçaria. ",
+      "habilidades": [
+      ]
+    },
+    "regalias": [
+      {
+        "nome": "Evocação",
+        "descricao": " O personagem ganha um bônus de 1 ponto em Combate Arcano, 2 pontos em Arcanismo e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 - Cone Arcano(2 Ações)(Magia)",
+            "descricao": "Uma magia que cria uma cone de 6 metros de alcance e 60° de abertura, um jato de energia arcana causando 2d8 de dano àqueles que estiverem dentro da área de efeito. Causa a condição devagar até o início de seu próximo turno. Custa 6 pontos de magia. Mais 1d8 de dano para cada 3 pontos de magia adicionais."
+          },
+          {
+            "nome": "Nível 2 - Esfera Arcana (Magia)(2 Ações)",
+            "descricao": " Uma magia que cria uma esfera de 3 metros de raio, dentro da área uma explosão arcana acontece causando 3d10 de dano àqueles que estiverem dentro da área de efeito. Causa a condição queimando ou aumenta em 1 o nível de queimando. Custa 10 pontos de magia. Mais 1d10 de dano para cada 3 pontos de magia adicionais."
+          },
+          {
+            "nome": "Nível 3 - Raio Arcano(2 Ações)(Magia)",
+            "descricao": " Uma magia que cria, em uma linha de 36 metros de comprimento e 3 metros de largura, um raio arcano causando 3d10 de dano àqueles que estiverem dentro da área de efeito. Custa 10 pontos de magia. Mais 1d10 de dano para cada 3 pontos de magia gasto a mais."
+          }
+        ]
+      },
+      {
+        "nome": "Abjuração",
+        "descricao": "O personagem ganha um bônus de 1 ponto em Agilidade, 2 pontos em Fortitude e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 - Armadura Arcana  (Ação)  (Magia)",
+            "descricao": "Ao conjurar essa magia o iniciado recebe uma camada protetora feita de energia. Essa camada protetora dá ao seu usuário 2 pontos de vida temporários e aumenta o valor de defesa em 2 pontos por 1 hora. Custa 2 pontos de magia. Custa 2 pontos de magia adicionais  para aumentar a vida em +2 e o bônus de defesa em + 1."
+          },
+          {
+            "nome": "Nível 2 - Defesa contra Armas  (Ação)  (Magia)",
+            "descricao": " Ao conjurar essa magia o iniciado recebe uma camada protetora feita de energia. Essa camada protetora concede ao seu usuário resistência ao dano causado por armas mágicas, não mágicas ou que tenha dano elemental durante 2 rodadas. Custa 2 pontos de magia. "
+          },
+          {
+            "nome": "Nível 3 - Refletir (Reação)  (Magia)",
+            "descricao": " Se um inimigo atacar o iniciado com algum tipo de magia, feitiço ou milagre que lhe cause dano, e estiver 30 metros distância ou menos, o iniciado pode refletir até metade do dano para o atacante, O iniciado recebe o dano excedente da reflexão e o dano transferido se converte em vida temporária com duração até o fim de seu próximo turno. Faça um rolamento de 1d100, abaixo de 40 o iniciado reflete apenas 25% do valor do dano, se rolar acima de 40 reflete metade do dano e se rolar 100 o iniciado reflete o dano por completo. Custa 4 pontos de magia."
+          }
+        ]
+      },
+      {
+        "nome": "Encantamento",
+        "descricao": "O personagem ganha um bônus de 2 pontos em Persuasão, Sedução e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 -Voz de Comando(2 Ações) (Magia)",
+            "descricao": "Ao conjurar essa magia em um alvo ela tem 50% de chance de sucesso. Caso o alvo caia sob o efeito da magia ele obedece um comando de no máximo 1 palavra que não cause dano ou que seja de extremo perigo. Custa 4 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais."
+          },
+          {
+            "nome": "Nível 2 - Controlar Animal (2 Ações) (Magia)",
+            "descricao": " Ao conjurar essa magia em um alvo ela tem 60% de chance de sucesso. Caso o alvo caia sob o efeito da magia vai estar disposto a fazer pequenos favores e te defender. Pode durar até uma hora. Custa 6 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais."
+          },
+          {
+            "nome": "Nível 3 - Hipnose (3 Ações) (Magia)",
+            "descricao": " Ao conjurar essa magia em um alvo ela tem 50% de chance de sucesso. Caso o alvo caia sob o efeito da magia vai estar disposto a fazer pequenos favores, te defender de conflitos leves e te contar tudo que sabe como se fosse um velho amigo. Pode durar até uma hora. Custa 8 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais."
+          }
+        ]
+      },
+      {
+        "nome": "Ilusão",
+        "descricao": "O personagem ganha um bônus de 1 ponto em Arcanismo,  2 pontos em Enganação, 2 pontos em Performance  e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 - Disfarce Arcano (3 Ações) (Magia)",
+            "descricao": "Ao conjurar a magia o Iniciado(a) pode escolher uma imagem de um humanóide de seu tamanho para ser sua nova aparência durante 2 horas. A ilusão pode ser sentida através do tato e brilha em um detectar magia. Para fingir ser alguém é preciso realizar um teste de enganação com dificuldade definida pelo mestre, de acordo com a situação. Custa 4 pontos de magia."
+          },
+          {
+            "nome": "Nível 2 - Gerar imagens (2 Ações) (Magia)",
+            "descricao": " Ao conjurar a magia o Iniciado pode escolher uma imagem de pessoas, lugares, objetos, animais e até monstros para representar. Essa imagem se movimenta e reproduz sons rudimentares, mas sem diálogos sonoros compreensíveis. A magia ocupa até no máximo um cubo de 6 metros de aresta e possui uma duração de até 10 minutos. Custa 6 pontos de magia."
+          },
+          {
+            "nome": "Nível 3 - Ataque Fantasma",
+            "descricao": " Ao conjurar a magia o Iniciado(a) pode escolher uma imagem de pessoas, lugares, objetos, animais e até monstros para representar um terror na mente de uma criatura. Ao conjurar essa magia em um alvo ela tem 60% de chance de sucesso de acontecer. Caso ela funcione o alvo fica aterrorizado por 5 rodadas. Todo turno a criatura alvo pode fazer um teste de ocultismo ou arcanismo para descobrir se é uma ilusão, a dificuldade é 20 - o número de rodadas que se encontra na condição aterrorizado. Se a criatura permanecer até o final do 5° turno na condição aterrorizado ela se torna atordoada  até o final de seu próximo turno.  Custa 10 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia a mais."
+          }
+        ]
+      },
+      {
+        "nome": "Telecinese",
+        "descricao": "O personagem ganha um bônus de 1 ponto em Combate Arcano, 2 pontos em Intuição e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 - Mover Objeto (1 Ação) (Magia)",
+            "descricao": "O iniciado move um objeto de até três quilos calmamente pelo ar. Não é possível fazer ataques ou ativar itens mágicos com essa magia. Dura por 1 minuto. Custa 1 ponto de magia. Custa 4 pontos para cada 1 minuto a mais de duração."
+          },
+          {
+            "nome": "Nível 2 - Ruptura Mental (2 Ações) (Magia)",
+            "descricao": " Ao conjurar essa magia em um alvo ela tem 50% de chance de sucesso. Caso o alvo caia sob o efeito da magia um estalo irá ocorrer dentro de sua mente, o deixando surdo e causando 2d10 pontos de dano. Custa 8 pontos de magia e pode aumentar em 5% para cada 1 ponto de magia adicional."
+          },
+          {
+            "nome": "Nível 3 - Psicose Súbita(Ação) (Magia)",
+            "descricao": " Causa que dezenas de vozes falem na mente de seu alvo. Esta magia possui 50% de chance de sucesso. Caso a magia tenha sucesso, o alvo fica na condição Paralizado até o inicio do próximo turno do iniciado e Aterrorizado por 2 rodadas após sair da paralisia. Custa 8 pontos de magia e pode aumentar em 5% para cada 1 ponto de adicional."
+          }
+        ]
+      },
+      {
+        "nome": "Invocação",
+        "descricao": "O personagem ganha um bônus de 1 ponto em Combate Arcano, 2 pontos em Ritualismo e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 -Disco de carga (2 Ações) (Magia)",
+            "descricao": "Conjura um disco de 3 metros de raio feito de energia, que consegue carregar pessoas e carga em até 200 quilos. Pode mover o círculo como uma ação a uma distância de até 18 metros. Dura por 1 hora. Custa 2 pontos de magia."
+          },
+          {
+            "nome": "Nível 2 - Névoa de Combate (2 Ações) (Magia)",
+            "descricao": " Conjura uma névoa que ocupa um cubo de 3 metros de aresta centralizado  no iniciado. Dentro dessa névoa ele se encontra obscurecido, mas pode ver fora da névoa como se ela não existisse. Dura 2 turnos. Custa 3 pontos de magia. Custa 6 pontos de magia por turno a mais."
+          },
+          {
+            "nome": "Nível 3 - Arma Arcana (Ação) (Magia)",
+            "descricao": " Invoca uma arma simples de energia arcana que ele seja proficiente. A arma causa 2d10 + arcanismo de dano arcano e utiliza Combate Arcano como atributo de acerto, dura por 5 turnos. Custa 10 pontos de magia. Se gastar 8 pontos de magia adicionais torna possível conjurar uma segunda arma."
+          }
+        ]
+      },
+      {
+        "nome": "Transmutação",
+        "descricao": "O personagem ganha um bônus de 1 ponto em Tecnologia, 3 pontos em Arcanatec, 2 pontos em Natureza e ganha a seguinte magia:",
+        "manobras": [
+          {
+            "nome": "Nível 1 - Destrancar Fechadura (2 Ações) (Magia)",
+            "descricao": "O iniciado abre uma fechadura ou ou cadeado. Ao abrir faz um enorme som de algo quebrando. A fechadura fica inútil após usar essa magia. Custa 5 pontos de magia."
+          },
+          {
+            "nome": "Nível 2 - Mudar Temperatura(2 Ações)(Magia)",
+            "descricao": "Essa magia transforma a energia de um objeto, que não esteja sendo vestido por alguém, e aumenta a temperatura até  ficar incandescente, se o objeto for metálico, ou pegar fogo, se o objeto for inflamável. Alternativamente pode abaixar a temperatura de maneira que quase congela o objeto. De qualquer forma, ao transformar a temperatura do objeto desta maneira possui 80% de chance de causar a condição congelando ou queimando a uma criatura em contato com o objeto. O objeto não pode ter um volume maior que 1.5 metros cúbicos  e nem ser maior que 9 metros quadrados em superfície (por exemplo um quadrado de 3 metros de lado). Dura 5 rodadas. Custa 4 pontos de magia."
+          },
+          {
+            "nome": "Nível 3 - Prisão Arcana (2 Ações) (Magia)",
+            "descricao": " Essa magia transforma matéria em energia arcana. Ao transformar o ambiente em volta em cordas, correntes ou vinhas, o conjurador tem uma chance de 40% de prender os alvos no lugar, os deixando na condição restringido. Alcance 9 metros  com uma área de  3 metros de raio. Possui uma duração até o final do próximo turno do alvo preso. Custa 10 pontos de magia e pode aumentar em 5% a chance de sucesso e duração  para cada 1 ponto de magia a mais."
+          }
+        ]
+      },
+
+    ]
+  }
 
   const SkillAccordion = ({ skill }) => (
     <Accordion>
@@ -690,6 +930,7 @@ const ClassesPage = () => {
             <Box sx={{ width: "80%", mx: "auto" }}>
               {/* Título e Descrição */}
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+              <img src={novice} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
                 <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {novicoSkillsData.titulo}
@@ -698,7 +939,7 @@ const ClassesPage = () => {
                     {novicoSkillsData.descricao}
                   </Typography>
                 </Box>
-                <img src={novice} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+              
               </Box>
               <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
                 Habilidade de Classe
@@ -710,6 +951,63 @@ const ClassesPage = () => {
               </Typography>
               {/* Mapear regalias */}
               {novicoSkillsData.regalias.map((regalia, index) => (
+                <PerkAccordion key={index} skill={regalia} />
+              ))}
+            </Box>
+
+          </Box>
+          <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Box sx={{ width: "80%", mx: "auto" }}>
+              {/* Título e Descrição */}
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                    {iniciadoSkillsData.titulo}
+                  </Typography>
+                  <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                    {iniciadoSkillsData.descricao}
+                  </Typography>
+                </Box>
+                <img src={iniciado} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+              </Box>
+              <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                Habilidade de Classe
+              </Typography>
+              {/* Renderizar habilidade */}
+              <HabilidadeDeClasseAcordion skill={iniciadoSkillsData.habilidade} />
+              <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                Regalias
+              </Typography>
+              {/* Mapear regalias */}
+              {iniciadoSkillsData.regalias.map((regalia, index) => (
+                <PerkAccordion key={index} skill={regalia} />
+              ))}
+            </Box>
+          </Box>
+          <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Box sx={{ width: "80%", mx: "auto" }}>
+              {/* Título e Descrição */}
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                    {feiticeiroSkillsData.titulo}
+                  </Typography>
+                  <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                    {feiticeiroSkillsData.descricao}
+                  </Typography>
+                </Box>
+                <img src={feiticeiro} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+              </Box>
+              <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                Habilidade de Classe
+              </Typography>
+              {/* Renderizar habilidade */}
+              <HabilidadeDeClasseAcordion skill={feiticeiroSkillsData.habilidade} />
+              <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                Regalias
+              </Typography>
+              {/* Mapear regalias */}
+              {feiticeiroSkillsData.regalias.map((regalia, index) => (
                 <PerkAccordion key={index} skill={regalia} />
               ))}
             </Box>
