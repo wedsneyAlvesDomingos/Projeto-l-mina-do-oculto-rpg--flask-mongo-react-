@@ -10,7 +10,7 @@ import novice from "../../../assets/images/noviço.png";
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleTABChange = (event, newValue) => {
     thisThisvalue(newValue);
   };
 
@@ -151,8 +151,16 @@ const ClassesPage = () => {
         ],
         "manobras": [
           {
-            "nome": "Guarda de Duelo",
-            "descricao": "Recebe vantagem em rolamentos de ataque e 1 ponto de Defesa, desde que apenas um inimigo esteja à distância corpo a corpo. Custa 3 pontos de Estâmina e dura até o fim do turno."
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 2 pontos em Combate Corpo a Corpo e 1 Destreza ou Força."
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Combate Corpo a Corpo, Destreza ou Força e a utilização da seguinte Manobra:"
+          },
+          {
+            "nome": "Guarda de Duelo (Ação Livre)",
+            "descricao": "Ao entrar nesta postura recebe vantagem em rolamentos de ataque  e 1 ponto de Defesa, desde que só tenha um inimigo à distância corpo a corpo de si. Custa 3 pontos de estâmina Duração até o fim do turno."
           }
         ]
       },
@@ -164,8 +172,17 @@ const ClassesPage = () => {
         ],
         "manobras": [
           {
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 2 pontos em Combate a Distância e 1 de Destreza. "
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 3 pontos em Combate a Distância, 1 de Destreza e a utilização da seguinte manobra:"
+          },
+          
+          {
             "nome": "Desarmar",
-            "descricao": "Ao realizar um ataque de Combate a distância, pode escolher desarmar o alvo. A chance de desarme é de 40%, e a arma cai a 3 metros do alvo. Custa 4 pontos de Estâmina."
+            "descricao": "Ao realizar um ataque de Combate a distância, o combatente pode escolher desarmar o alvo. Veja as regras na ação Desarmar. Em um acerto o alvo toma o dano e tem 40% de chance de ser desarmado. A arma cai em uma distância de 3 metros do alvo em um sucesso. Custa 4 pontos de Estâmina  e pode aumentar em 5% por cada 1 ponto de Estâmina  a mais gastos no uso da manobra."
           }
         ]
       },
@@ -178,8 +195,16 @@ const ClassesPage = () => {
         ],
         "manobras": [
           {
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Agilidade, Percepção e Furtividade. Recebe também vantagem no rolamento de ataque, com ataques corpo a corpo, se estiver flanqueando um inimigo."
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Agilidade, Percepção, Furtividade e a utilização da seguinte manobra"
+          },
+          {
             "nome": "Ponto Fraco",
-            "descricao": "Causa 1d6 pontos de dano extra em um ataque, se estiver flanqueando o inimigo. Aumenta em 1d6 de dano ao gastar 2 pontos de Estâmina adicionais."
+            "descricao": "Causa 1d6 pontos de dano extra em um ataque, caso esteja flanqueando um inimigo. Esse dano extra só é aplicado no primeiro ataque em uma mesma ação. Pode aumentar em 1d6 de dano ao gastar 2 pontos de estâmina ao usar a manobra, e mais 1d6 para cada 2 pontos adicionais."
           }
         ]
       },
@@ -187,9 +212,18 @@ const ClassesPage = () => {
         "nome": "Combate Defensivo",
         "bônus": [
           { "tipo": "Fortitude", "valor": 1 },
-          { "tipo": "Agilidade", "valor": 1 }
+          { "tipo": "Agilidade", "valor": 1 },
+          { "tipo": "Proficiência", "valor": 'Armadura pesada' }
         ],
         "manobras": [
+          {
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Fortitude e Agilidade. O personagem também ganha 1 ponto de valor de Defesa se lutar com Armadura Média, ou Pesada, e um Escudo. "
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Fortitude e Agilidade e a utilização da seguinte manobra: "
+          },
           {
             "nome": "Guarda-Costas",
             "descricao": "Reage a um ataque contra um aliado, tentando bloquear o ataque com seu valor de Defesa. Custa 3 pontos de Estâmina e mais 1 ponto para reagir novamente no mesmo turno."
@@ -204,6 +238,14 @@ const ClassesPage = () => {
         ],
         "manobras": [
           {
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 2 pontos em Combate Corpo a Corpo e 1 em Força"
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Combate Corpo a Corpo, Força e a utilização da seguinte manobra: "
+          },
+          {
             "nome": "Estocada",
             "descricao": "Ao atacar com uma arma de haste, o combatente pode estender seu alcance em 1,5 metros. Custa 2 pontos de Estâmina."
           }
@@ -213,9 +255,19 @@ const ClassesPage = () => {
         "nome": "Combate Desarmado",
         "bônus": [
           { "tipo": "Combate Corpo a Corpo", "valor": 1 },
-          { "tipo": "Força ou Destreza", "valor": 1 }
+          { "tipo": "Força ou Destreza", "valor": 1 },
+          { "tipo": "Forma de ataque desarmado", "valor": "Destreza ou Força" },
+          { "tipo": "Dano do ataque desarmado", "valor": " 1d6 pontos de dano de impacto" }
         ],
         "manobras": [
+          {
+            "nome": "Nível 2",
+            "descricao": "O personagem ganha um bônus de 2 pontos em Combate Corpo a Corpo e 1 em Força ou Destreza."
+          },
+          {
+            "nome": "Nível 3",
+            "descricao": "O personagem ganha um bônus de 1 ponto em Combate Corpo a Corpo e Força ou Destreza e a utilização da seguinte manobra:"
+          },
           {
             "nome": "Derrubar ou Agarrar",
             "descricao": "Ao realizar um ataque desarmado, o combatente pode derrubar ou agarrar o inimigo. A chance de sucesso é de 50%. Custa 4 pontos de Estâmina."
@@ -224,27 +276,28 @@ const ClassesPage = () => {
       },
       {
         "nome": "Combate com Armas Improvisadas",
-        "descricao": "O combatente pode usar objetos diversos como armas improvisadas. O dano e habilidades variam de acordo com o objeto, com durabilidade e efeitos especiais."
+        "descricao": "O combatente pode usar objetos diversos como armas improvisadas. O dano e habilidades variam de acordo com o objeto, com durabilidade e efeitos especiais.Veja na página de equipamentos.",
+
       },
       {
         "nome": "Combate com Duas Armas",
-        "descricao": "O combatente pode atacar com uma arma secundária sem penalidade, desde que ambas as armas sejam leves. Custa 1 ponto de Estâmina por rodada para manter essa postura."
+        "descricao": "O personagem pode atacar uma segunda vez na ação Atacar com uma arma secundária. Para usar uma arma em cada mão, as duas armas precisam possuir a possibilidade de ser usada com uma mão e a arma secundária precisa da propriedade leve. Nenhuma das duas armas pode ser pesada. Combate com duas armas é exaustivo e custa 1 ponto de Stamina por rodada para manter essa postura de combate. Esse ataque com a mão secundária não gera a penalidade de ataques consecutivos em um mesmo turno."
       },
       {
         "nome": "Combate com Arma de Acuidade",
-        "descricao": "O combatente pode usar Destreza para calcular o dano de armas corpo a corpo com a propriedade acuidade. Recebe 1d6 de dano extra ao usar a manobra 'Ponto Fraco'."
+        "descricao": "O personagem pode usar seu valor de Destreza para calcular o valor de ataque e o dano de armas corpo a corpo que possuam a propriedade acuidade. Essa Regalia vale para ataques desarmados também. Se o combatente possuir a manobra “Ponto Fraco” e estiver usando uma arma de acuidade para realizar a manobra recebe 1d6 de dano extra."
       },
       {
         "nome": "Recuperar Fôlego Melhorado",
-        "descricao": "Permite recuperar 3d4 pontos de vida e, por mais 2 pontos de magia, também recuperar 2d4 pontos de Estâmina. Custa 2 pontos de magia."
+        "descricao": "O personagem pode gastar uma ação para recuperar 3d4 pontos de vida . Custa 2 pontos de magia e por 2 pontos de magia adicionais também recupera 2d4 pontos de estâmina na mesma ação."
       },
       {
         "nome": "Golpe Explosivo",
-        "descricao": "Causa 1d6 pontos de dano adicionais ao realizar um ataque. Custa 2 pontos de Estâmina."
+        "descricao": "O personagem realiza um ataque rápido e mais forte ao custo do seu vigor. Ao realizar um ataque, na ação atacar, causa 1d6 pontos de dano adicionais. Custa 2 pontos de Estâmina."
       },
       {
         "nome": "Levantar Escudo",
-        "descricao": "Levanta o escudo como reação a um ataque, causando desvantagem em ataques direcionados ao combatente até o início de seu próximo turno. Custa 2 pontos de Estâmina."
+        "descricao": "O personagem pode levantar seu escudo, desde que não seja um Broquel, e se esconder atrás dele como uma reação engatilhada por um ataque realizado contra o personagem. Causa desvantagem em todos ataques direcionados ao personagem até o início de seu próximo turno. Custa 2 pontos de Estâmina."
       },
       {
         "nome": "Recarga Oportuna",
@@ -279,11 +332,11 @@ const ClassesPage = () => {
           },
           {
             "nome": "Deus mau:",
-            "descricao": " Uma vez por dia o noviço pode sacrificar um animal ou outro ser vivo para recuperar 5 pontos de magia através de uma prece de 10 minutos após matar a criatura. Se matar uma criatura em combate pode realizar o ritual em até 1 hora após o ocorrido. Alternativamente pode se curar em 2d6 pontos ao matar uma criatura dentro ou fora de combate. Esse valor aumenta para 3d6  ao atingir nível 7."
+            "descricao": " Deus mau: Uma vez por dia o noviço pode sacrificar um animal ou outro ser vivo para recuperar 8 pontos de magia através de uma prece de 10 minutos após matar a criatura. Se matar uma criatura em combate pode realizar o ritual em até 1 hora após o ocorrido. Alternativamente pode se curar em 1d12 pontos imediatamente após matar uma criatura dentro ou fora de combate. Esse valor aumenta para o valor fixo de 12 e o rolamento para 3d6  ao atingir nível 7."
           },
           {
             "nome": "Deus neutro: ",
-            "descricao": " 3 vezes por dia o noviço pode realizar uma prece, com custo de duas ações em combate, recuperando 1d6+1 pontos de sua própria vida e de sua própria magia ."
+            "descricao": " 3 vezes por dia o noviço pode realizar uma prece, com custo de duas ações em combate, recuperando 1d6+1 pontos de seus próprios pontos de vida e magia . Aumenta para 2d6+2 no nível 7."
           }
         ]
       },
@@ -297,11 +350,11 @@ const ClassesPage = () => {
         "manobras": [
           {
             "nome": "Cura (2 Ações)",
-            "descricao": "Cura uma criatura em 1d6+2 pontos de vida. O alvo da cura deve estar a até 1,5 metros de distância do noviço. Custa 2 pontos de magia. Aumenta em 1d6 pontos de vida a cada 2 pontos de mágica gastos a mais."
+            "descricao": "Cura uma criatura em 1d6+2 pontos de vida. O alvo da cura deve estar a até 1,5 metros de distância do noviço. Custa 2 pontos de magia. Aumenta a cura em 1d6 para cada 2 pontos de mágica adicionais ao conjurar este milagre."
           },
           {
             "nome": "Abençoar ( 2 Ações)",
-            "descricao": "Abençoa uma criatura, concedendo 1,5m de movimento a mais e também bônus de vantagem no rolamento de ataque. Esse buff dura por 30 segundos, o que corresponde a 5 rodadas em combate. Custa 6 pontos de magia. Pode abençoar uma criatura adicional a cada 3 pontos de magia gastos a mais."
+            "descricao": "Abençoa uma criatura, concedendo 1,5m de movimento extradicional e também vantagem nos rolamentos de ataque. Esse buff dura por 30 segundos, o que corresponde a 5 rodadas em combate. Custa 6 pontos de magia. Pode abençoar uma criatura adicional a cada 3 pontos de magia adicionais ao conjurar este milagre."
           },
           {
             "nome": "Ataque Guiado (Reação)",
@@ -322,7 +375,7 @@ const ClassesPage = () => {
           },
           {
             "nome": "Chama Sagrada (Ação)",
-            "descricao": "Uma oração faz com que uma chama sagrada queime o alvo, causando 1d6 pontos de dano sagrado. Custa 1 ponto de magia. Aumenta em 1d8 de dano para cada 2 pontos de magia adicional."
+            "descricao": "Uma oração faz com que uma chama sagrada queime o alvo, causando 1d6 pontos de dano sagrado. Custa 1 ponto de magia. Aumenta em 1d8 de dano para cada 2 pontos de magia adicionais ao conjurar este milagre."
           },
           {
             "nome": "Fonte Divina (2 Ações)",
@@ -477,7 +530,7 @@ const ClassesPage = () => {
 
   return (
     <Box sx={{ minHeight: '700px', width: '100%' }} >
-      <Tabs value={thisvalue} onChange={handleChange} aria-label="Info and Classes Tabs">
+      <Tabs value={thisvalue} onChange={handleTABChange} aria-label="Info and Classes Tabs">
         <Tab label="Informações Gerais" className="tabs" />
         <Tab label="Aprendiz" className="tabs" />
         <Tab label="Classes Primárias" className="tabs" />
@@ -591,7 +644,7 @@ const ClassesPage = () => {
       {/* Combatente Tab Content (Empty for now) */}
       {thisvalue === 2 && (
         <Box>
-          <Typography className="MainTitleC" variant="h3" sx={{  my: 8 }}>
+          <Typography className="MainTitleC" variant="h3" sx={{ my: 8 }}>
             Classes primárias
           </Typography>
           <Box className="bigBoxTextClasses" sx={{ width: "80%", mx: 'auto', my: 4 }}>
