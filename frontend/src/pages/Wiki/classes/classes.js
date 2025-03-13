@@ -493,7 +493,7 @@ const ClassesPage = () => {
     "regalias": [
       {
         "nome": "Maldição",
-        "descricao": "Escolha entre as opções ",
+        "descricao": "Escolha entre as opções: ",
         "manobras": [
           {
             "nome": "O personagem ganha um bônus de 1 ponto em Intuição, Ocultismo e aprende a seguinte maldição: Enfraquecer(Maldição)(2 Ações)",
@@ -511,7 +511,7 @@ const ClassesPage = () => {
       },
       {
         "nome": "Caos",
-        "descricao": " Escolha entre as opções",
+        "descricao": " Escolha entre as opções:",
         "manobras": [
           {
             "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Arcanismo, Natureza e aprende o seguinte feitiço: Aperto do Caos(Feitiço)(2 Ações)",
@@ -529,7 +529,7 @@ const ClassesPage = () => {
       },
       {
         "nome": "Rito",
-        "descricao": " Escolha entre as opções",
+        "descricao": " Escolha entre as opções:",
         "manobras": [
           {
             "nome": "O personagem ganha um bônus de 1 ponto em Percepção, Ritualismo e aprendo o seguinte ritual: Espiritomancia (1 minuto)(ritual) ",
@@ -545,8 +545,60 @@ const ClassesPage = () => {
           }
         ]
       },
-    
-
+      {
+        "nome": "Metamorfose",
+        "descricao": "Única exceção das árvores de regalias do feiticeiro que existe uma ordem de compra. Para criar os outros dois elixires é necessário ter um elixir padrão primeiro. Todo elixir dura 24 horas ou até ser consumido.uTomar um elixir custa uma ação, assim como criar um. Escolha entre as opções:",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Alquimia e aprende a criar o elixir padrão:  Elixir Padrão(Elixir)(Ação)",
+            "descricao": "O personagem potencializa um líquido para se transformar nesse elixir. Ao tomar esse elixir os olhos do feiticeiro se transformam em algo novo e mais bestial, além de fortalecer o seu corpo, aumentando em 1 ponto o seu acerto em qualquer combate. O feiticeiro também recebe visão no escuro, com alcance de 6 metros, e vantagem em percepção, durante 10 rodadas. Criar esse elixir custa 5 pontos de magia. A cada 1 ponto de magia gostos a mais na conjuração, aumenta sua duração em 10 rodadas."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Alquimia e aprende uma nova receita de elixir: Elixir do Predador(Elixir)(Ação)",
+            "descricao": " Este ritual anima um pequeno fantoche utilizando um espírito da natureza, este ritual não tem limite de duração, apenas quando o boneco for destruído. O boneco pode atacar usando o Combate Arcano do Feiticeiro(a) e tem um quinto (⅕ ou 20%) dos pontos de vida do mesmo. Seus ataques causam 1d6 de dano necrótico. Custa 5 moedas de ouro em materiais para o ritual. Custa 4 pontos de magia e para cada 1 ponto extra o fantoche recebe mais 1 ponto de vida."
+          },
+          {
+            "nome": "O personagem aprende uma nova receita de elixir: Elixir da Aceleração (Elixir)(Ação)",
+            "descricao": " O personagem potencializa um frasco de elixir padrão para se transformar nesse elixir. Aumenta em 6 metros a velocidade de movimento, além do efeito base do elixir padrão. Duração de 10 rodadas,  Criar esse elixir custa 8 pontos de magia. A cada 1 ponto de magia gostos a mais na conjuração, aumenta sua duração em 10 rodadas."
+          }
+        ]
+      },
+      {
+        "nome": "Rúnico",
+        "descricao": "Criar uma runa gasta 1 minuto para realizar os desenhos e imbuir com magia. Escolha entre as opções:",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Ritualismo e aprende a seguinte runa:  Runa Protetiva (Runa)(Reação)",
+            "descricao": "Ao imbuir essa runa em um equipamento, o feiticeiro o encanta com o efeito desta runa. A runa protetiva permite, enquanto equipada por uma criatura, que o portador possa uma vez ao dia negar o dano causado por outra criatura, seja por magia, milagre, feitiço ou ataques físicos. Custa 5 pontos de magia para imbuir um item com esta runa.  A cada 1 ponto de magia gastos para imbuir o poder desta runa a um objeto ganha mais um uso da Habilidade fornecida por ela."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Arcanismo, Ritualismo e aprende a seguinte runa: Runa regenerativa(Runa)(Ação)",
+            "descricao": " Ao imbuir essa runa em um equipamento, o feiticeiro o encanta com o efeito desta runa. A runa regenerativa permite, enquanto equipada por uma criatura, que o portador possa uma vez ao dia recuperar 3 pontos de vida, dois de estâmina  e 4 de magia. Custa 5 pontos de magia para imbuir um item com esta runa.  A cada 5 pontos de magia gastos para imbuir o poder desta runa a um objeto ganha mais um uso da Habilidade fornecida por ela."
+          },
+          {
+            "nome": "O personagem aprende a seguinte runa: Runa de Ataque   (Runa)(Ação)",
+            "descricao": " Ao imbuir essa runa em um equipamento, o feiticeiro o encanta com o efeito desta runa. Ao encantar o equipamento, o feiticeiro pode ativar o objeto e encantar sua arma com dano sombrio, divino ou arcano no lugar do dano original. Efeito com duração de 1 hora. Custa 5 pontos de magia para imbuir um item com esta runa.  A cada 5 pontos de magia gastos para imbuir o poder desta runa a um objeto ganha mais um uso da Habilidade fornecida por ela."
+          }
+        ]
+      },
+      {
+        "nome": "Elemental",
+        "descricao": "Escolha entre as opções ",
+        "manobras": [
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Combate Arcano, Arcanismo, Natureza e aprende o seguinte feitiço:  Ataque elemental (Feitiço) (2 Ações)",
+            "descricao": "Dispara um jato de um elemento a sua escolha que causa 2d10 de dano do elemento. Custa 4 pontos de magia. Dano de gelo tem 40% de chance de aplicar um nível de Congelado. Dano de fogo tem a mesma chance de aplicar  um nível de queimando."
+          },
+          {
+            "nome": "O personagem ganha um bônus de 1 ponto em Arcanismo, Natureza e aprende o seguinte feitiço:Dominar elemento (Feitiço) (2 Ações)",
+            "descricao": " Ao usar esse feitiço o feiticeiro pode usar uma das opções abaixo:Criar pequenas rajadas de vento capazes de abrir portas e janelas, mas não tem efeito em criaturas. Mover 1 metro cúbico de terra solta a cada 6 segundos.Acender uma fogueira, vela, tocha e qualquer combustível com chamas.Controlar até 1 metro cúbico de água, podendo modelar sua forma  e sua cor, e congelar pequenas porções dessa água (100 mililitros a cada 6 segundos). Acender estalos de eletricidade que causam flashes de luz. Esses flashes têm 50% de chance de cegar uma criatura por 6 segundos."
+          },
+          {
+            "nome": "O personagem aprende o seguinte feitiço:  Armadura Elemental(Feitiço) (3 Ações)",
+            "descricao": " O feitiço cria uma armadura de um dos cinco elementos e fornece 5 pontos de vida temporário. Custa 2 pontos de magia e custa 2 pontos para cada 5 pontos de vida a mais."
+          }
+        ]
+      },
     ]
   }
   const iniciadoSkillsData = {
@@ -930,7 +982,7 @@ const ClassesPage = () => {
             <Box sx={{ width: "80%", mx: "auto" }}>
               {/* Título e Descrição */}
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-              <img src={novice} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                <img src={novice} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
                 <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {novicoSkillsData.titulo}
@@ -939,7 +991,7 @@ const ClassesPage = () => {
                     {novicoSkillsData.descricao}
                   </Typography>
                 </Box>
-              
+
               </Box>
               <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
                 Habilidade de Classe
@@ -984,7 +1036,7 @@ const ClassesPage = () => {
               ))}
             </Box>
           </Box>
-          <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb:4 }}>
             <Box sx={{ width: "80%", mx: "auto" }}>
               {/* Título e Descrição */}
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
