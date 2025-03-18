@@ -877,6 +877,133 @@ const ClassesPage = () => {
         }
       ]
     },
+    {
+      "titulo": "CAÇADOR",
+      "descricao": "O Caçador da classe Lâmina do Oculto é um mestre em sobrevivência e rastreamento, capaz de transformar o ambiente ao seu favor. Ele vê o mundo de forma única, decifrando rastros, lendo o vento e detectando sinais invisíveis para a maioria. Sua percepção aguçada o torna tanto um perseguidor implacável quanto um protetor vigilante de seus aliados, antecipando emboscadas e armadilhas.Ao seu lado, há sempre um companheiro animal leal, uma criatura treinada que se torna uma extensão do próprio Caçador. Juntos, eles operam em perfeita sincronia, protegendo um ao outro e atacando como uma unidade coesa. Essa ligação é tão profunda que o Caçador pode até compartilhar os sentidos de seu companheiro, tornando-se quase impossível de ser surpreendido.Sua adaptabilidade impressiona. Ele prospera em qualquer ambiente — florestas densas, desertos escaldantes ou montanhas geladas — resistindo a condições extremas sem perder eficácia. Ele é um explorador incansável, capaz de suportar fome, sede e temperaturas letais graças à sua resistência física e mental sobre-humanas.No combate, o Caçador não depende de força bruta, mas de velocidade e precisão. Ele ataca rápido e letalmente, aproveitando cada erro do oponente. Seu companheiro animal complementa esses ataques, desorientando e derrubando alvos com coordenação impecável. Além disso, o Caçador controla o campo de batalha com maestria, restringindo o movimento de inimigos e incapacitando-os sem matá-los quando necessário — ideal para capturar alvos ou impedir fugas.À distância, sua destreza é lendária. Ele dispara flechas com precisão cirúrgica, atingindo alvos mesmo atrás de cobertura. Quando cercado, ele pode liberar uma tempestade de golpes, transformando-se em um turbilhão de lâminas e fúria.Há um lado quase místico no Caçador. Ele pode marcar um alvo de forma sobrenatural, rastreando-o mesmo se este se esconder ou ficar invisível. Essa marca transforma a caçada em algo inevitável — o Caçador sempre encontra sua presa e cada ataque contra ela é mais mortal.Mais que guerreiro ou rastreador, o Caçador é um símbolo de equilíbrio entre civilização e natureza. Ele entende e respeita as leis selvagens do mundo, domando até mesmo criaturas lendárias como dragões. Ele não busca destruição, mas parceria e compreensão. Seu papel na sociedade varia: pode ser o guardião de uma vila remota, um explorador destemido ou um assassino furtivo, eliminando alvos importantes sem ser notado. Sua versatilidade e independência fazem dele um sobrevivente nato. Em essência, o Caçador é definido por sua mentalidade: um predador paciente, um sobrevivente resiliente e um aliado leal. Ele não teme o mundo cruel — ele se adapta e prospera. Onde quer que vá, deixa sua marca de equilíbrio e perseverança, lembrando a todos que, mesmo na escuridão, seus olhos atentos observam, esperando o momento certo para agir.",
+      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Força", "Agilidade", "Destreza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo", "Combate à distância"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Percepção", "Sobrevivência", "Armadilha", "Natureza", "Rastreamento"]
+          },
+          "proficiências": ["Capacidade de Adestrar Animais"]
+        },
+        "habilidade": [{
+          "nome": " Adestrar Animais",
+          "tipo": "Passiva",
+          "descricao": "Cada animal adestrado tem um valor de dificuldade para ser treinado. Esse valor é de 10 ou metade do  valor dos pontos de vida da criatura, arredondado para cima, o que for maior. O teste feito deve ser de Lidar com Animais e o caçador ganha um bônus igual a metade do seu nível de personagem neste rolamento, arredondado para cima.\n A criatura adestrada é considerada um companheiro animal e tem seu turno ao mesmo tempo que o caçador. Esse companheiro pode agir alternadamente com o caçador dentro deste turno. \n O caçador consegue tratar ferimentos e  tem, em  todos os testes de medicina, um bônus de +5 ao cuidar de seu companheiro animal. \n Seu companheiro animal pode fazer um turno de vigia de duas horas sozinho em um acampamento. \n O companheiro animal ganha um  bônus em seus pontos de vida igual a duas vezes o nível do caçador. Ou seja, os pontos de vida ficha da criatura somados ao nível do caçador multiplicado por dois. O caçador pode ter um número de animais adestrados igual o seu valor em Lidar com animais",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Ataque Veloz",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Concentração",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) aumenta o seu acerto em 2 pontos durante 10 rodadas.",
+          "custoEstamina": 6
+        },
+        {
+          "nome": "Ataque de Oportunidade",
+          "tipo": "Reação",
+          "descricao": "O Caçador(a) pode realizar um ataque de oportunidade quando outra criatura que possa ver sair da sua área de ameaça, ou atacar um aliado dentro do seu alcance.",
+          "custoEstamina": 2
+        },
+        {
+          "nome": "Trabalho em Equipe",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) ao realizar um ataque pode comandar o seu Companheiro Animal para atacar em conjunto sem gastar uma ação do companheiro animal.",
+          "efeitos": {
+            "auxilio": "Ao sofrer um ataque, tanto o caçador quanto o Companheiro Animal podem, como uma reação, solicitar auxílio um do outro. Ao receber auxílio, o caçador e o Companheiro recebem um aumento no Valor de Defesa em 2 pontos. O caçador deve estar a até 3 metros de distância de seu companheiro para realizar essa ajuda e vice-versa."
+          },
+          "custoEstamina": 6
+        },
+        {
+          "nome": "Conexão Primitiva",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) e seu companheiro animal criam uma conexão que compartilham seus sentidos, permitindo que um possa usar os sentidos do outro. O caçador consegue ver e ouvir pelos sentidos de seu companheiro e pelos próprios ao mesmo tempo.",
+          "duracao": "1 hora",
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Corpo Adaptativo",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) consegue se adaptar a qualquer ambiente em que é possível a vida de humanóides. O caçador e seu companheiro animal não se perdem em ambientes naturais e podem ficar até um mês sem comida e até 10 dias sem água.",
+          "efeitos": {
+            "ativo": "O Caçador(a) faz com que seu corpo se adapte rapidamente a uma temperatura. Como uma reação ao ser atacado com dano de fogo ou gelo ele pode se tornar resistente ao dano causado reduzindo-o pela metade."
+          },
+          "custoEstamina": 4
+        },
+        {
+          "nome": "Instinto Caçador",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) utiliza de pistas em um ambiente para perseguir uma criatura que tenha passado por ali. Ao perseguir uma criatura através de pistas, como cheiro ou pegadas, ele ganha vantagem em testes de Rastreamento e Percepção.",
+          "efeitos": {
+            "ativo": "O Caçador(a) marca uma criatura que possa ver como uma ação. Enquanto esta criatura estiver marcada, o caçador sabe onde ela está mesmo se estiver invisível. Todo ataque do caçador e seu companheiro causa 1d6 de dano extra do tipo do ataque.",
+            "duracao": "10 minutos"
+          },
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Debilitar",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode optar por debilitar um inimigo quando realizar um ataque. Reduzindo seu movimento pela metade.",
+          "custoEstamina": 2,
+          "modificadores": {
+            "efeitoExtra": "Podendo reduzir o movimento do alvo a zero ao gastar mais 2 pontos de estâmina adicionais."
+          }
+        },
+        {
+          "nome": "Olho de Águia",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) ao realizar um ataque a distância pode ignorar até meia cobertura.",
+          "custoEstamina": 1,
+          "modificadores": {
+            "bonusPenetracao": "Podendo ignorar até 3/4 de cobertura ao custo de 1 ponto de estâmina adicional."
+          }
+        },
+        {
+          "nome": "Chuva de Ataques",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode atacar, repetidamente, em um cone de 60° de abertura, 1.5 m de altura e distância de 27m. Atingindo todas as criaturas na área (incluindo aliados)",
+          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional para cada 1,5 m quadrado de área que a criatura ocupa.",
+          "custoEstamina": 2,
+        },
+        {
+          "nome": "Expurgo",
+          "tipo": "Ação (2 Ações)",
+          "descricao": "O Caçador(a) gira com golpes rápidos, acertando todas as criaturas que escolher em seu alcance de ameaça.",
+          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional em cada criatura em alcance.",
+          "custoEstamina": 5
+        },
+        {
+          "nome": "Adestrar Dragão",
+          "tipo": "Ação",
+          "descricao": "O personagem pode adestrar dragões e transformá-los em seu Companheiro."
+        },
+        {
+          "nome": "Recuperar Fôlego Maior",
+          "tipo": "Ação (2 Ações)",
+          "descricao": "O personagem pode gastar duas ações para recuperar 3d8 pontos de vida e 6 pontos de estâmina.",
+          "custoMagia": 1
+        }
+      ]
+
+    },
   ]
   const SkillAccordion = ({ skill }) => (
     <Accordion>
@@ -1237,7 +1364,7 @@ const ClassesPage = () => {
                         <>
                           <Typography><strong>Atributos:</strong></Typography>
                           <ul>
-                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em:</li>
+                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em um dos seguintes:</li>
                             {especializacao.regaliaObrigatoria.pontos.atributos.opcoes.map((atributo, index) => (
                               <li key={index}>{atributo}</li>
                             ))}
@@ -1250,7 +1377,7 @@ const ClassesPage = () => {
                         <>
                           <Typography><strong>Combate:</strong></Typography>
                           <ul>
-                          <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em:</li>
+                            <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em um dos seguintes:</li>
                             {especializacao.regaliaObrigatoria.pontos.combate.opcoes.map((opcao, index) => (
                               <li key={index}>{opcao}</li>
                             ))}
@@ -1263,7 +1390,7 @@ const ClassesPage = () => {
                         <>
                           <Typography><strong>Habilidades:</strong></Typography>
                           <ul>
-                          <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em:</li>
+                            <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em todos os seguintes:</li>
                             {especializacao.regaliaObrigatoria.pontos.habilidades.opcoes.map((habilidade, index) => (
                               <li key={index}>{habilidade}</li>
                             ))}
@@ -1321,7 +1448,7 @@ const ClassesPage = () => {
                 {especializacao.regalias.map((regalia, index) => (
                   <Accordion key={index}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-regalia${index}-content`} id={`panel-regalia${index}-header`}>
-                      <Typography>{regalia.nome}</Typography>
+                      <Typography>{regalia.nome} ({regalia.tipo})</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>{regalia.descricao}</Typography>
@@ -1330,20 +1457,25 @@ const ClassesPage = () => {
                         <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
                       )}
 
-                      {regalia.custoEstamina && (
-                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
-                      )}
 
                       {regalia.bonus && regalia.bonus.vidaTemporaria && (
                         <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
                       )}
 
+
+
+                      {regalia.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
+                      )}
                       {regalia.requisito && (
                         <Typography><strong>Requisito:</strong> {regalia.requisito}</Typography>
                       )}
 
                       {regalia.efeitos && regalia.efeitos.ativo && (
                         <Typography><strong>Ativo:</strong> {regalia.efeitos.ativo}</Typography>
+                      )}
+                      {regalia.efeitos && regalia.efeitos.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.efeitos.duracao}</Typography>
                       )}
 
                       {regalia.efeitos && regalia.efeitos.passivo && (
@@ -1374,6 +1506,14 @@ const ClassesPage = () => {
                       {regalia.interacoes && regalia.interacoes.comFortaleza && (
                         <Typography><strong>Interação com Fortaleza:</strong> {regalia.interacoes.comFortaleza}</Typography>
                       )}
+
+                      {regalia.custoEstamina && (
+                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
+                      )}
+                      {regalia.custoMagia && (
+                        <Typography><strong>Custo de Magia:</strong> {regalia.custoMagia}</Typography>
+                      )}
+
                     </AccordionDetails>
                   </Accordion>
                 ))}
