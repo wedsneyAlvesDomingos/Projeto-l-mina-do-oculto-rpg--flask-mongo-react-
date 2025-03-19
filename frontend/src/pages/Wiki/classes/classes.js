@@ -7,6 +7,7 @@ import classes from "../../../assets/images/classes.png";
 import aprendiz from "../../../assets/images/aprendiz.png";
 import novice from "../../../assets/images/noviço.png";
 import iniciado from "../../../assets/images/iniciado2.png";
+import feiticeiro from "../../../assets/images/feiticeiro.png";
 import cavaleiro from "../../../assets/images/cavaleiro.png";
 import barbaro from "../../../assets/images/barbaro.png";
 import cacador from "../../../assets/images/caçador.png";
