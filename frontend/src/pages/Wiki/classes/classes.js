@@ -7,7 +7,10 @@ import classes from "../../../assets/images/classes.png";
 import aprendiz from "../../../assets/images/aprendiz.png";
 import novice from "../../../assets/images/noviço.png";
 import iniciado from "../../../assets/images/iniciado2.png";
-import feiticeiro from "../../../assets/images/feiticeiro.png";
+import cavaleiro from "../../../assets/images/cavaleiro.png";
+import barbaro from "../../../assets/images/barbaro.png";
+import cacador from "../../../assets/images/caçador.png";
+import assassino from "../../../assets/images/assassino.png";
 
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
@@ -749,6 +752,7 @@ const ClassesPage = () => {
   const EspecializacaoSkillsData = [
     {
       "titulo": "Cavaleiro",
+      "img": cavaleiro ,
       "descricao": "O Cavaleiro é a personificação da honra, coragem e lealdade. Sua essência é forjada no compromisso de proteger e servir, seja a uma causa nobre, um senhor ou uma causa maior. Equipado com força física e uma disciplina imbatível, o Cavaleiro é um defensor incansável, sempre pronto para enfrentar qualquer desafio que ameace os seus. Sua presença em combate é imponente, com uma combinação de habilidade marcial e uma sólida moralidade que guia suas ações. Não é apenas um guerreiro, mas um líder capaz de inspirar e conduzir outros com confiança, sempre em busca de justiça. \n Com um espírito indomável, o Cavaleiro se destaca pela resistência física e mental, capaz de resistir a pressões e superar adversidades. Sua lealdade é inquebrantável, e sua habilidade de proteger e agir como escudo para os outros é sua marca registrada. No campo de batalha, sua determinação e habilidade tática fazem dele uma força a ser respeitada, sempre em busca da vitória para os seus, seja com a espada ou com palavras.\n O Cavaleiro, com sua postura firme e coração resoluto, é uma figura de autoridade e proteção, cuja presença garante que a justiça prevalecerá, não importa o custo.",
       "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 6 Pontos de Vida\n- 3 Pontos de Estâmina\n- 1 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -879,8 +883,9 @@ const ClassesPage = () => {
     },
     {
       "titulo": "CAÇADOR",
+      "img":  cacador ,
       "descricao": "O Caçador da classe Lâmina do Oculto é um mestre em sobrevivência e rastreamento, capaz de transformar o ambiente ao seu favor. Ele vê o mundo de forma única, decifrando rastros, lendo o vento e detectando sinais invisíveis para a maioria. Sua percepção aguçada o torna tanto um perseguidor implacável quanto um protetor vigilante de seus aliados, antecipando emboscadas e armadilhas.Ao seu lado, há sempre um companheiro animal leal, uma criatura treinada que se torna uma extensão do próprio Caçador. Juntos, eles operam em perfeita sincronia, protegendo um ao outro e atacando como uma unidade coesa. Essa ligação é tão profunda que o Caçador pode até compartilhar os sentidos de seu companheiro, tornando-se quase impossível de ser surpreendido.Sua adaptabilidade impressiona. Ele prospera em qualquer ambiente — florestas densas, desertos escaldantes ou montanhas geladas — resistindo a condições extremas sem perder eficácia. Ele é um explorador incansável, capaz de suportar fome, sede e temperaturas letais graças à sua resistência física e mental sobre-humanas.No combate, o Caçador não depende de força bruta, mas de velocidade e precisão. Ele ataca rápido e letalmente, aproveitando cada erro do oponente. Seu companheiro animal complementa esses ataques, desorientando e derrubando alvos com coordenação impecável. Além disso, o Caçador controla o campo de batalha com maestria, restringindo o movimento de inimigos e incapacitando-os sem matá-los quando necessário — ideal para capturar alvos ou impedir fugas.À distância, sua destreza é lendária. Ele dispara flechas com precisão cirúrgica, atingindo alvos mesmo atrás de cobertura. Quando cercado, ele pode liberar uma tempestade de golpes, transformando-se em um turbilhão de lâminas e fúria.Há um lado quase místico no Caçador. Ele pode marcar um alvo de forma sobrenatural, rastreando-o mesmo se este se esconder ou ficar invisível. Essa marca transforma a caçada em algo inevitável — o Caçador sempre encontra sua presa e cada ataque contra ela é mais mortal.Mais que guerreiro ou rastreador, o Caçador é um símbolo de equilíbrio entre civilização e natureza. Ele entende e respeita as leis selvagens do mundo, domando até mesmo criaturas lendárias como dragões. Ele não busca destruição, mas parceria e compreensão. Seu papel na sociedade varia: pode ser o guardião de uma vila remota, um explorador destemido ou um assassino furtivo, eliminando alvos importantes sem ser notado. Sua versatilidade e independência fazem dele um sobrevivente nato. Em essência, o Caçador é definido por sua mentalidade: um predador paciente, um sobrevivente resiliente e um aliado leal. Ele não teme o mundo cruel — ele se adapta e prospera. Onde quer que vá, deixa sua marca de equilíbrio e perseverança, lembrando a todos que, mesmo na escuridão, seus olhos atentos observam, esperando o momento certo para agir.",
-      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
+      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
@@ -1006,8 +1011,9 @@ const ClassesPage = () => {
     },
     {
       "titulo": "ASSASSINO",
+      "img": assassino ,
       "descricao": "O Assassino da classe Lâmina do Oculto é uma sombra letal que se move entre o mundo dos vivos sem ser notado. Ele domina a arte da furtividade e da precisão, transformando cada situação em uma oportunidade de eliminar seu alvo com eficiência mortal. Para ele, a escuridão não é um obstáculo, mas um aliado fiel, ocultando seus passos e protegendo-o dos olhos inimigos.Cada movimento do Assassino é calculado e executado com perfeição cirúrgica. Quando necessário, ele envolve a área com uma densa névoa de fumaça, confundindo seus inimigos e criando aberturas para desaparecer ou atacar sem ser visto. Em combate direto, ele desfere golpes meticulosamente planejados, mirando pontos vitais e causando hemorragias devastadoras, deixando seus inimigos enfraquecidos e sangrando até a morte. Sua especialidade não é a força bruta, mas sim a agilidade e a astúcia. Ele dança pelo campo de batalha, esquivando-se de ataques com reflexos sobre-humanos, desviando de explosões e investidas com uma precisão quase sobrenatural. Quando um inimigo erra, ele contra-ataca em um piscar de olhos, transformando qualquer falha adversária em uma oportunidade letal. O Assassino domina a arte das lâminas, empunhando duas armas com destreza implacável, sem se cansar. Com uma sequência de golpes rápidos e implacáveis, ele desfere uma tempestade de ataques, perfurando defesas e destruindo oponentes antes mesmo que percebam o que está acontecendo. Seus venenos são aplicados de forma estratégica, tornando suas armas ainda mais letais, causando dor, paralisia ou até morte silenciosa. Mas ele não é apenas um matador eficiente — ele é um mestre da guerra psicológica. Sua capacidade de se mesclar às sombras é tão perfeita que até mesmo olhos treinados ou sentidos sobrenaturais falham em detectá-lo. Ele observa, espera e age no momento exato, executando seus alvos com precisão cirúrgica. Mesmo quando cercado, o Assassino não recua. Ele golpeia com velocidade feroz, desviando de ataques e revidando com uma tempestade de lâminas. Cada golpe é planejado para desorientar, retardar e controlar seus oponentes. E quando o momento certo chega, ele desce sobre seu alvo com uma execução perfeita, encerrando a luta com um único golpe devastador.Mais do que um guerreiro, o Assassino da classe Lâmina do Oculto é uma lenda nas sombras. Ele é o fantasma que sussurra promessas de morte ao ouvido de seus inimigos. Cada ataque seu não é apenas uma investida física — é um lembrete cruel de que ninguém, por mais protegido que esteja, está verdadeiramente seguro.",
-      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 4 Pontos de Vida\n- 6 Pontos de Estâmina\n- 0 Ponto em Magia",
+      "atributos": "Cada Regalia comprada na especialização Assassino(a) fornece:\n- 4 Pontos de Vida\n- 6 Pontos de Estâmina\n- 0 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
@@ -1037,7 +1043,7 @@ const ClassesPage = () => {
           "tipo": "Ação",
           "descricao": "O Assassino(a) arremessa em seu pé uma bomba que cria uma névoa ao seu redor, com uma área de 6m de raio. Ficando obscurecido dentro do raio de efeito, aumentando seu Valor de Defesa em 2 pontos. O assassino pode ver dentro da área normalmente. Além disso, recebe vantagem em testes de furtividade e 3m a mais de movimento.",
           "duracao": "Até o fim do turno",
-          "custo": "2 pontos de estâmina e uma bomba de fumaça (custo de produção: 5 moedas de cobre)",
+          "custoEstamina": "2 pontos de estâmina e uma bomba de fumaça (custo de produção: 5 moedas de cobre)",
           "materiais": "Pólvora ou outro material de rápida combustão, um tecido fino, cola em goma ou grude e pó não inflamável",
           "tempoConstrucao": "5 minutos"
         },
@@ -1051,49 +1057,49 @@ const ClassesPage = () => {
           "nome": "Envenenar Arma",
           "tipo": "Ação",
           "descricao": "Como parte da ação atacar, o Assassino pode aplicar um veneno em sua arma até o fim de seu turno atual. O valor do dano adicional dependerá do veneno aplicado.",
-          "custo": "4 pontos de estâmina"
+          "custoEstamina": "4 pontos de estâmina"
         },
         {
           "nome": "Golpe Hemorrágico",
           "tipo": "Ação",
           "descricao": "O Assassino(a) ataca em um ponto de alta circulação sanguínea e com grande precisão. Para esse ataque a sua margem de crítico aumenta em 2 pontos e aplica a condição 'Sangrando' caso acerte e cause dano.",
-          "custo": "4 pontos de estâmina"
+          "custoEstamina": "4 pontos de estâmina"
         },
         {
           "nome": "Mesclar-se às Sombras",
           "tipo": "2 Ações",
           "descricao": "O Assassino(a) entra em um estado de furtividade avançado, no qual ele se torna invisível desde que esteja em um ambiente parcialmente ou completamente escuro. Essa habilidade engana até olhos que enxergam no escuro e sentidos que detectam vibrações no solo. O efeito acaba se o assassino atacar ou entrar em uma área de luz completa.",
-          "custo": "3 pontos de estâmina"
+          "custoEstamina": "3 pontos de estâmina"
         },
         {
           "nome": "Esquiva Perfeita",
           "tipo": "Reação",
           "descricao": "O Assassino(a) pode usar a sua reação para reduzir o dano de um ataque em área pela metade. Pode-se gastar 4 pontos de estâmina adicionais para reduzir todo o dano com uma Esquiva Perfeita completa. O assassino pode fazer 1 Esquiva Perfeita completa por dia sem custo.",
-          "custo": "2 pontos de estâmina"
+          "custoEstamina": "2 pontos de estâmina"
         },
         {
           "nome": "Executar",
           "tipo": "2 Ações",
           "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais. Se a criatura estiver sangrando o ataque é um cŕitico automático e causa 3d8 ao invés de 1d8 adicional no cálculo antes do crítico",
-          "custo": "5 pontos de estâmina"
+          "custoEstamina": "5 pontos de estâmina"
         },
         {
           "nome": "Ataque de Oportunidade",
           "tipo": "Reação",
           "descricao": "O Assassino(a) pode realizar um ataque quando uma criatura que possa ver sai da sua área de ameaça, ou quando um inimigo ataca um aliado dentro do seu alcance.",
-          "custo": "1 ponto de estâmina"
+          "custoEstamina": "1 ponto de estâmina"
         },
         {
           "nome": "Troco",
           "tipo": "Reação",
           "descricao": "Quando um inimigo erra um ataque corpo a corpo, o Assassino(a) pode usar a sua reação para realizar um contra-ataque. Esse contra-ataque causa o dano de um ataque de arma normal do assassino, mas tem vantagem no rolamento de acerto. Pode ser feito uma vez por turno, podendo repetir com um custo adicional de 3 pontos de estâmina por uso extra.",
-          "custo": "2 pontos de estâmina"
+          "custoEstamina": "2 pontos de estâmina"
         },
         {
           "nome": "Finta Rápida",
           "tipo": "Ação",
           "descricao": "O Assassino(a) ao realizar um ataque, faz parecer que sua mão está em outra posição. Ganhando vantagem no rolamento de ataque. Esse ataque confunde os sentidos do inimigo e, ao acertar o alvo, o deixa com a condição 'Devagar' até o início do próximo turno do assassino.",
-          "custo": "5 pontos de estâmina"
+          "custoEstamina": "5 pontos de estâmina"
         },
         {
           "nome": "Mestre do Flanco",
@@ -1105,10 +1111,113 @@ const ClassesPage = () => {
           "nome": "Fúria de Lâminas",
           "tipo": "2 Ações",
           "descricao": "O Assassino(a) realiza uma sequência de golpes igual ao valor de agilidade do assassino. Todos os golpes contam como apenas um ataque para fins de penalidade. Para cada golpe que acerta o alvo, são somados 1d8 pontos de dano extra ao ataque. Ao terminar os ataques some todos os D8s ao valor de dano padrão de cada ataque, esses ataquem não recbem bonus de dano de outras fontes.",
-          "custo": "10 pontos de estâmina"
+          "custoEstamina": "10 pontos de estâmina"
         }
       ]
-
+    },
+    {
+      "titulo": "BÁRBARO",
+      "img": barbaro ,
+      "descricao": "O Assassino da classe Lâmina do Oculto é uma sombra letal que se move entre o mundo dos vivos sem ser notado. Ele domina a arte da furtividade e da precisão, transformando cada situação em uma oportunidade de eliminar seu alvo com eficiência mortal. Para ele, a escuridão não é um obstáculo, mas um aliado fiel, ocultando seus passos e protegendo-o dos olhos inimigos.Cada movimento do Assassino é calculado e executado com perfeição cirúrgica. Quando necessário, ele envolve a área com uma densa névoa de fumaça, confundindo seus inimigos e criando aberturas para desaparecer ou atacar sem ser visto. Em combate direto, ele desfere golpes meticulosamente planejados, mirando pontos vitais e causando hemorragias devastadoras, deixando seus inimigos enfraquecidos e sangrando até a morte. Sua especialidade não é a força bruta, mas sim a agilidade e a astúcia. Ele dança pelo campo de batalha, esquivando-se de ataques com reflexos sobre-humanos, desviando de explosões e investidas com uma precisão quase sobrenatural. Quando um inimigo erra, ele contra-ataca em um piscar de olhos, transformando qualquer falha adversária em uma oportunidade letal. O Assassino domina a arte das lâminas, empunhando duas armas com destreza implacável, sem se cansar. Com uma sequência de golpes rápidos e implacáveis, ele desfere uma tempestade de ataques, perfurando defesas e destruindo oponentes antes mesmo que percebam o que está acontecendo. Seus venenos são aplicados de forma estratégica, tornando suas armas ainda mais letais, causando dor, paralisia ou até morte silenciosa. Mas ele não é apenas um matador eficiente — ele é um mestre da guerra psicológica. Sua capacidade de se mesclar às sombras é tão perfeita que até mesmo olhos treinados ou sentidos sobrenaturais falham em detectá-lo. Ele observa, espera e age no momento exato, executando seus alvos com precisão cirúrgica. Mesmo quando cercado, o Assassino não recua. Ele golpeia com velocidade feroz, desviando de ataques e revidando com uma tempestade de lâminas. Cada golpe é planejado para desorientar, retardar e controlar seus oponentes. E quando o momento certo chega, ele desce sobre seu alvo com uma execução perfeita, encerrando a luta com um único golpe devastador.Mais do que um guerreiro, o Assassino da classe Lâmina do Oculto é uma lenda nas sombras. Ele é o fantasma que sussurra promessas de morte ao ouvido de seus inimigos. Cada ataque seu não é apenas uma investida física — é um lembrete cruel de que ninguém, por mais protegido que esteja, está verdadeiramente seguro.",
+      "atributos": "Cada Regalia comprada na especialização Bárbaro(a) fornece:\n- 8 Pontos de Vida\n- 2 Pontos de Estâmina\n- 0 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Força", "Destreza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo", "Combate à distância"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Atletismo", "Agilidade", "Intimidação"]
+          },
+          "proficiências": ["Proficiência em Espada Táurico, Machado Taurico, Machado Anão, Montante Cinético e Manopla de Espinhos."]
+        },
+        "habilidade": [{
+          "nome": "Estado Enfurecido",
+          "tipo": "Ação",
+          "descricao": "Ao entrar nesse estado, o Bárbaro(a) se torna um ser primitivo, mas de grande Habilidade de combate. Aumentando seu acerto em 1 ponto. Causando 2 pontos de dano adicional ao fazer ataques que usam força. Recebe também bônus de 2 pontos em Atletismo, que não afeta seus pontos de estâmina.Nesse estado, o Bárbaro(a) perde a capacidade de pensar claramente, recebendo penalidade de 2 pontos em todas as proficiências de conhecimento.O estado Enfurecido dura enquanto o Bárbaro(a) estiver em combate ou realizando grande esforço físico. Após 30 segundos(ou 5 rodadas) sem atacar, sofrer dano ou fazer testes de atletismo ou força para usar sua força para carregar ou mover algo, o bárbaro sai de seu estado enfurecido. Custa 4 pontos de Estâmina .",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Couraça",
+          "tipo": "Passivo",
+          "descricao": "Se o Bárbaro(a) optar por não usar uma armadura, ele somará seu valor de fortitude ao seu Valor de Defesa, com um máximo de +8."
+        },
+        {
+          "nome": "Ímpeto Furioso",
+          "tipo": "Passivo",
+          "descricao": "Quando entrar no estado Enfurecido, o Bárbaro(a) se torna imune a ser Encantado ou Amedrontado.",
+          "custoEstamina": "4 pontos de estâmina"
+        },
+        {
+          "nome": "Ataque Veloz",
+          "tipo": "Ação",
+          "descricao": "O Bárbaro(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
+          "custoEstamina": "2 pontos de estâmina"
+        },
+        {
+          "nome": "Força Superior",
+          "tipo": "Passivo",
+          "prerequisito": "6 pontos em Força",
+          "descricao": "O Bárbaro(a) consegue manipular Armas consideradas de duas mãos, em uma única mão."
+        },
+        {
+          "nome": "Força Excessiva",
+          "tipo": "Ação",
+          "prerequisito": "10 pontos em Força e Força Superior",
+          "descricao": "O Bárbaro(a) consegue temporariamente manipular Armas consideradas de duas mãos em uma única mão. Sendo capaz de manusear duas armas de duas mãos ao mesmo tempo, uma em cada mão.",
+          "custoEstamina": "10 pontos de estâmina (apenas durante o estado Enfurecido)"
+        },
+        {
+          "nome": "Urro Amedrontador",
+          "tipo": "Ação",
+          "descricao": "O Bárbaro(a) ruge para as criaturas em até 6m dele. Todas as criaturas nessa área têm 50% de chance de serem amedrontadas, entrando na condição Aterrorizado, até o fim de seu próximo turno.",
+          "custoEstamina": "5 pontos de estâmina (pode aumentar em 5% a chance por 1 ponto extra)"
+        },
+        {
+          "nome": "Dizimar",
+          "tipo": "2 Ações",
+          "descricao": "O Bárbaro(a) realiza um poderoso ataque giratório em sua área de ameaça, causando (o valor de dano da arma somado a seu atributo) +1d6 pontos de dano adicionais em todos os inimigos na área, além de aplicar a condição Sangrando. Pode realizar um giro adicional ao custo de 8 pontos de estâmina e de uma ação extra.",
+          "custoEstamina": "10 pontos de estâmina"
+        },
+        {
+          "nome": "Golpe Imprudente",
+          "tipo": "Ação",
+          "descricao": "O Bárbaro(a) ao realizar um ataque ganha vantagem no rolamento de ataque e para todos os ataques feitos neste turno. Porém, em retorno, todo ataque feito contra o bárbaro, até o início de seu próximo turno, recebe vantagem.",
+          "custoEstamina": "2 pontos de estâmina"
+        },
+        {
+          "nome": "Ferocidade",
+          "tipo": "Passivo",
+          "descricao": "Quando o ataque do Bárbaro(a) for um acerto crítico ou reduzir os pontos de vida de um inimigo a 0 em seu turno, ele pode realizar uma ação Atacar adicional. Só pode realizar um ataque com esse gatilho uma vez por turno."
+        },
+        {
+          "nome": "Fúria Implacável",
+          "tipo": "Reação",
+          "prerequisito": "Estar Enfurecido",
+          "descricao": "Ao receber um golpe que o reduz a zero pontos de vida e entrar na condição À Beira da Morte, o Bárbaro(a) pode usar sua reação para entrar em uma fúria cega e continuar lutando. Ele ainda sofrerá a condição À Beira da Morte e morrerá se as condições forem cumpridas, mas pode tomar seus turnos normalmente até morrer ou sair da condição.",
+          "custoEstamina": "Todos os pontos de estâmina restantes"
+        },
+        {
+          "nome": "Bater com Escudo",
+          "tipo": "Ação",
+          "prerequisito": "Estar no estado Enfurecido e Combate Defensivo",
+          "descricao": "O Bárbaro(a) que estiver equipado com um escudo pode usá-lo como uma arma. Causa 1d6 pontos de dano de impacto."
+        },
+        {
+          "nome": "Avanço Implacável",
+          "tipo": "2 Ações",
+          "prerequisito": "Estar Enfurecido, Regalia Bater com Escudo",
+          "descricao": "O Bárbaro(a) avança em linha reta por 9m com seu escudo à frente. Todos os alvos nesta linha são empurrados até o fim do movimento. Se houver mais de um alvo, eles se chocam entre si e sofrem 2d8 pontos de dano de impacto. Se o movimento terminar em uma parede, todos os alvos empurrados tomam 4d8 pontos de dano de impacto adicionais. Se empurrar apenas um alvo, ele só sofrerá dano ao se chocar na parede.",
+          "custoEstamina": "4 pontos de estâmina"
+        }
+      ]
     },
   ]
   const SkillAccordion = ({ skill }) => (
@@ -1439,7 +1548,7 @@ const ClassesPage = () => {
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={feiticeiro} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
                   <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
@@ -1558,6 +1667,9 @@ const ClassesPage = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>{regalia.descricao}</Typography>
+                      {regalia.prerequisito && (
+                        <Typography><strong>Pré-Requisito:</strong> {regalia.prerequisito}</Typography>
+                      )}
 
                       {regalia.chanceDeSucesso && (
                         <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
