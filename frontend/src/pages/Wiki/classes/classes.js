@@ -1568,7 +1568,9 @@ const ClassesPage = () => {
                         <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
                       )}
 
-
+                      {regalia.tempoConstrucao && (
+                        <Typography><strong>Tempo de contrução:</strong> {regalia.tempoConstrucao}</Typography>
+                      )}
 
                       {regalia.duracao && (
                         <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
