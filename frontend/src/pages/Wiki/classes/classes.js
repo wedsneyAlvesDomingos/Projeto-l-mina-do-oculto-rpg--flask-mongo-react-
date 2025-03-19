@@ -1004,6 +1004,112 @@ const ClassesPage = () => {
       ]
 
     },
+    {
+      "titulo": "ASSASSINO",
+      "descricao": "O Assassino da classe Lâmina do Oculto é uma sombra letal que se move entre o mundo dos vivos sem ser notado. Ele domina a arte da furtividade e da precisão, transformando cada situação em uma oportunidade de eliminar seu alvo com eficiência mortal. Para ele, a escuridão não é um obstáculo, mas um aliado fiel, ocultando seus passos e protegendo-o dos olhos inimigos.Cada movimento do Assassino é calculado e executado com perfeição cirúrgica. Quando necessário, ele envolve a área com uma densa névoa de fumaça, confundindo seus inimigos e criando aberturas para desaparecer ou atacar sem ser visto. Em combate direto, ele desfere golpes meticulosamente planejados, mirando pontos vitais e causando hemorragias devastadoras, deixando seus inimigos enfraquecidos e sangrando até a morte. Sua especialidade não é a força bruta, mas sim a agilidade e a astúcia. Ele dança pelo campo de batalha, esquivando-se de ataques com reflexos sobre-humanos, desviando de explosões e investidas com uma precisão quase sobrenatural. Quando um inimigo erra, ele contra-ataca em um piscar de olhos, transformando qualquer falha adversária em uma oportunidade letal. O Assassino domina a arte das lâminas, empunhando duas armas com destreza implacável, sem se cansar. Com uma sequência de golpes rápidos e implacáveis, ele desfere uma tempestade de ataques, perfurando defesas e destruindo oponentes antes mesmo que percebam o que está acontecendo. Seus venenos são aplicados de forma estratégica, tornando suas armas ainda mais letais, causando dor, paralisia ou até morte silenciosa. Mas ele não é apenas um matador eficiente — ele é um mestre da guerra psicológica. Sua capacidade de se mesclar às sombras é tão perfeita que até mesmo olhos treinados ou sentidos sobrenaturais falham em detectá-lo. Ele observa, espera e age no momento exato, executando seus alvos com precisão cirúrgica. Mesmo quando cercado, o Assassino não recua. Ele golpeia com velocidade feroz, desviando de ataques e revidando com uma tempestade de lâminas. Cada golpe é planejado para desorientar, retardar e controlar seus oponentes. E quando o momento certo chega, ele desce sobre seu alvo com uma execução perfeita, encerrando a luta com um único golpe devastador.Mais do que um guerreiro, o Assassino da classe Lâmina do Oculto é uma lenda nas sombras. Ele é o fantasma que sussurra promessas de morte ao ouvido de seus inimigos. Cada ataque seu não é apenas uma investida física — é um lembrete cruel de que ninguém, por mais protegido que esteja, está verdadeiramente seguro.",
+      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 4 Pontos de Vida\n- 6 Pontos de Estâmina\n- 0 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Força", "Destreza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo", "Combate à distância"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Furtividade", "Alquimia", "Enganação", "Acrobacia"]
+          },
+          "proficiências": ["Proficiência em Katares, Presas da Serpente, Espadas de Lâminas Duplas, Katanas  e todas as armas com propriedade acuidade."]
+        },
+        "habilidade": [{
+          "nome": "Treinamento de assassino",
+          "tipo": "Passiva",
+          "descricao": "Consegue produzir venenos como um profissional herbalista com as três regalias de produção de veneno. Se já possuir uma ou mais dessas regalias escolha outras regalias de qualquer profissão.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Bomba de Fumaça",
+          "tipo": "Ação",
+          "descricao": "O Assassino(a) arremessa em seu pé uma bomba que cria uma névoa ao seu redor, com uma área de 6m de raio. Ficando obscurecido dentro do raio de efeito, aumentando seu Valor de Defesa em 2 pontos. O assassino pode ver dentro da área normalmente. Além disso, recebe vantagem em testes de furtividade e 3m a mais de movimento.",
+          "duracao": "Até o fim do turno",
+          "custo": "2 pontos de estâmina e uma bomba de fumaça (custo de produção: 5 moedas de cobre)",
+          "materiais": "Pólvora ou outro material de rápida combustão, um tecido fino, cola em goma ou grude e pó não inflamável",
+          "tempoConstrucao": "5 minutos"
+        },
+        {
+          "nome": "Treinamento com Arma Secundária",
+          "tipo": "Passivo",
+          "prerequisito": "Combate com duas armas",
+          "descricao": "Não custa estâmina para usar duas armas e a segunda arma não precisa ser leve, apenas uma arma que possa ser empunhada com uma mão. A arma da mão primária pode ter a propriedade pesada."
+        },
+        {
+          "nome": "Envenenar Arma",
+          "tipo": "Ação",
+          "descricao": "Como parte da ação atacar, o Assassino pode aplicar um veneno em sua arma até o fim de seu turno atual. O valor do dano adicional dependerá do veneno aplicado.",
+          "custo": "4 pontos de estâmina"
+        },
+        {
+          "nome": "Golpe Hemorrágico",
+          "tipo": "Ação",
+          "descricao": "O Assassino(a) ataca em um ponto de alta circulação sanguínea e com grande precisão. Para esse ataque a sua margem de crítico aumenta em 2 pontos e aplica a condição 'Sangrando' caso acerte e cause dano.",
+          "custo": "4 pontos de estâmina"
+        },
+        {
+          "nome": "Mesclar-se às Sombras",
+          "tipo": "2 Ações",
+          "descricao": "O Assassino(a) entra em um estado de furtividade avançado, no qual ele se torna invisível desde que esteja em um ambiente parcialmente ou completamente escuro. Essa habilidade engana até olhos que enxergam no escuro e sentidos que detectam vibrações no solo. O efeito acaba se o assassino atacar ou entrar em uma área de luz completa.",
+          "custo": "3 pontos de estâmina"
+        },
+        {
+          "nome": "Esquiva Perfeita",
+          "tipo": "Reação",
+          "descricao": "O Assassino(a) pode usar a sua reação para reduzir o dano de um ataque em área pela metade. Pode-se gastar 4 pontos de estâmina adicionais para reduzir todo o dano com uma Esquiva Perfeita completa. O assassino pode fazer 1 Esquiva Perfeita completa por dia sem custo.",
+          "custo": "2 pontos de estâmina"
+        },
+        {
+          "nome": "Executar",
+          "tipo": "2 Ações",
+          "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais.",
+          "custo": "5 pontos de estâmina"
+        },
+        {
+          "nome": "Ataque de Oportunidade",
+          "tipo": "Reação",
+          "descricao": "O Assassino(a) pode realizar um ataque quando uma criatura que possa ver sai da sua área de ameaça, ou quando um inimigo ataca um aliado dentro do seu alcance.",
+          "custo": "1 ponto de estâmina"
+        },
+        {
+          "nome": "Troco",
+          "tipo": "Reação",
+          "descricao": "Quando um inimigo erra um ataque corpo a corpo, o Assassino(a) pode usar a sua reação para realizar um contra-ataque. Esse contra-ataque causa o dano de um ataque de arma normal do assassino, mas tem vantagem no rolamento de acerto. Pode ser feito uma vez por turno, podendo repetir com um custo adicional de 3 pontos de estâmina por uso extra.",
+          "custo": "2 pontos de estâmina"
+        },
+        {
+          "nome": "Finta Rápida",
+          "tipo": "Ação",
+          "descricao": "O Assassino(a) ao realizar um ataque, faz parecer que sua mão está em outra posição. Ganhando vantagem no rolamento de ataque. Esse ataque confunde os sentidos do inimigo e, ao acertar o alvo, o deixa com a condição 'Devagar' até o início do próximo turno do assassino.",
+          "custo": "5 pontos de estâmina"
+        },
+        {
+          "nome": "Mestre do Flanco",
+          "tipo": "Passivo",
+          "prerequisito": "Combate de Emboscada",
+          "descricao": "O Assassino(a) possui melhor desempenho quando não é foco único do seu inimigo. Ao lutar com um inimigo que esteja na distância de ameaça de um aliado, todo ataque causa 1d6 pontos de dano adicional."
+        },
+        {
+          "nome": "Fúria de Lâminas",
+          "tipo": "2 Ações",
+          "descricao": "O Assassino(a) realiza uma sequência de golpes igual ao valor de agilidade do assassino. Todos os golpes contam como apenas um ataque para fins de penalidade. Para cada golpe que acerta o alvo, são somados 1d8 pontos de dano extra ao ataque. Ao terminar os ataques some todos os D8s ao valor de dano padrão de cada ataque, esses ataquem não recbem bonus de dano de outras fontes.",
+          "custo": "10 pontos de estâmina"
+        }
+      ]
+
+    },
   ]
   const SkillAccordion = ({ skill }) => (
     <Accordion>
