@@ -1074,7 +1074,7 @@ const ClassesPage = () => {
         {
           "nome": "Executar",
           "tipo": "2 Ações",
-          "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais.",
+          "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais. Se a criatura estiver sangrando o ataque é um cŕitico automático e causa 3d8 ao invés de 1d8 adicional no cálculo antes do crítico",
           "custo": "5 pontos de estâmina"
         },
         {
