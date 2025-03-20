@@ -22,27 +22,28 @@ const ClassesPage = () => {
     thisThisvalue(newValue);
   };
   const regaliaContructor = {
-    "nome": "[Nome da Regalia]",
-    "tipo": "[Ação | Reação | Passiva]",
-    "descricao": "[Descrição detalhada do efeito da regalia]",
-    "custoEstamina": "[Valor numérico]",
-    "chanceDeSucesso": "[Valor %]",
-    "dano": "[Fórmula de dano, se aplicável]",
-    "requisito": "[Condição necessária, se houver]",
+    "nome": "[Nome da Regalia]" || null,
+    "tipo": "[Ação | Reação | Passiva]" || null,
+    "descricao": "[Descrição detalhada do efeito da regalia]"|| null, 
+    "custoEstamina": "[Valor numérico > 0]" || null,
+    "custoMagia": "[Valor numérico]" || null,
+    "chanceDeSucesso": "[Valor %]" || null,
+    "dano": "[Fórmula de dano, se aplicável]" || null,
+    "requisito": "[Condição necessária, se houver]" || null,
     "efeitos": {
-      "passivo": "[Efeito contínuo, se houver]",
-      "ativo": "[Efeito acionável, se houver]"
+      "passivo": "[Efeito contínuo, se houver]" || null,
+      "ativo": "[Efeito acionável, se houver]" || null
     },
     "modificadores": {
-      "bonusSucesso": "[Bônus de sucesso ou efeito adicional com custo]",
-      "usoExtra": "[Condições para usar mais de uma vez na rodada]",
-      "duracaoExtra": "[Custo adicional para manter o efeito por mais tempo]"
+      "bonusSucesso": "[Bônus de sucesso ou efeito adicional com custo]" || null,
+      "usoExtra": "[Condições para usar mais de uma vez na rodada]" || null,
+      "duracaoExtra": "[Custo adicional para manter o efeito por mais tempo]" || null
     },
     "bonus": {
-      "vidaTemporaria": "[Bônus de vida temporária ou efeito similar]"
+      "vidaTemporaria": "[Bônus de vida temporária ou efeito similar]" || null
     },
     "interacoes": {
-      "comOutraRegalia": "[Como interage com outras regalias específicas]"
+      "comOutraRegalia": "[Como interage com outras regalias específicas]" || null
     }
   }
 
@@ -1205,7 +1206,7 @@ const ClassesPage = () => {
           "descricao": "O Assassino(a) arremessa em seu pé uma bomba que cria uma névoa ao seu redor, com uma área de 6m de raio. Ficando obscurecido dentro do raio de efeito, aumentando seu Valor de Defesa em 2 pontos. O assassino pode ver dentro da área normalmente. Além disso, recebe vantagem em testes de furtividade e 3m a mais de movimento.",
           "custoEstamina": "2",
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "efeitos": {
             "ativo": "Área de 6m de raio que obscurece, aumentando o Valor de Defesa em 2 pontos, vantagem em furtividade e 3m a mais de movimento."
           },
@@ -1213,7 +1214,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Aumento de 2 pontos de Defesa, vantagem em furtividade, aumento de 3m no movimento."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Interage com habilidades de furtividade e mobilidade."
@@ -1223,9 +1224,9 @@ const ClassesPage = () => {
           "nome": "Treinamento com Arma Secundária",
           "tipo": "Passivo",
           "descricao": "Não custa estâmina para usar duas armas e a segunda arma não precisa ser leve, apenas uma arma que possa ser empunhada com uma mão. A arma da mão primária pode ter a propriedade pesada.",
-          "custoEstamina": "0",
+          "custoEstamina": null,
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "efeitos": {
             "passivo": "Permite usar duas armas sem custo adicional de estâmina, a arma secundária não precisa ser leve."
           },
@@ -1233,7 +1234,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Permite empunhar duas armas, sendo uma delas pesada."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Permite o uso de outras habilidades de combate com duas armas."
@@ -1253,7 +1254,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Dano adicional de acordo com o veneno."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de aumento de dano."
@@ -1273,7 +1274,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Aumento na margem de crítico, aplicação da condição 'Sangrando'."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de dano e sangramento."
@@ -1285,7 +1286,7 @@ const ClassesPage = () => {
           "descricao": "O Assassino(a) entra em um estado de furtividade avançado, no qual ele se torna invisível desde que esteja em um ambiente parcialmente ou completamente escuro. Essa habilidade engana até olhos que enxergam no escuro e sentidos que detectam vibrações no solo. O efeito acaba se o assassino atacar ou entrar em uma área de luz completa.",
           "custoEstamina": "3",
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "efeitos": {
             "ativo": "Furtividade avançada que engana sentidos e habilidades de detecção em ambientes escuros."
           },
@@ -1293,7 +1294,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Furtividade completa em ambientes escuros, não detectado por sentidos comuns."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com outras habilidades de furtividade e camuflagem."
@@ -1305,7 +1306,7 @@ const ClassesPage = () => {
           "descricao": "O Assassino(a) pode usar a sua reação para reduzir o dano de um ataque em área pela metade. Pode-se gastar 4 pontos de estâmina adicionais para reduzir todo o dano com uma Esquiva Perfeita completa. O assassino pode fazer 1 Esquiva Perfeita completa por dia sem custo.",
           "custoEstamina": "2",
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "efeitos": {
             "ativo": "Reduz dano de ataques em área pela metade ou por completo com gasto adicional de estâmina."
           },
@@ -1313,7 +1314,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Redução total de dano com custo adicional de estâmina."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Interage com habilidades de defesa e evasão."
@@ -1333,7 +1334,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Causa dano adicional e crítico automático se o inimigo estiver sangrando."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de sangramento e dano."
@@ -1353,7 +1354,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Dano normal de ataque."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de ataque e posicionamento."
@@ -1373,7 +1374,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Vantagem no rolamento de acerto e possibilidade de repetir com custo extra de estâmina."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Interage com habilidades de ataque e reação."
@@ -1385,7 +1386,7 @@ const ClassesPage = () => {
           "descricao": "O Assassino(a) ao realizar um ataque, faz parecer que sua mão está em outra posição. Ganhando vantagem no rolamento de ataque. Esse ataque confunde os sentidos do inimigo e, ao acertar o alvo, o deixa com a condição 'Devagar' até o início do próximo turno do assassino.",
           "custoEstamina": "5",
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "efeitos": {
             "ativo": "Ganha vantagem no ataque e aplica a condição 'Devagar'."
           },
@@ -1393,7 +1394,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Confunde o inimigo, deixando-o com a condição 'Devagar'."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de confusão e controle de movimento."
@@ -1403,7 +1404,7 @@ const ClassesPage = () => {
           "nome": "Mestre do Flanco",
           "tipo": "Passivo",
           "descricao": "O Assassino(a) possui melhor desempenho quando não é foco único do seu inimigo. Ao lutar com um inimigo que esteja na distância de ameaça de um aliado, todo ataque causa 1d6 pontos de dano adicional.",
-          "custoEstamina": "0",
+          "custoEstamina": null,
           "chanceDeSucesso": "100%",
           "dano": "1d6 adicional",
           "efeitos": {
@@ -1413,7 +1414,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Dano adicional de 1d6 contra inimigos que tenham aliados na área de ameaça."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Combina com habilidades de combate em grupo e posicionamento."
@@ -1433,7 +1434,7 @@ const ClassesPage = () => {
             "bonusSucesso": "Dano extra de 1d8 para cada ataque bem-sucedido."
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Interage com habilidades de agilidade e dano contínuo."
@@ -1697,7 +1698,7 @@ const ClassesPage = () => {
           "interacoes": null
         }
       ]
-      
+
     },
   ]
   const EspecializacaoIniciadoSkillsData = [
@@ -1705,7 +1706,7 @@ const ClassesPage = () => {
       "titulo": "MAGO",
       "img": mago,
       "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
-      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "atributos": "Cada Regalia comprada na especialização Mago(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
@@ -1741,18 +1742,18 @@ const ClassesPage = () => {
           "custoMagia": 6,
           "chanceDeSucesso": "100%",
           "dano": "3d10 + 1d10 por cada 3 pontos de magia extra",
-          "requisito": "Nenhum",
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Gera um som destruidor e danifica objetos e criaturas."
           },
           "modificadores": {
             "bonusSucesso": "Cada 3 pontos de magia extra causam 1d10 pontos de dano a mais",
             "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1765,9 +1766,9 @@ const ClassesPage = () => {
           "custoMagia": 7,
           "chanceDeSucesso": "100%",
           "dano": "1d10 + Arcanismo",
-          "requisito": "Nenhum",
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Cria uma mão que pode atacar ou empurrar criaturas."
           },
           "modificadores": {
@@ -1776,7 +1777,7 @@ const ClassesPage = () => {
             "duracaoExtra": "Dura 10 rodadas"
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1787,19 +1788,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "Permite que o mago inicie uma magia de múltiplas ações em um turno e termine em outro.",
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
             "passivo": "Permite conjurar magias com ações múltiplas de forma contínua entre turnos.",
-            "ativo": "Nenhum"
+            "ativo": null
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usado com qualquer magia de múltiplas ações",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1811,10 +1812,10 @@ const ClassesPage = () => {
           "descricao": "Cria uma esfera protetora ao redor do mago, imune a danos externos.",
           "custoMagia": 10,
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
+          "dano": null,
           "requisito": "Receber um ataque ou efeito mágico que causaria dano",
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Cria uma esfera de proteção com 50 pontos de vida."
           },
           "modificadores": {
@@ -1836,18 +1837,18 @@ const ClassesPage = () => {
           "custoMagia": 12,
           "chanceDeSucesso": "100%",
           "dano": "4d10",
-          "requisito": "Nenhum",
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Cria uma parede de espadas que empurra e causa dano."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usada uma vez por turno",
             "duracaoExtra": "Dura por 10 rodadas"
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1860,18 +1861,18 @@ const ClassesPage = () => {
           "custoMagia": 6,
           "chanceDeSucesso": "100%",
           "dano": "2d10 + Arcanismo",
-          "requisito": "Nenhum",
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Dispara um projétil que causa dano."
           },
           "modificadores": {
             "bonusSucesso": "Aumenta o dano em 10 para cada 6 pontos de magia extra",
             "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1883,10 +1884,10 @@ const ClassesPage = () => {
           "descricao": "Cria uma cópia do terreno em que todas as suas características flutuam no ar.",
           "custoMagia": 10,
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Cria uma cópia flutuante do terreno que reduz a velocidade de movimento."
           },
           "modificadores": {
@@ -1895,7 +1896,7 @@ const ClassesPage = () => {
             "duracaoExtra": "Dura por 10 rodadas"
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1908,9 +1909,9 @@ const ClassesPage = () => {
           "custoMagia": 10,
           "chanceDeSucesso": "70%",
           "dano": "8d6 por turno de condição congelando",
-          "requisito": "Nenhum",
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Causa a condição congelando e dano contínuo dentro da tempestade."
           },
           "modificadores": {
@@ -1919,7 +1920,7 @@ const ClassesPage = () => {
             "duracaoExtra": "Dura 10 rodadas"
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1934,16 +1935,16 @@ const ClassesPage = () => {
           "dano": "8d10 + Arcanismo",
           "requisito": "Explosão Arcana, Conjuração de Combate",
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Causa dano massivo em área e pode deixar a condição queimando."
           },
           "modificadores": {
             "bonusSucesso": "Custa 10 pontos de magia para adicionar uma explosão extra",
             "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1955,19 +1956,19 @@ const ClassesPage = () => {
           "descricao": "Teletransporta o mago até 18 metros de distância para um local visível.",
           "custoMagia": 2,
           "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Teletransporta o mago instantaneamente."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada"
@@ -1981,7 +1982,7 @@ const ClassesPage = () => {
       "titulo": "PROFESSOR",
       "img": professor,
       "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
-      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
+      "atributos": "Cada Regalia comprada na especialização Professor(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
@@ -2011,19 +2012,19 @@ const ClassesPage = () => {
           "tipo": "Ativa | Reação",
           "descricao": "Ao conjurar uma magia que não cause dano, o professor pode escolher um dos seguintes efeitos: dobrar o tempo de duração, diminuir em metade o custo de pontos de magia (Arredondando pra cima) ou dobrar a quantidade de alvos. Pode ser usada 5 vezes ao dia, com recuperação de usos após um descanso longo.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Escolher um dos efeitos: dobrar duração, reduzir custo de pontos de magia ou dobrar número de alvos."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2034,19 +2035,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "O professor pode conjurar mais magias que não causem dano em um mesmo turno, usando uma reação para adicionar uma ação extra ao seu turno. Pode conjurar até 2 magias de 2 ações ou até 4 de 1 ação, ou qualquer combinação que gaste até 4 ações em um turno. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
             "passivo": "Permite conjurar múltiplas magias não-dano em um único turno.",
             "ativo": "Usa uma reação para adicionar ação extra ao turno."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2057,19 +2058,19 @@ const ClassesPage = () => {
           "tipo": "Ativa | Ação",
           "descricao": "Troca de lugar com um ajudante através de teletransporte, desde que o ajudante esteja a até 50 metros. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Troca de lugar com um ajudante dentro do limite de distância."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
+            "bonusSucesso": null,
             "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
-            "duracaoExtra": "Nenhum"
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2080,19 +2081,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "Permite conjurar um constructo de tamanho médio ou menor com aparência humanóide rústica. Seus pontos de vida são 4 vezes o nível do professor.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
             "passivo": "Ajudante conjurado possui aparência humanóide rústica e pontos de vida aumentados.",
-            "ativo": "Nenhum"
+            "ativo": null
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2104,19 +2105,19 @@ const ClassesPage = () => {
           "descricao": "Teletransporta todas as criaturas dentro de um raio de três metros para um local familiar. A chance de sucesso depende da distância, sendo 80% para até 10 km e 50% para até 100 km. Caso falhe, o teletransporte leva para uma direção aleatória. Custa 15 pontos de magia.",
           "custoMagia": 15,
           "chanceDeSucesso": "80% (10 km) | 50% (100 km)",
-          "dano": "Não aplicável",
+          "dano": null,
           "requisito": "Conhecimento do local a ser teletransportado",
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Teletransporta até 3 metros para local familiar."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2128,19 +2129,19 @@ const ClassesPage = () => {
           "descricao": "Permite que o conjurador ou outra criatura voe. A velocidade de movimento no voo é o dobro da normal, com duração de 100 turnos. Custa 8 pontos de magia por criatura.",
           "custoMagia": 8,
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Concede a habilidade de voar por 100 turnos."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2152,19 +2153,19 @@ const ClassesPage = () => {
           "descricao": "Torna o conjurador ou outra criatura invisível por até 10 minutos. A invisibilidade é quebrada ao causar dano. Custa 8 pontos de magia por criatura.",
           "custoMagia": 8,
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
-            "passivo": "Nenhum",
+            "passivo": null,
             "ativo": "Torna invisível por até 10 minutos, ou até causar dano."
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2175,19 +2176,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "Permite invocar um constructo de combate com 5 vezes o nível do professor em pontos de vida. O ajudante pode usar armas simples, escudo simples e armaduras leves ou médias. A velocidade de movimento é de 6 metros.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
+          "dano": null,
           "requisito": "Ajudante Melhorado",
           "efeitos": {
             "passivo": "Ajudante de combate com armas, armaduras e escudo.",
-            "ativo": "Nenhum"
+            "ativo": null
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2198,19 +2199,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "Dobra o alcance das magias que possuem alcance. Se o professor acertar um alvo com uma magia que precise de um rolamento de acerto, o dano atinge um segundo alvo a 1,5 metros de distância.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
             "passivo": "Dobra o alcance de magias e permite acertar outro alvo próximo.",
-            "ativo": "Nenhum"
+            "ativo": null
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2221,19 +2222,19 @@ const ClassesPage = () => {
           "tipo": "Passiva",
           "descricao": "Permite conjurar dois ajudantes em vez de um, com o custo base da magia para um único ajudante.",
           "chanceDeSucesso": "100%",
-          "dano": "Não aplicável",
-          "requisito": "Nenhum",
+          "dano": null,
+          "requisito": null,
           "efeitos": {
             "passivo": "Permite conjurar dois ajudantes com o custo de um.",
-            "ativo": "Nenhum"
+            "ativo": null
           },
           "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Nenhum",
-            "duracaoExtra": "Nenhum"
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
           },
           "bonus": {
-            "vidaTemporaria": "Nenhum"
+            "vidaTemporaria": null
           },
           "interacoes": {
             "comOutraRegalia": "Nenhuma interação especificada."
@@ -2242,7 +2243,545 @@ const ClassesPage = () => {
       ]
     },
   ]
-
+  const EspecializacaoNovicoSkillsData = [
+    {
+      "titulo": "Sarcedote",
+      "img": mago,
+      "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
+      "atributos": "Cada Regalia comprada na especialização Sarcedote(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Fortitude", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Arcanismo", "Combate Arcano "]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Medicina", "Estudo Religioso", "Intuição", "Percepção"]
+          },
+          "proficiências": null
+        },
+        "outrasProficiencias": [
+          "Armaduras Pesadas",
+          "Todos os Escudos"
+        ],
+        "habilidade": [{
+          "nome": "Cura Maior",
+          "tipo": "(Ação) (Milagre)",
+          "descricao": "Esse milagre cura 3d4 Pontos de Vida de até 5 aliados que estejam em até 18 metros. Custa 1 ponto de Magia. Aumenta a cura em 1d4 Pontos de Vida para cada 2 pontos de magia adicionais ao realizar o milagre.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Cura Maior Estendida",
+          "tipo": "Passiva",
+          "descricao": "Quando um sacerdote com esta regalia conjura o milagre Cura Maior, a cura se repete em seu turno seguinte nos alvos afetados.",
+          "custoMagia": null,
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote com a regalia",
+          "efeitos": {
+            "passivo": "A cura é repetida no turno seguinte."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Pode ser combinado com Cura Maior Melhorada para aplicar Abençoar também."
+          }
+        },
+        {
+          "nome": "Cura Maior Melhorada",
+          "tipo": "Passiva",
+          "descricao": "Ao realizar o milagre Cura Maior, o Sacerdote pode escolher que o efeito de Abençoar seja aplicado às criaturas escolhidas.",
+          "custoMagia": null,
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote com Cura Maior",
+          "efeitos": {
+            "passivo": "Abençoar é aplicado às criaturas escolhidas ao realizar Cura Maior."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina bem com Cura Maior Estendida, repetindo o efeito no próximo turno."
+          }
+        },
+        {
+          "nome": "Abençoar Arma Melhorado",
+          "tipo": "Ação",
+          "descricao": "Abençoa até 5 armas e muda o tipo de dano da arma para Sagrado. Dura 10 rodadas. Aumenta o dano da arma em 1d4.",
+          "custoMagia": "1 ponto de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": "1d4 adicional",
+          "requisito": "Abençoar Arma",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Abençoa até 5 armas, muda o tipo de dano para Sagrado e aumenta o dano em 1d4."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Pode ser combinado com outras regalias que aumentam o dano de armas."
+          }
+        },
+        {
+          "nome": "Sacrifício",
+          "tipo": "Ação",
+          "descricao": "O sacerdote pode se sacrificar para salvar aliados à Beira da Morte. Ele fica à Beira da Morte e consome metade de sua mana atual, mas com gasto mínimo de 10.",
+          "custoMagia": "10 pontos de Magia",
+          "chanceDeSucesso": "5% por pessoa salva",
+          "dano": null,
+          "requisito": "Sacerdote com Mana suficiente",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "O Sacerdote fica à Beira da Morte e consome metade de sua mana para salvar aliados."
+          },
+          "modificadores": {
+            "bonusSucesso": "Pode receber 2d10 de vida e magia no próximo turno.",
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Ressuscitar",
+          "tipo": "Ação",
+          "descricao": "Restaura uma criatura morta em até 10 minutos de sua morte. A criatura retorna com 10 pontos de vida, mas com a condição Cansado 4.",
+          "custoMagia": "10 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Criatura morta em até 10 minutos",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Restaura uma criatura morta com 10 pontos de vida e a condição Cansado 4."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": "Apenas uma vez por dia.",
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Restauração Maior",
+          "tipo": "Ação",
+          "descricao": "Tira completamente as condições Envenenado, Congelado, Queimando e Cansado do alvo.",
+          "custoMagia": "10 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Remove Envenenado, Congelado, Queimando e Cansado do alvo."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Crítico Guiado",
+          "tipo": "Reação",
+          "descricao": "Aumenta a chance de crítico de uma criatura em até 18 metros de distância. Ao iluminar um ponto no alvo do ataque, o noviço gera +2 na margem de crítico.",
+          "custoMagia": "5 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Criatura em até 18 metros de distância",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Aumenta a chance de crítico no alvo em até +2."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Empatia",
+          "tipo": "Ação",
+          "descricao": "Cria uma ligação com o aliado e divide a dor e sofrimento recebido por ele.",
+          "custoMagia": "2 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote e aliado",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Divide o dano recebido pelo aliado."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Silêncio",
+          "tipo": "Ação",
+          "descricao": "Impedir todos os alvos dentro de 3 metros de raio de usar qualquer magia, feitiço ou milagre até o fim do próximo turno.",
+          "custoMagia": "5 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Impedir o uso de habilidades mágicas em uma área."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Clemência",
+          "tipo": "Ação",
+          "descricao": "Abencoar todos os aliados em até 9 metros com Abençoar e todos os inimigos com Marca Divina.",
+          "custoMagia": "10 pontos de Magia",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Sacerdote",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Abençoa aliados e marca inimigos com suas respectivas magias."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        }
+      ]
+    },
+    {
+      "titulo": "EXORCISTA",
+      "img": professor,
+      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
+      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Combate Arcano ", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Ocultismo"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Ritualismo", "Teologia", "História"]
+          },
+          "proficiências": ["Nenhuma nova proficiência."]
+        },
+        "habilidade": [{
+          "nome": " Purificar corruptores ",
+          "tipo": "Milagre  (2 Ações)",
+          "descricao": "O milagre consiste em Purificar corruptores em um raio de 9 metros de distância. Todos os mortos vivos e demônios dentro desta área sofrem 2d10 de dano e perdem uma ação no próximo turno. Custa 3 pontos de Magia.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Escultor de Magias",
+          "tipo": "Ativa | Reação",
+          "descricao": "Ao conjurar uma magia que não cause dano, o professor pode escolher um dos seguintes efeitos: dobrar o tempo de duração, diminuir em metade o custo de pontos de magia (Arredondando pra cima) ou dobrar a quantidade de alvos. Pode ser usada 5 vezes ao dia, com recuperação de usos após um descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Escolher um dos efeitos: dobrar duração, reduzir custo de pontos de magia ou dobrar número de alvos."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Conjuração Múltipla",
+          "tipo": "Passiva",
+          "descricao": "O professor pode conjurar mais magias que não causem dano em um mesmo turno, usando uma reação para adicionar uma ação extra ao seu turno. Pode conjurar até 2 magias de 2 ações ou até 4 de 1 ação, ou qualquer combinação que gaste até 4 ações em um turno. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Permite conjurar múltiplas magias não-dano em um único turno.",
+            "ativo": "Usa uma reação para adicionar ação extra ao turno."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Roque",
+          "tipo": "Ativa | Ação",
+          "descricao": "Troca de lugar com um ajudante através de teletransporte, desde que o ajudante esteja a até 50 metros. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Troca de lugar com um ajudante dentro do limite de distância."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Ajudante Melhorado",
+          "tipo": "Passiva",
+          "descricao": "Permite conjurar um constructo de tamanho médio ou menor com aparência humanóide rústica. Seus pontos de vida são 4 vezes o nível do professor.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Ajudante conjurado possui aparência humanóide rústica e pontos de vida aumentados.",
+            "ativo": null
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Teletransporte",
+          "tipo": "Magia | Ação",
+          "descricao": "Teletransporta todas as criaturas dentro de um raio de três metros para um local familiar. A chance de sucesso depende da distância, sendo 80% para até 10 km e 50% para até 100 km. Caso falhe, o teletransporte leva para uma direção aleatória. Custa 15 pontos de magia.",
+          "custoMagia": 15,
+          "chanceDeSucesso": "80% (10 km) | 50% (100 km)",
+          "dano": null,
+          "requisito": "Conhecimento do local a ser teletransportado",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Teletransporta até 3 metros para local familiar."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Voar",
+          "tipo": "Magia | Ação",
+          "descricao": "Permite que o conjurador ou outra criatura voe. A velocidade de movimento no voo é o dobro da normal, com duração de 100 turnos. Custa 8 pontos de magia por criatura.",
+          "custoMagia": 8,
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Concede a habilidade de voar por 100 turnos."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Invisibilidade",
+          "tipo": "Magia | Ação",
+          "descricao": "Torna o conjurador ou outra criatura invisível por até 10 minutos. A invisibilidade é quebrada ao causar dano. Custa 8 pontos de magia por criatura.",
+          "custoMagia": 8,
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Torna invisível por até 10 minutos, ou até causar dano."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Ajudante de Combate",
+          "tipo": "Passiva",
+          "descricao": "Permite invocar um constructo de combate com 5 vezes o nível do professor em pontos de vida. O ajudante pode usar armas simples, escudo simples e armaduras leves ou médias. A velocidade de movimento é de 6 metros.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": "Ajudante Melhorado",
+          "efeitos": {
+            "passivo": "Ajudante de combate com armas, armaduras e escudo.",
+            "ativo": null
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Atirador Arcano",
+          "tipo": "Passiva",
+          "descricao": "Dobra o alcance das magias que possuem alcance. Se o professor acertar um alvo com uma magia que precise de um rolamento de acerto, o dano atinge um segundo alvo a 1,5 metros de distância.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Dobra o alcance de magias e permite acertar outro alvo próximo.",
+            "ativo": null
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Laboratório em Expansão",
+          "tipo": "Passiva",
+          "descricao": "Permite conjurar dois ajudantes em vez de um, com o custo base da magia para um único ajudante.",
+          "chanceDeSucesso": "100%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Permite conjurar dois ajudantes com o custo de um.",
+            "ativo": null
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        }
+      ]
+    },
+  ]
 
   const SkillAccordion = ({ skill }) => (
     <Accordion>
@@ -2325,6 +2864,7 @@ const ClassesPage = () => {
         <Tab label="Classes Primárias" className="tabs" />
         <Tab label="Especializações de Combatente" className="tabs" />
         <Tab label="Especializações de Iniciado" className="tabs" />
+        <Tab label="Especializações de Noviço" className="tabs" />
       </Tabs>
 
       {/* Info MUI Tab Content */}
@@ -2772,6 +3312,209 @@ const ClassesPage = () => {
       {thisvalue === 4 && (
         <Box>
           {EspecializacaoIniciadoSkillsData.map(especializacao =>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+              <Box sx={{ width: "80%", mx: "auto" }}>
+                {/* Título e Descrição */}
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                      {especializacao.titulo}
+                    </Typography>
+                    <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                      {especializacao.descricao}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Atributos */}
+                <Typography variant="body1" sx={{ textAlign: 'justify', mb: 3 }}>
+                  {especializacao.atributos}
+                </Typography>
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalia Obrigatória
+                </Typography>
+                {especializacao.regaliaObrigatoria && (
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-regaliaObrigatoria-content" id="panel-regaliaObrigatoria-header">
+                      <Typography>Atributos e Bonus</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{especializacao.regaliaObrigatoria.descricao}</Typography>
+
+                      {/* Atributos */}
+                      {especializacao.regaliaObrigatoria.pontos.atributos && (
+                        <>
+                          <Typography><strong>Atributos:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.atributos.opcoes.map((atributo, index) => (
+                              <li key={index}>{atributo}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Combate */}
+                      {especializacao.regaliaObrigatoria.pontos.combate && (
+                        <>
+                          <Typography><strong>Combate:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.combate.opcoes.map((opcao, index) => (
+                              <li key={index}>{opcao}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Habilidades */}
+                      {especializacao.regaliaObrigatoria.pontos.habilidades && (
+                        <>
+                          <Typography><strong>Habilidades:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em todos os seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.habilidades.opcoes.map((habilidade, index) => (
+                              <li key={index}>{habilidade}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Proficiências */}
+                      {especializacao.regaliaObrigatoria.pontos.proficiências && (
+                        <>
+                          <Typography><strong>Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.pontos.proficiências.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Outras Proficiencias */}
+                      {especializacao.regaliaObrigatoria.outrasProficiencias && (
+                        <>
+                          <Typography><strong>Outras Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.outrasProficiencias.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+
+                {/* Accordion para Habilidades */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Habilidade de Classe
+                </Typography>
+                {especializacao.regaliaObrigatoria.habilidade.map((habilidade, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
+                      <Typography>{habilidade.nome} </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Tipo: {habilidade.tipo}</Typography>
+                      <Typography>{habilidade.descricao}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+                {/* Regalias */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalias
+                </Typography>
+                {especializacao.regalias.map((regalia, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-regalia${index}-content`} id={`panel-regalia${index}-header`}>
+                      <Typography>{regalia.nome} ({regalia.tipo})</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{regalia.descricao}</Typography>
+                      {regalia.prerequisito && (
+                        <Typography><strong>Pré-Requisito:</strong> {regalia.prerequisito}</Typography>
+                      )}
+
+                      {regalia.chanceDeSucesso && (
+                        <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
+                      )}
+
+
+                      {regalia.bonus && regalia.bonus.vidaTemporaria && (
+                        <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
+                      )}
+
+                      {regalia.tempoConstrucao && (
+                        <Typography><strong>Tempo de contrução:</strong> {regalia.tempoConstrucao}</Typography>
+                      )}
+
+                      {regalia.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
+                      )}
+                      {regalia.requisito && (
+                        <Typography><strong>Requisito:</strong> {regalia.requisito}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.ativo && (
+                        <Typography><strong>Ativo:</strong> {regalia.efeitos.ativo}</Typography>
+                      )}
+                      {regalia.efeitos && regalia.efeitos.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.efeitos.duracao}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.passivo && (
+                        <Typography><strong>Passivo:</strong> {regalia.efeitos.passivo}</Typography>
+                      )}
+
+                      {regalia.dano && (
+                        <Typography><strong>Dano:</strong> {regalia.dano}</Typography>
+                      )}
+
+                      {regalia.modificadores && (
+                        <>
+                          {regalia.modificadores.bonusSucesso && (
+                            <Typography><strong>Bonus Sucesso:</strong> {regalia.modificadores.bonusSucesso}</Typography>
+                          )}
+                          {regalia.modificadores.usoExtra && (
+                            <Typography><strong>Uso Extra:</strong> {regalia.modificadores.usoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.duracaoExtra && (
+                            <Typography><strong>Duração Extra:</strong> {regalia.modificadores.duracaoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.bonusLideranca && (
+                            <Typography><strong>Bonus Liderança:</strong> {regalia.modificadores.bonusLideranca}</Typography>
+                          )}
+                        </>
+                      )}
+
+                      {regalia.interacoes && regalia.interacoes.comFortaleza && (
+                        <Typography><strong>Interação com Fortaleza:</strong> {regalia.interacoes.comFortaleza}</Typography>
+                      )}
+
+                      {regalia.custoEstamina && (
+                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
+                      )}
+                      {regalia.custoMagia && (
+                        <Typography><strong>Custo de Magia:</strong> {regalia.custoMagia}</Typography>
+                      )}
+
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+              </Box>
+            </Box>
+          )}
+
+        </Box>
+      )}
+      {thisvalue === 5 && (
+        <Box>
+          {EspecializacaoNovicoSkillsData.map(especializacao =>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
