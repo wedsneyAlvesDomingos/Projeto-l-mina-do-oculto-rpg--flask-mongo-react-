@@ -750,10 +750,10 @@ const ClassesPage = () => {
       },
     ]
   }
-  const EspecializacaoSkillsData = [
+  const EspecializacaoCombatenteSkillsData = [
     {
       "titulo": "Cavaleiro",
-      "img": cavaleiro ,
+      "img": cavaleiro,
       "descricao": "O Cavaleiro é a personificação da honra, coragem e lealdade. Sua essência é forjada no compromisso de proteger e servir, seja a uma causa nobre, um senhor ou uma causa maior. Equipado com força física e uma disciplina imbatível, o Cavaleiro é um defensor incansável, sempre pronto para enfrentar qualquer desafio que ameace os seus. Sua presença em combate é imponente, com uma combinação de habilidade marcial e uma sólida moralidade que guia suas ações. Não é apenas um guerreiro, mas um líder capaz de inspirar e conduzir outros com confiança, sempre em busca de justiça. \n Com um espírito indomável, o Cavaleiro se destaca pela resistência física e mental, capaz de resistir a pressões e superar adversidades. Sua lealdade é inquebrantável, e sua habilidade de proteger e agir como escudo para os outros é sua marca registrada. No campo de batalha, sua determinação e habilidade tática fazem dele uma força a ser respeitada, sempre em busca da vitória para os seus, seja com a espada ou com palavras.\n O Cavaleiro, com sua postura firme e coração resoluto, é uma figura de autoridade e proteção, cuja presença garante que a justiça prevalecerá, não importa o custo.",
       "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 6 Pontos de Vida\n- 3 Pontos de Estâmina\n- 1 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -884,7 +884,413 @@ const ClassesPage = () => {
     },
     {
       "titulo": "CAÇADOR",
-      "img":  cacador ,
+      "img": cacador,
+      "descricao": "O Caçador da classe Lâmina do Oculto é um mestre em sobrevivência e rastreamento, capaz de transformar o ambiente ao seu favor. Ele vê o mundo de forma única, decifrando rastros, lendo o vento e detectando sinais invisíveis para a maioria. Sua percepção aguçada o torna tanto um perseguidor implacável quanto um protetor vigilante de seus aliados, antecipando emboscadas e armadilhas.Ao seu lado, há sempre um companheiro animal leal, uma criatura treinada que se torna uma extensão do próprio Caçador. Juntos, eles operam em perfeita sincronia, protegendo um ao outro e atacando como uma unidade coesa. Essa ligação é tão profunda que o Caçador pode até compartilhar os sentidos de seu companheiro, tornando-se quase impossível de ser surpreendido.Sua adaptabilidade impressiona. Ele prospera em qualquer ambiente — florestas densas, desertos escaldantes ou montanhas geladas — resistindo a condições extremas sem perder eficácia. Ele é um explorador incansável, capaz de suportar fome, sede e temperaturas letais graças à sua resistência física e mental sobre-humanas.No combate, o Caçador não depende de força bruta, mas de velocidade e precisão. Ele ataca rápido e letalmente, aproveitando cada erro do oponente. Seu companheiro animal complementa esses ataques, desorientando e derrubando alvos com coordenação impecável. Além disso, o Caçador controla o campo de batalha com maestria, restringindo o movimento de inimigos e incapacitando-os sem matá-los quando necessário — ideal para capturar alvos ou impedir fugas.À distância, sua destreza é lendária. Ele dispara flechas com precisão cirúrgica, atingindo alvos mesmo atrás de cobertura. Quando cercado, ele pode liberar uma tempestade de golpes, transformando-se em um turbilhão de lâminas e fúria.Há um lado quase místico no Caçador. Ele pode marcar um alvo de forma sobrenatural, rastreando-o mesmo se este se esconder ou ficar invisível. Essa marca transforma a caçada em algo inevitável — o Caçador sempre encontra sua presa e cada ataque contra ela é mais mortal.Mais que guerreiro ou rastreador, o Caçador é um símbolo de equilíbrio entre civilização e natureza. Ele entende e respeita as leis selvagens do mundo, domando até mesmo criaturas lendárias como dragões. Ele não busca destruição, mas parceria e compreensão. Seu papel na sociedade varia: pode ser o guardião de uma vila remota, um explorador destemido ou um assassino furtivo, eliminando alvos importantes sem ser notado. Sua versatilidade e independência fazem dele um sobrevivente nato. Em essência, o Caçador é definido por sua mentalidade: um predador paciente, um sobrevivente resiliente e um aliado leal. Ele não teme o mundo cruel — ele se adapta e prospera. Onde quer que vá, deixa sua marca de equilíbrio e perseverança, lembrando a todos que, mesmo na escuridão, seus olhos atentos observam, esperando o momento certo para agir.",
+      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Força", "Agilidade", "Destreza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo", "Combate à distância"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Percepção", "Sobrevivência", "Armadilha", "Natureza", "Rastreamento"]
+          },
+          "proficiências": ["Capacidade de Adestrar Animais"]
+        },
+        "habilidade": [{
+          "nome": " Adestrar Animais",
+          "tipo": "Passiva",
+          "descricao": "Cada animal adestrado tem um valor de dificuldade para ser treinado. Esse valor é de 10 ou metade do  valor dos pontos de vida da criatura, arredondado para cima, o que for maior. O teste feito deve ser de Lidar com Animais e o caçador ganha um bônus igual a metade do seu nível de personagem neste rolamento, arredondado para cima.\n A criatura adestrada é considerada um companheiro animal e tem seu turno ao mesmo tempo que o caçador. Esse companheiro pode agir alternadamente com o caçador dentro deste turno. \n O caçador consegue tratar ferimentos e  tem, em  todos os testes de medicina, um bônus de +5 ao cuidar de seu companheiro animal. \n Seu companheiro animal pode fazer um turno de vigia de duas horas sozinho em um acampamento. \n O companheiro animal ganha um  bônus em seus pontos de vida igual a duas vezes o nível do caçador. Ou seja, os pontos de vida ficha da criatura somados ao nível do caçador multiplicado por dois. O caçador pode ter um número de animais adestrados igual o seu valor em Lidar com animais",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Ataque Veloz",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Concentração",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) aumenta o seu acerto em 2 pontos durante 10 rodadas.",
+          "custoEstamina": 6
+        },
+        {
+          "nome": "Ataque de Oportunidade",
+          "tipo": "Reação",
+          "descricao": "O Caçador(a) pode realizar um ataque de oportunidade quando outra criatura que possa ver sair da sua área de ameaça, ou atacar um aliado dentro do seu alcance.",
+          "custoEstamina": 2
+        },
+        {
+          "nome": "Trabalho em Equipe",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) ao realizar um ataque pode comandar o seu Companheiro Animal para atacar em conjunto sem gastar uma ação do companheiro animal.",
+          "efeitos": {
+            "auxilio": "Ao sofrer um ataque, tanto o caçador quanto o Companheiro Animal podem, como uma reação, solicitar auxílio um do outro. Ao receber auxílio, o caçador e o Companheiro recebem um aumento no Valor de Defesa em 2 pontos. O caçador deve estar a até 3 metros de distância de seu companheiro para realizar essa ajuda e vice-versa."
+          },
+          "custoEstamina": 6
+        },
+        {
+          "nome": "Conexão Primitiva",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) e seu companheiro animal criam uma conexão que compartilham seus sentidos, permitindo que um possa usar os sentidos do outro. O caçador consegue ver e ouvir pelos sentidos de seu companheiro e pelos próprios ao mesmo tempo.",
+          "duracao": "1 hora",
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Corpo Adaptativo",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) consegue se adaptar a qualquer ambiente em que é possível a vida de humanóides. O caçador e seu companheiro animal não se perdem em ambientes naturais e podem ficar até um mês sem comida e até 10 dias sem água.",
+          "efeitos": {
+            "ativo": "O Caçador(a) faz com que seu corpo se adapte rapidamente a uma temperatura. Como uma reação ao ser atacado com dano de fogo ou gelo ele pode se tornar resistente ao dano causado reduzindo-o pela metade."
+          },
+          "custoEstamina": 4
+        },
+        {
+          "nome": "Instinto Caçador",
+          "tipo": "Passiva",
+          "descricao": "O Caçador(a) utiliza de pistas em um ambiente para perseguir uma criatura que tenha passado por ali. Ao perseguir uma criatura através de pistas, como cheiro ou pegadas, ele ganha vantagem em testes de Rastreamento e Percepção.",
+          "efeitos": {
+            "ativo": "O Caçador(a) marca uma criatura que possa ver como uma ação. Enquanto esta criatura estiver marcada, o caçador sabe onde ela está mesmo se estiver invisível. Todo ataque do caçador e seu companheiro causa 1d6 de dano extra do tipo do ataque.",
+            "duracao": "10 minutos"
+          },
+          "custoEstamina": 1
+        },
+        {
+          "nome": "Debilitar",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode optar por debilitar um inimigo quando realizar um ataque. Reduzindo seu movimento pela metade.",
+          "custoEstamina": 2,
+          "modificadores": {
+            "efeitoExtra": "Podendo reduzir o movimento do alvo a zero ao gastar mais 2 pontos de estâmina adicionais."
+          }
+        },
+        {
+          "nome": "Olho de Águia",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) ao realizar um ataque a distância pode ignorar até meia cobertura.",
+          "custoEstamina": 1,
+          "modificadores": {
+            "bonusPenetracao": "Podendo ignorar até 3/4 de cobertura ao custo de 1 ponto de estâmina adicional."
+          }
+        },
+        {
+          "nome": "Chuva de Ataques",
+          "tipo": "Ação",
+          "descricao": "O Caçador(a) pode atacar, repetidamente, em um cone de 60° de abertura, 1.5 m de altura e distância de 27m. Atingindo todas as criaturas na área (incluindo aliados)",
+          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional para cada 1,5 m quadrado de área que a criatura ocupa.",
+          "custoEstamina": 2,
+        },
+        {
+          "nome": "Expurgo",
+          "tipo": "Ação (2 Ações)",
+          "descricao": "O Caçador(a) gira com golpes rápidos, acertando todas as criaturas que escolher em seu alcance de ameaça.",
+          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional em cada criatura em alcance.",
+          "custoEstamina": 5
+        },
+        {
+          "nome": "Adestrar Dragão",
+          "tipo": "Ação",
+          "descricao": "O personagem pode adestrar dragões e transformá-los em seu Companheiro."
+        },
+        {
+          "nome": "Recuperar Fôlego Maior",
+          "tipo": "Ação (2 Ações)",
+          "descricao": "O personagem pode gastar duas ações para recuperar 3d8 pontos de vida e 6 pontos de estâmina.",
+          "custoMagia": 1
+        }
+      ]
+
+    },
+  ]
+  const EspecializacaoIniciadoSkillsData = [
+    {
+      "titulo": "MAGO",
+      "img": cavaleiro,
+      "descricao": "O Cavaleiro é a personificação da honra, coragem e lealdade. Sua essência é forjada no compromisso de proteger e servir, seja a uma causa nobre, um senhor ou uma causa maior. Equipado com força física e uma disciplina imbatível, o Cavaleiro é um defensor incansável, sempre pronto para enfrentar qualquer desafio que ameace os seus. Sua presença em combate é imponente, com uma combinação de habilidade marcial e uma sólida moralidade que guia suas ações. Não é apenas um guerreiro, mas um líder capaz de inspirar e conduzir outros com confiança, sempre em busca de justiça. \n Com um espírito indomável, o Cavaleiro se destaca pela resistência física e mental, capaz de resistir a pressões e superar adversidades. Sua lealdade é inquebrantável, e sua habilidade de proteger e agir como escudo para os outros é sua marca registrada. No campo de batalha, sua determinação e habilidade tática fazem dele uma força a ser respeitada, sempre em busca da vitória para os seus, seja com a espada ou com palavras.\n O Cavaleiro, com sua postura firme e coração resoluto, é uma figura de autoridade e proteção, cuja presença garante que a justiça prevalecerá, não importa o custo.",
+      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Combate arcano", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Arcanismo", "Fortitude"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Fortitude", "Agilidade"]
+          },
+          "proficiências": ["CProficiência em Armadura média e Escudo."]
+        },
+        "outrasProficiencias": [
+          "Armaduras Pesadas",
+          "Todos os Escudos"
+        ],
+        "habilidade": [{
+          "nome": "Arcanista de combate",
+          "tipo": "Passiva",
+          "descricao": "Soma o valor de Arcanismo para o ataque de Míssil Mágico . Esse valor é adicionado por míssil.  ",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Alta Frequência",
+          "tipo": "Ação",
+          "descricao": "Faz com que um ponto a sua escolha em até 18 metros gere um som de imenso volume e frequência alta, causando danos em objetos e criaturas dentro do alcance.",
+          "custoEstamina": 6,
+          "chanceDeSucesso": "100%",
+          "dano": "3d10 + 1d10 por cada 3 pontos de magia extra",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Gera um som destruidor e danifica objetos e criaturas."
+          },
+          "modificadores": {
+            "bonusSucesso": "Cada 3 pontos de magia extra causam 1d10 pontos de dano a mais",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Grande Mão",
+          "tipo": "Ação",
+          "descricao": "Cria uma enorme mão que pode levantar ou atacar criaturas e objetos.",
+          "custoEstamina": 7,
+          "chanceDeSucesso": "100%",
+          "dano": "1d10 + Arcanismo",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma mão que pode atacar ou empurrar criaturas."
+          },
+          "modificadores": {
+            "bonusSucesso": "A mão pode levantar criaturas até 500 kg",
+            "usoExtra": "Pode ser usada uma vez por turno",
+            "duracaoExtra": "Dura 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Conjuração de Combate",
+          "tipo": "Passiva",
+          "descricao": "Permite que o mago inicie uma magia de múltiplas ações em um turno e termine em outro.",
+          "custoEstamina": 0,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Permite conjurar magias com ações múltiplas de forma contínua entre turnos.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usado com qualquer magia de múltiplas ações",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Globo de Proteção",
+          "tipo": "Reação",
+          "descricao": "Cria uma esfera protetora ao redor do mago, imune a danos externos.",
+          "custoEstamina": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Receber um ataque ou efeito mágico que causaria dano",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma esfera de proteção com 50 pontos de vida."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa mais 10 pontos de magia para cada 25 pontos de vida extra na esfera",
+            "usoExtra": "Pode ser usado uma vez por rodada",
+            "duracaoExtra": "Dura até o fim do próximo turno do mago"
+          },
+          "bonus": {
+            "vidaTemporaria": "50 pontos de vida temporária na esfera"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Parede de Espadas",
+          "tipo": "Ação",
+          "descricao": "Cria uma parede de espadas que causa dano e empurra criaturas que tentam atravessá-la.",
+          "custoEstamina": 12,
+          "chanceDeSucesso": "100%",
+          "dano": "4d10",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma parede de espadas que empurra e causa dano."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usada uma vez por turno",
+            "duracaoExtra": "Dura por 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Azagaia Arcana",
+          "tipo": "Ação",
+          "descricao": "Atira um projétil de energia arcana que causa dano à criatura atingida.",
+          "custoEstamina": 6,
+          "chanceDeSucesso": "100%",
+          "dano": "2d10 + Arcanismo",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Dispara um projétil que causa dano."
+          },
+          "modificadores": {
+            "bonusSucesso": "Aumenta o dano em 10 para cada 6 pontos de magia extra",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Deslocar Terreno",
+          "tipo": "Ação",
+          "descricao": "Cria uma cópia do terreno em que todas as suas características flutuam no ar.",
+          "custoEstamina": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma cópia flutuante do terreno que reduz a velocidade de movimento."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 5 pontos de magia por metro de altura adicional",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Dura por 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Tempestade Arcana",
+          "tipo": "Ação",
+          "descricao": "Cria uma tempestade que causa congelamento e dano contínuo em criaturas na área.",
+          "custoEstamina": 10,
+          "chanceDeSucesso": "70%",
+          "dano": "8d6 por turno de condição congelando",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Causa a condição congelando e dano contínuo dentro da tempestade."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 5 pontos de magia para aumentar a chance de congelamento em 5%",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Dura 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Meteoro Arcano",
+          "tipo": "Ação",
+          "descricao": "Dispara um meteoro arcano que causa dano massivo e deixa a condição queimando.",
+          "custoEstamina": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "8d10 + Arcanismo",
+          "requisito": "Explosão Arcana, Conjuração de Combate",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Causa dano massivo em área e pode deixar a condição queimando."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 10 pontos de magia para adicionar uma explosão extra",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Teletransporte Tático",
+          "tipo": "Ação",
+          "descricao": "Teletransporta o mago até 18 metros de distância para um local visível.",
+          "custoEstamina": 2,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Teletransporta o mago instantaneamente."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        }
+      ]
+      
+    },
+    {
+      "titulo": "CAÇADOR",
+      "img": cacador,
       "descricao": "O Caçador da classe Lâmina do Oculto é um mestre em sobrevivência e rastreamento, capaz de transformar o ambiente ao seu favor. Ele vê o mundo de forma única, decifrando rastros, lendo o vento e detectando sinais invisíveis para a maioria. Sua percepção aguçada o torna tanto um perseguidor implacável quanto um protetor vigilante de seus aliados, antecipando emboscadas e armadilhas.Ao seu lado, há sempre um companheiro animal leal, uma criatura treinada que se torna uma extensão do próprio Caçador. Juntos, eles operam em perfeita sincronia, protegendo um ao outro e atacando como uma unidade coesa. Essa ligação é tão profunda que o Caçador pode até compartilhar os sentidos de seu companheiro, tornando-se quase impossível de ser surpreendido.Sua adaptabilidade impressiona. Ele prospera em qualquer ambiente — florestas densas, desertos escaldantes ou montanhas geladas — resistindo a condições extremas sem perder eficácia. Ele é um explorador incansável, capaz de suportar fome, sede e temperaturas letais graças à sua resistência física e mental sobre-humanas.No combate, o Caçador não depende de força bruta, mas de velocidade e precisão. Ele ataca rápido e letalmente, aproveitando cada erro do oponente. Seu companheiro animal complementa esses ataques, desorientando e derrubando alvos com coordenação impecável. Além disso, o Caçador controla o campo de batalha com maestria, restringindo o movimento de inimigos e incapacitando-os sem matá-los quando necessário — ideal para capturar alvos ou impedir fugas.À distância, sua destreza é lendária. Ele dispara flechas com precisão cirúrgica, atingindo alvos mesmo atrás de cobertura. Quando cercado, ele pode liberar uma tempestade de golpes, transformando-se em um turbilhão de lâminas e fúria.Há um lado quase místico no Caçador. Ele pode marcar um alvo de forma sobrenatural, rastreando-o mesmo se este se esconder ou ficar invisível. Essa marca transforma a caçada em algo inevitável — o Caçador sempre encontra sua presa e cada ataque contra ela é mais mortal.Mais que guerreiro ou rastreador, o Caçador é um símbolo de equilíbrio entre civilização e natureza. Ele entende e respeita as leis selvagens do mundo, domando até mesmo criaturas lendárias como dragões. Ele não busca destruição, mas parceria e compreensão. Seu papel na sociedade varia: pode ser o guardião de uma vila remota, um explorador destemido ou um assassino furtivo, eliminando alvos importantes sem ser notado. Sua versatilidade e independência fazem dele um sobrevivente nato. Em essência, o Caçador é definido por sua mentalidade: um predador paciente, um sobrevivente resiliente e um aliado leal. Ele não teme o mundo cruel — ele se adapta e prospera. Onde quer que vá, deixa sua marca de equilíbrio e perseverança, lembrando a todos que, mesmo na escuridão, seus olhos atentos observam, esperando o momento certo para agir.",
       "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -1012,7 +1418,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "ASSASSINO",
-      "img": assassino ,
+      "img": assassino,
       "descricao": "O Assassino da classe Lâmina do Oculto é uma sombra letal que se move entre o mundo dos vivos sem ser notado. Ele domina a arte da furtividade e da precisão, transformando cada situação em uma oportunidade de eliminar seu alvo com eficiência mortal. Para ele, a escuridão não é um obstáculo, mas um aliado fiel, ocultando seus passos e protegendo-o dos olhos inimigos.Cada movimento do Assassino é calculado e executado com perfeição cirúrgica. Quando necessário, ele envolve a área com uma densa névoa de fumaça, confundindo seus inimigos e criando aberturas para desaparecer ou atacar sem ser visto. Em combate direto, ele desfere golpes meticulosamente planejados, mirando pontos vitais e causando hemorragias devastadoras, deixando seus inimigos enfraquecidos e sangrando até a morte. Sua especialidade não é a força bruta, mas sim a agilidade e a astúcia. Ele dança pelo campo de batalha, esquivando-se de ataques com reflexos sobre-humanos, desviando de explosões e investidas com uma precisão quase sobrenatural. Quando um inimigo erra, ele contra-ataca em um piscar de olhos, transformando qualquer falha adversária em uma oportunidade letal. O Assassino domina a arte das lâminas, empunhando duas armas com destreza implacável, sem se cansar. Com uma sequência de golpes rápidos e implacáveis, ele desfere uma tempestade de ataques, perfurando defesas e destruindo oponentes antes mesmo que percebam o que está acontecendo. Seus venenos são aplicados de forma estratégica, tornando suas armas ainda mais letais, causando dor, paralisia ou até morte silenciosa. Mas ele não é apenas um matador eficiente — ele é um mestre da guerra psicológica. Sua capacidade de se mesclar às sombras é tão perfeita que até mesmo olhos treinados ou sentidos sobrenaturais falham em detectá-lo. Ele observa, espera e age no momento exato, executando seus alvos com precisão cirúrgica. Mesmo quando cercado, o Assassino não recua. Ele golpeia com velocidade feroz, desviando de ataques e revidando com uma tempestade de lâminas. Cada golpe é planejado para desorientar, retardar e controlar seus oponentes. E quando o momento certo chega, ele desce sobre seu alvo com uma execução perfeita, encerrando a luta com um único golpe devastador.Mais do que um guerreiro, o Assassino da classe Lâmina do Oculto é uma lenda nas sombras. Ele é o fantasma que sussurra promessas de morte ao ouvido de seus inimigos. Cada ataque seu não é apenas uma investida física — é um lembrete cruel de que ninguém, por mais protegido que esteja, está verdadeiramente seguro.",
       "atributos": "Cada Regalia comprada na especialização Assassino(a) fornece:\n- 4 Pontos de Vida\n- 6 Pontos de Estâmina\n- 0 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -1118,7 +1524,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "BÁRBARO",
-      "img": barbaro ,
+      "img": barbaro,
       "descricao": "O Assassino da classe Lâmina do Oculto é uma sombra letal que se move entre o mundo dos vivos sem ser notado. Ele domina a arte da furtividade e da precisão, transformando cada situação em uma oportunidade de eliminar seu alvo com eficiência mortal. Para ele, a escuridão não é um obstáculo, mas um aliado fiel, ocultando seus passos e protegendo-o dos olhos inimigos.Cada movimento do Assassino é calculado e executado com perfeição cirúrgica. Quando necessário, ele envolve a área com uma densa névoa de fumaça, confundindo seus inimigos e criando aberturas para desaparecer ou atacar sem ser visto. Em combate direto, ele desfere golpes meticulosamente planejados, mirando pontos vitais e causando hemorragias devastadoras, deixando seus inimigos enfraquecidos e sangrando até a morte. Sua especialidade não é a força bruta, mas sim a agilidade e a astúcia. Ele dança pelo campo de batalha, esquivando-se de ataques com reflexos sobre-humanos, desviando de explosões e investidas com uma precisão quase sobrenatural. Quando um inimigo erra, ele contra-ataca em um piscar de olhos, transformando qualquer falha adversária em uma oportunidade letal. O Assassino domina a arte das lâminas, empunhando duas armas com destreza implacável, sem se cansar. Com uma sequência de golpes rápidos e implacáveis, ele desfere uma tempestade de ataques, perfurando defesas e destruindo oponentes antes mesmo que percebam o que está acontecendo. Seus venenos são aplicados de forma estratégica, tornando suas armas ainda mais letais, causando dor, paralisia ou até morte silenciosa. Mas ele não é apenas um matador eficiente — ele é um mestre da guerra psicológica. Sua capacidade de se mesclar às sombras é tão perfeita que até mesmo olhos treinados ou sentidos sobrenaturais falham em detectá-lo. Ele observa, espera e age no momento exato, executando seus alvos com precisão cirúrgica. Mesmo quando cercado, o Assassino não recua. Ele golpeia com velocidade feroz, desviando de ataques e revidando com uma tempestade de lâminas. Cada golpe é planejado para desorientar, retardar e controlar seus oponentes. E quando o momento certo chega, ele desce sobre seu alvo com uma execução perfeita, encerrando a luta com um único golpe devastador.Mais do que um guerreiro, o Assassino da classe Lâmina do Oculto é uma lenda nas sombras. Ele é o fantasma que sussurra promessas de morte ao ouvido de seus inimigos. Cada ataque seu não é apenas uma investida física — é um lembrete cruel de que ninguém, por mais protegido que esteja, está verdadeiramente seguro.",
       "atributos": "Cada Regalia comprada na especialização Bárbaro(a) fornece:\n- 8 Pontos de Vida\n- 2 Pontos de Estâmina\n- 0 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -1301,6 +1707,7 @@ const ClassesPage = () => {
         <Tab label="Aprendiz" className="tabs" />
         <Tab label="Classes Primárias" className="tabs" />
         <Tab label="Especializações de Combatente" className="tabs" />
+        <Tab label="Especializações de Iniciado" className="tabs" />
       </Tabs>
 
       {/* Info MUI Tab Content */}
@@ -1544,7 +1951,7 @@ const ClassesPage = () => {
       )}
       {thisvalue === 3 && (
         <Box>
-          {EspecializacaoSkillsData.map(especializacao =>
+          {EspecializacaoCombatenteSkillsData.map(especializacao =>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
@@ -1745,7 +2152,209 @@ const ClassesPage = () => {
 
         </Box>
       )}
+      {thisvalue === 4 && (
+        <Box>
+          {EspecializacaoIniciadoSkillsData.map(especializacao =>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+              <Box sx={{ width: "80%", mx: "auto" }}>
+                {/* Título e Descrição */}
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                      {especializacao.titulo}
+                    </Typography>
+                    <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                      {especializacao.descricao}
+                    </Typography>
+                  </Box>
+                </Box>
 
+                {/* Atributos */}
+                <Typography variant="body1" sx={{ textAlign: 'justify', mb: 3 }}>
+                  {especializacao.atributos}
+                </Typography>
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalia Obrigatória
+                </Typography>
+                {especializacao.regaliaObrigatoria && (
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-regaliaObrigatoria-content" id="panel-regaliaObrigatoria-header">
+                      <Typography>Atributos e Bonus</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{especializacao.regaliaObrigatoria.descricao}</Typography>
+
+                      {/* Atributos */}
+                      {especializacao.regaliaObrigatoria.pontos.atributos && (
+                        <>
+                          <Typography><strong>Atributos:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.atributos.opcoes.map((atributo, index) => (
+                              <li key={index}>{atributo}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Combate */}
+                      {especializacao.regaliaObrigatoria.pontos.combate && (
+                        <>
+                          <Typography><strong>Combate:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.combate.opcoes.map((opcao, index) => (
+                              <li key={index}>{opcao}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Habilidades */}
+                      {especializacao.regaliaObrigatoria.pontos.habilidades && (
+                        <>
+                          <Typography><strong>Habilidades:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em todos os seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.habilidades.opcoes.map((habilidade, index) => (
+                              <li key={index}>{habilidade}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Proficiências */}
+                      {especializacao.regaliaObrigatoria.pontos.proficiências && (
+                        <>
+                          <Typography><strong>Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.pontos.proficiências.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Outras Proficiencias */}
+                      {especializacao.regaliaObrigatoria.outrasProficiencias && (
+                        <>
+                          <Typography><strong>Outras Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.outrasProficiencias.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+
+                {/* Accordion para Habilidades */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Habilidade de Classe
+                </Typography>
+                {especializacao.regaliaObrigatoria.habilidade.map((habilidade, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
+                      <Typography>{habilidade.nome} </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Tipo: {habilidade.tipo}</Typography>
+                      <Typography>{habilidade.descricao}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+                {/* Regalias */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalias
+                </Typography>
+                {especializacao.regalias.map((regalia, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-regalia${index}-content`} id={`panel-regalia${index}-header`}>
+                      <Typography>{regalia.nome} ({regalia.tipo})</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{regalia.descricao}</Typography>
+                      {regalia.prerequisito && (
+                        <Typography><strong>Pré-Requisito:</strong> {regalia.prerequisito}</Typography>
+                      )}
+
+                      {regalia.chanceDeSucesso && (
+                        <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
+                      )}
+
+
+                      {regalia.bonus && regalia.bonus.vidaTemporaria && (
+                        <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
+                      )}
+
+                      {regalia.tempoConstrucao && (
+                        <Typography><strong>Tempo de contrução:</strong> {regalia.tempoConstrucao}</Typography>
+                      )}
+
+                      {regalia.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
+                      )}
+                      {regalia.requisito && (
+                        <Typography><strong>Requisito:</strong> {regalia.requisito}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.ativo && (
+                        <Typography><strong>Ativo:</strong> {regalia.efeitos.ativo}</Typography>
+                      )}
+                      {regalia.efeitos && regalia.efeitos.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.efeitos.duracao}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.passivo && (
+                        <Typography><strong>Passivo:</strong> {regalia.efeitos.passivo}</Typography>
+                      )}
+
+                      {regalia.dano && (
+                        <Typography><strong>Dano:</strong> {regalia.dano}</Typography>
+                      )}
+
+                      {regalia.modificadores && (
+                        <>
+                          {regalia.modificadores.bonusSucesso && (
+                            <Typography><strong>Bonus Sucesso:</strong> {regalia.modificadores.bonusSucesso}</Typography>
+                          )}
+                          {regalia.modificadores.usoExtra && (
+                            <Typography><strong>Uso Extra:</strong> {regalia.modificadores.usoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.duracaoExtra && (
+                            <Typography><strong>Duração Extra:</strong> {regalia.modificadores.duracaoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.bonusLideranca && (
+                            <Typography><strong>Bonus Liderança:</strong> {regalia.modificadores.bonusLideranca}</Typography>
+                          )}
+                        </>
+                      )}
+
+                      {regalia.interacoes && regalia.interacoes.comFortaleza && (
+                        <Typography><strong>Interação com Fortaleza:</strong> {regalia.interacoes.comFortaleza}</Typography>
+                      )}
+
+                      {regalia.custoEstamina && (
+                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
+                      )}
+                      {regalia.custoMagia && (
+                        <Typography><strong>Custo de Magia:</strong> {regalia.custoMagia}</Typography>
+                      )}
+
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+              </Box>
+            </Box>
+          )}
+
+        </Box>
+      )}
       <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
       </Box>
