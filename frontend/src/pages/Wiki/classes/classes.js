@@ -12,6 +12,8 @@ import cavaleiro from "../../../assets/images/cavaleiro.png";
 import barbaro from "../../../assets/images/barbaro.png";
 import cacador from "../../../assets/images/caçador.png";
 import assassino from "../../../assets/images/assassino.png";
+import mago from "../../../assets/images/mago.png";
+import professor from "../../../assets/images/professor.png";
 
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
@@ -19,6 +21,30 @@ const ClassesPage = () => {
   const handleTABChange = (event, newValue) => {
     thisThisvalue(newValue);
   };
+  const regaliaContructor = {
+    "nome": "[Nome da Regalia]",
+    "tipo": "[Ação | Reação | Passiva]",
+    "descricao": "[Descrição detalhada do efeito da regalia]",
+    "custoEstamina": "[Valor numérico]",
+    "chanceDeSucesso": "[Valor %]",
+    "dano": "[Fórmula de dano, se aplicável]",
+    "requisito": "[Condição necessária, se houver]",
+    "efeitos": {
+      "passivo": "[Efeito contínuo, se houver]",
+      "ativo": "[Efeito acionável, se houver]"
+    },
+    "modificadores": {
+      "bonusSucesso": "[Bônus de sucesso ou efeito adicional com custo]",
+      "usoExtra": "[Condições para usar mais de uma vez na rodada]",
+      "duracaoExtra": "[Custo adicional para manter o efeito por mais tempo]"
+    },
+    "bonus": {
+      "vidaTemporaria": "[Bônus de vida temporária ou efeito similar]"
+    },
+    "interacoes": {
+      "comOutraRegalia": "[Como interage com outras regalias específicas]"
+    }
+  }
 
   const aprenticeSkillsData = {
     titulo: "Aprendiz",
@@ -788,86 +814,119 @@ const ClassesPage = () => {
           "nome": "Intervenção",
           "tipo": "Reação",
           "descricao": "Quando um inimigo passar a 1,5m de distância do cavaleiro, ele pode usar sua reação para impedir que ele prossiga, parando completamente sua ação de movimento.",
-          "chanceDeSucesso": "60%",
           "custoEstamina": 4,
+          "chanceDeSucesso": "60%",
+          "efeitos": {},
           "modificadores": {
             "bonusSucesso": "+5% por 1 ponto adicional de Estâmina"
-          }
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Combate Montado",
           "tipo": "Passiva",
           "descricao": "O Cavaleiro recebe vantagem no rolamento de ataque quando luta em cima de uma montaria. Além disso, pode forçar um ataque a atingi-lo ao invés da sua montaria.",
+
+          "efeitos": {},
+          "modificadores": {},
           "bonus": {
             "vidaTemporaria": "2d4 pontos de vida temporários toda rodada, se a montaria estiver com todos os pontos de vida"
-          }
+          },
+          "interacoes": {}
         },
         {
           "nome": "Aparar",
           "tipo": "Reação",
           "descricao": "Ao receber um ataque, antes do rolamento ser resolvido, pode usar sua reação para aumentar o Valor de Defesa em 2 pontos durante este ataque específico.",
           "custoEstamina": 2,
+          "efeitos": {},
           "modificadores": {
             "usoExtra": "Pode ser repetido mais vezes na mesma rodada ao custo de 2 pontos de Estâmina adicionais por uso"
-          }
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Levantar Moral",
           "tipo": "Ação",
           "descricao": "O Cavaleiro(a) encoraja seus aliados em um raio de 9m. Eles ficam imunes à condição aterrorizado e seu próximo rolamento de combate tem vantagem.",
           "custoEstamina": 5,
+          "efeitos": {},
           "modificadores": {
             "bonusLideranca": "Se tiver pontos em Liderança, pode combinar Levantar Moral com um efeito da proficiência"
-          }
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Liderar Ataque",
           "tipo": "Ação",
           "descricao": "Ao realizar um ataque, um aliado pode atacar simultaneamente como uma reação.",
-          "custoEstamina": 4
+          "custoEstamina": 4,
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Ripostar",
           "tipo": "Reação",
           "descricao": "Quando um inimigo erra um ataque corpo a corpo contra um aliado a até 3m, o Cavaleiro(a) pode realizar um contra-ataque.",
           "custoEstamina": 4,
+          "efeitos": {},
           "modificadores": {
             "usoExtra": "Pode ser repetido na mesma rodada ao custo de 4 pontos de Estâmina por tentativa adicional"
-          }
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Fortaleza",
           "tipo": "Ação",
           "descricao": "O Cavaleiro(a) assume uma postura defensiva ao atacar, reduzindo em 2 pontos o valor de acerto de todos os ataques, mas aumentando o Valor de Defesa em 3 até o fim da rodada.",
           "custoEstamina": 4,
+          "efeitos": {},
           "modificadores": {
             "duracaoExtra": "Pode manter essa postura gastando 2 pontos de Estâmina por rodada adicional"
-          }
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Desafio",
           "tipo": "Ação",
           "descricao": "O Cavaleiro(a) desafia um número de inimigos (até seu valor de Intimidação) em um raio de 6m. Eles devem atacá-lo ou não podem atacar ninguém na rodada.",
-          "custoEstamina": 1
+          "custoEstamina": 1,
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Vontade Inabalável",
           "tipo": "Reação",
           "descricao": "O Cavaleiro(a) tem maior resistência contra efeitos mentais.",
+
           "efeitos": {
             "passivo": "Reduz em 10% a chance de ser afetado por encantamentos ou medo",
             "ativo": "Pode reduzir em mais 10% ao gastar 3 pontos de Estâmina"
-          }
+          },
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Golpe Heroico",
           "tipo": "Ação (2 Ações)",
           "descricao": "O Cavaleiro(a) faz uma investida heróica, atacando todos os inimigos a 1,5m de um aliado e empurrando-os 1,5m, entrando entre eles e o aliado.",
-          "dano": "(Dano da arma + atributo) + 1d8",
           "custoEstamina": 3,
+          "dano": "(Dano da arma + atributo) + 1d8",
           "efeitos": {
             "penalidadeDefesa": "Reduz o Valor de Defesa em 4 até o próximo turno"
           },
+          "modificadores": {},
+          "bonus": {},
           "interacoes": {
             "comFortaleza": "Usar Golpe Heroico cancela o efeito da regalia Fortaleza"
           }
@@ -875,12 +934,16 @@ const ClassesPage = () => {
         {
           "nome": "Atropelar",
           "tipo": "Ação (2 Ações)",
-          "requisito": "Apenas montado",
           "descricao": "O Cavaleiro(a) avança 18m causando dano a todos os inimigos no caminho e tem 50% de chance de derrubá-los.",
+          "custoEstamina": 6,
           "dano": "5d4",
-          "custoEstamina": 6
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         }
       ]
+
     },
     {
       "titulo": "CAÇADOR",
@@ -913,509 +976,200 @@ const ClassesPage = () => {
       "regalias": [
         {
           "nome": "Ataque Veloz",
-          "tipo": "Ação",
+          "tipo": "Ação livre",
           "descricao": "O Caçador(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
-          "custoEstamina": 1
+          "custoEstamina": 1,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Concentração",
-          "tipo": "Passiva",
+          "tipo": "Ação livre",
           "descricao": "O Caçador(a) aumenta o seu acerto em 2 pontos durante 10 rodadas.",
-          "custoEstamina": 6
+          "custoEstamina": 6,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {
+            "passivo": "Aumento de acerto em 2 pontos."
+          },
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Ataque de Oportunidade",
           "tipo": "Reação",
           "descricao": "O Caçador(a) pode realizar um ataque de oportunidade quando outra criatura que possa ver sair da sua área de ameaça, ou atacar um aliado dentro do seu alcance.",
-          "custoEstamina": 2
+          "custoEstamina": 2,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Trabalho em Equipe",
-          "tipo": "Ação",
+          "tipo": "Ação livre",
           "descricao": "O Caçador(a) ao realizar um ataque pode comandar o seu Companheiro Animal para atacar em conjunto sem gastar uma ação do companheiro animal.",
+          "custoEstamina": 6,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
           "efeitos": {
-            "auxilio": "Ao sofrer um ataque, tanto o caçador quanto o Companheiro Animal podem, como uma reação, solicitar auxílio um do outro. Ao receber auxílio, o caçador e o Companheiro recebem um aumento no Valor de Defesa em 2 pontos. O caçador deve estar a até 3 metros de distância de seu companheiro para realizar essa ajuda e vice-versa."
+            "ativo": "Ao sofrer um ataque, tanto o caçador quanto o Companheiro Animal podem, como uma reação, solicitar auxílio um do outro. Ao receber auxílio, o caçador e o Companheiro recebem um aumento no Valor de Defesa em 2 pontos. O caçador deve estar a até 3 metros de distância de seu companheiro para realizar essa ajuda e vice-versa."
           },
-          "custoEstamina": 6
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Conexão Primitiva",
           "tipo": "Ação",
           "descricao": "O Caçador(a) e seu companheiro animal criam uma conexão que compartilham seus sentidos, permitindo que um possa usar os sentidos do outro. O caçador consegue ver e ouvir pelos sentidos de seu companheiro e pelos próprios ao mesmo tempo.",
-          "duracao": "1 hora",
-          "custoEstamina": 1
+          "custoEstamina": 1,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {
+            "ativo": "Compartilhar sentidos com o companheiro animal."
+          },
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Corpo Adaptativo",
           "tipo": "Passiva",
           "descricao": "O Caçador(a) consegue se adaptar a qualquer ambiente em que é possível a vida de humanóides. O caçador e seu companheiro animal não se perdem em ambientes naturais e podem ficar até um mês sem comida e até 10 dias sem água.",
+          "custoEstamina": 4,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
           "efeitos": {
-            "ativo": "O Caçador(a) faz com que seu corpo se adapte rapidamente a uma temperatura. Como uma reação ao ser atacado com dano de fogo ou gelo ele pode se tornar resistente ao dano causado reduzindo-o pela metade."
+            "passivo": "Adaptação a ambientes naturais e resistência ao dano de fogo ou gelo."
           },
-          "custoEstamina": 4
+          "modificadores": {
+            "ativo": "Resistência ao dano de fogo ou gelo, reduzindo-o pela metade."
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Instinto Caçador",
           "tipo": "Passiva",
           "descricao": "O Caçador(a) utiliza de pistas em um ambiente para perseguir uma criatura que tenha passado por ali. Ao perseguir uma criatura através de pistas, como cheiro ou pegadas, ele ganha vantagem em testes de Rastreamento e Percepção.",
+          "custoEstamina": 1,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
           "efeitos": {
-            "ativo": "O Caçador(a) marca uma criatura que possa ver como uma ação. Enquanto esta criatura estiver marcada, o caçador sabe onde ela está mesmo se estiver invisível. Todo ataque do caçador e seu companheiro causa 1d6 de dano extra do tipo do ataque.",
-            "duracao": "10 minutos"
+            "passivo": "Vantagem em testes de Rastreamento e Percepção."
           },
-          "custoEstamina": 1
+          "modificadores": {
+            "ativo": "O Caçador(a) marca uma criatura que possa ver. Enquanto esta criatura estiver marcada, o caçador sabe onde ela está mesmo se estiver invisível."
+          },
+          "bonus": {
+            "danoExtra": "1d6 de dano extra do tipo do ataque em cada ataque realizado."
+          },
+          "interacoes": {}
         },
         {
           "nome": "Debilitar",
-          "tipo": "Ação",
+          "tipo": "Ação livre",
           "descricao": "O Caçador(a) pode optar por debilitar um inimigo quando realizar um ataque. Reduzindo seu movimento pela metade.",
           "custoEstamina": 2,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
           "modificadores": {
-            "efeitoExtra": "Podendo reduzir o movimento do alvo a zero ao gastar mais 2 pontos de estâmina adicionais."
-          }
+            "efeitoExtra": "Reduzindo o movimento do alvo a zero ao gastar mais 2 pontos de estâmina adicionais."
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Olho de Águia",
-          "tipo": "Ação",
+          "tipo": "Ação livre",
           "descricao": "O Caçador(a) ao realizar um ataque a distância pode ignorar até meia cobertura.",
           "custoEstamina": 1,
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
           "modificadores": {
-            "bonusPenetracao": "Podendo ignorar até 3/4 de cobertura ao custo de 1 ponto de estâmina adicional."
-          }
+            "bonusPenetracao": "Ignora até 3/4 de cobertura ao custo de 1 ponto de estâmina adicional."
+          },
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Chuva de Ataques",
           "tipo": "Ação",
           "descricao": "O Caçador(a) pode atacar, repetidamente, em um cone de 60° de abertura, 1.5 m de altura e distância de 27m. Atingindo todas as criaturas na área (incluindo aliados)",
-          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional para cada 1,5 m quadrado de área que a criatura ocupa.",
           "custoEstamina": 2,
+          "chanceDeSucesso": "",
+          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional para cada 1,5 m quadrado de área que a criatura ocupa.",
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Expurgo",
           "tipo": "Ação (2 Ações)",
           "descricao": "O Caçador(a) gira com golpes rápidos, acertando todas as criaturas que escolher em seu alcance de ameaça.",
+          "custoEstamina": 5,
+          "chanceDeSucesso": "",
           "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional em cada criatura em alcance.",
-          "custoEstamina": 5
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Adestrar Dragão",
-          "tipo": "Ação",
-          "descricao": "O personagem pode adestrar dragões e transformá-los em seu Companheiro."
+          "tipo": "Passiva",
+          "descricao": "O personagem pode adestrar dragões e transformá-los em seu Companheiro.",
+          "custoEstamina": "",
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {},
+          "interacoes": {}
         },
         {
           "nome": "Recuperar Fôlego Maior",
           "tipo": "Ação (2 Ações)",
           "descricao": "O personagem pode gastar duas ações para recuperar 3d8 pontos de vida e 6 pontos de estâmina.",
-          "custoMagia": 1
+          "custoEstamina": "",
+          "chanceDeSucesso": "",
+          "dano": "",
+          "requisito": "",
+          "efeitos": {},
+          "modificadores": {},
+          "bonus": {
+            "vidaTemporaria": "3d8 pontos de vida"
+          },
+          "interacoes": {}
         }
       ]
 
-    },
-  ]
-  const EspecializacaoIniciadoSkillsData = [
-    {
-      "titulo": "MAGO",
-      "img": cavaleiro,
-      "descricao": "O Cavaleiro é a personificação da honra, coragem e lealdade. Sua essência é forjada no compromisso de proteger e servir, seja a uma causa nobre, um senhor ou uma causa maior. Equipado com força física e uma disciplina imbatível, o Cavaleiro é um defensor incansável, sempre pronto para enfrentar qualquer desafio que ameace os seus. Sua presença em combate é imponente, com uma combinação de habilidade marcial e uma sólida moralidade que guia suas ações. Não é apenas um guerreiro, mas um líder capaz de inspirar e conduzir outros com confiança, sempre em busca de justiça. \n Com um espírito indomável, o Cavaleiro se destaca pela resistência física e mental, capaz de resistir a pressões e superar adversidades. Sua lealdade é inquebrantável, e sua habilidade de proteger e agir como escudo para os outros é sua marca registrada. No campo de batalha, sua determinação e habilidade tática fazem dele uma força a ser respeitada, sempre em busca da vitória para os seus, seja com a espada ou com palavras.\n O Cavaleiro, com sua postura firme e coração resoluto, é uma figura de autoridade e proteção, cuja presença garante que a justiça prevalecerá, não importa o custo.",
-      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
-      "regaliaObrigatoria": {
-        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
-        "pontos": {
-          "atributos": {
-            "quantidade": 2,
-            "opcoes": ["Combate arcano", "Arcanismo"]
-          },
-          "combate": {
-            "quantidade": 1,
-            "opcoes": ["Arcanismo", "Fortitude"]
-          },
-          "habilidades": {
-            "quantidade": 2,
-            "opcoes": ["Arcanismo", "Fortitude", "Agilidade"]
-          },
-          "proficiências": ["CProficiência em Armadura média e Escudo."]
-        },
-        "outrasProficiencias": [
-          "Armaduras Pesadas",
-          "Todos os Escudos"
-        ],
-        "habilidade": [{
-          "nome": "Arcanista de combate",
-          "tipo": "Passiva",
-          "descricao": "Soma o valor de Arcanismo para o ataque de Míssil Mágico . Esse valor é adicionado por míssil.  ",
-        }]
-      },
-      "regalias": [
-        {
-          "nome": "Alta Frequência",
-          "tipo": "Ação",
-          "descricao": "Faz com que um ponto a sua escolha em até 18 metros gere um som de imenso volume e frequência alta, causando danos em objetos e criaturas dentro do alcance.",
-          "custoEstamina": 6,
-          "chanceDeSucesso": "100%",
-          "dano": "3d10 + 1d10 por cada 3 pontos de magia extra",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Gera um som destruidor e danifica objetos e criaturas."
-          },
-          "modificadores": {
-            "bonusSucesso": "Cada 3 pontos de magia extra causam 1d10 pontos de dano a mais",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Grande Mão",
-          "tipo": "Ação",
-          "descricao": "Cria uma enorme mão que pode levantar ou atacar criaturas e objetos.",
-          "custoEstamina": 7,
-          "chanceDeSucesso": "100%",
-          "dano": "1d10 + Arcanismo",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Cria uma mão que pode atacar ou empurrar criaturas."
-          },
-          "modificadores": {
-            "bonusSucesso": "A mão pode levantar criaturas até 500 kg",
-            "usoExtra": "Pode ser usada uma vez por turno",
-            "duracaoExtra": "Dura 10 rodadas"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Conjuração de Combate",
-          "tipo": "Passiva",
-          "descricao": "Permite que o mago inicie uma magia de múltiplas ações em um turno e termine em outro.",
-          "custoEstamina": 0,
-          "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Permite conjurar magias com ações múltiplas de forma contínua entre turnos.",
-            "ativo": "Nenhum"
-          },
-          "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Pode ser usado com qualquer magia de múltiplas ações",
-            "duracaoExtra": "Nenhum"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Globo de Proteção",
-          "tipo": "Reação",
-          "descricao": "Cria uma esfera protetora ao redor do mago, imune a danos externos.",
-          "custoEstamina": 10,
-          "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Receber um ataque ou efeito mágico que causaria dano",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Cria uma esfera de proteção com 50 pontos de vida."
-          },
-          "modificadores": {
-            "bonusSucesso": "Custa mais 10 pontos de magia para cada 25 pontos de vida extra na esfera",
-            "usoExtra": "Pode ser usado uma vez por rodada",
-            "duracaoExtra": "Dura até o fim do próximo turno do mago"
-          },
-          "bonus": {
-            "vidaTemporaria": "50 pontos de vida temporária na esfera"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Parede de Espadas",
-          "tipo": "Ação",
-          "descricao": "Cria uma parede de espadas que causa dano e empurra criaturas que tentam atravessá-la.",
-          "custoEstamina": 12,
-          "chanceDeSucesso": "100%",
-          "dano": "4d10",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Cria uma parede de espadas que empurra e causa dano."
-          },
-          "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Pode ser usada uma vez por turno",
-            "duracaoExtra": "Dura por 10 rodadas"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Azagaia Arcana",
-          "tipo": "Ação",
-          "descricao": "Atira um projétil de energia arcana que causa dano à criatura atingida.",
-          "custoEstamina": 6,
-          "chanceDeSucesso": "100%",
-          "dano": "2d10 + Arcanismo",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Dispara um projétil que causa dano."
-          },
-          "modificadores": {
-            "bonusSucesso": "Aumenta o dano em 10 para cada 6 pontos de magia extra",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Deslocar Terreno",
-          "tipo": "Ação",
-          "descricao": "Cria uma cópia do terreno em que todas as suas características flutuam no ar.",
-          "custoEstamina": 10,
-          "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Cria uma cópia flutuante do terreno que reduz a velocidade de movimento."
-          },
-          "modificadores": {
-            "bonusSucesso": "Custa 5 pontos de magia por metro de altura adicional",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Dura por 10 rodadas"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Tempestade Arcana",
-          "tipo": "Ação",
-          "descricao": "Cria uma tempestade que causa congelamento e dano contínuo em criaturas na área.",
-          "custoEstamina": 10,
-          "chanceDeSucesso": "70%",
-          "dano": "8d6 por turno de condição congelando",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Causa a condição congelando e dano contínuo dentro da tempestade."
-          },
-          "modificadores": {
-            "bonusSucesso": "Custa 5 pontos de magia para aumentar a chance de congelamento em 5%",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Dura 10 rodadas"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Meteoro Arcano",
-          "tipo": "Ação",
-          "descricao": "Dispara um meteoro arcano que causa dano massivo e deixa a condição queimando.",
-          "custoEstamina": 10,
-          "chanceDeSucesso": "100%",
-          "dano": "8d10 + Arcanismo",
-          "requisito": "Explosão Arcana, Conjuração de Combate",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Causa dano massivo em área e pode deixar a condição queimando."
-          },
-          "modificadores": {
-            "bonusSucesso": "Custa 10 pontos de magia para adicionar uma explosão extra",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        },
-        {
-          "nome": "Teletransporte Tático",
-          "tipo": "Ação",
-          "descricao": "Teletransporta o mago até 18 metros de distância para um local visível.",
-          "custoEstamina": 2,
-          "chanceDeSucesso": "100%",
-          "dano": "Nenhum",
-          "requisito": "Nenhum",
-          "efeitos": {
-            "passivo": "Nenhum",
-            "ativo": "Teletransporta o mago instantaneamente."
-          },
-          "modificadores": {
-            "bonusSucesso": "Nenhum",
-            "usoExtra": "Pode ser usado uma vez por turno",
-            "duracaoExtra": "Nenhum"
-          },
-          "bonus": {
-            "vidaTemporaria": "Nenhum"
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada"
-          }
-        }
-      ]
-      
-    },
-    {
-      "titulo": "CAÇADOR",
-      "img": cacador,
-      "descricao": "O Caçador da classe Lâmina do Oculto é um mestre em sobrevivência e rastreamento, capaz de transformar o ambiente ao seu favor. Ele vê o mundo de forma única, decifrando rastros, lendo o vento e detectando sinais invisíveis para a maioria. Sua percepção aguçada o torna tanto um perseguidor implacável quanto um protetor vigilante de seus aliados, antecipando emboscadas e armadilhas.Ao seu lado, há sempre um companheiro animal leal, uma criatura treinada que se torna uma extensão do próprio Caçador. Juntos, eles operam em perfeita sincronia, protegendo um ao outro e atacando como uma unidade coesa. Essa ligação é tão profunda que o Caçador pode até compartilhar os sentidos de seu companheiro, tornando-se quase impossível de ser surpreendido.Sua adaptabilidade impressiona. Ele prospera em qualquer ambiente — florestas densas, desertos escaldantes ou montanhas geladas — resistindo a condições extremas sem perder eficácia. Ele é um explorador incansável, capaz de suportar fome, sede e temperaturas letais graças à sua resistência física e mental sobre-humanas.No combate, o Caçador não depende de força bruta, mas de velocidade e precisão. Ele ataca rápido e letalmente, aproveitando cada erro do oponente. Seu companheiro animal complementa esses ataques, desorientando e derrubando alvos com coordenação impecável. Além disso, o Caçador controla o campo de batalha com maestria, restringindo o movimento de inimigos e incapacitando-os sem matá-los quando necessário — ideal para capturar alvos ou impedir fugas.À distância, sua destreza é lendária. Ele dispara flechas com precisão cirúrgica, atingindo alvos mesmo atrás de cobertura. Quando cercado, ele pode liberar uma tempestade de golpes, transformando-se em um turbilhão de lâminas e fúria.Há um lado quase místico no Caçador. Ele pode marcar um alvo de forma sobrenatural, rastreando-o mesmo se este se esconder ou ficar invisível. Essa marca transforma a caçada em algo inevitável — o Caçador sempre encontra sua presa e cada ataque contra ela é mais mortal.Mais que guerreiro ou rastreador, o Caçador é um símbolo de equilíbrio entre civilização e natureza. Ele entende e respeita as leis selvagens do mundo, domando até mesmo criaturas lendárias como dragões. Ele não busca destruição, mas parceria e compreensão. Seu papel na sociedade varia: pode ser o guardião de uma vila remota, um explorador destemido ou um assassino furtivo, eliminando alvos importantes sem ser notado. Sua versatilidade e independência fazem dele um sobrevivente nato. Em essência, o Caçador é definido por sua mentalidade: um predador paciente, um sobrevivente resiliente e um aliado leal. Ele não teme o mundo cruel — ele se adapta e prospera. Onde quer que vá, deixa sua marca de equilíbrio e perseverança, lembrando a todos que, mesmo na escuridão, seus olhos atentos observam, esperando o momento certo para agir.",
-      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 4 Pontos de Estâmina\n- 1 Ponto em Magia",
-      "regaliaObrigatoria": {
-        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
-        "pontos": {
-          "atributos": {
-            "quantidade": 2,
-            "opcoes": ["Força", "Agilidade", "Destreza"]
-          },
-          "combate": {
-            "quantidade": 1,
-            "opcoes": ["Combate corpo a corpo", "Combate à distância"]
-          },
-          "habilidades": {
-            "quantidade": 2,
-            "opcoes": ["Percepção", "Sobrevivência", "Armadilha", "Natureza", "Rastreamento"]
-          },
-          "proficiências": ["Capacidade de Adestrar Animais"]
-        },
-        "habilidade": [{
-          "nome": " Adestrar Animais",
-          "tipo": "Passiva",
-          "descricao": "Cada animal adestrado tem um valor de dificuldade para ser treinado. Esse valor é de 10 ou metade do  valor dos pontos de vida da criatura, arredondado para cima, o que for maior. O teste feito deve ser de Lidar com Animais e o caçador ganha um bônus igual a metade do seu nível de personagem neste rolamento, arredondado para cima.\n A criatura adestrada é considerada um companheiro animal e tem seu turno ao mesmo tempo que o caçador. Esse companheiro pode agir alternadamente com o caçador dentro deste turno. \n O caçador consegue tratar ferimentos e  tem, em  todos os testes de medicina, um bônus de +5 ao cuidar de seu companheiro animal. \n Seu companheiro animal pode fazer um turno de vigia de duas horas sozinho em um acampamento. \n O companheiro animal ganha um  bônus em seus pontos de vida igual a duas vezes o nível do caçador. Ou seja, os pontos de vida ficha da criatura somados ao nível do caçador multiplicado por dois. O caçador pode ter um número de animais adestrados igual o seu valor em Lidar com animais",
-        }]
-      },
-      "regalias": [
-        {
-          "nome": "Ataque Veloz",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
-          "custoEstamina": 1
-        },
-        {
-          "nome": "Concentração",
-          "tipo": "Passiva",
-          "descricao": "O Caçador(a) aumenta o seu acerto em 2 pontos durante 10 rodadas.",
-          "custoEstamina": 6
-        },
-        {
-          "nome": "Ataque de Oportunidade",
-          "tipo": "Reação",
-          "descricao": "O Caçador(a) pode realizar um ataque de oportunidade quando outra criatura que possa ver sair da sua área de ameaça, ou atacar um aliado dentro do seu alcance.",
-          "custoEstamina": 2
-        },
-        {
-          "nome": "Trabalho em Equipe",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) ao realizar um ataque pode comandar o seu Companheiro Animal para atacar em conjunto sem gastar uma ação do companheiro animal.",
-          "efeitos": {
-            "auxilio": "Ao sofrer um ataque, tanto o caçador quanto o Companheiro Animal podem, como uma reação, solicitar auxílio um do outro. Ao receber auxílio, o caçador e o Companheiro recebem um aumento no Valor de Defesa em 2 pontos. O caçador deve estar a até 3 metros de distância de seu companheiro para realizar essa ajuda e vice-versa."
-          },
-          "custoEstamina": 6
-        },
-        {
-          "nome": "Conexão Primitiva",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) e seu companheiro animal criam uma conexão que compartilham seus sentidos, permitindo que um possa usar os sentidos do outro. O caçador consegue ver e ouvir pelos sentidos de seu companheiro e pelos próprios ao mesmo tempo.",
-          "duracao": "1 hora",
-          "custoEstamina": 1
-        },
-        {
-          "nome": "Corpo Adaptativo",
-          "tipo": "Passiva",
-          "descricao": "O Caçador(a) consegue se adaptar a qualquer ambiente em que é possível a vida de humanóides. O caçador e seu companheiro animal não se perdem em ambientes naturais e podem ficar até um mês sem comida e até 10 dias sem água.",
-          "efeitos": {
-            "ativo": "O Caçador(a) faz com que seu corpo se adapte rapidamente a uma temperatura. Como uma reação ao ser atacado com dano de fogo ou gelo ele pode se tornar resistente ao dano causado reduzindo-o pela metade."
-          },
-          "custoEstamina": 4
-        },
-        {
-          "nome": "Instinto Caçador",
-          "tipo": "Passiva",
-          "descricao": "O Caçador(a) utiliza de pistas em um ambiente para perseguir uma criatura que tenha passado por ali. Ao perseguir uma criatura através de pistas, como cheiro ou pegadas, ele ganha vantagem em testes de Rastreamento e Percepção.",
-          "efeitos": {
-            "ativo": "O Caçador(a) marca uma criatura que possa ver como uma ação. Enquanto esta criatura estiver marcada, o caçador sabe onde ela está mesmo se estiver invisível. Todo ataque do caçador e seu companheiro causa 1d6 de dano extra do tipo do ataque.",
-            "duracao": "10 minutos"
-          },
-          "custoEstamina": 1
-        },
-        {
-          "nome": "Debilitar",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) pode optar por debilitar um inimigo quando realizar um ataque. Reduzindo seu movimento pela metade.",
-          "custoEstamina": 2,
-          "modificadores": {
-            "efeitoExtra": "Podendo reduzir o movimento do alvo a zero ao gastar mais 2 pontos de estâmina adicionais."
-          }
-        },
-        {
-          "nome": "Olho de Águia",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) ao realizar um ataque a distância pode ignorar até meia cobertura.",
-          "custoEstamina": 1,
-          "modificadores": {
-            "bonusPenetracao": "Podendo ignorar até 3/4 de cobertura ao custo de 1 ponto de estâmina adicional."
-          }
-        },
-        {
-          "nome": "Chuva de Ataques",
-          "tipo": "Ação",
-          "descricao": "O Caçador(a) pode atacar, repetidamente, em um cone de 60° de abertura, 1.5 m de altura e distância de 27m. Atingindo todas as criaturas na área (incluindo aliados)",
-          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional para cada 1,5 m quadrado de área que a criatura ocupa.",
-          "custoEstamina": 2,
-        },
-        {
-          "nome": "Expurgo",
-          "tipo": "Ação (2 Ações)",
-          "descricao": "O Caçador(a) gira com golpes rápidos, acertando todas as criaturas que escolher em seu alcance de ameaça.",
-          "dano": "(dano da arma + atributo) + 1d10 pontos de dano adicional em cada criatura em alcance.",
-          "custoEstamina": 5
-        },
-        {
-          "nome": "Adestrar Dragão",
-          "tipo": "Ação",
-          "descricao": "O personagem pode adestrar dragões e transformá-los em seu Companheiro."
-        },
-        {
-          "nome": "Recuperar Fôlego Maior",
-          "tipo": "Ação (2 Ações)",
-          "descricao": "O personagem pode gastar duas ações para recuperar 3d8 pontos de vida e 6 pontos de estâmina.",
-          "custoMagia": 1
-        }
-      ]
 
     },
+
     {
       "titulo": "ASSASSINO",
       "img": assassino,
@@ -1449,78 +1203,244 @@ const ClassesPage = () => {
           "nome": "Bomba de Fumaça",
           "tipo": "Ação",
           "descricao": "O Assassino(a) arremessa em seu pé uma bomba que cria uma névoa ao seu redor, com uma área de 6m de raio. Ficando obscurecido dentro do raio de efeito, aumentando seu Valor de Defesa em 2 pontos. O assassino pode ver dentro da área normalmente. Além disso, recebe vantagem em testes de furtividade e 3m a mais de movimento.",
-          "duracao": "Até o fim do turno",
-          "custoEstamina": "2 pontos de estâmina e uma bomba de fumaça (custo de produção: 5 moedas de cobre)",
-          "materiais": "Pólvora ou outro material de rápida combustão, um tecido fino, cola em goma ou grude e pó não inflamável",
-          "tempoConstrucao": "5 minutos"
+          "custoEstamina": "2",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "efeitos": {
+            "ativo": "Área de 6m de raio que obscurece, aumentando o Valor de Defesa em 2 pontos, vantagem em furtividade e 3m a mais de movimento."
+          },
+          "modificadores": {
+            "bonusSucesso": "Aumento de 2 pontos de Defesa, vantagem em furtividade, aumento de 3m no movimento."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Interage com habilidades de furtividade e mobilidade."
+          }
         },
         {
           "nome": "Treinamento com Arma Secundária",
           "tipo": "Passivo",
-          "prerequisito": "Combate com duas armas",
-          "descricao": "Não custa estâmina para usar duas armas e a segunda arma não precisa ser leve, apenas uma arma que possa ser empunhada com uma mão. A arma da mão primária pode ter a propriedade pesada."
+          "descricao": "Não custa estâmina para usar duas armas e a segunda arma não precisa ser leve, apenas uma arma que possa ser empunhada com uma mão. A arma da mão primária pode ter a propriedade pesada.",
+          "custoEstamina": "0",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "efeitos": {
+            "passivo": "Permite usar duas armas sem custo adicional de estâmina, a arma secundária não precisa ser leve."
+          },
+          "modificadores": {
+            "bonusSucesso": "Permite empunhar duas armas, sendo uma delas pesada."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Permite o uso de outras habilidades de combate com duas armas."
+          }
         },
         {
           "nome": "Envenenar Arma",
           "tipo": "Ação",
           "descricao": "Como parte da ação atacar, o Assassino pode aplicar um veneno em sua arma até o fim de seu turno atual. O valor do dano adicional dependerá do veneno aplicado.",
-          "custoEstamina": "4 pontos de estâmina"
+          "custoEstamina": "4",
+          "chanceDeSucesso": "100%",
+          "dano": "Dependente do veneno",
+          "efeitos": {
+            "ativo": "Aplica veneno na arma para causar dano adicional no ataque."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dano adicional de acordo com o veneno."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de aumento de dano."
+          }
         },
         {
           "nome": "Golpe Hemorrágico",
           "tipo": "Ação",
           "descricao": "O Assassino(a) ataca em um ponto de alta circulação sanguínea e com grande precisão. Para esse ataque a sua margem de crítico aumenta em 2 pontos e aplica a condição 'Sangrando' caso acerte e cause dano.",
-          "custoEstamina": "4 pontos de estâmina"
+          "custoEstamina": "4",
+          "chanceDeSucesso": "100%",
+          "dano": "1d8 adicional",
+          "efeitos": {
+            "ativo": "Aumenta a margem de crítico em 2 pontos e aplica a condição 'Sangrando'."
+          },
+          "modificadores": {
+            "bonusSucesso": "Aumento na margem de crítico, aplicação da condição 'Sangrando'."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de dano e sangramento."
+          }
         },
         {
           "nome": "Mesclar-se às Sombras",
           "tipo": "2 Ações",
           "descricao": "O Assassino(a) entra em um estado de furtividade avançado, no qual ele se torna invisível desde que esteja em um ambiente parcialmente ou completamente escuro. Essa habilidade engana até olhos que enxergam no escuro e sentidos que detectam vibrações no solo. O efeito acaba se o assassino atacar ou entrar em uma área de luz completa.",
-          "custoEstamina": "3 pontos de estâmina"
+          "custoEstamina": "3",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "efeitos": {
+            "ativo": "Furtividade avançada que engana sentidos e habilidades de detecção em ambientes escuros."
+          },
+          "modificadores": {
+            "bonusSucesso": "Furtividade completa em ambientes escuros, não detectado por sentidos comuns."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com outras habilidades de furtividade e camuflagem."
+          }
         },
         {
           "nome": "Esquiva Perfeita",
           "tipo": "Reação",
           "descricao": "O Assassino(a) pode usar a sua reação para reduzir o dano de um ataque em área pela metade. Pode-se gastar 4 pontos de estâmina adicionais para reduzir todo o dano com uma Esquiva Perfeita completa. O assassino pode fazer 1 Esquiva Perfeita completa por dia sem custo.",
-          "custoEstamina": "2 pontos de estâmina"
+          "custoEstamina": "2",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "efeitos": {
+            "ativo": "Reduz dano de ataques em área pela metade ou por completo com gasto adicional de estâmina."
+          },
+          "modificadores": {
+            "bonusSucesso": "Redução total de dano com custo adicional de estâmina."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Interage com habilidades de defesa e evasão."
+          }
         },
         {
           "nome": "Executar",
           "tipo": "2 Ações",
-          "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais. Se a criatura estiver sangrando o ataque é um cŕitico automático e causa 3d8 ao invés de 1d8 adicional no cálculo antes do crítico",
-          "custoEstamina": "5 pontos de estâmina"
+          "descricao": "O Assassino(a) realiza um poderoso e preciso golpe em um dos pontos vitais de seu inimigo. Esse ataque reduz o seu alcance de crítico em 3 pontos e causa 1d8 pontos de dano adicionais. Se a criatura estiver sangrando o ataque é um crítico automático e causa 3d8 ao invés de 1d8 adicional no cálculo antes do crítico.",
+          "custoEstamina": "5",
+          "chanceDeSucesso": "100%",
+          "dano": "1d8 ou 3d8 (se sangrando)",
+          "efeitos": {
+            "ativo": "Ataque preciso que causa dano adicional, crítico automático se a vítima estiver sangrando."
+          },
+          "modificadores": {
+            "bonusSucesso": "Causa dano adicional e crítico automático se o inimigo estiver sangrando."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de sangramento e dano."
+          }
         },
         {
           "nome": "Ataque de Oportunidade",
           "tipo": "Reação",
           "descricao": "O Assassino(a) pode realizar um ataque quando uma criatura que possa ver sai da sua área de ameaça, ou quando um inimigo ataca um aliado dentro do seu alcance.",
-          "custoEstamina": "1 ponto de estâmina"
+          "custoEstamina": "1",
+          "chanceDeSucesso": "100%",
+          "dano": "Dano normal de ataque",
+          "efeitos": {
+            "ativo": "Permite realizar um ataque quando uma condição específica for atendida."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dano normal de ataque."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de ataque e posicionamento."
+          }
         },
         {
           "nome": "Troco",
           "tipo": "Reação",
           "descricao": "Quando um inimigo erra um ataque corpo a corpo, o Assassino(a) pode usar a sua reação para realizar um contra-ataque. Esse contra-ataque causa o dano de um ataque de arma normal do assassino, mas tem vantagem no rolamento de acerto. Pode ser feito uma vez por turno, podendo repetir com um custo adicional de 3 pontos de estâmina por uso extra.",
-          "custoEstamina": "2 pontos de estâmina"
+          "custoEstamina": "2",
+          "chanceDeSucesso": "100%",
+          "dano": "Dano normal de ataque",
+          "efeitos": {
+            "ativo": "Contra-ataque com vantagem após um ataque perdido."
+          },
+          "modificadores": {
+            "bonusSucesso": "Vantagem no rolamento de acerto e possibilidade de repetir com custo extra de estâmina."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Interage com habilidades de ataque e reação."
+          }
         },
         {
           "nome": "Finta Rápida",
           "tipo": "Ação",
           "descricao": "O Assassino(a) ao realizar um ataque, faz parecer que sua mão está em outra posição. Ganhando vantagem no rolamento de ataque. Esse ataque confunde os sentidos do inimigo e, ao acertar o alvo, o deixa com a condição 'Devagar' até o início do próximo turno do assassino.",
-          "custoEstamina": "5 pontos de estâmina"
+          "custoEstamina": "5",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "efeitos": {
+            "ativo": "Ganha vantagem no ataque e aplica a condição 'Devagar'."
+          },
+          "modificadores": {
+            "bonusSucesso": "Confunde o inimigo, deixando-o com a condição 'Devagar'."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de confusão e controle de movimento."
+          }
         },
         {
           "nome": "Mestre do Flanco",
           "tipo": "Passivo",
-          "prerequisito": "Combate de Emboscada",
-          "descricao": "O Assassino(a) possui melhor desempenho quando não é foco único do seu inimigo. Ao lutar com um inimigo que esteja na distância de ameaça de um aliado, todo ataque causa 1d6 pontos de dano adicional."
+          "descricao": "O Assassino(a) possui melhor desempenho quando não é foco único do seu inimigo. Ao lutar com um inimigo que esteja na distância de ameaça de um aliado, todo ataque causa 1d6 pontos de dano adicional.",
+          "custoEstamina": "0",
+          "chanceDeSucesso": "100%",
+          "dano": "1d6 adicional",
+          "efeitos": {
+            "passivo": "Dano adicional quando em combate com aliados próximos."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dano adicional de 1d6 contra inimigos que tenham aliados na área de ameaça."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Combina com habilidades de combate em grupo e posicionamento."
+          }
         },
         {
           "nome": "Fúria de Lâminas",
           "tipo": "2 Ações",
-          "descricao": "O Assassino(a) realiza uma sequência de golpes igual ao valor de agilidade do assassino. Todos os golpes contam como apenas um ataque para fins de penalidade. Para cada golpe que acerta o alvo, são somados 1d8 pontos de dano extra ao ataque. Ao terminar os ataques some todos os D8s ao valor de dano padrão de cada ataque, esses ataquem não recbem bonus de dano de outras fontes.",
-          "custoEstamina": "10 pontos de estâmina"
+          "descricao": "O Assassino(a) realiza uma sequência de golpes igual ao valor de agilidade do assassino. Todos os golpes contam como apenas um ataque para fins de penalidade. Para cada golpe que acerta o alvo, são somados 1d8 pontos de dano extra ao ataque. Ao terminar os ataques some todos os D8s ao valor de dano padrão de cada ataque, esses ataques não recebem bônus de dano de outras fontes.",
+          "custoEstamina": "10",
+          "chanceDeSucesso": "100%",
+          "dano": "1d8 por golpe acertado",
+          "efeitos": {
+            "ativo": "Realiza uma sequência de ataques baseados na agilidade do assassino, com dano adicional."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dano extra de 1d8 para cada ataque bem-sucedido."
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Interage com habilidades de agilidade e dano contínuo."
+          }
         }
       ]
+
     },
     {
       "titulo": "BÁRBARO",
@@ -1553,80 +1473,777 @@ const ClassesPage = () => {
       "regalias": [
         {
           "nome": "Couraça",
-          "tipo": "Passivo",
-          "descricao": "Se o Bárbaro(a) optar por não usar uma armadura, ele somará seu valor de fortitude ao seu Valor de Defesa, com um máximo de +8."
+          "tipo": "Passiva",
+          "descricao": "Se o Bárbaro(a) optar por não usar uma armadura, ele somará seu valor de fortitude ao seu Valor de Defesa, com um máximo de +8.",
+          "custoEstamina": null,
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Aumenta o Valor de Defesa do Bárbaro(a) com base em seu valor de fortitude."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Ímpeto Furioso",
-          "tipo": "Passivo",
+          "tipo": "Passiva",
           "descricao": "Quando entrar no estado Enfurecido, o Bárbaro(a) se torna imune a ser Encantado ou Amedrontado.",
-          "custoEstamina": "4 pontos de estâmina"
+          "custoEstamina": "4 pontos de estâmina",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Imunidade a ser Encantado ou Amedrontado quando Enfurecido."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Ataque Veloz",
           "tipo": "Ação",
           "descricao": "O Bárbaro(a) pode realizar um ataque a mais quando tomar uma ação de atacar. Apenas uma vez por ação.",
-          "custoEstamina": "2 pontos de estâmina"
+          "custoEstamina": "2 pontos de estâmina",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "ativo": "Realiza um ataque extra quando tomar uma ação de atacar."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Força Superior",
-          "tipo": "Passivo",
-          "prerequisito": "6 pontos em Força",
-          "descricao": "O Bárbaro(a) consegue manipular Armas consideradas de duas mãos, em uma única mão."
+          "tipo": "Passiva",
+          "descricao": "O Bárbaro(a) consegue manipular Armas consideradas de duas mãos, em uma única mão.",
+          "custoEstamina": null,
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": "6 pontos em Força",
+          "efeitos": {
+            "passivo": "Permite usar armas de duas mãos com uma só mão."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Força Excessiva",
           "tipo": "Ação",
-          "prerequisito": "10 pontos em Força e Força Superior",
           "descricao": "O Bárbaro(a) consegue temporariamente manipular Armas consideradas de duas mãos em uma única mão. Sendo capaz de manusear duas armas de duas mãos ao mesmo tempo, uma em cada mão.",
-          "custoEstamina": "10 pontos de estâmina (apenas durante o estado Enfurecido)"
+          "custoEstamina": "10 pontos de estâmina (apenas durante o estado Enfurecido)",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": "10 pontos em Força e Força Superior",
+          "efeitos": {
+            "ativo": "Permite usar duas armas de duas mãos simultaneamente."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Urro Amedrontador",
           "tipo": "Ação",
           "descricao": "O Bárbaro(a) ruge para as criaturas em até 6m dele. Todas as criaturas nessa área têm 50% de chance de serem amedrontadas, entrando na condição Aterrorizado, até o fim de seu próximo turno.",
-          "custoEstamina": "5 pontos de estâmina (pode aumentar em 5% a chance por 1 ponto extra)"
+          "custoEstamina": "5 pontos de estâmina (pode aumentar em 5% a chance por 1 ponto extra)",
+          "chanceDeSucesso": "50%",
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "ativo": "Chance de amedrontar inimigos próximos, aplicando a condição Aterrorizado."
+          },
+          "modificadores": {
+            "bonusSucesso": "Aumenta em 5% a chance de sucesso por ponto de estâmina extra.",
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Dizimar",
           "tipo": "2 Ações",
-          "descricao": "O Bárbaro(a) realiza um poderoso ataque giratório em sua área de ameaça, causando (o valor de dano da arma somado a seu atributo) +1d6 pontos de dano adicionais em todos os inimigos na área, além de aplicar a condição Sangrando. Pode realizar um giro adicional ao custo de 8 pontos de estâmina e de uma ação extra.",
-          "custoEstamina": "10 pontos de estâmina"
+          "descricao": "O Bárbaro(a) realiza um poderoso ataque giratório em sua área de ameaça, causando (o valor de dano da arma somado a seu atributo) +1d6 pontos de dano adicionais em todos os inimigos na área, além de aplicar a condição Sangrando.",
+          "custoEstamina": "10 pontos de estâmina",
+          "chanceDeSucesso": null,
+          "dano": "Valor de dano da arma + atributo + 1d6",
+          "requisito": null,
+          "efeitos": {
+            "ativo": "Realiza um ataque giratório, causando dano e aplicando Sangrando."
+          },
+          "modificadores": {
+            "bonusSucesso": "Gire novamente por 8 pontos de estâmina e uma ação extra.",
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Golpe Imprudente",
           "tipo": "Ação",
           "descricao": "O Bárbaro(a) ao realizar um ataque ganha vantagem no rolamento de ataque e para todos os ataques feitos neste turno. Porém, em retorno, todo ataque feito contra o bárbaro, até o início de seu próximo turno, recebe vantagem.",
-          "custoEstamina": "2 pontos de estâmina"
+          "custoEstamina": "2 pontos de estâmina",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "ativo": "Vantagem no rolamento de ataque, mas ataques contra o Bárbaro(a) recebem vantagem."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Ferocidade",
-          "tipo": "Passivo",
-          "descricao": "Quando o ataque do Bárbaro(a) for um acerto crítico ou reduzir os pontos de vida de um inimigo a 0 em seu turno, ele pode realizar uma ação Atacar adicional. Só pode realizar um ataque com esse gatilho uma vez por turno."
+          "tipo": "Passiva",
+          "descricao": "Quando o ataque do Bárbaro(a) for um acerto crítico ou reduzir os pontos de vida de um inimigo a 0 em seu turno, ele pode realizar uma ação Atacar adicional.",
+          "custoEstamina": null,
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Permite realizar um ataque adicional após um acerto crítico ou matar um inimigo."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": "Somente uma vez por turno."
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Fúria Implacável",
           "tipo": "Reação",
-          "prerequisito": "Estar Enfurecido",
-          "descricao": "Ao receber um golpe que o reduz a zero pontos de vida e entrar na condição À Beira da Morte, o Bárbaro(a) pode usar sua reação para entrar em uma fúria cega e continuar lutando. Ele ainda sofrerá a condição À Beira da Morte e morrerá se as condições forem cumpridas, mas pode tomar seus turnos normalmente até morrer ou sair da condição.",
-          "custoEstamina": "Todos os pontos de estâmina restantes"
+          "descricao": "Ao receber um golpe que o reduz a zero pontos de vida e entrar na condição À Beira da Morte, o Bárbaro(a) pode usar sua reação para entrar em uma fúria cega e continuar lutando.",
+          "custoEstamina": "Todos os pontos de estâmina restantes",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": "Estar Enfurecido",
+          "efeitos": {
+            "ativo": "Permite continuar lutando com a condição À Beira da Morte."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": "Custo de estâmina restante."
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Bater com Escudo",
           "tipo": "Ação",
-          "prerequisito": "Estar no estado Enfurecido e Combate Defensivo",
-          "descricao": "O Bárbaro(a) que estiver equipado com um escudo pode usá-lo como uma arma. Causa 1d6 pontos de dano de impacto."
+          "descricao": "O Bárbaro(a) que estiver equipado com um escudo pode usá-lo como uma arma. Causa 1d6 pontos de dano de impacto.",
+          "custoEstamina": null,
+          "chanceDeSucesso": null,
+          "dano": "1d6 de dano de impacto",
+          "requisito": "Estar no estado Enfurecido e Combate Defensivo",
+          "efeitos": {
+            "ativo": "Usa o escudo como uma arma causando dano de impacto."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": null,
+          "interacoes": null
         },
         {
           "nome": "Avanço Implacável",
           "tipo": "2 Ações",
-          "prerequisito": "Estar Enfurecido, Regalia Bater com Escudo",
-          "descricao": "O Bárbaro(a) avança em linha reta por 9m com seu escudo à frente. Todos os alvos nesta linha são empurrados até o fim do movimento. Se houver mais de um alvo, eles se chocam entre si e sofrem 2d8 pontos de dano de impacto. Se o movimento terminar em uma parede, todos os alvos empurrados tomam 4d8 pontos de dano de impacto adicionais. Se empurrar apenas um alvo, ele só sofrerá dano ao se chocar na parede.",
-          "custoEstamina": "4 pontos de estâmina"
+          "descricao": "O Bárbaro(a) avança em linha reta por 9m com seu escudo à frente. Todos os alvos nesta linha são empurrados até o fim do movimento.",
+          "custoEstamina": "4 pontos de estâmina",
+          "chanceDeSucesso": null,
+          "dano": "2d8 de dano de impacto (4d8 contra parede)",
+          "requisito": "Estar Enfurecido, Regalia Bater com Escudo",
+          "efeitos": {
+            "ativo": "Empurra inimigos em linha reta, causando dano de impacto.",
+            "modificadores": {
+              "bonusSucesso": "Empurrar com mais de um alvo causa dano adicional."
+            }
+          },
+          "bonus": null,
+          "interacoes": null
+        }
+      ]
+      
+    },
+  ]
+  const EspecializacaoIniciadoSkillsData = [
+    {
+      "titulo": "MAGO",
+      "img": mago,
+      "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
+      "atributos": "Cada Regalia comprada na especialização Cavaleiro(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Combate arcano", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Arcanismo", "Fortitude"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Fortitude", "Agilidade"]
+          },
+          "proficiências": ["CProficiência em Armadura média e Escudo."]
+        },
+        "outrasProficiencias": [
+          "Armaduras Pesadas",
+          "Todos os Escudos"
+        ],
+        "habilidade": [{
+          "nome": "Arcanista de combate",
+          "tipo": "Passiva",
+          "descricao": "Soma o valor de Arcanismo para o ataque de Míssil Mágico . Esse valor é adicionado por míssil.  ",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Alta Frequência",
+          "tipo": "Ação",
+          "descricao": "Faz com que um ponto a sua escolha em até 18 metros gere um som de imenso volume e frequência alta, causando danos em objetos e criaturas dentro do alcance.",
+          "custoMagia": 6,
+          "chanceDeSucesso": "100%",
+          "dano": "3d10 + 1d10 por cada 3 pontos de magia extra",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Gera um som destruidor e danifica objetos e criaturas."
+          },
+          "modificadores": {
+            "bonusSucesso": "Cada 3 pontos de magia extra causam 1d10 pontos de dano a mais",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Grande Mão",
+          "tipo": "Ação",
+          "descricao": "Cria uma enorme mão que pode levantar ou atacar criaturas e objetos.",
+          "custoMagia": 7,
+          "chanceDeSucesso": "100%",
+          "dano": "1d10 + Arcanismo",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma mão que pode atacar ou empurrar criaturas."
+          },
+          "modificadores": {
+            "bonusSucesso": "A mão pode levantar criaturas até 500 kg",
+            "usoExtra": "Pode ser usada uma vez por turno",
+            "duracaoExtra": "Dura 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Conjuração de Combate",
+          "tipo": "Passiva",
+          "descricao": "Permite que o mago inicie uma magia de múltiplas ações em um turno e termine em outro.",
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Permite conjurar magias com ações múltiplas de forma contínua entre turnos.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usado com qualquer magia de múltiplas ações",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Globo de Proteção",
+          "tipo": "Reação",
+          "descricao": "Cria uma esfera protetora ao redor do mago, imune a danos externos.",
+          "custoMagia": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Receber um ataque ou efeito mágico que causaria dano",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma esfera de proteção com 50 pontos de vida."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa mais 10 pontos de magia para cada 25 pontos de vida extra na esfera",
+            "usoExtra": "Pode ser usado uma vez por rodada",
+            "duracaoExtra": "Dura até o fim do próximo turno do mago"
+          },
+          "bonus": {
+            "vidaTemporaria": "50 pontos de vida temporária na esfera"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Parede de Espadas",
+          "tipo": "Ação",
+          "descricao": "Cria uma parede de espadas que causa dano e empurra criaturas que tentam atravessá-la.",
+          "custoMagia": 12,
+          "chanceDeSucesso": "100%",
+          "dano": "4d10",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma parede de espadas que empurra e causa dano."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usada uma vez por turno",
+            "duracaoExtra": "Dura por 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Azagaia Arcana",
+          "tipo": "Ação",
+          "descricao": "Atira um projétil de energia arcana que causa dano à criatura atingida.",
+          "custoMagia": 6,
+          "chanceDeSucesso": "100%",
+          "dano": "2d10 + Arcanismo",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Dispara um projétil que causa dano."
+          },
+          "modificadores": {
+            "bonusSucesso": "Aumenta o dano em 10 para cada 6 pontos de magia extra",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Deslocar Terreno",
+          "tipo": "Ação",
+          "descricao": "Cria uma cópia do terreno em que todas as suas características flutuam no ar.",
+          "custoMagia": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Cria uma cópia flutuante do terreno que reduz a velocidade de movimento."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 5 pontos de magia por metro de altura adicional",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Dura por 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Tempestade Arcana",
+          "tipo": "Ação",
+          "descricao": "Cria uma tempestade que causa congelamento e dano contínuo em criaturas na área.",
+          "custoMagia": 10,
+          "chanceDeSucesso": "70%",
+          "dano": "8d6 por turno de condição congelando",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Causa a condição congelando e dano contínuo dentro da tempestade."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 5 pontos de magia para aumentar a chance de congelamento em 5%",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Dura 10 rodadas"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Meteoro Arcano",
+          "tipo": "Ação",
+          "descricao": "Dispara um meteoro arcano que causa dano massivo e deixa a condição queimando.",
+          "custoMagia": 10,
+          "chanceDeSucesso": "100%",
+          "dano": "8d10 + Arcanismo",
+          "requisito": "Explosão Arcana, Conjuração de Combate",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Causa dano massivo em área e pode deixar a condição queimando."
+          },
+          "modificadores": {
+            "bonusSucesso": "Custa 10 pontos de magia para adicionar uma explosão extra",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        },
+        {
+          "nome": "Teletransporte Tático",
+          "tipo": "Ação",
+          "descricao": "Teletransporta o mago até 18 metros de distância para um local visível.",
+          "custoMagia": 2,
+          "chanceDeSucesso": "100%",
+          "dano": "Nenhum",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Teletransporta o mago instantaneamente."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usado uma vez por turno",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada"
+          }
+        }
+      ]
+
+
+    },
+    {
+      "titulo": "PROFESSOR",
+      "img": professor,
+      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
+      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Tecnologia"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate arcano", "Destreza"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["História", "Alquimia", "Arcanismo"]
+          },
+          "proficiências": ["Nenhuma nova proficiência."]
+        },
+        "habilidade": [{
+          "nome": " Ajudante de Laboratório ",
+          "tipo": "Magia (3 ações)",
+          "descricao": "O professor cria um elemental artificial do elemento arcano e aplica em um conjunto de materiais no valor de 50 moedas de ouro. Ao fazer isso cria um constructo  pequeno ou menor com pontos de vida igual a três vezes o nível de personagem professor. O professor pode conjurar magias da posição do seu ajudante desde que esteja em até 50 metros do mesmo. O constructo tem uma velocidade de movimento igual a 4,5 metros e pode ser voador ou não. Seu valor de armadura é igual a 10. Apenas um ajudante pode estar ativo por vez, que tem duração de até seu cancelamento ou chegar a zero pontos de vida( tanto o ajudante quanto o professor). Ao ser destruído, os materiais usados para construí-lo viram pó. Custa 10 pontos de magia para conjurar o elemental artificial. Ganha 5 pontos de vida adicionais a cada 5 pontos de magia adicionais ao conjurar o elemental.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Escultor de Magias",
+          "tipo": "Ativa | Reação",
+          "descricao": "Ao conjurar uma magia que não cause dano, o professor pode escolher um dos seguintes efeitos: dobrar o tempo de duração, diminuir em metade o custo de pontos de magia (Arredondando pra cima) ou dobrar a quantidade de alvos. Pode ser usada 5 vezes ao dia, com recuperação de usos após um descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Escolher um dos efeitos: dobrar duração, reduzir custo de pontos de magia ou dobrar número de alvos."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Conjuração Múltipla",
+          "tipo": "Passiva",
+          "descricao": "O professor pode conjurar mais magias que não causem dano em um mesmo turno, usando uma reação para adicionar uma ação extra ao seu turno. Pode conjurar até 2 magias de 2 ações ou até 4 de 1 ação, ou qualquer combinação que gaste até 4 ações em um turno. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Permite conjurar múltiplas magias não-dano em um único turno.",
+            "ativo": "Usa uma reação para adicionar ação extra ao turno."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Roque",
+          "tipo": "Ativa | Ação",
+          "descricao": "Troca de lugar com um ajudante através de teletransporte, desde que o ajudante esteja a até 50 metros. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Troca de lugar com um ajudante dentro do limite de distância."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Ajudante Melhorado",
+          "tipo": "Passiva",
+          "descricao": "Permite conjurar um constructo de tamanho médio ou menor com aparência humanóide rústica. Seus pontos de vida são 4 vezes o nível do professor.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Ajudante conjurado possui aparência humanóide rústica e pontos de vida aumentados.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Teletransporte",
+          "tipo": "Magia | Ação",
+          "descricao": "Teletransporta todas as criaturas dentro de um raio de três metros para um local familiar. A chance de sucesso depende da distância, sendo 80% para até 10 km e 50% para até 100 km. Caso falhe, o teletransporte leva para uma direção aleatória. Custa 15 pontos de magia.",
+          "custoMagia": 15,
+          "chanceDeSucesso": "80% (10 km) | 50% (100 km)",
+          "dano": "Não aplicável",
+          "requisito": "Conhecimento do local a ser teletransportado",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Teletransporta até 3 metros para local familiar."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Voar",
+          "tipo": "Magia | Ação",
+          "descricao": "Permite que o conjurador ou outra criatura voe. A velocidade de movimento no voo é o dobro da normal, com duração de 100 turnos. Custa 8 pontos de magia por criatura.",
+          "custoMagia": 8,
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Concede a habilidade de voar por 100 turnos."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Invisibilidade",
+          "tipo": "Magia | Ação",
+          "descricao": "Torna o conjurador ou outra criatura invisível por até 10 minutos. A invisibilidade é quebrada ao causar dano. Custa 8 pontos de magia por criatura.",
+          "custoMagia": 8,
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Nenhum",
+            "ativo": "Torna invisível por até 10 minutos, ou até causar dano."
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Ajudante de Combate",
+          "tipo": "Passiva",
+          "descricao": "Permite invocar um constructo de combate com 5 vezes o nível do professor em pontos de vida. O ajudante pode usar armas simples, escudo simples e armaduras leves ou médias. A velocidade de movimento é de 6 metros.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Ajudante Melhorado",
+          "efeitos": {
+            "passivo": "Ajudante de combate com armas, armaduras e escudo.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Atirador Arcano",
+          "tipo": "Passiva",
+          "descricao": "Dobra o alcance das magias que possuem alcance. Se o professor acertar um alvo com uma magia que precise de um rolamento de acerto, o dano atinge um segundo alvo a 1,5 metros de distância.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Dobra o alcance de magias e permite acertar outro alvo próximo.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
+        },
+        {
+          "nome": "Laboratório em Expansão",
+          "tipo": "Passiva",
+          "descricao": "Permite conjurar dois ajudantes em vez de um, com o custo base da magia para um único ajudante.",
+          "chanceDeSucesso": "100%",
+          "dano": "Não aplicável",
+          "requisito": "Nenhum",
+          "efeitos": {
+            "passivo": "Permite conjurar dois ajudantes com o custo de um.",
+            "ativo": "Nenhum"
+          },
+          "modificadores": {
+            "bonusSucesso": "Nenhum",
+            "usoExtra": "Nenhum",
+            "duracaoExtra": "Nenhum"
+          },
+          "bonus": {
+            "vidaTemporaria": "Nenhum"
+          },
+          "interacoes": {
+            "comOutraRegalia": "Nenhuma interação especificada."
+          }
         }
       ]
     },
   ]
+
+
   const SkillAccordion = ({ skill }) => (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
