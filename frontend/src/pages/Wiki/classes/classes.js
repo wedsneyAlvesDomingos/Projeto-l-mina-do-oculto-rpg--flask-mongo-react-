@@ -14,6 +14,8 @@ import cacador from "../../../assets/images/caçador.png";
 import assassino from "../../../assets/images/assassino.png";
 import mago from "../../../assets/images/mago.png";
 import professor from "../../../assets/images/professor.png";
+import sarcedote from "../../../assets/images/sarcedote.png";
+import exorcista from "../../../assets/images/exorcista.png";
 
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
@@ -24,7 +26,7 @@ const ClassesPage = () => {
   const regaliaContructor = {
     "nome": "[Nome da Regalia]" || null,
     "tipo": "[Ação | Reação | Passiva]" || null,
-    "descricao": "[Descrição detalhada do efeito da regalia]"|| null, 
+    "descricao": "[Descrição detalhada do efeito da regalia]" || null,
     "custoEstamina": "[Valor numérico > 0]" || null,
     "custoMagia": "[Valor numérico]" || null,
     "chanceDeSucesso": "[Valor %]" || null,
@@ -2246,7 +2248,7 @@ const ClassesPage = () => {
   const EspecializacaoNovicoSkillsData = [
     {
       "titulo": "Sarcedote",
-      "img": mago,
+      "img": sarcedote,
       "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
       "atributos": "Cada Regalia comprada na especialização Sarcedote(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -2519,7 +2521,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "EXORCISTA",
-      "img": professor,
+      "img": exorcista,
       "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
       "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -2547,83 +2549,41 @@ const ClassesPage = () => {
       },
       "regalias": [
         {
-          "nome": "Escultor de Magias",
-          "tipo": "Ativa | Reação",
-          "descricao": "Ao conjurar uma magia que não cause dano, o professor pode escolher um dos seguintes efeitos: dobrar o tempo de duração, diminuir em metade o custo de pontos de magia (Arredondando pra cima) ou dobrar a quantidade de alvos. Pode ser usada 5 vezes ao dia, com recuperação de usos após um descanso longo.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
+          "nome": "Julgar Alma",
+          "tipo": "Ação",
+          "descricao": "O exorcista ora para que seu deus julgue uma criatura em seu nome. Deixa o alvo cego, surdo e restringido até o fim do turno. No final, há 30% de chance de causar 5d10 de dano.",
+          "custoEstamina": null,
+          "custoMagia": 5,
+          "chanceDeSucesso": "30%",
+          "dano": "5d10",
           "requisito": null,
           "efeitos": {
             "passivo": null,
-            "ativo": "Escolher um dos efeitos: dobrar duração, reduzir custo de pontos de magia ou dobrar número de alvos."
+            "ativo": "Cada 5 pontos de magia adicionais aumentam a chance de sucesso em 5%."
           },
           "modificadores": {
             "bonusSucesso": null,
-            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
+            "usoExtra": null,
             "duracaoExtra": null
           },
           "bonus": {
             "vidaTemporaria": null
           },
           "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
+            "comOutraRegalia": null
           }
         },
         {
-          "nome": "Conjuração Múltipla",
+          "nome": "Explosão Sagrada",
           "tipo": "Passiva",
-          "descricao": "O professor pode conjurar mais magias que não causem dano em um mesmo turno, usando uma reação para adicionar uma ação extra ao seu turno. Pode conjurar até 2 magias de 2 ações ou até 4 de 1 ação, ou qualquer combinação que gaste até 4 ações em um turno. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": null,
+          "descricao": "Ao conjurar Chama Sagrada, o exorcista explode o alvo e todos a até 6m. Causa dano normal ao alvo e 1d8 extra em mortos-vivos.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "chanceDeSucesso": null,
+          "dano": "Dano normal + 1d8 (mortos-vivos)",
+          "requisito": "Chama Sagrada",
           "efeitos": {
-            "passivo": "Permite conjurar múltiplas magias não-dano em um único turno.",
-            "ativo": "Usa uma reação para adicionar ação extra ao turno."
-          },
-          "modificadores": {
-            "bonusSucesso": null,
-            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
-            "duracaoExtra": null
-          },
-          "bonus": {
-            "vidaTemporaria": null
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
-          }
-        },
-        {
-          "nome": "Roque",
-          "tipo": "Ativa | Ação",
-          "descricao": "Troca de lugar com um ajudante através de teletransporte, desde que o ajudante esteja a até 50 metros. Pode ser usada 5 vezes ao dia, com recuperação em descanso longo.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": null,
-          "efeitos": {
-            "passivo": null,
-            "ativo": "Troca de lugar com um ajudante dentro do limite de distância."
-          },
-          "modificadores": {
-            "bonusSucesso": null,
-            "usoExtra": "Pode ser usada até 5 vezes ao dia, com recuperação em descanso longo.",
-            "duracaoExtra": null
-          },
-          "bonus": {
-            "vidaTemporaria": null
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
-          }
-        },
-        {
-          "nome": "Ajudante Melhorado",
-          "tipo": "Passiva",
-          "descricao": "Permite conjurar um constructo de tamanho médio ou menor com aparência humanóide rústica. Seus pontos de vida são 4 vezes o nível do professor.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": null,
-          "efeitos": {
-            "passivo": "Ajudante conjurado possui aparência humanóide rústica e pontos de vida aumentados.",
+            "passivo": "Explosão de dano em área.",
             "ativo": null
           },
           "modificadores": {
@@ -2635,90 +2595,20 @@ const ClassesPage = () => {
             "vidaTemporaria": null
           },
           "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
+            "comOutraRegalia": "Melhora Chama Sagrada"
           }
         },
         {
-          "nome": "Teletransporte",
-          "tipo": "Magia | Ação",
-          "descricao": "Teletransporta todas as criaturas dentro de um raio de três metros para um local familiar. A chance de sucesso depende da distância, sendo 80% para até 10 km e 50% para até 100 km. Caso falhe, o teletransporte leva para uma direção aleatória. Custa 15 pontos de magia.",
-          "custoMagia": 15,
-          "chanceDeSucesso": "80% (10 km) | 50% (100 km)",
-          "dano": null,
-          "requisito": "Conhecimento do local a ser teletransportado",
-          "efeitos": {
-            "passivo": null,
-            "ativo": "Teletransporta até 3 metros para local familiar."
-          },
-          "modificadores": {
-            "bonusSucesso": null,
-            "usoExtra": null,
-            "duracaoExtra": null
-          },
-          "bonus": {
-            "vidaTemporaria": null
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
-          }
-        },
-        {
-          "nome": "Voar",
-          "tipo": "Magia | Ação",
-          "descricao": "Permite que o conjurador ou outra criatura voe. A velocidade de movimento no voo é o dobro da normal, com duração de 100 turnos. Custa 8 pontos de magia por criatura.",
-          "custoMagia": 8,
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": null,
-          "efeitos": {
-            "passivo": null,
-            "ativo": "Concede a habilidade de voar por 100 turnos."
-          },
-          "modificadores": {
-            "bonusSucesso": null,
-            "usoExtra": null,
-            "duracaoExtra": null
-          },
-          "bonus": {
-            "vidaTemporaria": null
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
-          }
-        },
-        {
-          "nome": "Invisibilidade",
-          "tipo": "Magia | Ação",
-          "descricao": "Torna o conjurador ou outra criatura invisível por até 10 minutos. A invisibilidade é quebrada ao causar dano. Custa 8 pontos de magia por criatura.",
-          "custoMagia": 8,
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": null,
-          "efeitos": {
-            "passivo": null,
-            "ativo": "Torna invisível por até 10 minutos, ou até causar dano."
-          },
-          "modificadores": {
-            "bonusSucesso": null,
-            "usoExtra": null,
-            "duracaoExtra": null
-          },
-          "bonus": {
-            "vidaTemporaria": null
-          },
-          "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
-          }
-        },
-        {
-          "nome": "Ajudante de Combate",
+          "nome": "Marca do Julgamento",
           "tipo": "Passiva",
-          "descricao": "Permite invocar um constructo de combate com 5 vezes o nível do professor em pontos de vida. O ajudante pode usar armas simples, escudo simples e armaduras leves ou médias. A velocidade de movimento é de 6 metros.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
-          "requisito": "Ajudante Melhorado",
+          "descricao": "Ao conjurar a Marca Divina, causa o dano inicial e repete o dano ao conjurar outros milagres. Causa 1d8 extra em mortos-vivos e demônios.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "chanceDeSucesso": null,
+          "dano": "Dano inicial + 1d8 (mortos-vivos/demônios)",
+          "requisito": "Marca Divina",
           "efeitos": {
-            "passivo": "Ajudante de combate com armas, armaduras e escudo.",
+            "passivo": "Dano recorrente com novos milagres.",
             "ativo": null
           },
           "modificadores": {
@@ -2730,18 +2620,70 @@ const ClassesPage = () => {
             "vidaTemporaria": null
           },
           "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
+            "comOutraRegalia": "Amplifica Marca Divina"
           }
         },
         {
-          "nome": "Atirador Arcano",
-          "tipo": "Passiva",
-          "descricao": "Dobra o alcance das magias que possuem alcance. Se o professor acertar um alvo com uma magia que precise de um rolamento de acerto, o dano atinge um segundo alvo a 1,5 metros de distância.",
-          "chanceDeSucesso": "100%",
+          "nome": "Esfera Divina Completa",
+          "tipo": "Ação",
+          "descricao": "O exorcista cria até 5 esferas sagradas que duram 1h. Cada esfera dá -10% na chance de sucesso de maldições e controle mental.",
+          "custoEstamina": null,
+          "custoMagia": "2 por esfera",
+          "chanceDeSucesso": null,
           "dano": null,
           "requisito": null,
           "efeitos": {
-            "passivo": "Dobra o alcance de magias e permite acertar outro alvo próximo.",
+            "passivo": null,
+            "ativo": "Protege aliados próximos e projeta luz."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Atirar Esfera Divina",
+          "tipo": "Ação",
+          "descricao": "Permite atirar esferas divinas. Causa 2d10 de dano por esfera e 1d10 extra em corruptores.",
+          "custoEstamina": null,
+          "custoMagia": "4 por esfera",
+          "chanceDeSucesso": null,
+          "dano": "2d10 por esfera + 1d10 (corruptores)",
+          "requisito": "Esfera Divina, Teologia 4, Ocultismo 4",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Permite lançar múltiplas esferas de uma vez."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": "Melhora Esfera Divina"
+          }
+        },
+        {
+          "nome": "Lente investigativa Melhorada",
+          "tipo": "Passiva",
+          "descricao": "Aumenta o alcance do milagre em 6m. Dura 10 minutos a mais. Causa 1d4 de dano a mortos-vivos e demônios dentro da área a cada rodada ou 6 segundos se estiver fora de combate. A área fica em meia luz caso esteja em escuridão, criaturas dentro desta área ficam iluminadas e destacadas do ambiente como se estivessem em luz completa.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "chanceDeSucesso": null,
+          "dano": "1d4 (contra mortos-vivos e demônios por rodada)",
+          "requisito": null,
+          "efeitos": {
+            "passivo": "Aumenta o alcance, causa dano contínuo a inimigos específicos e ilumina a área.",
             "ativo": null
           },
           "modificadores": {
@@ -2753,19 +2695,21 @@ const ClassesPage = () => {
             "vidaTemporaria": null
           },
           "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
+            "comOutraRegalia": null
           }
         },
         {
-          "nome": "Laboratório em Expansão",
-          "tipo": "Passiva",
-          "descricao": "Permite conjurar dois ajudantes em vez de um, com o custo base da magia para um único ajudante.",
-          "chanceDeSucesso": "100%",
-          "dano": null,
+          "nome": "Arma divina",
+          "tipo": "Ação",
+          "descricao": "Uma arma divina astral começa a flutuar a 1,5 metros do Exorcista. Após conjurar, pode usar uma ação para mover a arma em até 9 m. Ao usar a ação para atacar, pode usar a arma divina no lugar de um ataque com arma, ela causa 1d12 de dano. Duração de 10 rodadas.",
+          "custoEstamina": null,
+          "custoMagia": "6",
+          "chanceDeSucesso": null,
+          "dano": "1d12",
           "requisito": null,
           "efeitos": {
-            "passivo": "Permite conjurar dois ajudantes com o custo de um.",
-            "ativo": null
+            "passivo": null,
+            "ativo": "Invoca uma arma astral que pode ser controlada e causa dano ao atacar."
           },
           "modificadores": {
             "bonusSucesso": null,
@@ -2776,10 +2720,67 @@ const ClassesPage = () => {
             "vidaTemporaria": null
           },
           "interacoes": {
-            "comOutraRegalia": "Nenhuma interação especificada."
+            "comOutraRegalia": null
           }
+        },
+        {
+          "nome": "Proteção contra o sombrio",
+          "tipo": "Ação",
+          "descricao": "Cria uma área protetora de 18 metros de raio ao redor do exorcista. Esta área atribui desvantagem em ataques feitos por corruptores. Para cada aliado protegido, o exorcista ganha um bônus de Combate Arcano igual a +1.",
+          "custoEstamina": null,
+          "custoMagia": "5",
+          "chanceDeSucesso": null,
+          "dano": null,
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Cria uma área que penaliza ataques inimigos e fortalece o exorcista."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Oração de reflexão",
+          "tipo": "Milagre",
+          "descricao": "O Exorcista que tiver esferas divinas em volta de si pode girá-las para se defender de ofensores. Ao receber um ataque enquanto essa habilidade estiver ativa, causa 1d8 de dano por esfera conjurada ao atacante. Duração de 5 turnos.",
+          "custoEstamina": null,
+          "custoMagia": "10",
+          "chanceDeSucesso": null,
+          "dano": "1d8 por esfera",
+          "requisito": "Esfera divina",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Reflete dano em atacantes usando esferas divinas."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        },
+        {
+          "nome": "Exorcista de Combate",
+          "tipo": "Especialização",
+          "descricao": "1 ponto em fortitude e agilidade. 2 pontos em combate corpo a corpo ou distância. 1 em Força ou Destreza. Proficiência com todas as armas simples e marciais, escudos e armaduras.",
         }
       ]
+
+
     },
   ]
 
