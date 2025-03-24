@@ -2249,7 +2249,7 @@ const ClassesPage = () => {
     {
       "titulo": "Sarcedote",
       "img": sarcedote,
-      "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
+      "descricao": "Na penumbra das grandes catedrais e nas montanhas onde os ventos sussurram segredos antigos, surge uma figura que, mais que qualquer outra, carrega em seu ser o peso do destino dos outros. O sacerdote, cujo manto não apenas cobre seu corpo, mas resguarda as esperanças e os temores daqueles que buscam consolo nas horas de trevas. Sua presença é, muitas vezes, uma âncora em mares revoltos, um farol que brilha na escuridão do sofrimento humano. Em sua jornada, o sacerdote possui a capacidade de curar e restaurar, não só os corpos quebrantados, mas também as almas fragmentadas. Sua magia não é uma força bruta, mas uma gentileza revestida de poder. A cura que ele oferece não vem apenas do gesto, mas da conexão com o divino, uma força etérea que se manifesta em milagre após milagre. Cada oração, cada feitiço lançado, é um eco de um chamado maior, uma resposta ao sofrimento do mundo. Quando o sacerdote invoca o poder do milagre, ele não apenas traz alívio imediato, mas estende seu toque para além, fazendo com que sua benção continue, fluindo suavemente, como um rio que nunca cessa de correr. Mas sua dedicação vai além da cura. Ele também é o guardião dos outros, aquele que se coloca entre seus companheiros e o perigo, dividindo as dores e os fardos. Em sua jornada, a troca de fardos é um caminho sem retorno, onde o peso de um só é repartido com a alma do outro. O sacerdote não teme os sacrifícios, pois sabe que, em sua perda, pode salvar vidas. E, em sua bondade, pode até mesmo devolver o que o destino tomara, ressuscitando aqueles que foram tomados pela morte, com a promessa de um novo amanhã. O sacerdote é um ser de dualidade: forte, mas gentil; humilde, mas poderoso. Cada ação sua ressoa com um propósito que transcende a compreensão humana, e sua presença é tanto uma bênção quanto uma lembrança de que, no final, todos devemos, em algum momento, buscar a luz nas sombras.",
       "atributos": "Cada Regalia comprada na especialização Sarcedote(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
@@ -2522,8 +2522,8 @@ const ClassesPage = () => {
     {
       "titulo": "EXORCISTA",
       "img": exorcista,
-      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
-      "atributos": "Cada Regalia comprada na especialização Caçador(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "descricao": "O Exorcista é um guardião das fronteiras entre os mundos, aquele que caminha onde as sombras se amontoam e o vazio sussurra promessas de destruição. Com uma fé inabalável, sua jornada é tanto uma busca espiritual quanto uma luta constante contra as forças que tentam corromper a humanidade. Armado com o conhecimento profundo de rituais sagrados e uma compreensão singular da natureza do mal, o Exorcista se vê como um juiz e executor, encarregado de purificar aqueles que foram tomados por demônios ou mortos-vivos. Sua capacidade de discernir e purificar é moldada por uma conexão direta com o divino, capaz de invocar milagres que envolvem purificação, iluminação e julgamento. A habilidade de fazer o mal retroceder, como um farol de luz contra as trevas, é acompanhada de uma habilidade de adaptação impressionante. Os Exorcistas podem manipular a energia celestial para criar esferas que protejam seus aliados, ou lançar ataques devastadores contra os corruptores da vida e da morte. Sua oração, como um eco de uma autoridade superior, permite que sua lâmina espiritual corte através das mentiras e corrupções, trazendo tanto a vingança quanto a cura. Porém, sua luta não é apenas contra os demônios externos. O Exorcista é muitas vezes um ser solitário, forjado na dor e na dúvida, testado pela escuridão que ameaça devorar sua própria alma. Ao conjurar a Marca Divina ou executar rituais de purificação, ele não só age sobre o mal, mas também reflete sobre sua própria humanidade, buscando o equilíbrio entre a justiça e a misericórdia. A batalha que trava, tanto no campo espiritual quanto físico, é uma busca constante pelo propósito, pela proteção dos inocentes e pela destruição de tudo o que corrompe o que é puro.",
+      "atributos": "Cada Regalia comprada na especialização Exorcista(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
@@ -2783,7 +2783,739 @@ const ClassesPage = () => {
 
     },
   ]
+  const EspecializacaoFeiticeiroSkillsData = [
+    {
+      "titulo": "Xamã",
+      "img": sarcedote,
+      "descricao": "O Mago, como uma sombra longa e silenciosa que se estende sobre os destinos do mundo, é um ser de grande sabedoria e poder. Sua presença é como um sussurro nos ventos que atravessam os vales antigos, um murmurinho no fundo das bibliotecas esquecidas e nas torres que tocam as estrelas. Com os olhos carregados de antigos segredos, ele caminha com a serenidade daqueles que compreendem os mistérios do cosmos. Não há pressa em seus passos, pois o tempo, para ele, é apenas um fio que pode ser puxado e entrelaçado ao seu bel prazer. O Mago é um mestre das forças invisíveis, capaz de comandar os elementos e de dobrar o próprio tecido da realidade à sua vontade. Seus feitiços não são meras palavras ditas ao vento, mas cânticos profundos que ecoam em dimensões além da compreensão mortal. Ele pode, com um gesto de sua mão, invocar tempestades que congelam o coração dos inimigos ou chamar a terra sob seus pés para flutuar, desafiando as leis naturais. Nos campos de batalha, o Mago é tanto uma espada quanto um escudo, usando sua magia para defender ou destruir com a mesma destreza. Sua mente afiada, porém, jamais se deixa levar pela fúria do combate, pois ele sabe que o verdadeiro poder reside na paciência e na precisão. Ele se move como uma brisa, tão leve quanto as folhas caindo no outono, mas com a força para derrubar castelos inteiros. Contudo, o Mago não é apenas um conjurador de destruição. Ele é um guardião das artes arcanas, um farol de sabedoria e, para aqueles que buscam seu conselho, um guia nas sombras da ignorância. Mas, como toda grande força, ele é também um enigma, um reflexo das forças que ele manipula—cercado de mistério, admirado e temido, pois quem sabe até onde seu poder pode alcançar?",
+      "atributos": "Cada Regalia comprada na especialização Xamã fornece:\n- 3 Pontos de Vida\n- 0 Pontos de Estâmina\n- 7 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Ritualismo", "Ocultismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Destreza", "Combate Arcano "]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Natureza", "Estudo Religioso", "Intuição", "Sobrevivência"]
+          },
+          "proficiências": null
+        },
+        "outrasProficiencias": null,
+        "habilidade": [{
+          "nome": "Ciclo Sem Fim",
+          "tipo": "(Passiva) ",
+          "descricao": "Pré-Requisito: Espiritomancia. Sempre que uma criatura, não humanoide e de tamanho médio ou menor, morre em até 9 metros do Xamã, enquanto ele estiver com o rito espiritomancia ativo. Há uma chance de 50% de um dos espíritos possuir o corpo da criatura morta. A criatura retorna como um morto-vivo comandado pelo Xamã. Possui 2 vezes o valor do ocultismo do xamã em pontos de vida e é incapaz de utilizar feitiços, magias, milagres e afins. Seus ataques são considerados mágicos, desarmados e causam 1d8 de dano necrótico.",
+        }]
+      },
+      "regalias": [{
+        "nome": "Sacrifício",
+        "tipo": "Ação",
+        "descricao": "O Xamã explode um dos seus fantoches ou invocações causando dano necrótico igual ao valor do ocultismo do xamã + 1d12, em uma área de 3 metros de raio. Custa 6 pontos de magia para cada criatura que explodir através desta regalia.",
+        "custoMagia": 6,
+        "dano": "Ocultismo do Xamã + 1d12 de dano necrótico"
+      },
+      {
+        "nome": "Banquete Mórbido",
+        "tipo": "Ativa",
+        "descricao": "O Xamã consome um dos seus mortos-vivos, recuperando pontos de vida equivalentes ao seu valor de ocultismo + ritualismo. Não possui custo de magia.",
+        "bonus": {
+          "vidaTemporaria": "Ocultismo + Ritualismo"
+        }
+      },
+      {
+        "nome": "Amigos do Outro Lado",
+        "tipo": "Reação",
+        "descricao": "Quando for realizar um teste da aba de Conhecimento, o Xamã pode realizar um ritual para tentar contatar um espírito para auxiliá-lo. O Xamã recebe um bônus de +10 no referido teste. Custa 5 pontos de Magia e 5 moedas de custo para o material de ritual. Se o xamã tiver mais que 5 em seu ritualismo ele não precisa dos materiais para o ritual.",
+        "custoMagia": 5,
+        "efeitos": {},
+        "modificadores": {
+          "bonusSucesso": "Bônus de +10 em teste de Conhecimento"
+        }
+      },
+      {
+        "nome": "Fantoche de Carne",
+        "tipo": "Ritual",
+        "descricao": "Este ritual anima uma pequena criatura utilizando um espírito da natureza, este ritual não tem limite de duração, ela desaparece apenas quando for morta. A criatura pode atacar usando o Combate Arcano do Feiticeiro(a) e tem seu valor de ritualismo x 2 em pontos de vida. Seus ataques causam 1d4 + o valor de ocultismo do xamã em dano necrótico. Custa 5 moedas de ouro em materiais para o ritual. Custa 5 pontos de magia e para cada 1 ponto extra o fantoche recebe mais 2 pontos de vida.",
+        "custoMagia": 5,
+        "dano": "1d4 + Ocultismo do Xamã de dano necrótico",
+        "modificadores": {
+          "usoExtra": "Custa 5 pontos de magia e para cada 1 ponto extra o fantoche recebe mais 2 pontos de vida"
+        }
+      },
+      {
+        "nome": "Matilha Carniceira",
+        "tipo": "Ação",
+        "descricao": "O Xamã invoca um Cão Zumbi para lutar ao seu lado em um ponto a até 6 metros de distância, o Cão possui pontos de Vida igual a 3 vezes o nível do Xamã e seu Valor de Defesa é 7+ valor de ritualismo. Ele pode realizar ataques de mordida e de garra em sua rodada com dano igual ao valor de ocultismo do xamã. Custa 5 pontos de magia. O Xamã pode invocar somente um cão por ação.",
+        "custoMagia": 5,
+        "dano": "Ocultismo do Xamã",
+        "modificadores": {
+          "usoExtra": "Somente um cão pode ser invocado por ação"
+        }
+      },
+      {
+        "nome": "Aparição Assombrada",
+        "tipo": "Ação",
+        "descricao": "O Xamã invoca um espírito de tamanho grande em um ponto que consiga ver a até 18 metros de distância. As criaturas em uma área de até 12 metros têm 50% de chance de entrar na condição Aterrorizado. Custa 4 pontos de magia. A cada 2 pontos de magia gastos a mais, aumenta em 5% a chance de sucesso do feitiço.",
+        "custoMagia": 4,
+        "chanceDeSucesso": "50%",
+        "efeitos": {},
+        "modificadores": {
+          "bonusSucesso": "A cada 2 pontos de magia gastos a mais, aumenta em 5% a chance de sucesso do feitiço"
+        }
+      },
+      {
+        "nome": "Ciclo Sem Fim Aprimorado",
+        "tipo": "Passiva",
+        "descricao": "Sempre que uma criatura morre próximo do Xamã, enquanto ele estiver com o rito espiritomancia ativo e a uma distância de 12 metros, há uma chance de 10% de um dos espíritos possuir o corpo da criatura morta. A criatura retorna como um morto-vivo comandado pelo Xamã. Possui metade dos pontos de vida da criatura original e é incapaz de utilizar feitiços, magias, milagres e afins. Só pode ser de tamanho médio ou menor.",
+        "efeitos": {
+          "passivo": "Chance de espírito possuir corpo de criatura morta"
+        }
+      },
+      {
+        "nome": "Ciclo Sem Fim Supremo",
+        "tipo": "Passiva",
+        "descricao": "Uma chance de 20% de um dos espíritos possuir o corpo da criatura morta, independente de seu tamanho, desde que esteja em até 6 metros do Xamã. A criatura retorna como um morto-vivo comandado pelo Xamã. Possui metade dos pontos de vida da criatura original e metade dos seus pontos de magia (caso a criatura original os possua). A criatura consegue lançar os feitiços conhecidos pela criatura ou pelo feiticeiro.",
+        "efeitos": {
+          "passivo": "Chance de espírito possuir corpo de criatura morta e poder lançar feitiços"
+        }
+      },
+      {
+        "nome": "Festim Macabro",
+        "tipo": "Feitiço",
+        "descricao": "Uma revoada de espíritos surge em uma área de 6 metros ao redor do Xamã e o circundam durante 10 rodadas. Os inimigos dentro da área recebem 3d6 pontos de dano quando entram na área pela primeira vez e quando começa o turno dentro dela. Os inimigos que entrarem na área pela primeira vez tem 50% de chance de entrar na condição Aterrorizado pelos agouros dos espíritos. Inimigos dentro da área possuem movimento difícil e gastam o dobro de movimento que gastariam normalmente (3 metros para cada 1,5 metros de movimento).",
+        "custoEstamina": null,
+        "custoMagia": "10 pontos de magia",
+        "chanceDeSucesso": null,
+        "dano": "3d6 pontos de dano. A cada 5 pontos de magia aumenta o dano em 2d6.",
+        "efeitos": {
+          "ativo": "Os inimigos que entrarem na área pela primeira vez e os que começam o turno dentro dela sofrem dano e podem entrar na condição Aterrorizado. Além disso, o movimento dentro da área é reduzido, com gasto dobrado de movimento."
+        },
+        "modificadores": null,
+        "bonus": null,
+        "interacoes": null
+      },
+      {
+        "nome": "Necroanimação",
+        "tipo": "Ritual",
+        "descricao": "O Xamã pode reanimar um ser de tamanho grande ou menor, que esteja em até 6 metros de distância como um morto vivo em um ritual que dura aproximadamente 1 hora. O morto-vivo retorna como a criatura que foi morta, mas possuída por um espírito sob o comando do Xamã. Um ser necroanimado é incapaz de se usar milagres ou receber cura de milagres conjurados nele. Possui os mesmos status da criatura que era antes de morrer.",
+        "custoEstamina": null,
+        "custoMagia": "10 pontos de magia",
+        "chanceDeSucesso": null,
+        "dano": null,
+        "requisito": "Fantoche de Carne",
+        "efeitos": {
+          "ativo": "Ritual de necroanimação que dura 1 hora para reanimar um morto-vivo sob o controle do Xamã."
+        },
+        "modificadores": null,
+        "bonus": null,
+        "interacoes": null
+      },
+      {
+        "nome": "Terreno Apodrecido",
+        "tipo": "Feitiço",
+        "descricao": "O Xamã amaldiçoa o solo em uma área de 12 metros de raio, em um ponto a 100 metros de distância. As criaturas que passarem por esse terreno perdem metade do seu movimento e recebem 1d4 de dano necrótico a cada 1,5m que caminham na área.",
+        "custoEstamina": null,
+        "custoMagia": "7 pontos de magia",
+        "chanceDeSucesso": null,
+        "dano": "1d4 de dano necrótico a cada 1,5 metros percorridos. A cada 7 pontos de magia gastos a mais, o dano aumenta em 1d4.",
+        "efeitos": {
+          "ativo": "A área amaldiçoada reduz o movimento e causa dano necrótico às criaturas que nela passarem."
+        },
+        "modificadores": null,
+        "bonus": null,
+        "interacoes": null
+      },
+      {
+        "nome": "Maestria Necrótica",
+        "tipo": "Passiva",
+        "descricao": "Todos os mortos-vivos invocados pelo Xamã passam a causar 1d10 pontos de dano necrótico adicionais.",
+        "custoEstamina": null,
+        "custoMagia": null,
+        "chanceDeSucesso": null,
+        "dano": null,
+        "requisito": null,
+        "efeitos": {
+          "passivo": "Os mortos-vivos invocados pelo Xamã causam dano necrótico adicional."
+        },
+        "modificadores": null,
+        "bonus": null,
+        "interacoes": null
+      },
+      {
+        "nome": "Praga",
+        "tipo": "Feitiço",
+        "descricao": "O Xamã invoca um enxame de insetos, répteis ou anfíbios rastejantes e peçonhentos que avançam em um alvo em até 72 metros. O alvo recebe 4d6 pontos de dano e tem 75% de chance de ficar nas condições Devagar e Cego por 5 turnos.",
+        "custoEstamina": null,
+        "custoMagia": "5 pontos de Magia",
+        "chanceDeSucesso": null,
+        "dano": "4d6 pontos de dano. Aumenta o dano em 1d6 para cada 2 pontos de magia adicionais.",
+        "efeitos": {
+          "ativo": "O alvo recebe dano e tem chances de ficar Devagar e Cego por 5 turnos."
+        },
+        "modificadores": null,
+        "bonus": null,
+        "interacoes": null
+      }
+      ]
 
+    },
+    {
+      "titulo": "Elementalista",
+      "img": exorcista,
+      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
+      "atributos": "Cada Regalia comprada na especialização Elementalista(a) fornece:\n- 5 Pontos de Vida\n- 0 Pontos de Estâmina\n- 5 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Natureza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Ritualismo"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Natureza", "Alquimia", "Condução exótica"]
+          },
+          "proficiências": ["Nenhuma nova proficiência."]
+        },
+        "habilidade": [{
+          "nome": "Dominar Elemento Avançado",
+          "tipo": "Feitiço( Ação)",
+          "descricao": "Criar fortes rajadas de vento capazes de abrir portas e janelas, além de empurrar criaturas médias ou menores em 3 metros para trás. Mover 1 metro cúbico de terra solta ou abrir 1 metros cúbico de passagem em rocha sólida a cada 6 segundos. Acender uma fogueira, vela, tocha e qualquer combustível com chamas. Pode também criar uma chama em sua mão que tem duração de 1 hora ou até arremessar em em alguma direção em até 6 metros. Causa 1d6 de dano no que acertar. Custa 2 pontos de magia.Controlar até 10 metros cúbicos de água, podendo modelar sua forma  e sua cor, e congelar porções dessa água (10 litros a cada 6 segundos). Acender estalos de eletricidade que causam flashes de luz. Esses flashes têm 50% de chance de cegar uma criatura por 6 segundos. Além disso, pode manter a faísca elétrica em sua mão e causar um pouco de dano em alguma criatura que tocar em alcance corpo a corpo. Causa 1d8 de dano. ",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Montaria Elemental",
+          "tipo": "Ritual",
+          "descricao": "O elementalista faz um ritual para conjurar uma montaria elemental, que não consegue voar e é grande ou muito grande. Escolha um elemento para a montaria ser imune. A montaria tem habilidades baseadas no elemento escolhido.",
+          "custoEstamina": 0,
+          "custoMagia": 0,
+          "efeitos": {
+            "ativo": "Dependente do elemento escolhido, a montaria recebe habilidades como ar, fogo, raio, terra ou água."
+          },
+          "modificadores": {
+            "usoExtra": "Uma vez a cada 10 minutos."
+          }
+        },
+        {
+          "nome": "Companheiro Elemental",
+          "tipo": "Ritual",
+          "descricao": "O elementalista realiza um ritual para invocar uma criatura pequena que não consegue voar. A criatura é imune a um elemento de sua escolha e recebe habilidades baseadas no elemento selecionado.",
+          "custoEstamina": 0,
+          "custoMagia": 0,
+          "efeitos": {
+            "ativo": "Dependente do elemento escolhido, o companheiro recebe habilidades como ar, fogo, raio, terra ou água."
+          },
+          "modificadores": {
+            "usoExtra": "Uma vez a cada 10 minutos."
+          }
+        },
+        {
+          "nome": "Ataque Elemental Múltiplo",
+          "tipo": "Ação",
+          "descricao": "O elementalista dispara três jatos de elementos à sua escolha, causando 2d10 de dano para cada jato. Cada jato tem 40% de chance de aplicar um efeito no alvo.",
+          "custoEstamina": 0,
+          "custoMagia": 6,
+          "chanceDeSucesso": 40,
+          "dano": "2d10",
+          "efeitos": {
+            "ativo": "Chance de aplicar efeitos como sangramento, atordoado, congelado, queimando ou surdo/cego dependendo do elemento."
+          }
+        },
+        {
+          "nome": "Armadura Elemental Melhorada",
+          "tipo": "Feitiço",
+          "descricao": "Cria uma armadura elemental que fornece pontos de vida temporários iguais ao valor de arcanismo + ocultismo do elementalista e causa dano de retaliação no atacante.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Causa dano de retaliação a cada ataque corpo a corpo que o elementalista recebe enquanto tiver pontos de vida temporários."
+          },
+          "modificadores": {
+            "duracaoExtra": "5 pontos de magia para cada 5 pontos adicionais de vida temporária."
+          },
+          "bonus": {
+            "vidaTemporaria": "Valor igual a arcanismo + ocultismo."
+          }
+        },
+        {
+          "nome": "Nevasca",
+          "tipo": "Feitiço",
+          "descricao": "Cria uma tempestade de neve que causa dano e tem 70% de chance de aplicar congelamento. Dura por rodadas baseadas no arcanismo do conjurador.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "dano": "3d6",
+          "efeitos": {
+            "ativo": "Todas as criaturas na área ficam Devagar e recebem dano ao entrar ou começar o turno na área."
+          },
+          "modificadores": {
+            "duracaoExtra": "Dura por rodadas iguais ao arcanismo do conjurador."
+          }
+        },
+        {
+          "nome": "Pilar de Chamas",
+          "tipo": "Feitiço",
+          "descricao": "Cria uma coluna de chamas que causa dano às criaturas dentro do raio. O elementalista pode mover o pilar após a conjuração.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "dano": "9d4",
+          "efeitos": {
+            "ativo": "Causa dano de fogo às criaturas na área e tem 60% de chance de aplicar o efeito 'Queimando'."
+          },
+          "modificadores": {
+            "duracaoExtra": "Dura por rodadas iguais ao arcanismo do conjurador."
+          }
+        },
+        {
+          "nome": "Tempestade de Raios",
+          "tipo": "Feitiço",
+          "descricao": "Cria uma área de raios que causa dano e tem chance de paralisar as criaturas dentro da área. Dura por rodadas baseadas no arcanismo.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "dano": "6d6",
+          "efeitos": {
+            "ativo": "Chance de paralisia e dano adicional para criaturas com armadura de metal."
+          },
+          "modificadores": {
+            "duracaoExtra": "Dura por rodadas iguais ao arcanismo do conjurador."
+          }
+        },
+        {
+          "nome": "Terremoto",
+          "tipo": "Feitiço",
+          "descricao": "Cria um terremoto que causa dano e tem chance de restringir as criaturas dentro da área. Também cria terreno difícil que causa dano adicional.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "dano": "3d6",
+          "efeitos": {
+            "ativo": "Causa dano de terra e cria terreno difícil."
+          },
+          "modificadores": {
+            "duracaoExtra": "Dura por rodadas iguais ao arcanismo do conjurador."
+          }
+        },
+        {
+          "nome": "Furacão",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço cria uma área de 4,5 metros de raio em um ponto que o elementalista consegue ver em até 30 metros. Criaturas dentro do raio sofrem 3d10 +6 pontos de dano de impacto ao entrarem ou começarem o turno na área. O feitiço tem 40% de chance de causar Surdo e Devagar em quem toma dano da área.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Causa dano de impacto em uma área, com chance de aplicar Surdo e Devagar nos inimigos que tomam dano."
+          },
+          "modificadores": {
+            "duracaoExtra": "O efeito dura por um número de rodadas igual ao valor de arcanismo do elementalista."
+          }
+        },
+        {
+          "nome": "Espinho de Gelo",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço cria um enorme espinho de gelo a partir do chão para acertar uma criatura em até 9 metros. Causa 5d6 de dano de gelo e 5d6 de dano perfurante.",
+          "custoEstamina": 0,
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Causa dano de gelo e dano perfurante a uma criatura."
+          }
+        },
+        {
+          "nome": "Lança Chamas",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço cria um cone de 18 metros de comprimento e 60° de ângulo. Criaturas dentro desse cone tomam 5d4 de dano de fogo e recebem um nível de Queimando.",
+          "custoEstamina": 0,
+          "custoMagia": 8,
+          "efeitos": {
+            "ativo": "Causa dano de fogo e aplica Queimando em todas as criaturas no cone."
+          }
+        },
+        {
+          "nome": "Eletrocutar",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço energiza a mão do elementalista com uma carga elétrica. Ao tocar em um inimigo, causa 3d10 +7 de dano e o alvo tem 20% de chance de ficar paralisado.",
+          "custoEstamina": 0,
+          "custoMagia": 8,
+          "efeitos": {
+            "ativo": "Causa dano de eletricidade e tem chance de paralisar o alvo."
+          }
+        },
+        {
+          "nome": "Esmagar Com Corrente",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço força uma grande quantidade de ar para baixo, esmagando criaturas em uma área de 1,5 metros de raio. A magia causa 2d6 de dano de impacto, mais 5d4 de dano de corte e 20% de chance de deixar o inimigo Deitado.",
+          "custoEstamina": 0,
+          "custoMagia": 8,
+          "efeitos": {
+            "ativo": "Causa dano de impacto e corte e pode deixar a criatura Deitada."
+          }
+        },
+        {
+          "nome": "Estalagmite de Cristal",
+          "tipo": "Feitiço",
+          "descricao": "O feitiço conjura uma estalagmite de cristal que é atirada em uma criatura em até 18 metros. Causa 3d6 de dano perfurante e 2d10 de dano de terra.",
+          "custoEstamina": 0,
+          "custoMagia": 8,
+          "efeitos": {
+            "ativo": "Causa dano perfurante e dano de terra a uma criatura."
+          }
+        }
+      ]
+
+
+    },
+    {
+      "titulo": "Bruxo",
+      "img": exorcista,
+      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
+      "atributos": "Cada Regalia comprada na especialização Bruxo(a) fornece:\n- 2 Pontos de Vida\n- 0 Pontos de Estâmina\n- 8 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Lidar Com Animais", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Ocultismo"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Natureza", "Alquimia", "Enganação", "Condução exótica"]
+          },
+          "proficiências": ["Nenhuma nova proficiência."]
+        },
+        "habilidade": [{
+          "nome": "Invocação de Familiar",
+          "tipo": "Feitiço (Ritual)(1 hora)",
+          "descricao": "O bruxo consegue invocar uma criatura para ser seu companheiro e servo. Apenas uma invocação por vez. O familiar tem pontos de vida igual a metade dos pontos de vida do Bruxo(a), um acerto igual ao valor do ocultismo do bruxo, valor de defesa igual ao valor de ritualismo + valor de  arcanismo do bruxo, e um ataque que condiz com a forma do familiar com 2d6 de dano sombrio e pode fazer tudo que a criatura conseguiria se estivesse em seu ambiente natural. O  familiar tem um turno de combate ao mesmo tempo que o da bruxa e possui 3 ações como qualquer outra. O bruxo pode controlar seu familiar em uma distância de até 200 metros e conjurar maldições da posição de seu familiar. O bruxo pode sacrificar seu familiar como uma reação para recuperar 20 pontos de vida e 10 de magia. Ao fazer isso, o bruxo fica impossibilitado de invocar um novo familiar até realizar um descanso longo.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Fotossíntese",
+          "tipo": "Ritual",
+          "descricao": "O bruxo fica parado por 1 minuto em um ambiente aberto durante o dia para recuperar 4d10 pontos de vida e 2d6 pontos de magia. Custa 5 moedas de ouro em materiais para o ritual e pode ser realizado uma vez por dia. Se o bruxo tiver mais que 10 em ritualismo ele pode realizar duas vezes esse ritual em um mesmo dia e sem custo material.",
+          "efeitos": {
+            "ativo": "Recupera 4d10 pontos de vida e 2d6 pontos de magia"
+          },
+          "modificadores": {
+            "usoExtra": "Se o bruxo tiver mais que 10 em ritualismo, pode realizar duas vezes esse ritual por dia e sem custo material"
+          }
+        },
+        {
+          "nome": "Dedo Verde",
+          "tipo": "Feitiço",
+          "descricao": "Acelera o crescimento de plantas sobrenaturalmente, em uma área de 18 metros de raio e um ponto em até 72 metros de distância, criando um terreno difícil natural. Essa habilidade pode ser usada em plantações, porém reduz a vida útil da planta e de seus alimentos para 12 horas, após esse tempo as plantas morrem e o alimento apodrece. Custa 2 pontos de magia.",
+          "efeitos": {
+            "ativo": "Cria terreno difícil natural e acelera o crescimento de plantas"
+          },
+          "modificadores": {
+            "bonusSucesso": "Ao gastar 3 pontos de magia adicionais, as plantas criam espinhos que causam 1d6 de dano"
+          }
+        },
+        {
+          "nome": "Fúria Natural",
+          "tipo": "Feitiço",
+          "descricao": "Conjura um feitiço que afeta uma árvore de até 3 metros ou um arbusto pequeno. Essa planta escolhida cria vida própria e se torna servo do bruxo por um número de turnos igual ao seu ocultismo+1. Durante esse tempo, a planta tem 50 pontos de vida, valor de defesa igual a 9, uma velocidade de movimento de 4,5 metros, acerto de +10 e dano igual a 2d10 de dano do elemento terra. Essa criatura tem vulnerabilidade ao dano cortante causado por machados. Custa 10 pontos de magia.",
+          "efeitos": {
+            "ativo": "Cria uma planta serva com vida própria para ajudar o bruxo"
+          }
+        },
+        {
+          "nome": "Amizade Animal",
+          "tipo": "Feitiço",
+          "descricao": "O bruxo encanta um animal para obedecer suas ordens. O animal faz tudo como faria para defender outro membro da espécie ao defender o bruxo, mas nada que o coloque em perigo direto. O animal consegue se comunicar com o bruxo com um idioma escolhido pelo bruxo. Custa 2 pontos de magia.",
+          "efeitos": {
+            "ativo": "Encanta um animal para seguir ordens e comunicar-se com o bruxo"
+          },
+          "modificadores": {
+            "bonusSucesso": "Ao gastar 10 pontos de magia adicionais, o animal pode ser corrompido em uma abominação com o dobro de pontos de vida"
+          }
+        },
+        {
+          "nome": "Alucinação",
+          "tipo": "Maldição | Feitiço",
+          "descricao": "O bruxo cria uma área de 18 metros de raio cheia de ilusões com sons, cheiros e imagens. Essas ilusões parecem verdadeiras de longe e apenas criaturas a 1,5 metros da área podem fazer um teste de intuição ou investigação para definir se é uma ilusão ou não. A dificuldade do teste para descobrir se a ilusão é real ou não é baseada na soma de 7 + ocultismo + arcanismo do bruxo. Custa 6 pontos de magia e dura 24 horas.",
+          "efeitos": {
+            "ativo": "Cria uma área de ilusões que mascaram o terreno real"
+          },
+          "modificadores": {
+            "duracaoExtra": "Para cada 6 pontos de magia a mais, a duração aumenta em 12 horas"
+          }
+        },
+        {
+          "nome": "Confusão",
+          "tipo": "Feitiço",
+          "descricao": "Cria 10 imagens de si em espaços vazios em uma distância de até 9 metros de onde o bruxo está. Uma criatura em movimento que passar em 1,5 metros de uma cópia ou que atacar uma cópia com um ataque corpo a corpo tem 30% de chance de ficar atordoada por um turno, mas de qualquer forma a cópia some. Criaturas que não se desloquem ou ataquem uma cópia não ativam a maldição mesmo se estiverem a 1,5 metros da cópia. O bruxo pode mudar de posição com uma cópia de si desde que esteja em até 18 metros da cópia. Dura 10 rodadas. Custa 5 pontos de magia.",
+          "efeitos": {
+            "ativo": "Cria cópias do bruxo para confundir inimigos"
+          },
+          "modificadores": {
+            "bonusSucesso": "Para cada 5 pontos adicionais de magia, aumenta em 5% a chance de causar o efeito de atordoamento"
+          }
+        },
+        {
+          "nome": "Contrato",
+          "tipo": "Ritual | Maldição",
+          "descricao": "O bruxo pode realizar um ritual para fazer um contrato com outra criatura, desde que a criatura concorde. O contrato pode ter um dos seguintes efeitos: Dividir vitalidade, Conceder Poder, ou Fantoche. Custa 10 moedas de ouro em materiais.",
+          "efeitos": {
+            "ativo": "Cria um contrato com outra criatura, conferindo-lhe benefícios ou maldições"
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null
+          }
+        },
+        {
+          "nome": "Bola de Cristal",
+          "tipo": "Maldição",
+          "descricao": "Marca uma criatura que esteja a até 3 metros de distância do bruxo por 7 dias. O bruxo consegue observar onde a criatura está e o que está fazendo durante 10 minutos por dia. Cada vez que olhar, gasta no mínimo um minuto e 5 pontos de magia.",
+          "efeitos": {
+            "ativo": "Permite que o bruxo observe uma criatura marcada"
+          }
+        },
+        {
+          "nome": "Dedo Podre",
+          "tipo": "Maldição",
+          "descricao": "A criatura humanóide tocada pelo bruxo tem 5% de chance de sofrer 12d12 pontos de dano necrótico. Caso contrário, sofre 12d4 pontos de dano necrótico. Custa 12 pontos de magia.",
+          "efeitos": {
+            "ativo": "Causa dano necrótico em uma criatura tocada"
+          },
+          "modificadores": {
+            "bonusSucesso": "Para cada 3 pontos de magia adicionais, aumenta a chance de causar o dano de 12d12 em 5%"
+          }
+        },
+        {
+          "nome": "Invocação de Familiar Maior",
+          "tipo": "Ritual",
+          "descricao": "O bruxo consegue invocar um monstro pequeno ou dois minúsculos para ser seu companheiro e servo. O familiar tem pontos de vida igual ao dobro dos pontos de vida do Bruxo(a), um acerto de +10, valor de defesa igual a 15, e um ataque que condiz com a forma do familiar com 1d12 de dano e pode fazer tudo que a criatura conseguiria se estivesse em seu ambiente natural. O bruxo pode controlar seu familiar em uma distância de até 200 metros e conjurar maldições da posição de seu familiar.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "chanceDeSucesso": null,
+          "dano": "1d12",
+          "requisito": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "O bruxo pode controlar seu familiar em uma distância de até 200 metros e conjurar maldições da posição de seu familiar."
+          },
+          "modificadores": {
+            "bonusSucesso": null,
+            "usoExtra": null,
+            "duracaoExtra": null
+          },
+          "bonus": {
+            "vidaTemporaria": null
+          },
+          "interacoes": {
+            "comOutraRegalia": null
+          }
+        }
+      ]
+    },
+    {
+      "titulo": "Metamorfo",
+      "img": exorcista,
+      "descricao": "O Professor, com sua mente afiada e insaciável curiosidade, é um arquétipo de sabedoria e experimentação no mundo que habita. Em sua busca incessante por entender os mistérios do arcano e da tecnologia, ele molda o futuro a partir de seu vasto conhecimento, seja através de suas habilidades arcanas ou invenções brilhantes. Suas mãos, que muitas vezes seguram o compasso e a pena, também podem conjurar forças que moldam a matéria e desafiam os limites do mundo físico. Com o poder de criar e controlar constructos artificiais, o Professor se torna mais que um simples conjurador: ele é um criador. Seus ajudantes, feitos de elementos arcanos e materiais cuidadosamente selecionados, agem como extensões de sua própria vontade, executando suas ordens com precisão e força. O Professor é um mestre na manipulação de magias não destrutivas, utilizando seu talento para alterar o funcionamento das artes arcanas, seja ampliando sua duração, reduzindo custos ou aumentando seu alcance. Sua habilidade de conjurar múltiplas magias em um único turno, como um diretor orquestrando uma sinfonia de encantamentos, torna-o um adversário formidável, mesmo sem recorrer ao combate direto. O Professor é também um ser que compreende o valor da adaptação. Sua capacidade de modificar seus ajudantes, seja para torná-los mais eficientes ou dar-lhes uma aparência mais humanóide, reflete sua busca constante por aprimoramento. Além disso, suas magias de teletransporte e voo falam de sua compreensão dos limites do espaço e do tempo, como se ele pudesse dançar entre as fronteiras do mundo físico. Em sua essência, o Professor é um ser de profundo conhecimento e engenhosidade, sempre à frente de seu tempo, criando e moldando o arcano e a tecnologia para atender às suas necessidades, sejam elas científicas ou estratégicas. É um estudioso que caminha na linha tênue entre o possível e o impossível, um verdadeiro mestre da teoria e da prática.",
+      "atributos": "Cada Regalia comprada na especialização Metamorfo(a) fornece:\n- 7 Pontos de Vida\n- 0 Pontos de Estâmina\n- 3 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Lidar Com Animais", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Sobrevivência"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Natureza", "Alquimia", "Fortitude"]
+          },
+          "proficiências": ["Proficiência total em  Conduções Exóticas, Terrestres e Aquáticas."]
+        },
+        "habilidade": [{
+          "nome": "Mestre da metamorfose",
+          "tipo": "Feitiço (Ritual)(1 hora)",
+          "descricao": "O metamorfo pode usar até duas metamorfoses, que não sejam licantrópicas, ao consumir um elixir. Ao transformar em licantropo o metamorfo mantém todos os valores de Habilidade e ganha todos os benefícios somado a esses valores. Em forma licantropo é possível usar armas e outros equipamentos. Se a forma sofre alteração no tamanho o equipamento no corpo do metamorfo acompanha a mudança, porém armas não acompanham a mudança de tamanho.",
+        }]
+      },
+      "regalias": [
+
+        {
+          "nome": "Asas",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode escolher aparecer asas como efeito adicional que dura pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento.",
+          "custoMagia": 2,
+          "efeitos": {
+            "passivo": "Ganha a habilidade de voar com a mesma velocidade de movimento"
+          }
+        },
+        {
+          "nome": "Musculatura Monstruosa",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a biologia de seus músculos, ganhando um bônus de força igual a 4, podendo ultrapassar 15.",
+          "custoMagia": 4,
+          "efeitos": {
+            "passivo": "Ganha bônus de força"
+          }
+        },
+        {
+          "nome": "Cauda",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a anatomia de seu corpo, ganhando uma cauda que pode ser usada como arma natural ou para segurar uma arma ou escudo.",
+          "custoMagia": 4,
+          "dano": "1d8 + força (concussivo)",
+          "efeitos": {
+            "passivo": "Ganha uma cauda que pode ser usada como arma ou para segurar itens"
+          }
+        },
+        {
+          "nome": "Licantropia Lobo",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido animal com várias características. Ganha visão no escuro, velocidade de movimento adicional, resistência a certos tipos de dano e ataques naturais com garras e mordida.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido lobo com habilidades especiais"
+          },
+          "dano": "1d12 (mordida) + 1d12 (garras)",
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Urso",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido urso, ganhando resistência a danos e aumentando sua vida e força.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido urso com ataques naturais"
+          },
+          "dano": "3d4 (mordida) + 3d4 (garras)",
+          "bonus": {
+            "vidaTemporaria": "Ganha 20 pontos de vida extra"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Javali",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido javali, com aumento de velocidade e resistência a danos.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido javali com ataque com presas"
+          },
+          "dano": "2d6 (presas)",
+          "bonus": {
+            "vidaTemporaria": "Ganha 10 pontos de vida extra"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Pantera",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido pantera, com maior furtividade, resistência a danos e ataques naturais.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido pantera com ataques naturais"
+          },
+          "dano": "3d8 (mordida) + 3d8 (garras)",
+          "modificadores": {
+            "bonusSucesso": "Ganha bônus de 10 pontos em furtividade"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Crocodilo",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido crocodilo, ganhando bônus de defesa, velocidade na água e ataque com mordida.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido crocodilo com ataque natural"
+          },
+          "dano": "2d10 (mordida)",
+          "bonus": {
+            "vidaTemporaria": "Ganha bônus de +5 em defesa"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+          {
+            "nome": "Licantropia Águia",
+            "tipo": "Metamorfose",
+            "descricao": "O metamorfo consegue se transformar em um híbrido águia. Ganha visão no escuro de 12 metros, 3 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao se transformar, o metamorfo ganha asas, podendo voar com o dobro da sua velocidade de movimento. Possui um ataque desarmado com garras que causa 1d20 de dano perfurante. Pode atacar com suas garras enquanto voa como parte do movimento, com custo de uma ação. Não sofre ataques de oportunidade ao entrar ou sair do alcance de um inimigo. Dura 2 horas.",
+            "custoEstamina": null,
+            "custoMagia": 10,
+            "efeitos": {
+              "passivo": null,
+              "ativo": "Ao se transformar em híbrido águia, o metamorfo ganha asas para voo."
+            },
+            "modificadores": {
+              "bonusSucesso": "O metamorfo ganha 3 metros de velocidade adicional enquanto voa."
+            },
+            "bonus": null,
+            "interacoes": null
+          },
+          {
+            "nome": "Licantropia Cobra",
+            "tipo": "Metamorfose",
+            "descricao": "O metamorfo se transforma em um híbrido cobra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao atacar com mordida, o metamorfo tem 50% de chance de inocular um veneno que causa 1d10 de dano extra. Ganha a capacidade de enxergar com fossetas loreais e um ataque de mordida que causa 2d4 pontos de dano perfurante. Dura 2 horas.",
+            "custoEstamina": null,
+            "custoMagia": 10,
+            "efeitos": {
+              "passivo": null,
+              "ativo": "O metamorfo pode atacar com mordida, podendo inocular veneno com chance de causar dano extra."
+            },
+            "modificadores": null,
+            "bonus": null,
+            "interacoes": null
+          },
+          {
+            "nome": "Licantropia Salamandra",
+            "tipo": "Metamorfose",
+            "descricao": "O metamorfo se transforma em um híbrido salamandra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. O metamorfo é incendiado com chamas que não o ferem, mas causa 1d6 de dano a criaturas em até 1,5 metros de distância. Imbui seus ataques com fogo, ganhando 2 pontos de dano extra. Recebe 2d8 pontos de vida extra e consegue escalar paredes sem necessidade de teste. É vulnerável a dano de gelo. Dura 2 horas.",
+            "custoEstamina": null,
+            "custoMagia": 10,
+            "efeitos": {
+              "passivo": "O metamorfo causa dano a criaturas próximas com chamas e ganha bônus de dano nos ataques com fogo.",
+              "ativo": "Ao se transformar em salamandra, o metamorfo adquire resistência ao dano e ganha bônus de vida extra."
+            },
+            "modificadores": {
+              "bonusSucesso": "O metamorfo recebe 2d8 pontos de vida extra e 2 pontos de dano adicional nos ataques com fogo."
+            },
+            "bonus": null,
+            "interacoes": null
+          },
+          {
+            "nome": "Virar Animal",
+            "tipo": "Metamorfose",
+            "descricao": "O metamorfo pode se transformar em um animal grande ou menor por um número de horas igual ao seu nível. Mantém os pontos de vida atuais e ganha pontos de vida temporários iguais ao seu valor de fortitude.",
+            "custoEstamina": null,
+            "custoMagia": null,
+            "efeitos": {
+              "passivo": null,
+              "ativo": "Ao se transformar, o metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+            },
+            "modificadores": null,
+            "bonus": {
+              "vidaTemporaria": "O metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+            },
+            "interacoes": null
+          }
+      ]
+    },
+  ]
   const SkillAccordion = ({ skill }) => (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -2866,6 +3598,7 @@ const ClassesPage = () => {
         <Tab label="Especializações de Combatente" className="tabs" />
         <Tab label="Especializações de Iniciado" className="tabs" />
         <Tab label="Especializações de Noviço" className="tabs" />
+        <Tab label="Especializações de Feiticeiro" className="tabs" />
       </Tabs>
 
       {/* Info MUI Tab Content */}
@@ -3516,6 +4249,209 @@ const ClassesPage = () => {
       {thisvalue === 5 && (
         <Box>
           {EspecializacaoNovicoSkillsData.map(especializacao =>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+              <Box sx={{ width: "80%", mx: "auto" }}>
+                {/* Título e Descrição */}
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                      {especializacao.titulo}
+                    </Typography>
+                    <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                      {especializacao.descricao}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Atributos */}
+                <Typography variant="body1" sx={{ textAlign: 'justify', mb: 3 }}>
+                  {especializacao.atributos}
+                </Typography>
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalia Obrigatória
+                </Typography>
+                {especializacao.regaliaObrigatoria && (
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-regaliaObrigatoria-content" id="panel-regaliaObrigatoria-header">
+                      <Typography>Atributos e Bonus</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{especializacao.regaliaObrigatoria.descricao}</Typography>
+
+                      {/* Atributos */}
+                      {especializacao.regaliaObrigatoria.pontos.atributos && (
+                        <>
+                          <Typography><strong>Atributos:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.atributos.opcoes.map((atributo, index) => (
+                              <li key={index}>{atributo}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Combate */}
+                      {especializacao.regaliaObrigatoria.pontos.combate && (
+                        <>
+                          <Typography><strong>Combate:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.combate.opcoes.map((opcao, index) => (
+                              <li key={index}>{opcao}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Habilidades */}
+                      {especializacao.regaliaObrigatoria.pontos.habilidades && (
+                        <>
+                          <Typography><strong>Habilidades:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em todos os seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.habilidades.opcoes.map((habilidade, index) => (
+                              <li key={index}>{habilidade}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Proficiências */}
+                      {especializacao.regaliaObrigatoria.pontos.proficiências && (
+                        <>
+                          <Typography><strong>Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.pontos.proficiências.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Outras Proficiencias */}
+                      {especializacao.regaliaObrigatoria.outrasProficiencias && (
+                        <>
+                          <Typography><strong>Outras Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.outrasProficiencias.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+
+                {/* Accordion para Habilidades */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Habilidade de Classe
+                </Typography>
+                {especializacao.regaliaObrigatoria.habilidade.map((habilidade, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
+                      <Typography>{habilidade.nome} </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Tipo: {habilidade.tipo}</Typography>
+                      <Typography>{habilidade.descricao}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+                {/* Regalias */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalias
+                </Typography>
+                {especializacao.regalias.map((regalia, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-regalia${index}-content`} id={`panel-regalia${index}-header`}>
+                      <Typography>{regalia.nome} ({regalia.tipo})</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{regalia.descricao}</Typography>
+                      {regalia.prerequisito && (
+                        <Typography><strong>Pré-Requisito:</strong> {regalia.prerequisito}</Typography>
+                      )}
+
+                      {regalia.chanceDeSucesso && (
+                        <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
+                      )}
+
+
+                      {regalia.bonus && regalia.bonus.vidaTemporaria && (
+                        <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
+                      )}
+
+                      {regalia.tempoConstrucao && (
+                        <Typography><strong>Tempo de contrução:</strong> {regalia.tempoConstrucao}</Typography>
+                      )}
+
+                      {regalia.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
+                      )}
+                      {regalia.requisito && (
+                        <Typography><strong>Requisito:</strong> {regalia.requisito}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.ativo && (
+                        <Typography><strong>Ativo:</strong> {regalia.efeitos.ativo}</Typography>
+                      )}
+                      {regalia.efeitos && regalia.efeitos.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.efeitos.duracao}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.passivo && (
+                        <Typography><strong>Passivo:</strong> {regalia.efeitos.passivo}</Typography>
+                      )}
+
+                      {regalia.dano && (
+                        <Typography><strong>Dano:</strong> {regalia.dano}</Typography>
+                      )}
+
+                      {regalia.modificadores && (
+                        <>
+                          {regalia.modificadores.bonusSucesso && (
+                            <Typography><strong>Bonus Sucesso:</strong> {regalia.modificadores.bonusSucesso}</Typography>
+                          )}
+                          {regalia.modificadores.usoExtra && (
+                            <Typography><strong>Uso Extra:</strong> {regalia.modificadores.usoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.duracaoExtra && (
+                            <Typography><strong>Duração Extra:</strong> {regalia.modificadores.duracaoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.bonusLideranca && (
+                            <Typography><strong>Bonus Liderança:</strong> {regalia.modificadores.bonusLideranca}</Typography>
+                          )}
+                        </>
+                      )}
+
+                      {regalia.interacoes && regalia.interacoes.comFortaleza && (
+                        <Typography><strong>Interação com Fortaleza:</strong> {regalia.interacoes.comFortaleza}</Typography>
+                      )}
+
+                      {regalia.custoEstamina && (
+                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
+                      )}
+                      {regalia.custoMagia && (
+                        <Typography><strong>Custo de Magia:</strong> {regalia.custoMagia}</Typography>
+                      )}
+
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+              </Box>
+            </Box>
+          )}
+
+        </Box>
+      )}
+      {thisvalue === 6 && (
+        <Box>
+          {EspecializacaoFeiticeiroSkillsData.map(especializacao =>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
