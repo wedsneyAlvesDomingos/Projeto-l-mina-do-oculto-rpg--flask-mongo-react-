@@ -3455,68 +3455,693 @@ const ClassesPage = () => {
           },
           "duracaoExtra": "Dura 2 horas"
         },
-          {
-            "nome": "Licantropia Águia",
-            "tipo": "Metamorfose",
-            "descricao": "O metamorfo consegue se transformar em um híbrido águia. Ganha visão no escuro de 12 metros, 3 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao se transformar, o metamorfo ganha asas, podendo voar com o dobro da sua velocidade de movimento. Possui um ataque desarmado com garras que causa 1d20 de dano perfurante. Pode atacar com suas garras enquanto voa como parte do movimento, com custo de uma ação. Não sofre ataques de oportunidade ao entrar ou sair do alcance de um inimigo. Dura 2 horas.",
-            "custoEstamina": null,
-            "custoMagia": 10,
-            "efeitos": {
-              "passivo": null,
-              "ativo": "Ao se transformar em híbrido águia, o metamorfo ganha asas para voo."
-            },
-            "modificadores": {
-              "bonusSucesso": "O metamorfo ganha 3 metros de velocidade adicional enquanto voa."
-            },
-            "bonus": null,
-            "interacoes": null
+        {
+          "nome": "Licantropia Águia",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo consegue se transformar em um híbrido águia. Ganha visão no escuro de 12 metros, 3 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao se transformar, o metamorfo ganha asas, podendo voar com o dobro da sua velocidade de movimento. Possui um ataque desarmado com garras que causa 1d20 de dano perfurante. Pode atacar com suas garras enquanto voa como parte do movimento, com custo de uma ação. Não sofre ataques de oportunidade ao entrar ou sair do alcance de um inimigo. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Ao se transformar em híbrido águia, o metamorfo ganha asas para voo."
           },
-          {
-            "nome": "Licantropia Cobra",
-            "tipo": "Metamorfose",
-            "descricao": "O metamorfo se transforma em um híbrido cobra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao atacar com mordida, o metamorfo tem 50% de chance de inocular um veneno que causa 1d10 de dano extra. Ganha a capacidade de enxergar com fossetas loreais e um ataque de mordida que causa 2d4 pontos de dano perfurante. Dura 2 horas.",
-            "custoEstamina": null,
-            "custoMagia": 10,
-            "efeitos": {
-              "passivo": null,
-              "ativo": "O metamorfo pode atacar com mordida, podendo inocular veneno com chance de causar dano extra."
-            },
-            "modificadores": null,
-            "bonus": null,
-            "interacoes": null
+          "modificadores": {
+            "bonusSucesso": "O metamorfo ganha 3 metros de velocidade adicional enquanto voa."
           },
-          {
-            "nome": "Licantropia Salamandra",
-            "tipo": "Metamorfose",
-            "descricao": "O metamorfo se transforma em um híbrido salamandra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. O metamorfo é incendiado com chamas que não o ferem, mas causa 1d6 de dano a criaturas em até 1,5 metros de distância. Imbui seus ataques com fogo, ganhando 2 pontos de dano extra. Recebe 2d8 pontos de vida extra e consegue escalar paredes sem necessidade de teste. É vulnerável a dano de gelo. Dura 2 horas.",
-            "custoEstamina": null,
-            "custoMagia": 10,
-            "efeitos": {
-              "passivo": "O metamorfo causa dano a criaturas próximas com chamas e ganha bônus de dano nos ataques com fogo.",
-              "ativo": "Ao se transformar em salamandra, o metamorfo adquire resistência ao dano e ganha bônus de vida extra."
-            },
-            "modificadores": {
-              "bonusSucesso": "O metamorfo recebe 2d8 pontos de vida extra e 2 pontos de dano adicional nos ataques com fogo."
-            },
-            "bonus": null,
-            "interacoes": null
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Licantropia Cobra",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo se transforma em um híbrido cobra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao atacar com mordida, o metamorfo tem 50% de chance de inocular um veneno que causa 1d10 de dano extra. Ganha a capacidade de enxergar com fossetas loreais e um ataque de mordida que causa 2d4 pontos de dano perfurante. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "O metamorfo pode atacar com mordida, podendo inocular veneno com chance de causar dano extra."
           },
-          {
-            "nome": "Virar Animal",
-            "tipo": "Metamorfose",
-            "descricao": "O metamorfo pode se transformar em um animal grande ou menor por um número de horas igual ao seu nível. Mantém os pontos de vida atuais e ganha pontos de vida temporários iguais ao seu valor de fortitude.",
-            "custoEstamina": null,
-            "custoMagia": null,
-            "efeitos": {
-              "passivo": null,
-              "ativo": "Ao se transformar, o metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
-            },
-            "modificadores": null,
-            "bonus": {
-              "vidaTemporaria": "O metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
-            },
-            "interacoes": null
+          "modificadores": null,
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Licantropia Salamandra",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo se transforma em um híbrido salamandra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. O metamorfo é incendiado com chamas que não o ferem, mas causa 1d6 de dano a criaturas em até 1,5 metros de distância. Imbui seus ataques com fogo, ganhando 2 pontos de dano extra. Recebe 2d8 pontos de vida extra e consegue escalar paredes sem necessidade de teste. É vulnerável a dano de gelo. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "O metamorfo causa dano a criaturas próximas com chamas e ganha bônus de dano nos ataques com fogo.",
+            "ativo": "Ao se transformar em salamandra, o metamorfo adquire resistência ao dano e ganha bônus de vida extra."
+          },
+          "modificadores": {
+            "bonusSucesso": "O metamorfo recebe 2d8 pontos de vida extra e 2 pontos de dano adicional nos ataques com fogo."
+          },
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Virar Animal",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo pode se transformar em um animal grande ou menor por um número de horas igual ao seu nível. Mantém os pontos de vida atuais e ganha pontos de vida temporários iguais ao seu valor de fortitude.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Ao se transformar, o metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+          },
+          "modificadores": null,
+          "bonus": {
+            "vidaTemporaria": "O metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+          },
+          "interacoes": null
+        }
+      ]
+    },
+  ]
+  const EspecializacaoMistaSkillsData = [
+    {
+      "titulo": "Monge",
+      "img": xama,
+      "descricao": "O Xamã é um andarilho entre os véus da vida e da morte, um mediador entre os sussurros dos espíritos e o pulsar da terra viva. Seu corpo é marcado por símbolos antigos, gravados não pela mão dos homens, mas pelos próprios ecos do além, e sua voz, quando invoca os nomes esquecidos do outro lado, ressoa como um lamento antigo que faz a própria natureza estremecer. Ele não comanda os mortos como um tirano impiedoso, mas os guia como um pastor sombrio, oferecendo-lhes propósito onde antes havia apenas vazio. O vento carrega murmúrios de almas perdidas em sua presença, e as sombras se alongam como se buscassem seu toque. Quando o Xamã caminha, corvos o seguem, lobos observam à distância e até mesmo os insetos rastejam em sua direção, atraídos por uma força invisível e inevitável. Ele é a ponte entre o mundo dos vivos e a vastidão sem nome do pós-vida, tecendo pactos e trocas em uma linguagem que só os mortos compreendem. Onde ele passa, a terra apodrece e floresce em igual medida, e os vivos o temem tanto quanto os espíritos o reverenciam. Ele é o arauto do ciclo eterno — aquele que dá, toma e restaura, sem piedade e sem remorso.",
+      "atributos": "Cada Regalia comprada na especialização Xamã fornece:\n- 4 Pontos de Vida\n- 4 Pontos de Estâmina\n- 2 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Força", "Destreza"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": [" Combate Corpo a Corpo", "Fortitude"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Atletismo", "Agilidade", "Acrobacia"]
+          },
+          "proficiências": ["Proficiência em Lança Mola, Manopla de Espinhos e Canalizar ki."]
+        },
+        "outrasProficiencias": null,
+        "habilidade": [{
+          "nome": "Canalizar ki ",
+          "tipo": "(Ação livre)",
+          "descricao": "Um monge pode gastar pontos de magia para canalizar ki. Ao canalizar ki, o monge que não estiver usando armadura pesada ganha um bônus de +2 em valor de defesa e independente da armadura ganha vantagem em testes de percepção. Esse bônus dura 1 minuto e pode ser renovado ao canalizar ki novamente. Custa 3 pontos de magia.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Chakra da Base",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra da base aberto, o monge fica resistente à condição envenenado, resistente ao dano elemental de terra, e efeitos que possam desestabilizar seu controle sobre a própria mente têm a chance de sucesso reduzida em 5%.",
+          "efeitos": {
+            "passivo": "Resistência à condição envenenado e dano elemental de terra, redução de chance de sucesso de efeitos mentais."
           }
+        },
+        {
+          "nome": "Chakra Abdominal",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra do abdômen aberto, o monge fica impossibilitado de ser derrubado contra sua vontade, resistente ao dano elemental de gelo e ganha 3 m de velocidade de movimento bônus.",
+          "efeitos": {
+            "passivo": "Impossível de ser derrubado, resistência ao dano elemental de gelo, bônus de velocidade."
+          }
+        },
+        {
+          "nome": "Chakra do Plexo Solar",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra do plexo solar aberto, o monge fica resistente ao dano sombrio, resistente ao dano elemental de fogo, e efeitos que possam desestabilizar seu controle sobre a própria mente têm a chance de sucesso reduzida em 5%.",
+          "efeitos": {
+            "passivo": "Resistência ao dano sombrio, dano elemental de fogo e redução de chance de sucesso de efeitos mentais."
+          }
+        },
+        {
+          "nome": "Chakra do Coração",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra do coração aberto, o monge ganha vantagem em testes de acrobacia para evitar ou para escapar de agarramentos, fica resistente ao dano elemental de ar, e terreno difícil não afeta a velocidade de movimento do monge.",
+          "efeitos": {
+            "passivo": "Vantagem em testes de acrobacia, resistência ao dano elemental de ar, terreno difícil não afeta a velocidade."
+          }
+        },
+        {
+          "nome": "Chakra da Garganta",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra da garganta aberto, o monge tem vantagem dupla em testes da árvore Social, vantagem em testes de intuição, fica imune à condição surdo e é impossível fazer um monge ficar em silêncio contra sua vontade.",
+          "efeitos": {
+            "passivo": "Vantagem em testes sociais e intuição, imune à condição surdo e silêncio."
+          }
+        },
+        {
+          "nome": "Chakra do Terceiro Olho",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra do terceiro olho aberto, o monge consegue ver através de ilusões em até 12 metros de distância, consegue ler lábios em até 100 metros de distância e é imune a ficar cego.",
+          "efeitos": {
+            "passivo": "Visão através de ilusões, leitura de lábios, imunidade a cegueira."
+          }
+        },
+        {
+          "nome": "Chakra da Coroa",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar o ki com o chakra da coroa, o monge recebe vantagem dupla em testes da árvore de conhecimento, fica imune à condição amedrontado e consegue criar uma projeção astral para andar pelo plano astral a até 100 metros de distância.",
+          "requisito": "Todos os outros chakras abertos.",
+          "efeitos": {
+            "passivo": "Vantagem em testes de conhecimento, imune à condição amedrontado, projeção astral."
+          }
+        },
+        {
+          "nome": "Ataque Veloz",
+          "tipo": "Ativa",
+          "descricao": "O monge pode realizar um ataque adicional quando tomar uma ação de atacar. Apenas uma vez por ação.",
+          "custoEstamina": 2,
+          "efeitos": {
+            "ativo": "Realiza um ataque extra na mesma ação de ataque."
+          }
+        },
+        {
+          "nome": "Fúria de Ataques",
+          "tipo": "Ativa",
+          "descricao": "Ao usar a ação para atacar, o monge pode gastar 2 pontos de estâmina para atacar novamente. Pode ser usado em conjunto com o Ataque Veloz.",
+          "custoEstamina": 2,
+          "efeitos": {
+            "ativo": "Realiza um ataque extra ao usar a ação de atacar."
+          },
+          "usoExtra": "Pode ser usado em conjunto com Ataque Veloz."
+        },
+        {
+          "nome": "Corpo Fechado",
+          "tipo": "Passiva",
+          "descricao": "O monge pode entrar em uma posição defensiva e meditativa que fecha seu corpo e mente contra o ambiente e outras criaturas. Fica imune a todas as condições e resistente a todo tipo de dano por uma rodada. Recupera 2 pontos de estâmina, 1 ponto de magia e 3d8 pontos de vida ao sair.",
+          "custoEstamina": 2,
+          "custoMagia": 1,
+          "efeitos": {
+            "passivo": "Imunidade a todas as condições e resistência a dano por uma rodada. Recupera pontos ao sair da posição."
+          }
+        },
+        {
+          "nome": "Fortalecer Físico",
+          "tipo": "Passiva",
+          "descricao": "Ao canalizar ki, o monge ganha um bônus de +2 em força, destreza, combate corpo a corpo, agilidade e acrobacia. Esse bônus pode ultrapassar o limite de 15 pontos máximos em uma habilidade.",
+          "efeitos": {
+            "passivo": "Bônus de +2 em força, destreza, combate corpo a corpo, agilidade e acrobacia."
+          }
+        },
+        {
+          "nome": "Fluir como Água, Golpear como Pedra",
+          "tipo": "Passiva",
+          "descricao": "O monge ganha um bônus de +4 em acertos de ataques desarmados e +1 de defesa enquanto não usar armadura pesada.",
+          "efeitos": {
+            "passivo": "Bônus de +4 em ataques desarmados e +1 de defesa sem armadura pesada."
+          }
+        },
+        {
+          "nome": "Ataque de Oportunidade",
+          "tipo": "Reação",
+          "descricao": "O monge pode realizar um ataque quando uma criatura que possa ver sair da sua área de ameaça, ou atacar um aliado dentro do seu alcance.",
+          "custoEstamina": 2,
+          "efeitos": {
+            "ativo": "Realiza um ataque quando uma criatura sai da área de ameaça ou ataca um aliado."
+          }
+        },
+        {
+          "nome": "Desviar projéteis",
+          "tipo": "Reação",
+          "descricao": "O monge pode usar sua reação, ao ser acertado por um projétil físico, para tentar desviar a trajetória do objeto e evitar o dano do ataque. Para isso o monge deve passar em um teste de acrobacia, a dificuldade do teste é o valor rolado para o acerto do ataque. Caso tenha sucesso, o monge não sofre o dano do ataque, e caso o rolamento do teste seja um 19 ou 20 no d20, o monge arremessa o projétil em outra criatura em até 9 metros de distância a sua escolha. Caso fracasse no teste, recebe o ataque normalmente.",
+          "custoEstamina": 5,
+          "efeitos": {
+            "ativo": "Desviar a trajetória do projétil e, em caso de sucesso no teste, evitar o dano do ataque. Caso acerte 19 ou 20 no teste, o monge arremessa o projétil em outra criatura."
+          },
+          "modificadores": {
+            "bonusSucesso": "Desviar a trajetória e arremessar o projétil se rolado 19 ou 20 no d20."
+          }
+        }
+
+      ]
+
+    },
+    {
+      "titulo": "Inquisidor",
+      "img": bruxo,
+      "descricao": "O bruxo é uma figura cuja essência se entrelaça com os fios ocultos que ligam o mundo natural ao sobrenatural, um estudioso e praticante das forças que existem à margem da compreensão mundana. Não é mero manipulador de energias arcanas, mas um mediador entre reinos vivos e mortos, um arauto das vontades inomináveis que sussurram entre as folhas das árvores antigas e nas sombras dos becos esquecidos. Seu poder brota de pactos antigos, de uma compreensão visceral das forças da vida e da morte, moldando o próprio tecido da realidade em ilusões e maldições que confundem os sentidos e dobram a vontade dos incautos. Ele cultiva a natureza não como um jardineiro, mas como um maestro regendo a fúria selvagem das raízes e a doçura enganosa das flores. Suas criaturas invocadas, sejam elas familiares astutos ou abominações retorcidas pela corrupção, não são meros servos — são extensões de sua própria alma fragmentada, espreitando o mundo através de olhos que não deveriam ver. E assim o bruxo caminha entre mundos, um viajante cuja marca é sentida nos rastros de vinhas torcidas e na sensação inquietante de que algo está observando, mesmo quando não há ninguém por perto.",
+      "atributos": "Cada Regalia comprada na especialização Inquisidor(a) fornece:\n- 5 Pontos de Vida\n- 3 Pontos de Estâmina\n- 2 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": [" Combate Arcano", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Combate corpo a corpo"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Ritualismo", "Teologia", "Condução de veículos terrestres."]
+          },
+          "proficiências": ["Nenhuma nova proficiência."]
+        },
+        "habilidade": [{
+          "nome": "Punição e Purificação",
+          "tipo": "Milagre(Passiva / Ação livre)",
+          "descricao": "Passiva - Todo ataque físico causado pelo inquisidor ganha um bônus de 1d4 de dano sagrado. Ativa - Ao acertar um ataque físico o inquisidor pode escolher fortalecer sua capacidade de punir aqueles que não acreditam em suas ideias e purificar suas almas, causando 2d10 de dano sagrado extra no ataque, ao invés de 1d4. Custa 5 pontos de magia .",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Armadura de fé",
+          "tipo": "Ação",
+          "descricao": "O inquisidor ora para o seu deus e conjura uma armadura completa feita de energia sagrada. Além da armadura vem um escudo pesado, também feito de energia sagrada. A armadura é considerada média pelo seu peso mas protege como uma armadura pesada. Ao usar essa armadura de fé, o inquisidor tem o valor de defesa igual a 20 e com o escudo 23. A armadura dura 8 horas ou até o inquisidor não tiver vontade ou capacidade de manter o milagre ativo.",
+          "custoMagia": 15,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Aumento de defesa (20 com armadura e 23 com escudo)"
+          }
+        },
+        {
+          "nome": "Armamento Divino",
+          "tipo": "Ação",
+          "descricao": "O inquisidor conjura uma arma simples ou marcial feita de energia sagrada e causa dano sagrado. A cópia sagrada causa um valor de dano igual ao da arma original + 1d6 pontos de dano extra.",
+          "custoMagia": 5,
+          "duracaoExtra": "Dura 1 hora",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Criação de arma sagrada com dano adicional de 1d6"
+          }
+        },
+        {
+          "nome": "Ascensão Celeste",
+          "tipo": "Ação",
+          "descricao": "O Inquisidor ora pela benção divina que lhe permite voar, recebendo um par de asas que lhe dão uma velocidade de voo igual a sua velocidade de movimento.",
+          "custoMagia": 8,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Voo com velocidade igual à de movimento"
+          },
+          "duracaoExtra": "Dura 10 rodadas"
+        },
+        {
+          "nome": "Montaria Celeste",
+          "tipo": "Ação",
+          "descricao": "O inquisidor conjura uma montaria divina com 9 metros de velocidade de movimento. A montaria dura 8 horas e não cansa nem sofre dano.",
+          "custoMagia": 7,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Montaria com 9 metros de movimento, permite ao inquisidor carregar o dobro de peso e receber vantagem no acerto"
+          },
+          "duracaoExtra": "Dura 8 horas"
+        },
+        {
+          "nome": "Aparar",
+          "tipo": "Reação",
+          "descricao": "Ao receber um ataque, o inquisidor pode usar sua reação para aumentar o seu valor de defesa em 2 pontos.",
+          "custoEstamina": 2,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Aumento de defesa em 2 pontos"
+          },
+          "usoExtra": "Pode ser repetido mais de uma vez na mesma rodada ao custo de mais 2 pontos de estâmina"
+        },
+        {
+          "nome": "Cruzada Implacável",
+          "tipo": "Ação",
+          "descricao": "O inquisidor avança por 12 metros, causando 2d6 pontos de dano sagrado em inimigos no caminho e tendo 30% de chance de empurrá-los para um espaço disponível.",
+          "custoEstamina": 4,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Avança causando dano e empurrando inimigos"
+          },
+          "chanceDeSucesso": 30,
+          "dano": "2d6"
+        },
+        {
+          "nome": "Bater com Escudo",
+          "tipo": "Ação",
+          "descricao": "O inquisidor pode usar um escudo como arma secundária. Causa 1d8 pontos de dano sagrado.",
+          "requisito": "Armadura de fé, Combate defensivo",
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Ataque com escudo causando 1d8 de dano"
+          },
+          "dano": "1d8"
+        },
+        {
+          "nome": "Marca da Punição",
+          "tipo": "Passiva",
+          "descricao": "Ao conjurar a marca divina, o inquisidor causa dano inicial e pode causar novamente o dano toda rodada sempre que acertar um ataque físico. O milagre também causa o dobro de dano em mortos-vivos e demônios.",
+          "efeitos": {
+            "passivo": "Dano adicional sempre que um ataque físico acerta, dano dobrado em mortos-vivos e demônios",
+            "ativo": null
+          },
+          "modificadores": {
+            "bonusSucesso": "Bônus de 1d6 de dano ao usar Armamento Divino"
+          }
+        },
+        {
+          "nome": "Empatia de combate",
+          "tipo": "Ação",
+          "descricao": "Cria uma ligação com o aliado em combate, dividindo o dano dos ataques recebidos por ele. O inquisidor define quantos pontos de dano tomar, com um mínimo de 1.",
+          "custoMagia": 2,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Divisão de dano com aliado"
+          },
+          "modificadores": {
+            "bonusSucesso": "Se equipado com Armadura de fé, o dano dividido é reduzido pela metade, arredondado para cima"
+          }
+        },
+        {
+          "nome": "Guerreiro da Fé",
+          "tipo": "Passiva",
+          "descricao": "O inquisidor se torna imune a envenenamento, resistente a dano sagrado e imune a doenças. Consegue conjurar Armamento Divino e Montaria Celeste uma vez por dia sem custo.",
+          "efeitos": {
+            "passivo": "Imunidade a envenenamento, resistência a dano sagrado e imunidade a doenças. Conjura uma vez por dia sem custo."
+          },
+          "modificadores": {
+            "bonusSucesso": "Primeira conjuração de Armadura de fé e Ascensão Celeste custa apenas 3 pontos de magia"
+          }
+        }
+
+      ]
+    },
+    {
+      "titulo": "Combatente Arcano",
+      "img": elementalista,
+      "descricao": "O Elementalista, moldador dos próprios fios da criação, caminha entre os mundos do fogo, da terra, do ar e da água como um maestro conduzindo uma sinfonia cósmica. Seus olhos refletem tempestades distantes e mares revoltos, enquanto suas mãos, calejadas não pelo trabalho comum, mas pelo toque da essência primordial, desenham símbolos no ar que vibram com o poder dos próprios alicerces do mundo. Ele não domina os elementos, mas dança com eles em uma harmonia ancestral, persuadindo a chama a rugir como um dragão acordado ou a brisa a sussurrar segredos esquecidos pelos mortais. Rochas se erguem sob seus pés como servos antigos despertos de seu sono de eras, e rios desviam seu curso obedientes à sua silenciosa vontade. Onde o Elementalista passa, a natureza o reconhece — árvores inclinam seus galhos em reverência, e trovões ecoam seu nome nas montanhas distantes. Ele é um ser à parte, nem mestre nem servo, mas um intermediário entre o mundo dos homens e o coração selvagem da própria terra. Em seus passos ecoa o crepitar das chamas, o sussurro do vento, o rugido das marés e o sussurro das pedras — uma sinfonia eterna da qual ele é tanto condutor quanto parte.",
+      "atributos": "Cada Regalia comprada na especialização Combatente Arcano(a) fornece:\n- 5 Pontos de Vida\n- 2 Pontos de Estâmina\n- 3 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Atletismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo", "Combate a distância", "Combate arcano"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Arcanatec", "Alquimia", "Acrobacia"]
+          },
+          "proficiências": ["Proficiência em Vara Relâmpago, armadura pesada, todos os escudos e espada de lâminas duplas.", "Aptidão para o combate arcano: O Combatente Arcano tem uma maior aptidão para usar algumas escolas de magia durante o combate. Ao usar as magias das escolas de abjuração, evocação e invocação o Combatente Arcano gasta 1 ponto de magia a menos para conjurá-las, magias custam no minimo 1 ponto de magia e não podem custar 0 pontos de magia através desta Habilidade."]
+        },
+        "habilidade": [{
+          "nome": "Ligação arcana",
+          "tipo": "Magia (Ritual / Ação livre / Ação)",
+          "descricao": "O Combatente Arcano escolhe até três armas ou objetos que ele queira sintonizar sua ligação arcana. Ao sintonizar sua ligação arcana através de um ritual de 1 h para cada objeto, o Combatente Arcano pode guardar ou pegar esse objeto de uma dimensão de bolso em qualquer momento que quiser. Durante um turno de combate o cavaleiro pode pegar 1 objeto como ação livre mas a  partir do segundo é consumida uma ação por interação com objeto através desta Habilidade. Não existe limite diário para essa Habilidade e ela não gera custos em ponto de magia ou estâmina.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Ataque Conjurativo",
+          "tipo": "Ação",
+          "descricao": "Ao atacar um alvo em até 1,5 metros de si com um ataque físico, o Combatente Arcano pode optar por conjurar uma magia que tem o tempo de conjuração de até duas ações. Durante essa ação, o Combatente Arcano pode apenas conjurar magias arcanas e realizar apenas um ataque. O alvo da magia deve ser o próprio cavaleiro ou seu alvo. Se a magia for de área, ela é centralizada no alvo do ataque. Além de gastar os pontos de magia referentes à magia conjurada, o Combatente Arcano gasta 5 pontos de estâmina.",
+          "custoEstamina": 5,
+          "custoMagia": null
+        },
+        {
+          "nome": "Contingência",
+          "tipo": "Ação",
+          "descricao": "O cavaleiro conjura uma magia da árvore de ilusão ou abjuração e estabelece um gatilho para sua conjuração. O Combatente Arcano então gasta os pontos de magia e conjura a magia que vai ser colocada em contingência. Se o gatilho ocorrer em até um número de dias igual ao valor do arcanismo do Combatente Arcano, a magia é conjurada de acordo com o desejo do conjurador. Para guardar a magia em contingência é necessário gastar 2 pontos de magia e 2 pontos de estâmina.",
+          "custoEstamina": 2,
+          "custoMagia": 2
+        },
+        {
+          "nome": "Arma Arcana Melhorada",
+          "tipo": "Passiva",
+          "descricao": "Ao invocar uma arma através da magia arma arcano o Combatente Arcano pode escolher qual estilo de combate vai usar entre os combates físicos e arcanos, desde que seja compatível com a arma. Ao usar a magia arma arcana, o Combatente Arcano gasta 5 pontos de magia ao invés de 10 e gasta apenas mais 2 pontos de magia adicionais para invocar a segunda arma.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "efeitos": {
+            "passivo": "Reduz o custo de magia para invocar uma arma arcana."
+          }
+        },
+        {
+          "nome": "Armadura Arcana Melhorada",
+          "tipo": "Ativo",
+          "descricao": "Ao conjurar armadura arcana, o Combatente Arcano pode escolher usar com o mesmo número de ações da magia a habilidade recuperar fôlego. O Combatente Arcano pode fazer isso um número de vezes igual ao seu valor de fortitude em um mesmo dia.",
+          "custoEstamina": null,
+          "custoMagia": null
+        },
+        {
+          "nome": "Ataque Fortalecido",
+          "tipo": "Passiva",
+          "descricao": "Ao sacar uma arma através de ligação arcana em um turno, o primeiro ataque feito com essa arma tem o dano dobrado. Esse efeito só acontece uma vez por ação atacar. Custa 1 ponto de magia.",
+          "custoEstamina": null,
+          "custoMagia": 1,
+          "modificadores": {
+            "usoExtra": "Gasta 5 pontos de estâmina para retirar a penalidade de -5 no acerto gerada por esse ataque para a próxima ação."
+          }
+        },
+        {
+          "nome": "Câmbio Arcano",
+          "tipo": "Passiva",
+          "descricao": "O Combatente Arcano pode pegar ou entregar um objeto para outra criatura voluntária através de sua ligação arcana. Essa interação é uma ação livre para ambos e tem um alcance igual a 5 x o arcanismo do Combatente Arcano em metros. Após entregar ou pegar um item com essa criatura, tanto o cavaleiro quanto a criatura se ligam através da magia. O Combatente Arcano pode escolher gastar 5 pontos de magia e gastar uma ação para trocar de lugar com a criatura.",
+          "custoEstamina": null,
+          "custoMagia": 5
+        },
+        {
+          "nome": "Carapaça Arcana",
+          "tipo": "Reação",
+          "descricao": "O Combatente Arcano ao receber um ataque pode usar sua reação para levantar um escudo, caso esteja equipando um. Ao levantar escudo desta maneira, além de ganhar os benefícios de levantar escudo, ainda gera uma barreira protetiva envolta de si que lhe dá 20 pontos de vida temporário até o fim de seu próximo turno.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "bonus": {
+            "vidaTemporaria": 20
+          }
+        },
+        {
+          "nome": "Combate Anti-Conjuração",
+          "tipo": "Passiva",
+          "descricao": "Se uma criatura conjurar qualquer magia, feitiço, milagre ou maldição dentro do alcance de ameaça do Combatente Arcano, ele pode realizar um ataque de oportunidade através de sua reação contra o conjurador. Se acertar o ataque, o Combatente Arcano interrompe a conjuração. Custa 10 pontos de estâmina e 2 pontos de magia.",
+          "custoEstamina": 10,
+          "custoMagia": 2
+        },
+        {
+          "nome": "Ataque Veloz Com Armas Arcanas",
+          "tipo": "Ação",
+          "descricao": "O Combatente Arcano pode realizar um ataque a mais quando tomar uma ação de atacar. Esse ataque deve ser feito apenas com armas que estejam em uma ligação arcana ou que sejam invocadas através da magia arma arcana. Apenas uma vez por ação. Custa 1 ponto de estâmina.",
+          "custoEstamina": 1,
+          "custoMagia": null
+        },
+        {
+          "nome": "Flash",
+          "tipo": "Ação",
+          "descricao": "O Combatente Arcano se teleporta para um ponto até 2x o seu valor de arcanismo em metros de distância que possa ver. Se o Combatente Arcano se teleportar para um espaço que ele consiga realizar um ataque físico contra um oponente, então pode escolher atacar sem consumir uma nova ação. Se este golpe acertar, o alvo sofre um número de pontos de dano arcano igual ao dano do ataque normal da arma + 2x o seu valor de arcanismo.",
+          "custoEstamina": 2,
+          "custoMagia": 2,
+          "modificadores": {
+            "usoExtra": "Se o Combatente Arcano usar uma nova ação para conjurar Flash novamente no mesmo turno, a magia custa o 3x o valor de pontos de magia e estâmina, porém o ataque recebe um bônus de +10 de acerto."
+          }
+        },
+        {
+          "nome": "Golpe Final",
+          "tipo": "Ação",
+          "descricao": "O Combatente Arcano pode movimentar até 2x sua velocidade de movimento e realiza um ataque contra um alvo a sua escolha em alcance. Esse ataque recebe um bônus de acerto igual ao seu valor de arcanismo. Se o ataque acertar ele causa o dano normal do ataque e mais 1d12 de dano arcano para cada ponto de magia que for gasto nesta magia, com um máximo de 10.",
+          "custoEstamina": 5,
+          "custoMagia": null,
+          "dano": "Dano normal do ataque + 1d12 por ponto de magia (máximo de 10)",
+          "efeitos": {
+            "ativo": "Movimenta até 2x sua velocidade e realiza um ataque com bônus de acerto igual ao valor de arcanismo."
+          },
+          "modificadores": {
+            "bonusSucesso": "Bônus de acerto igual ao valor de arcanismo."
+          }
+        }
+      ]
+    },
+    {
+      "titulo": "Metamorfo",
+      "img": metamorfo,
+      "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
+      "atributos": "Cada Regalia comprada na especialização Metamorfo(a) fornece:\n- 7 Pontos de Vida\n- 0 Pontos de Estâmina\n- 3 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Lidar Com Animais", "Arcanismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Sobrevivência"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Natureza", "Alquimia", "Fortitude"]
+          },
+          "proficiências": ["Proficiência total em  Conduções Exóticas, Terrestres e Aquáticas."]
+        },
+        "habilidade": [{
+          "nome": "Mestre da metamorfose",
+          "tipo": "Feitiço (Ritual)(1 hora)",
+          "descricao": "O metamorfo pode usar até duas metamorfoses, que não sejam licantrópicas, ao consumir um elixir. Ao transformar em licantropo o metamorfo mantém todos os valores de Habilidade e ganha todos os benefícios somado a esses valores. Em forma licantropo é possível usar armas e outros equipamentos. Se a forma sofre alteração no tamanho o equipamento no corpo do metamorfo acompanha a mudança, porém armas não acompanham a mudança de tamanho.",
+        }]
+      },
+      "regalias": [
+
+        {
+          "nome": "Asas",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode escolher aparecer asas como efeito adicional que dura pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento.",
+          "custoMagia": 2,
+          "efeitos": {
+            "passivo": "Ganha a habilidade de voar com a mesma velocidade de movimento"
+          }
+        },
+        {
+          "nome": "Musculatura Monstruosa",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a biologia de seus músculos, ganhando um bônus de força igual a 4, podendo ultrapassar 15.",
+          "custoMagia": 4,
+          "efeitos": {
+            "passivo": "Ganha bônus de força"
+          }
+        },
+        {
+          "nome": "Cauda",
+          "tipo": "Passiva",
+          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a anatomia de seu corpo, ganhando uma cauda que pode ser usada como arma natural ou para segurar uma arma ou escudo.",
+          "custoMagia": 4,
+          "dano": "1d8 + força (concussivo)",
+          "efeitos": {
+            "passivo": "Ganha uma cauda que pode ser usada como arma ou para segurar itens"
+          }
+        },
+        {
+          "nome": "Licantropia Lobo",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido animal com várias características. Ganha visão no escuro, velocidade de movimento adicional, resistência a certos tipos de dano e ataques naturais com garras e mordida.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido lobo com habilidades especiais"
+          },
+          "dano": "1d12 (mordida) + 1d12 (garras)",
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Urso",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido urso, ganhando resistência a danos e aumentando sua vida e força.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido urso com ataques naturais"
+          },
+          "dano": "3d4 (mordida) + 3d4 (garras)",
+          "bonus": {
+            "vidaTemporaria": "Ganha 20 pontos de vida extra"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Javali",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido javali, com aumento de velocidade e resistência a danos.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido javali com ataque com presas"
+          },
+          "dano": "2d6 (presas)",
+          "bonus": {
+            "vidaTemporaria": "Ganha 10 pontos de vida extra"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Pantera",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido pantera, com maior furtividade, resistência a danos e ataques naturais.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido pantera com ataques naturais"
+          },
+          "dano": "3d8 (mordida) + 3d8 (garras)",
+          "modificadores": {
+            "bonusSucesso": "Ganha bônus de 10 pontos em furtividade"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Crocodilo",
+          "tipo": "Metamorfose",
+          "descricao": "O Metamorfo se transforma em um híbrido crocodilo, ganhando bônus de defesa, velocidade na água e ataque com mordida.",
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
+            "ativo": "Transforma-se em híbrido crocodilo com ataque natural"
+          },
+          "dano": "2d10 (mordida)",
+          "bonus": {
+            "vidaTemporaria": "Ganha bônus de +5 em defesa"
+          },
+          "duracaoExtra": "Dura 2 horas"
+        },
+        {
+          "nome": "Licantropia Águia",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo consegue se transformar em um híbrido águia. Ganha visão no escuro de 12 metros, 3 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao se transformar, o metamorfo ganha asas, podendo voar com o dobro da sua velocidade de movimento. Possui um ataque desarmado com garras que causa 1d20 de dano perfurante. Pode atacar com suas garras enquanto voa como parte do movimento, com custo de uma ação. Não sofre ataques de oportunidade ao entrar ou sair do alcance de um inimigo. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Ao se transformar em híbrido águia, o metamorfo ganha asas para voo."
+          },
+          "modificadores": {
+            "bonusSucesso": "O metamorfo ganha 3 metros de velocidade adicional enquanto voa."
+          },
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Licantropia Cobra",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo se transforma em um híbrido cobra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao atacar com mordida, o metamorfo tem 50% de chance de inocular um veneno que causa 1d10 de dano extra. Ganha a capacidade de enxergar com fossetas loreais e um ataque de mordida que causa 2d4 pontos de dano perfurante. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "O metamorfo pode atacar com mordida, podendo inocular veneno com chance de causar dano extra."
+          },
+          "modificadores": null,
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Licantropia Salamandra",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo se transforma em um híbrido salamandra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. O metamorfo é incendiado com chamas que não o ferem, mas causa 1d6 de dano a criaturas em até 1,5 metros de distância. Imbui seus ataques com fogo, ganhando 2 pontos de dano extra. Recebe 2d8 pontos de vida extra e consegue escalar paredes sem necessidade de teste. É vulnerável a dano de gelo. Dura 2 horas.",
+          "custoEstamina": null,
+          "custoMagia": 10,
+          "efeitos": {
+            "passivo": "O metamorfo causa dano a criaturas próximas com chamas e ganha bônus de dano nos ataques com fogo.",
+            "ativo": "Ao se transformar em salamandra, o metamorfo adquire resistência ao dano e ganha bônus de vida extra."
+          },
+          "modificadores": {
+            "bonusSucesso": "O metamorfo recebe 2d8 pontos de vida extra e 2 pontos de dano adicional nos ataques com fogo."
+          },
+          "bonus": null,
+          "interacoes": null
+        },
+        {
+          "nome": "Virar Animal",
+          "tipo": "Metamorfose",
+          "descricao": "O metamorfo pode se transformar em um animal grande ou menor por um número de horas igual ao seu nível. Mantém os pontos de vida atuais e ganha pontos de vida temporários iguais ao seu valor de fortitude.",
+          "custoEstamina": null,
+          "custoMagia": null,
+          "efeitos": {
+            "passivo": null,
+            "ativo": "Ao se transformar, o metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+          },
+          "modificadores": null,
+          "bonus": {
+            "vidaTemporaria": "O metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
+          },
+          "interacoes": null
+        }
       ]
     },
   ]
@@ -3603,6 +4228,7 @@ const ClassesPage = () => {
         <Tab label="Especializações de Iniciado" className="tabs" />
         <Tab label="Especializações de Noviço" className="tabs" />
         <Tab label="Especializações de Feiticeiro" className="tabs" />
+        <Tab label="Especializações Mistas" className="tabs" />
       </Tabs>
 
       {/* Info MUI Tab Content */}
@@ -4456,6 +5082,208 @@ const ClassesPage = () => {
       {thisvalue === 6 && (
         <Box>
           {EspecializacaoFeiticeiroSkillsData.map(especializacao =>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+              <Box sx={{ width: "80%", mx: "auto" }}>
+                {/* Título e Descrição */}
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography className="boxTextTitle" variant="h3" gutterBottom>
+                      {especializacao.titulo}
+                    </Typography>
+                    <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>
+                      {especializacao.descricao}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Atributos */}
+                <Typography variant="body1" sx={{ textAlign: 'justify', mb: 3 }}>
+                  {especializacao.atributos}
+                </Typography>
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalia Obrigatória
+                </Typography>
+                {especializacao.regaliaObrigatoria && (
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-regaliaObrigatoria-content" id="panel-regaliaObrigatoria-header">
+                      <Typography>Atributos e Bonus</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{especializacao.regaliaObrigatoria.descricao}</Typography>
+
+                      {/* Atributos */}
+                      {especializacao.regaliaObrigatoria.pontos.atributos && (
+                        <>
+                          <Typography><strong>Atributos:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.atributos.quantidade}>{especializacao.regaliaObrigatoria.pontos.atributos.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.atributos.opcoes.map((atributo, index) => (
+                              <li key={index}>{atributo}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Combate */}
+                      {especializacao.regaliaObrigatoria.pontos.combate && (
+                        <>
+                          <Typography><strong>Combate:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.combate.quantidade}>{especializacao.regaliaObrigatoria.pontos.combate.quantidade} Pontos em um dos seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.combate.opcoes.map((opcao, index) => (
+                              <li key={index}>{opcao}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Habilidades */}
+                      {especializacao.regaliaObrigatoria.pontos.habilidades && (
+                        <>
+                          <Typography><strong>Habilidades:</strong></Typography>
+                          <ul>
+                            <li key={especializacao.regaliaObrigatoria.pontos.habilidades.quantidade}>{especializacao.regaliaObrigatoria.pontos.habilidades.quantidade} Pontos em todos os seguintes:</li>
+                            {especializacao.regaliaObrigatoria.pontos.habilidades.opcoes.map((habilidade, index) => (
+                              <li key={index}>{habilidade}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Proficiências */}
+                      {especializacao.regaliaObrigatoria.pontos.proficiências && (
+                        <>
+                          <Typography><strong>Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.pontos.proficiências.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+
+                      {/* Outras Proficiencias */}
+                      {especializacao.regaliaObrigatoria.outrasProficiencias && (
+                        <>
+                          <Typography><strong>Outras Proficiências:</strong></Typography>
+                          <ul>
+                            {especializacao.regaliaObrigatoria.outrasProficiencias.map((proficiencia, index) => (
+                              <li key={index}>{proficiencia}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+
+                {/* Accordion para Habilidades */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Habilidade de Classe
+                </Typography>
+                {especializacao.regaliaObrigatoria.habilidade.map((habilidade, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
+                      <Typography>{habilidade.nome} </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Tipo: {habilidade.tipo}</Typography>
+                      <Typography>{habilidade.descricao}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+                {/* Regalias */}
+                <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
+                  Regalias
+                </Typography>
+                {especializacao.regalias.map((regalia, index) => (
+                  <Accordion key={index}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-regalia${index}-content`} id={`panel-regalia${index}-header`}>
+                      <Typography>{regalia.nome} ({regalia.tipo})</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{regalia.descricao}</Typography>
+                      {regalia.prerequisito && (
+                        <Typography><strong>Pré-Requisito:</strong> {regalia.prerequisito}</Typography>
+                      )}
+
+                      {regalia.chanceDeSucesso && (
+                        <Typography><strong>Chance de Sucesso:</strong> {regalia.chanceDeSucesso}</Typography>
+                      )}
+
+
+                      {regalia.bonus && regalia.bonus.vidaTemporaria && (
+                        <Typography><strong>Bônus de Vida Temporária:</strong> {regalia.bonus.vidaTemporaria}</Typography>
+                      )}
+
+                      {regalia.tempoConstrucao && (
+                        <Typography><strong>Tempo de contrução:</strong> {regalia.tempoConstrucao}</Typography>
+                      )}
+
+                      {regalia.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.duracao}</Typography>
+                      )}
+                      {regalia.requisito && (
+                        <Typography><strong>Requisito:</strong> {regalia.requisito}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.ativo && (
+                        <Typography><strong>Ativo:</strong> {regalia.efeitos.ativo}</Typography>
+                      )}
+                      {regalia.efeitos && regalia.efeitos.duracao && (
+                        <Typography><strong>Duração:</strong> {regalia.efeitos.duracao}</Typography>
+                      )}
+
+                      {regalia.efeitos && regalia.efeitos.passivo && (
+                        <Typography><strong>Passivo:</strong> {regalia.efeitos.passivo}</Typography>
+                      )}
+
+                      {regalia.dano && (
+                        <Typography><strong>Dano:</strong> {regalia.dano}</Typography>
+                      )}
+
+                      {regalia.modificadores && (
+                        <>
+                          {regalia.modificadores.bonusSucesso && (
+                            <Typography><strong>Bonus Sucesso:</strong> {regalia.modificadores.bonusSucesso}</Typography>
+                          )}
+                          {regalia.modificadores.usoExtra && (
+                            <Typography><strong>Uso Extra:</strong> {regalia.modificadores.usoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.duracaoExtra && (
+                            <Typography><strong>Duração Extra:</strong> {regalia.modificadores.duracaoExtra}</Typography>
+                          )}
+                          {regalia.modificadores.bonusLideranca && (
+                            <Typography><strong>Bonus Liderança:</strong> {regalia.modificadores.bonusLideranca}</Typography>
+                          )}
+                        </>
+                      )}
+
+                      {regalia.interacoes && regalia.interacoes.comFortaleza && (
+                        <Typography><strong>Interação com Fortaleza:</strong> {regalia.interacoes.comFortaleza}</Typography>
+                      )}
+
+                      {regalia.custoEstamina && (
+                        <Typography><strong>Custo de Estâmina:</strong> {regalia.custoEstamina}</Typography>
+                      )}
+                      {regalia.custoMagia && (
+                        <Typography><strong>Custo de Magia:</strong> {regalia.custoMagia}</Typography>
+                      )}
+
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+              </Box>
+            </Box>
+          )}
+
+        </Box>
+      )}   {thisvalue === 7 && (
+        <Box>
+          {EspecializacaoMistaSkillsData.map(especializacao =>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
