@@ -3524,7 +3524,7 @@ const ClassesPage = () => {
     {
       "titulo": "Monge",
       "img": xama,
-      "descricao": "O Xamã é um andarilho entre os véus da vida e da morte, um mediador entre os sussurros dos espíritos e o pulsar da terra viva. Seu corpo é marcado por símbolos antigos, gravados não pela mão dos homens, mas pelos próprios ecos do além, e sua voz, quando invoca os nomes esquecidos do outro lado, ressoa como um lamento antigo que faz a própria natureza estremecer. Ele não comanda os mortos como um tirano impiedoso, mas os guia como um pastor sombrio, oferecendo-lhes propósito onde antes havia apenas vazio. O vento carrega murmúrios de almas perdidas em sua presença, e as sombras se alongam como se buscassem seu toque. Quando o Xamã caminha, corvos o seguem, lobos observam à distância e até mesmo os insetos rastejam em sua direção, atraídos por uma força invisível e inevitável. Ele é a ponte entre o mundo dos vivos e a vastidão sem nome do pós-vida, tecendo pactos e trocas em uma linguagem que só os mortos compreendem. Onde ele passa, a terra apodrece e floresce em igual medida, e os vivos o temem tanto quanto os espíritos o reverenciam. Ele é o arauto do ciclo eterno — aquele que dá, toma e restaura, sem piedade e sem remorso.",
+      "descricao": "Desde os primeiros dias de sua jornada, o monge aprende que o corpo não é uma prisão, mas uma ponte para o mundo ao seu redor. Seus pés se firmam com a solidez da terra, mas seus passos fluem como a correnteza de um rio. Cada movimento é deliberado, cada respiração é um ciclo que alimenta não apenas seus músculos, mas seu próprio ser. O domínio dos chakras revela camadas mais profundas de seu potencial. O chakra da base confere uma resiliência inabalável, um alicerce que resiste tanto à toxina da carne quanto à corrupção da mente. Com o chakra abdominal aberto, o monge se torna indomável, desafiando o próprio conceito de equilíbrio e velocidade. Mais adiante, o plexo solar arde como uma fornalha interna, forjando sua determinação contra as sombras e chamas da maldade. No coração, reside a leveza — uma liberdade que ignora as amarras do terreno e dos grilhões. A garganta, por sua vez, dá voz à verdade imutável do universo, tornando o monge inabalável em espírito e palavra. Quando o terceiro olho desperta, o véu das ilusões se rasga diante dele, revelando a realidade como ela é. E no auge da jornada, a coroa se abre, unindo o corpo à alma e o espírito ao plano astral. O monge não busca poder, mas equilíbrio. Seu caminho é uma dança entre a força e a serenidade, entre o golpe e o silêncio. Ele não é herói ou vilão — é um fragmento da própria vontade do mundo, em constante movimento. ",
       "atributos": "Cada Regalia comprada na especialização Xamã fornece:\n- 4 Pontos de Vida\n- 4 Pontos de Estâmina\n- 2 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
@@ -3681,7 +3681,7 @@ const ClassesPage = () => {
     {
       "titulo": "Inquisidor",
       "img": bruxo,
-      "descricao": "O bruxo é uma figura cuja essência se entrelaça com os fios ocultos que ligam o mundo natural ao sobrenatural, um estudioso e praticante das forças que existem à margem da compreensão mundana. Não é mero manipulador de energias arcanas, mas um mediador entre reinos vivos e mortos, um arauto das vontades inomináveis que sussurram entre as folhas das árvores antigas e nas sombras dos becos esquecidos. Seu poder brota de pactos antigos, de uma compreensão visceral das forças da vida e da morte, moldando o próprio tecido da realidade em ilusões e maldições que confundem os sentidos e dobram a vontade dos incautos. Ele cultiva a natureza não como um jardineiro, mas como um maestro regendo a fúria selvagem das raízes e a doçura enganosa das flores. Suas criaturas invocadas, sejam elas familiares astutos ou abominações retorcidas pela corrupção, não são meros servos — são extensões de sua própria alma fragmentada, espreitando o mundo através de olhos que não deveriam ver. E assim o bruxo caminha entre mundos, um viajante cuja marca é sentida nos rastros de vinhas torcidas e na sensação inquietante de que algo está observando, mesmo quando não há ninguém por perto.",
+      "descricao": "O Inquisidor é uma figura imponente, cujas mãos são guiadas por uma fé inabalável e uma missão clara: purificar o mundo das trevas que o assolam. Vestido pela luz de um poder divino, ele não apenas carrega a espada, mas também um ardor espiritual que reverbera em sua essência. Com olhos afiados e alma diligente, ele caça aqueles que se escondem na escuridão, punindo com mão firme, não pela força do homem, mas pela força que emana do alto. Em sua busca, o Inquisidor invoca milagres com uma precisão quase ritualística. Quando a batalha se adensa, ele não hesita em chamar a Armadura de Fé, revestindo-se com uma defesa incomparável, que reflete o ardente fervor de sua crença. A armadura, feita não de aço, mas de energia sagrada, o torna uma muralha impenetrável, enquanto o escudo que a acompanha impede qualquer ofensiva contra sua missão. Cada golpe que ele desferir será abençoado, não com o sangue comum, mas com o fogo celestial que arde na ponta de sua lâmina. Seu armamento, imbuído de pureza, se torna uma extensão de sua vontade divina, trazendo a justiça não apenas de forma física, mas transcendental, como uma manifestação do próprio poder celeste. No entanto, a força do Inquisidor não se limita à sua imbatível resistência ou ao dano que ele inflige. Ele também é um farol para seus aliados, compartilhando seu peso nas batalhas e dividindo os ataques que o cercam com uma empatia de combate que transcende a mera parceria. Naqueles momentos mais sombrios, ele pode invocar uma montaria celestial, uma besta imponente que não só o transporta, mas também o revigora para enfrentar os desafios com a força de sua fé, guiando-o em sua cruzada implacável. Cada passo que dá é um passo em direção à luz, a um mundo purificado, onde o mal será erradicado.",
       "atributos": "Cada Regalia comprada na especialização Inquisidor(a) fornece:\n- 5 Pontos de Vida\n- 3 Pontos de Estâmina\n- 2 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
@@ -3826,7 +3826,7 @@ const ClassesPage = () => {
     {
       "titulo": "Combatente Arcano",
       "img": elementalista,
-      "descricao": "O Elementalista, moldador dos próprios fios da criação, caminha entre os mundos do fogo, da terra, do ar e da água como um maestro conduzindo uma sinfonia cósmica. Seus olhos refletem tempestades distantes e mares revoltos, enquanto suas mãos, calejadas não pelo trabalho comum, mas pelo toque da essência primordial, desenham símbolos no ar que vibram com o poder dos próprios alicerces do mundo. Ele não domina os elementos, mas dança com eles em uma harmonia ancestral, persuadindo a chama a rugir como um dragão acordado ou a brisa a sussurrar segredos esquecidos pelos mortais. Rochas se erguem sob seus pés como servos antigos despertos de seu sono de eras, e rios desviam seu curso obedientes à sua silenciosa vontade. Onde o Elementalista passa, a natureza o reconhece — árvores inclinam seus galhos em reverência, e trovões ecoam seu nome nas montanhas distantes. Ele é um ser à parte, nem mestre nem servo, mas um intermediário entre o mundo dos homens e o coração selvagem da própria terra. Em seus passos ecoa o crepitar das chamas, o sussurro do vento, o rugido das marés e o sussurro das pedras — uma sinfonia eterna da qual ele é tanto condutor quanto parte.",
+      "descricao": "Na quietude das antigas terras, onde a magia se entrelaça com o aço e os ventos sussurram segredos, o Combatente Arcano caminha com um propósito único, um guerreiro moldado não apenas pelo treinamento de combate, mas pela profunda compreensão das artes arcanas. Seu corpo e alma são templos de disciplina, onde o esforço físico se funde com o poder da magia, criando uma harmonia mortal. O Combatente Arcano não é um mero conjurador, nem um simples espadachim. Ele é o elo entre duas forças primordiais, um mestre em usar o poder arcano com a destreza de um combatente treinado. Seu corpo carrega o peso das armaduras mais pesadas, mas também é envolvido pela leveza da magia, permitindo-lhe conjurar escudos e armamentos de energia pura. Seus passos são guiados pela sabedoria arcana, e suas armas, muitas vezes, se tornam extensões de sua própria vontade, moldadas em pureza sagrada. Em batalha, o Combatente Arcano não depende apenas de sua espada ou de seu bastão, mas da estreita ligação entre sua alma e as forças místicas que governam o mundo. Ele pode evocar um escudo invisível que o protege das mais mortais investidas ou lançar uma lâmina de energia pura com a mesma facilidade com que invoca feitiçarias arcanas. Sua habilidade de conjurar magias não é limitada pela tradição ou pelo ritual; ele consegue, no calor do combate, moldar feitiços de abjuração, evocação e invocação com a mesma naturalidade com que desferiria um golpe mortal. No entanto, seu verdadeiro poder reside na simbiose com as armas que invoca. Cada lâmina conjurada, cada encantamento lançado, é parte de uma dança letal onde a magia e o aço se entrelaçam. E mesmo quando a batalha parece perdida, o Combatente Arcano tem a capacidade de se reposicionar, utilizando seu conhecimento arcano para saltar por distâncias inimagináveis e lançar o golpe final, onde a força do combate físico se junta ao poder devastador da magia. Ele é uma força não só de combate, mas de transformação, capaz de moldar a própria realidade ao seu redor, tornando-se um verdadeiro titã entre os mortais.",
       "atributos": "Cada Regalia comprada na especialização Combatente Arcano(a) fornece:\n- 5 Pontos de Vida\n- 2 Pontos de Estâmina\n- 3 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
@@ -3953,7 +3953,7 @@ const ClassesPage = () => {
     {
       "titulo": "Erudito",
       "img": metamorfo,
-      "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
+      "descricao": "Os eruditos, aqueles que buscam as profundezas do conhecimento divino e arcano, são mestres de uma sabedoria vasta, que vai além das fronteiras do entendimento comum. Seu caminho é marcado pela disciplina e pelo estudo imensurável das forças que regem o mundo, seja no campo da magia, da teologia ou do ocultismo. A mente do erudito é como um templo de saber, onde cada pensamento se transforma em uma peça crucial no grande quebra-cabeça da existência. Com um olhar atento aos segredos ocultos, o erudito não apenas contempla os mistérios do universo, mas também se dedica a traduzi-los em ações práticas e poderosas. Seus milagres, embora incompreensíveis para muitos, são baseados em um entendimento profundo da estrutura das energias divinas. O que para outros é um ato de fé, para ele é um estudo meticuloso da interação entre o sagrado e o arcano. Ao conjurar um milagre, o erudito não apenas invoca forças sobrenaturais, mas também as compreende e as manipula com a precisão de um artesão, acumulando energia sagrada que pode ser utilizada para curar, proteger ou até mesmo reforçar sua defesa. No campo de batalha, o erudito não é um guerreiro de espada, mas de palavras e gestos, conjurando esferas de poder sagrado com a mesma naturalidade com que outros empunham lâminas. Seus aliados, muitas vezes, encontram proteção sob o manto divino que ele cria, uma barreira de luz que neutraliza as adversidades do ambiente e proporciona um refúgio de serenidade e cura. Sua capacidade de conjurar um templo invulnerável, onde o conhecimento e a cura se entrelaçam, reflete a grandeza de sua compreensão do cosmos. Cada gesto, cada palavra do erudito é um reflexo de uma vida dedicada ao aprendizado, ao aprimoramento e ao compartilhamento do conhecimento com aqueles que estão dispostos a ouvir. Em suas mãos, o poder não é apenas uma força destrutiva, mas um meio de restaurar o equilíbrio, proteger a vida e elevar a compreensão. O erudito, portanto, não é apenas um mestre da magia, mas um farol de sabedoria, cuja presença ilumina o caminho daqueles que buscam entender o universo em toda a sua complexidade.",
       "atributos": "Cada Regalia comprada na especialização Erudito(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
@@ -4184,7 +4184,7 @@ const ClassesPage = () => {
         {
           "nome": "Aparar",
           "tipo": "Reação",
-          "descricao": "Ao receber um ataque, mas antes de saber o resultado, o caçador pode usar sua reação para aumentar seu Valor de Defesa em 2 pontos para esse ataque.",
+          "descricao": "AAo receber um ataque, mas antes de o rolamento de ataque ser resolvido se acerta ou não, pode usar sua reação para aumentar o seu Valor de Defesa em 2 pontos durante este específico ataque. Custa 2 pontos de estâmina .O personagem pode repetir essa reação mais de uma vez na mesma rodada ao custo de mais 2 pontos de estâmina .",
           "custoEstamina": 2,
           "modificadores": {
             "usoExtra": "Pode ser repetida na mesma rodada ao custo de mais 2 pontos de estâmina por uso."
@@ -4193,7 +4193,7 @@ const ClassesPage = () => {
         {
           "nome": "Festim Macabro",
           "tipo": "Feitiço",
-          "descricao": "Uma revoada de espíritos surge em uma área de 6 metros ao redor do Caçador de Demônios por 3 rodadas. Os inimigos sofrem 7 pontos de dano ao entrar na área e ao iniciar o turno dentro dela. Primeira vez que entram têm 50% de chance de ficar Aterrorizados.",
+          "descricao": "Uma revoada de espíritos surgem em uma área de 6 metros ao redor do Caçador de demônios  e o circundam durante 3 rodadas. Os inimigos dentro da área recebem 7 pontos de dano quando entram na área pela primeira vez e quando começa o turno dentro dela. Os inimigos que entrarem na área pela primeira vez tem 50% de chance de entrar na condição Aterrorizado pelos agouros dos espíritos. Custa 10 pontos de magia. A cada 5 pontos de magia aumenta o dano por rodada em 2 pontos.",
           "custoMagia": 10,
           "dano": "7 pontos de dano por rodada",
           "modificadores": {
@@ -4212,7 +4212,7 @@ const ClassesPage = () => {
         {
           "nome": "Lado Sombrio Irrestrito",
           "tipo": "Ação",
-          "descricao": "Enquanto o Lado Sombrio está ativo, o Caçador de Demônios libera o controle da escuridão. Causa 2d10 de dano sombrio em área e seus ataques ganham 1d6 de dano sombrio bônus. Ganha 1 ponto de defesa e resistência a danos não mágicos, mas se torna vulnerável a ataques sagrados.",
+          "descricao": "Enquanto Lado Sombrio estiver ativado, o Caçador de Demônios consegue quebrar o controle da escuridão dentro de si. Ao ativar esta habilidade o Caçador de Demônios causa 2d10 de dano sombrio em todos a sua volta, em 1,5 metros de raio e seus ataques recebem 1d6 pontos de dano sombrio de bônus. Além disso, recebe 1 ponto de valor de defesa e fica resistente ao dano de armas não elementais e que não sejam mágicas. Porém fica vulnerável a ataques sagrados. A habilidade dura 1 minuto e custa 8 pontos de magia.",
           "custoMagia": 8,
           "dano": "2d10 de dano sombrio em área, 1d6 de dano sombrio bônus nos ataques",
           "modificadores": {
@@ -4222,14 +4222,14 @@ const ClassesPage = () => {
         {
           "nome": "Corte das Sombras",
           "tipo": "Feitiço",
-          "descricao": "Cria um corte negro no ar que voa até um alvo em 12 metros. Causa 5d10 de dano sombrio se acertar. Alvos na linha direta até o alvo sofrem metade do dano se falharem na defesa.",
+          "descricao": "O Caçador de demônios cria um corte negro no ar que voa em direção a um alvo que esteja a até 12 metros de distância. Um rolamento de combate arcano determina se a habilidade acerta seu alvo, se acertar causa 5d10 pontos de dano sombrio. Todas as criaturas que estiverem na linha direta entre o Caçador de demônios e seu alvo sofrem metade deste dano caso o rolamento também superar o seus valores de defesa. A habilidade custa 8 pontos de magia.",
           "custoMagia": 8,
           "dano": "5d10 de dano sombrio"
         },
         {
           "nome": "Ataque Conjurativo",
           "tipo": "Ação",
-          "descricao": "Ao atacar um alvo em 1,5 metro, o Caçador de Demônios pode conjurar um feitiço de até duas ações. Se a magia for de área, ela é centralizada no alvo, afetando todos, inclusive o próprio caçador.",
+          "descricao": "Ao atacar um alvo em até 1,5 metros de si com um ataque físico, o Caçador de Demônios pode optar por conjurar um feitiço que tem o tempo de conjuração de até duas ações. Se a magia for de área de efeito, ela é centralizada no alvo do ataque, acertando todos em alcance, inclusive ele mesmo. Além de gastar os pontos de magia referentes ao feitiço conjurado, o caçador de demônios gasta 5 pontos de estâmina .",
           "custoEstamina": 5
         }
       ]
@@ -4273,7 +4273,7 @@ const ClassesPage = () => {
         {
           "nome": "Empatia Maliciosa",
           "tipo": "Ação",
-          "descricao": "Cria uma ligação com um alvo e divide a dor recebida pelo profano. 50% de chance de sucesso com alvo não voluntário. A divisão do dano é determinada por um rolamento de 1d4.",
+          "descricao": "Cria uma ligação com um alvo e através dela divide toda dor e sofrimento recebido pelo profano. Existe 50% de chance de sucesso ao tentar se ligar com um alvo que não seja voluntário. Todo dano que o profano recebe pode ser dividido na metade com o alvo .  Ao dividir o dano  com um alvo involuntário é necessário um rolamento de 1d4 ou sofre dano para determinar a divisão. Ao rolar 1 no rolamento do d4 o alvo da ligação recebe 25% do dano (um quarto)  e o profano o resto, se rolar 2 no d4 sofre 50% (metade)  e o profano o resto, se rolar 3 no d4 sofre 75% (3 quartos)  e o profano o resto,  e se rolar 4 no d4 sofre 100% (todo o dano) do valor do dano é tranferido do profano pro alvo da ligação. Custa 8 pontos de magia.",
           "custoMagia": 8,
           "chanceDeSucesso": "50%",
           "efeitos": {
@@ -4283,13 +4283,13 @@ const ClassesPage = () => {
         {
           "nome": "Turbilhão de Gritos",
           "tipo": "Ação",
-          "descricao": "O Profano grita injúrias ao alvo, deixando-o surdo, mudo e impossibilitado de usar habilidades, magias, feitiços ou milagres até o fim de seu próximo turno.",
+          "descricao": "O Profano grita injúrias ao alvo, o alvo fica Surdo, mudo e impossibilitado de usar qualquer habilidade, magia, feitiço ou milagres até o fim de seu próximo turno. Custa 6 pontos de magia.",
           "custoMagia": 6
         },
         {
           "nome": "Manchar Alma",
           "tipo": "Milagre",
-          "descricao": "Amaldiçoa um inimigo, com 60% de chance de deixá-lo cego, surdo e restringido até o fim do próximo turno. Após o turno, tem 30% de chance de causar 6d10 de dano necrótico ou 2d10 se passar no teste.",
+          "descricao": "chance de fazer um inimigo ficar cego, surdo e restringido até o fim de seu próximo turno. Quando seu turno acabar o alvo é manchado pelos seus atos mais vergonhosos e tem 30% de chance de sofrer 6d10 pontos de dano necrótico e sofre as condições, caso passe sofre 2d10 de dano necrótico e não sofre as condições. Custa 10 pontos de magia e mais 2 pontos de magia para aumentar a chance de sucesso da magia em 5%. Para cada 15 pontos a mais é possível amaldiçoar outra criatura.",
           "custoMagia": 10,
           "chanceDeSucesso": "60%",
           "dano": "6d10 (falha) ou 2d10 (sucesso)",
@@ -4307,7 +4307,7 @@ const ClassesPage = () => {
         {
           "nome": "Lente Investigativa Melhorada",
           "tipo": "Passiva",
-          "descricao": "Aumenta o alcance do milagre em 6m. Dura 10 minutos a mais. Cria meia luz em escuridão, destacando criaturas como se estivessem em luz completa. Criaturas que mentem sofrem 1d6 de dano sagrado por mentira.",
+          "descricao": "Aumenta o alcance do milagre em 6m. Dura 10 minutos a mais. A área fica em meia luz caso esteja em escuridão, criaturas dentro desta área ficam iluminadas e destacadas do ambiente como se estivessem em luz completa. A criatura que mentir sofre como se estivesse sendo atacada, cada mentira inflige 1d6 de dano sagrado.",
           "efeitos": {
             "passivo": "Ilumina a área e destaca criaturas, causa dano sagrado a mentirosos."
           }
@@ -4315,7 +4315,7 @@ const ClassesPage = () => {
         {
           "nome": "Asas",
           "tipo": "Metamorfose",
-          "descricao": "Ao tomar um Elixir, o profano pode escolher fazer com que asas apareçam como efeito adicional, que duram pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento.",
+          "descricao": "Pré-requisito: Elixir Padrão. Ao tomar um Elixir, o profano pode escolher fazer com que asas apareçam como efeito adicional, que duram pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento. Custa 4 pontos de magia para ativar o efeito ao tomar um elixir.",
           "custoMagia": 4,
           "requisito": "Elixir Padrão",
           "efeitos": {
@@ -4325,7 +4325,7 @@ const ClassesPage = () => {
         {
           "nome": "Confusão",
           "tipo": "Ação",
-          "descricao": "Cria 10 imagens de si em espaços vazios em uma distância de até 9 metros. Criaturas que se movimentarem para longe das cópias ou atacarem uma cópia têm 50% de chance de ficar atordoadas por um turno. O profano pode trocar de lugar com uma cópia em até 18 metros. Dura 10 rodadas.",
+          "descricao": "Cria 10 imagens de si em espaços vazios em uma distância de até 9 metros de onde o profano está. Uma criatura em movimento que passar em 1,5 metros de uma cópia, e continuar movimentando para longe da cópia, ou que atacar uma cópia com um ataque corpo a corpo tem 50 % de chance de ficar atordoado por um turno, mas de qualquer forma a cópia some. Criaturas que não se desloquem para longe ou ataquem uma cópia não ativam a maldição mesmo se estiverem a 1,5 metros da cópia. O profano pode mudar de posição com uma cópia de si desde que esteja em até 18 metros da cópia. Dura 10 rodadas. Custa 5 pontos de magia e para cada 5 aumenta em 5% a chance de causar o efeito.",
           "custoMagia": 5,
           "chanceDeSucesso": "50%",
           "efeitos": {
@@ -4338,7 +4338,7 @@ const ClassesPage = () => {
         {
           "nome": "Fantoche de Carne",
           "tipo": "Ritual",
-          "descricao": "Anima uma pequena criatura com um espírito da natureza. A criatura usa o Combate Arcano do Feiticeiro e tem PV igual ao ritualismo x2. Causa 1 + ocultismo do Xamã em dano necrótico. Dura até ser destruída.",
+          "descricao": "Este ritual anima uma pequena criatura utilizando um espírito da natureza, este ritual não tem limite de duração, ela desaparece apenas quando for morta. A criatura pode atacar usando o Combate Arcano do Feiticeiro(a) e tem seu ritualismo x2 em pontos de vida. Seus ataques causam 1 + o ocultismo do xamã em dano necrótico. Custa 5 moedas de ouro em materiais para o ritual. Custa 5 pontos de magia e para cada 1 ponto extra o fantoche recebe mais 2 pontos de vida.",
           "custoMagia": 5,
           "bonus": {
             "vidaTemporaria": "Para cada 1 ponto de magia extra, o fantoche recebe mais 2 pontos de vida."
@@ -4347,11 +4347,156 @@ const ClassesPage = () => {
         {
           "nome": "Necroanimação",
           "tipo": "Ritual",
-          "descricao": "Reanima um ser grande ou menor como morto-vivo em um ritual de 1 hora. A criatura volta possuída por um espírito sob o comando do Xamã, mas não pode usar milagres ou receber cura de milagres.",
+          "descricao": "Pré-requisito: Fantoche de Carne. O Profano pode reanimar um ser de tamanho grande ou menor como um morto vivo em um ritual que dura aproximadamente 1 hora. O morto-vivo retorna como a criatura que foi morta, mas possuída por um espírito sob o comando do Xamã. Um ser necroanimado é incapaz de se usar milagres ou receber cura de milagres conjurados nele.  Custa 5 moedas de ouro em materiais para o ritual. Custa 25 pontos de magia.",
           "custoMagia": 25,
           "requisito": "Fantoche de Carne",
           "interacoes": {
             "comOutraRegalia": "Requer a regalia 'Fantoche de Carne' para ser realizado."
+          }
+        }
+      ]
+    },
+    {
+      "titulo": "Invocador",
+      "img": metamorfo,
+      "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
+      "atributos": "Cada Regalia comprada na especialização Invocador(a) fornece:\n- 3 Pontos de Vida\n- 0 Pontos de Estâmina\n- 7 Ponto em Magia. Para se tornar um profano o deus escolhido ao pegar a classe noviço tem que possuir alinhamento maligno ou neutro.",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Arcanismo", "Ritualismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Ocultismo", "Natureza"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Teologia", "Tecnologia", "História", "Lidar com animais"]
+          },
+          "proficiências": ["Proficiência em Transportes terrestres, aquáticas e exóticas.",]
+        },
+        "habilidade": [{
+          "nome": "Mestre de invocações:",
+          "tipo": "(Passiva)",
+          "descricao": "Todas as invocações que fizer ganha 5 somado do ritualismo do invocador de vida temporária. Todas as criaturas invocadas por um invocador podem ser sacrificadas para causar dano em 3 metros de área.  Esse dano é igual a Ritualismo + Ocultismo + Arcanismo do invocador.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Fúria Natural",
+          "tipo": "Feitiço",
+          "descricao": "Conjura um feitiço que afeta uma árvore de até 3 metros ou um arbusto pequeno. Essa planta escolhida cria vida própria e se torna servo do invocador por um número de turnos igual ao seu ocultismo. Durante esse tempo a planta tem 50 pontos de vida, valor de defesa igual a 9, uma velocidade de movimento de 4,5 metros, acerto de +10 e dano igual a 2d10 de dano do elemento terra. Custa 10 pontos de magia e para cada 7 pontos de magia a mais dura mais 5 rodadas.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Planta se torna servo do invocador e executa ações no combate."
+          },
+          "modificadores": {
+            "duracaoExtra": "Para cada 7 pontos de magia a mais, a duração aumenta em 5 rodadas."
+          }
+        },
+        {
+          "nome": "Companheiro Elemental",
+          "tipo": "Ritual",
+          "descricao": "O invocador faz um ritual para conjurar uma criatura pequena que não consegue voar. Escolha um elemento para seu companheiro ser imune. Essa criatura pequena pode ter qualquer aparência e formato corporal, com máximo de quatro membros e uma cauda. Custa 20 moedas de ouro em materiais para o ritual. O elemento escolhido para ser imune também influencia o que consegue fazer (além das ações padrão), veja a seguir as diferenças: Fogo: Arma de sopro igual a um cone de 3 metros, 60° de ângulo, que causa 3 pontos de dano. Usa uma ação da rodada do elementalista e pode ser usada a cada 30 segundos. Raio: cria uma manta de eletricidade, durante uma rodada, em volta de si e que causa 1d8 de dano para quem acertar ataques na criatura. Custa uma ação e pode ser usado uma vez a cada 30 segundos. Ar: Consegue prender a respiração por 10 horas seguidas e voar, com velocidade de voo igual a sua velocidade de movimento. Terra: Consegue sentir a posição de outras criaturas independente se consegue enxergá-las, desde que esteja em terreno de terra ou pedra e em até 12 metros. Ao sentir a posição do inimigo, a montaria compartilha a informação com o elementalista. Água: Consegue criar uma bolha de ar em sua cabeça e do elementalista para que respire debaixo d'água. Dura 1 hora e a criatura pode fazer isso 2 vezes ao dia.",
+          "custoMagia": null,
+          "custoEstamina": null,
+          "efeitos": {
+            "ativo": "Companheiro elemental ganha habilidades baseadas no elemento escolhido (Fogo, Raio, Ar, Terra, Água)."
+          },
+          "modificadores": {
+            "usoExtra": "O elemental pode realizar uma das habilidades de elemento a cada 30 segundos, usando uma ação da rodada do invocador."
+          }
+        },
+        {
+          "nome": "Grande Mão",
+          "tipo": "Feitiço",
+          "descricao": "Uma mão enorme aparece ao lado do conjurador. Essa mão é de tamanho médio e pode levantar uma ou mais criaturas que somem até 500 quilos. Essa mão tem alcance de 30 metros e dura por 10 rodadas. Essa mão pode atacar ou empurrar, seu dano é de 1d10 pontos + Arcanismo. Custa 5 pontos de magia.",
+          "custoMagia": 5,
+          "efeitos": {
+            "ativo": "A mão pode atacar ou empurrar com dano baseado em Arcanismo."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dano de 1d10 pontos + Arcanismo."
+          }
+        },
+        {
+          "nome": "Runa de Armazenamento",
+          "tipo": "Feitiço",
+          "descricao": "Criar uma runa gasta 1 minuto para realizar os desenhos e imbuir com magia. Cria uma runa capaz de guardar uma invocação ou criatura voluntária a ficar em uma dimensão de bolso por até 24 horas. O tempo de duração de uma invocação para de rodar enquanto dentro da runa e volta quando o invocador liberar a criatura. A cada 5 pontos de magia gastos para imbuir o poder desta runa a um objeto ganha mais um uso da Habilidade de armazenamento por ela.",
+          "custoMagia": 0,
+          "efeitos": {
+            "passivo": "A duração da invocação para enquanto estiver dentro da runa e retoma quando liberada."
+          },
+          "modificadores": {
+            "usoExtra": "A cada 5 pontos de magia gastos, um objeto ganha mais um uso da Habilidade de armazenamento."
+          }
+        },
+        {
+          "nome": "Rito Elemental",
+          "tipo": "Passiva",
+          "descricao": "Ao realizar qualquer ritual para invocar espíritos ou fantoches, o invocador pode escolher imbuí-los com um dos 5 elementos naturais para que seus ataques causem seu valor de ritualismo no elemento escolhido ao invés de seu ataque original. Caso a invocação não possua um ataque, ela passa a ter e usa o combate arcano do invocador.",
+          "efeitos": {
+            "passivo": "Invocações podem ser imbuídas com elementos naturais, alterando o tipo de dano causado. Se não tiverem ataques, passam a ter e usam o combate arcano do invocador."
+          }
+        },
+        {
+          "nome": "Montaria Elemental",
+          "tipo": "Ritual",
+          "descricao": "O invocador faz um ritual para conjurar uma criatura, que não consegue voar, grande ou muito grande que possa ser montada. Essa montaria é exótica e só pode ser montada pelo invocador. Escolha um elemento para sua montaria ser imune. Custa 20 moedas de ouro em materiais para o ritual. O elemento escolhido para ser imune também influência o que essa montaria consegue fazer, veja a seguir as diferenças: Fogo: Arma de sopro igual a um cone de 3 metros, 60° de ângulo, que causa 1d8 pontos de dano. Usa uma ação da rodada do elementalista e pode ser usada a cada 30 segundos. Raio: Consegue dar um avanço rápido de 10 metros em qualquer padrão de movimento. Custa uma ação e pode ser usado uma vez a cada 30 segundos. Ar: Consegue prender a respiração por 10 horas seguidas e voar, com velocidade de voo igual a sua velocidade de movimento. Terra: Consegue sentir a posição de outras criaturas independente se consegue enxergá-las, desde que esteja em terreno de terra ou pedra e em até 12 metros.Ao sentir a posição do inimigo a montaria compartilha a informação com o elementalista.   Água: Consegue criar uma bolha de ar em sua cabeça e do elementalista para  que respire debaixo d'água. Dura 1 hora e a criatura pode fazer isso 2 vezes ao dia.",
+          "custoEstamina": null,
+          "requisito": "20 moedas de ouro em materiais.",
+          "efeitos": {
+            "passivo": "A montaria recebe imunidade ao elemento escolhido e habilidades associadas a ele."
+          },
+          "modificadores": {
+            "bonusSucesso": "Dependendo do elemento, a montaria recebe habilidades especiais, como sopro de fogo, avanço rápido, voo, detecção de inimigos no solo ou criação de bolha de ar."
+          }
+        },
+        {
+          "nome": "Roque",
+          "tipo": "Ação",
+          "descricao": "O invocador troca de lugar com uma de suas invocações através de um teletransporte, desde que a invocação esteja em até 50 metros. O invocador pode usar essa Habilidade um número de vezes igual ao seu valor de arcanismo por dia, recuperando os usos em um descanso longo.",
+          "efeitos": {
+            "ativo": "Permite troca de posição instantânea com uma invocação dentro do alcance de 50 metros."
+          },
+          "modificadores": {
+            "usoExtra": "Pode ser usado um número de vezes igual ao valor de arcanismo por dia."
+          }
+        },
+        {
+          "nome": "Invocação Inanimada Arcana",
+          "tipo": "Magia",
+          "descricao": "O invocador pode invocar um objeto inanimado que caiba dentro de uma área com 3 m³. O invocador tem que ter visto o objeto em sua frente em algum momento. Se apenas tiver lido sobre, é necessário um rolamento em que existe 70% de chance de sucesso. Custa 5 pontos de magia.",
+          "custoMagia": 5,
+          "chanceDeSucesso": "70%, se apenas tiver lido sobre o objeto."
+        },
+        {
+          "nome": "Espírito de Proteção",
+          "tipo": "Ação",
+          "descricao": "O invocador pode realizar um ritual com custo de 5 moedas de ouro, que dura 10 minutos, no qual ele desenha uma runa em seu corpo e a imbui com magia. Como uma ação em combate ele pode ativar a runa e aplicar o efeito em combinação com um encantamento arcano e girar um espírito protetor ao seu redor. O espírito ocupa tanto o espaço do invocador como também uma área de 1.5 metros em sua volta, o espírito acompanha o invocador em seu movimento e lhe dá os seguintes benefícios: O espírito pode usar a reação do invocador para fazer um ataque, como combate arcano do invocador, de oportunidade para inimigos que entram ou saem da área ocupada pelo espírito. Esse ataque causa 2d10 de dano arcano. O valor de defesa do invocador sobe em 2 pontos. O invocador ganha 10 pontos de vida temporária. O invocador pode realizar ataques em alvos que estejam a até 3 metros de distância de si. Esses ataques usam o combate arcano e causam 10 de dano arcano.",
+          "custoEstamina": null,
+          "requisito": "5 moedas de ouro e 10 minutos de ritual.",
+          "dano": "2d10 de dano arcano",
+          "efeitos": {
+            "ativo": "O espírito protege o invocador, concede bônus de defesa e vida temporária e realiza ataques de oportunidade usando a reação do invocador."
+          },
+          "bonus": {
+            "vidaTemporaria": "10 pontos de vida temporária"
+          }
+        },
+        {
+          "nome": "Invocar Duplicata",
+          "tipo": "Ação",
+          "descricao": "O invocador conjura uma cópia sua que consegue controlar da forma que quiser. Essa cópia é como um fantoche com 1 ponto de vida que pode ser possuído pelo invocador e controlado remotamente em uma distância de até 300 metros. O invocador pode conjurar magias e feitiços pela posição do fantoche. A magia dura 1 hora e custa 10 pontos de magia. Ao custo de mais 10 pontos pode fazer uma duplicata de outra criatura e controlá-la, essa duplicata também é um fantoche que possui 1 ponto de vida. Porém essa segunda forma de invocar a duplicata dura 1 minuto e copia as habilidades da criatura original. Apesar de ter as habilidades da criatura que foi copiada, só pode usar cada habilidade que tem custo 1 vez, e apenas se o custo for menor que 6 pontos de magia ou estâmina.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Cria uma duplicata controlável do invocador ou de outra criatura por tempo limitado."
+          },
+          "modificadores": {
+            "duracaoExtra": "Ao custo de mais 10 pontos de magia, permite invocar uma duplicata de outra criatura com suas habilidades, mas a duração é reduzida para 1 minuto."
           }
         }
       ]
