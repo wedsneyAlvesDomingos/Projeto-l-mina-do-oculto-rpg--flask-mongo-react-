@@ -3951,196 +3951,408 @@ const ClassesPage = () => {
       ]
     },
     {
-      "titulo": "Metamorfo",
+      "titulo": "Erudito",
       "img": metamorfo,
       "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
-      "atributos": "Cada Regalia comprada na especialização Metamorfo(a) fornece:\n- 7 Pontos de Vida\n- 0 Pontos de Estâmina\n- 3 Ponto em Magia",
+      "atributos": "Cada Regalia comprada na especialização Erudito(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
         "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
         "pontos": {
           "atributos": {
             "quantidade": 2,
-            "opcoes": ["Lidar Com Animais", "Arcanismo"]
+            "opcoes": ["Combate arcano", "Arcanismo"]
           },
           "combate": {
             "quantidade": 1,
-            "opcoes": ["Combate Arcano", "Sobrevivência"]
+            "opcoes": ["Teologia", " Apuração de itens mágicos"]
           },
           "habilidades": {
             "quantidade": 2,
-            "opcoes": ["Natureza", "Alquimia", "Fortitude"]
+            "opcoes": ["Ocultismo", "Jurisprudência", "Ritualismo"]
           },
-          "proficiências": ["Proficiência total em  Conduções Exóticas, Terrestres e Aquáticas."]
+          "proficiências": null
         },
         "habilidade": [{
-          "nome": "Mestre da metamorfose",
-          "tipo": "Feitiço (Ritual)(1 hora)",
-          "descricao": "O metamorfo pode usar até duas metamorfoses, que não sejam licantrópicas, ao consumir um elixir. Ao transformar em licantropo o metamorfo mantém todos os valores de Habilidade e ganha todos os benefícios somado a esses valores. Em forma licantropo é possível usar armas e outros equipamentos. Se a forma sofre alteração no tamanho o equipamento no corpo do metamorfo acompanha a mudança, porém armas não acompanham a mudança de tamanho.",
+          "nome": "Engenharia do divino",
+          "tipo": "Passiva",
+          "descricao": " Ao conjurar um milagre, o erudito acumula energia sagrada. Cada milagre que o erudito conjura gera um ponto de energia sagrada. Essa energia sagrada pode ser usada de duas maneiras inicialmente:Por 3 pontos de energia sagrada o erudito pode aumentar seu valor de defesa em 2 por uma hora.Por 2 pontos o erudito pode se curar em 5 pontos como uma reação.Por 1 ponto, e três ações, o erudito pode repetir o último milagre que conjurou, em sua forma mais simples. ",
         }]
       },
       "regalias": [
-
         {
-          "nome": "Asas",
+          "nome": "Manto Divino",
+          "tipo": "Ação",
+          "descricao": "O erudito cria um manto protetivo em volta de si e de todos aliados que escolher em até 6 metros. Magias e milagres dentro da área sofrem redução de 1 ponto de magia no custo (mínimo de 1). Os afetados recebem 5 pontos de vida temporários e ficam imunes ao clima externo, garantindo descanso adequado. Dura 6 horas.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Redução de custo de magia/milagre, imunidade ao clima externo, 5 pontos de vida temporários."
+          },
+          "bonus": {
+            "vidaTemporaria": 5
+          },
+          "modificadores": {
+            "usoExtra": "Pode ser conjurado como ritual de 1 hora sem custo de magia, mas sem conceder vida temporária."
+          }
+        },
+        {
+          "nome": "Santuário Múltiplo",
+          "tipo": "Reação",
+          "descricao": "O erudito conjura o milagre Santuário em aliados antes de um ataque ser resolvido. O efeito dura até o fim da rodada.",
+          "custoMagia": 5,
+          "efeitos": {
+            "ativo": "Concede Santuário a aliados antes do ataque ser resolvido, protegendo-os."
+          }
+        },
+        {
+          "nome": "Evocação do Divino",
           "tipo": "Passiva",
-          "descricao": "Ao tomar um Elixir, o Metamorfo pode escolher aparecer asas como efeito adicional que dura pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento.",
+          "descricao": "Ao usar magias de evocação, pode gastar até 2 pontos de energia sagrada para causar +1d6 de dano arcano por ponto gasto. Pode gastar 1 ponto de magia para mudar o dano para sagrado.",
+          "efeitos": {
+            "passivo": "Aumento de dano para magias de evocação e conversão de dano para sagrado."
+          },
+          "modificadores": {
+            "bonusSucesso": "+1d6 de dano arcano por ponto de energia sagrada gasto (máx. 2)."
+          }
+        },
+        {
+          "nome": "Engenharia do Divino 2",
+          "tipo": "Passiva",
+          "descricao": "O erudito pode causar dano arcano em vez de sagrado ao conjurar milagres. Pode conjurar certos milagres e magias como rituais sem custo de materiais ou magia.",
+          "efeitos": {
+            "passivo": "Permite converter dano de milagres para arcano e conjurar magias/milagres específicos sem custo de materiais ou magia."
+          },
+          "requisito": "Teologia 4, Ocultismo 4"
+        },
+        {
+          "nome": "Templo de Adoração e Conhecimento",
+          "tipo": "Ritual",
+          "descricao": "O erudito conjura um templo mágico indestrutível e impenetrável por 8 horas. O templo contém uma biblioteca com seu conhecimento e abriga aliados. Pode curar todos dentro do templo em 50 pontos de vida e remover todas as condições após 1 hora de oração.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Criação de um templo mágico para abrigo, estudo e cura."
+          },
+          "modificadores": {
+            "bonusSucesso": "Cura em massa de 50 pontos de vida e remoção de condições após 1 hora de oração."
+          }
+        },
+        {
+          "nome": "Teletransporte Tático",
+          "tipo": "Ação",
+          "descricao": "Teletransporta o erudito até 9 metros para um local que ele possa ver.",
           "custoMagia": 2,
           "efeitos": {
-            "passivo": "Ganha a habilidade de voar com a mesma velocidade de movimento"
+            "ativo": "Movimento instantâneo de até 9 metros."
           }
         },
         {
-          "nome": "Musculatura Monstruosa",
+          "nome": "Atirador Arcano",
           "tipo": "Passiva",
-          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a biologia de seus músculos, ganhando um bônus de força igual a 4, podendo ultrapassar 15.",
-          "custoMagia": 4,
+          "descricao": "Dobra o alcance das magias e milagres.",
           "efeitos": {
-            "passivo": "Ganha bônus de força"
+            "passivo": "Alcance dobrado para todas as magias e milagres."
           }
         },
         {
-          "nome": "Cauda",
+          "nome": "Crítico Guiado",
+          "tipo": "Reação",
+          "descricao": "O erudito pode transformar um ataque em um acerto crítico.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Converte um ataque em acerto crítico."
+          }
+        },
+        {
+          "nome": "Atirar Esfera Divina",
+          "tipo": "Ação",
+          "descricao": "Permite atacar com esferas divinas conjuradas pelo milagre Esfera Divina, causando 2d10 de dano sagrado (dobro contra mortos-vivos e demônios). Pode atirar todas as esferas em um único ataque.",
+          "custoMagia": 3,
+          "dano": "2d10 dano sagrado por esfera, dobrado contra mortos-vivos e demônios.",
+          "requisito": "Esfera Divina, Teologia 4, Ocultismo 4",
+          "efeitos": {
+            "ativo": "Permite lançar todas as esferas divinas em um único ataque."
+          }
+        },
+        {
+          "nome": "Invisibilidade",
+          "tipo": "Ação",
+          "descricao": "O erudito ou uma criatura tocada se torna invisível por até 10 minutos. A invisibilidade se desfaz ao causar dano.",
+          "custoMagia": 10,
+          "efeitos": {
+            "ativo": "Faz o alvo se tornar invisível por 10 minutos ou até atacar."
+          }
+        },
+        {
+          "nome": "Silêncio",
+          "tipo": "Ação",
+          "descricao": "O erudito conjura uma oração que impede o alvo de usar qualquer magia, feitiço ou milagre até o fim de seu próximo turno.",
+          "custoMagia": 5,
+          "efeitos": {
+            "ativo": "Impede o alvo de conjurar magias, feitiços ou milagres."
+          }
+        }
+      ]
+    },
+    {
+      "titulo": "Caçador de dêmonios",
+      "img": metamorfo,
+      "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
+      "atributos": "Cada Regalia comprada na especialização Caçador de demônios(a) fornece:\n- 3 Pontos de Vida\n- 3 Pontos de Estâmina\n- 4 Ponto em Magia",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Combate arcano", "Fortitude"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate corpo a corpo ", "Combate a distância"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Teologia", "Ocultismo", "Ritualismo", "Medicina"]
+          },
+          "proficiências": ["Proficiência em Katanas, Espada Diapasão, Presa Da Serpente, Montante Cinético, armaduras leves, médias, pesadas e escudos.", "Proficiente em Conduções exóticas, kit de arrombamento e capacidade de criar as seguintes poções (desde que possua as ferramentas e os materiais necessários):",
+            "Poção de Saciedade",
+            "Poção de Silêncio",
+            "Poção de Armadura"
+            , "Poção de Transformação animal"]
+        },
+        "habilidade": [{
+          "nome": " Rastreador profano",
+          "tipo": "Passiva / Ativa / Feitço (Ação)",
+          "descricao": "Passiva: O caçador de demônios é um exímio rastreador de corruptores (diabos, demônios e mortos vivos), fadas e celestiais. O caçador de demônios recebe vantagem em todos os rolamentos de investigação, rastreamento e percepção que seja relacionado às criaturas citadas anteriormente. Ativa: O caçador de demônios pode gastar 10 pontos de magia e ganhar vantagem dupla para os rolamentos citados acima  ou a uma única criatura, independente de seu tipo, que escolher durante um período de 12 horas. Voto de Caçada - Ativa (Feitiço)(Ação): O caçador de demônios pode marcar uma criatura com um Voto de Caçada. Ao realizar este voto a criatura se torna vulnerável a todos os ataques do caçador de demônios por 1 rodada, porém toda vez que o caçador atacar a criatura marcada sofrerá 1d8 pontos de dano. Custa 5 pontos de magia.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Sobreviver a Caçada",
+          "tipo": "Ação",
+          "descricao": "Ao realizar um Voto de Caçada e marcar uma criatura, o caçador de demônios normalmente sofre 5 pontos de dano ao atacar o alvo. Com esta regalia, o caçador pode usar uma ação após a marca para reduzir esse dano sofrido de 1d8 para 1d4."
+        },
+        {
+          "nome": "Corrida contra o Fim",
           "tipo": "Passiva",
-          "descricao": "Ao tomar um Elixir, o Metamorfo pode mudar a anatomia de seu corpo, ganhando uma cauda que pode ser usada como arma natural ou para segurar uma arma ou escudo.",
-          "custoMagia": 4,
-          "dano": "1d8 + força (concussivo)",
+          "descricao": "O Caçador de Demônios pode realizar um ataque a mais quando tomar uma ação de atacar contra uma criatura marcada pelo voto da caçada. Apenas uma vez por ação.",
+          "custoEstamina": 2,
           "efeitos": {
-            "passivo": "Ganha uma cauda que pode ser usada como arma ou para segurar itens"
+            "passivo": "Ganha um ataque extra contra alvos marcados."
           }
         },
         {
-          "nome": "Licantropia Lobo",
-          "tipo": "Metamorfose",
-          "descricao": "O Metamorfo se transforma em um híbrido animal com várias características. Ganha visão no escuro, velocidade de movimento adicional, resistência a certos tipos de dano e ataques naturais com garras e mordida.",
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
-            "ativo": "Transforma-se em híbrido lobo com habilidades especiais"
-          },
-          "dano": "1d12 (mordida) + 1d12 (garras)",
-          "duracaoExtra": "Dura 2 horas"
-        },
-        {
-          "nome": "Licantropia Urso",
-          "tipo": "Metamorfose",
-          "descricao": "O Metamorfo se transforma em um híbrido urso, ganhando resistência a danos e aumentando sua vida e força.",
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
-            "ativo": "Transforma-se em híbrido urso com ataques naturais"
-          },
-          "dano": "3d4 (mordida) + 3d4 (garras)",
+          "nome": "Ataque Vampírico",
+          "tipo": "Passiva",
+          "descricao": "Uma vez em seu turno ao atacar uma criatura, o caçador de demônios pode gastar 1 ponto de magia para recuperar 1d6 pontos de vida.",
+          "custoMagia": 1,
           "bonus": {
-            "vidaTemporaria": "Ganha 20 pontos de vida extra"
-          },
-          "duracaoExtra": "Dura 2 horas"
+            "vidaTemporaria": "Recupera 1d6 pontos de vida."
+          }
         },
         {
-          "nome": "Licantropia Javali",
-          "tipo": "Metamorfose",
-          "descricao": "O Metamorfo se transforma em um híbrido javali, com aumento de velocidade e resistência a danos.",
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
-            "ativo": "Transforma-se em híbrido javali com ataque com presas"
-          },
-          "dano": "2d6 (presas)",
-          "bonus": {
-            "vidaTemporaria": "Ganha 10 pontos de vida extra"
-          },
-          "duracaoExtra": "Dura 2 horas"
-        },
-        {
-          "nome": "Licantropia Pantera",
-          "tipo": "Metamorfose",
-          "descricao": "O Metamorfo se transforma em um híbrido pantera, com maior furtividade, resistência a danos e ataques naturais.",
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
-            "ativo": "Transforma-se em híbrido pantera com ataques naturais"
-          },
-          "dano": "3d8 (mordida) + 3d8 (garras)",
+          "nome": "Lado Sombrio",
+          "tipo": "Ritual",
+          "descricao": "Após uma meditação de 1 minuto, o caçador pode tocar o lado sombrio que lida ao caçar diabos, demônios e mortos-vivos. Seus ataques e armadura ganham a propriedade sombria, e seus ataques são considerados neutros contra corruptores.",
+          "custoMagia": 4,
           "modificadores": {
-            "bonusSucesso": "Ganha bônus de 10 pontos em furtividade"
-          },
-          "duracaoExtra": "Dura 2 horas"
+            "duracaoExtra": "Dura 8 horas."
+          }
         },
         {
-          "nome": "Licantropia Crocodilo",
-          "tipo": "Metamorfose",
-          "descricao": "O Metamorfo se transforma em um híbrido crocodilo, ganhando bônus de defesa, velocidade na água e ataque com mordida.",
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "Ganha resistência a danos cortante, perfurante e concussivo",
-            "ativo": "Transforma-se em híbrido crocodilo com ataque natural"
-          },
-          "dano": "2d10 (mordida)",
+          "nome": "Ataque de Oportunidade",
+          "tipo": "Reação",
+          "descricao": "O Caçador de Demônios pode realizar um ataque quando uma criatura que possa ver sai da sua área de ameaça ou ataca um aliado dentro do seu alcance.",
+          "custoEstamina": 2
+        },
+        {
+          "nome": "Recuperar Fôlego Maior",
+          "tipo": "Ação de turno completo",
+          "descricao": "O Caçador de Demônios gasta todas as ações de seu turno para recuperar 8 pontos de vida e 6 pontos de estâmina.",
+          "custoMagia": 4,
           "bonus": {
-            "vidaTemporaria": "Ganha bônus de +5 em defesa"
-          },
-          "duracaoExtra": "Dura 2 horas"
+            "vidaTemporaria": "Recupera 8 pontos de vida e 6 pontos de estâmina."
+          }
         },
         {
-          "nome": "Licantropia Águia",
-          "tipo": "Metamorfose",
-          "descricao": "O metamorfo consegue se transformar em um híbrido águia. Ganha visão no escuro de 12 metros, 3 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao se transformar, o metamorfo ganha asas, podendo voar com o dobro da sua velocidade de movimento. Possui um ataque desarmado com garras que causa 1d20 de dano perfurante. Pode atacar com suas garras enquanto voa como parte do movimento, com custo de uma ação. Não sofre ataques de oportunidade ao entrar ou sair do alcance de um inimigo. Dura 2 horas.",
-          "custoEstamina": null,
-          "custoMagia": 10,
+          "nome": "Treinamento com Arma Secundária",
+          "tipo": "Passiva",
+          "descricao": "Não custa estâmina para usar duas armas, e a segunda arma não precisa ser leve, desde que possa ser empunhada com uma mão.",
+          "requisito": "Combate com duas armas",
           "efeitos": {
-            "passivo": null,
-            "ativo": "Ao se transformar em híbrido águia, o metamorfo ganha asas para voo."
+            "passivo": "Uso de segunda arma sem custo de estâmina."
+          }
+        },
+        {
+          "nome": "Aparar",
+          "tipo": "Reação",
+          "descricao": "Ao receber um ataque, mas antes de saber o resultado, o caçador pode usar sua reação para aumentar seu Valor de Defesa em 2 pontos para esse ataque.",
+          "custoEstamina": 2,
+          "modificadores": {
+            "usoExtra": "Pode ser repetida na mesma rodada ao custo de mais 2 pontos de estâmina por uso."
+          }
+        },
+        {
+          "nome": "Festim Macabro",
+          "tipo": "Feitiço",
+          "descricao": "Uma revoada de espíritos surge em uma área de 6 metros ao redor do Caçador de Demônios por 3 rodadas. Os inimigos sofrem 7 pontos de dano ao entrar na área e ao iniciar o turno dentro dela. Primeira vez que entram têm 50% de chance de ficar Aterrorizados.",
+          "custoMagia": 10,
+          "dano": "7 pontos de dano por rodada",
+          "modificadores": {
+            "duracaoExtra": "A cada 5 pontos de magia adicionais, aumenta o dano em 2 pontos por rodada."
+          }
+        },
+        {
+          "nome": "Bater com Escudo",
+          "tipo": "Passiva",
+          "descricao": "O Caçador de Demônios que estiver equipado com um escudo pode usá-lo como arma secundária, causando 3 pontos de dano sagrado.",
+          "requisito": "Lado Sombrio, Combate defensivo",
+          "efeitos": {
+            "passivo": "Escudo vira arma secundária, causando 3 pontos de dano sagrado."
+          }
+        },
+        {
+          "nome": "Lado Sombrio Irrestrito",
+          "tipo": "Ação",
+          "descricao": "Enquanto o Lado Sombrio está ativo, o Caçador de Demônios libera o controle da escuridão. Causa 2d10 de dano sombrio em área e seus ataques ganham 1d6 de dano sombrio bônus. Ganha 1 ponto de defesa e resistência a danos não mágicos, mas se torna vulnerável a ataques sagrados.",
+          "custoMagia": 8,
+          "dano": "2d10 de dano sombrio em área, 1d6 de dano sombrio bônus nos ataques",
+          "modificadores": {
+            "duracaoExtra": "Dura 1 minuto."
+          }
+        },
+        {
+          "nome": "Corte das Sombras",
+          "tipo": "Feitiço",
+          "descricao": "Cria um corte negro no ar que voa até um alvo em 12 metros. Causa 5d10 de dano sombrio se acertar. Alvos na linha direta até o alvo sofrem metade do dano se falharem na defesa.",
+          "custoMagia": 8,
+          "dano": "5d10 de dano sombrio"
+        },
+        {
+          "nome": "Ataque Conjurativo",
+          "tipo": "Ação",
+          "descricao": "Ao atacar um alvo em 1,5 metro, o Caçador de Demônios pode conjurar um feitiço de até duas ações. Se a magia for de área, ela é centralizada no alvo, afetando todos, inclusive o próprio caçador.",
+          "custoEstamina": 5
+        }
+      ]
+    },
+    {
+      "titulo": "Profano",
+      "img": metamorfo,
+      "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
+      "atributos": "Cada Regalia comprada na especialização Profano(a) fornece:\n- 3 Pontos de Vida\n- 0 Pontos de Estâmina\n- 7 Ponto em Magia. Para se tornar um profano o deus escolhido ao pegar a classe noviço tem que possuir alinhamento maligno ou neutro.",
+      "regaliaObrigatoria": {
+        "descricao": "Ao escolher esta especialização, o personagem recebe os seguintes atributos :",
+        "pontos": {
+          "atributos": {
+            "quantidade": 2,
+            "opcoes": ["Ocultismo", "Ritualismo"]
+          },
+          "combate": {
+            "quantidade": 1,
+            "opcoes": ["Combate Arcano", "Arcanismo"]
+          },
+          "habilidades": {
+            "quantidade": 2,
+            "opcoes": ["Teologia", "Intuição", "História", "Medicina"]
+          },
+          "proficiências": ["Proficiência em escudos.",]
+        },
+        "habilidade": [{
+          "nome": "Ovelha perdida",
+          "tipo": "(Passiva)",
+          "descricao": " Quando o profano usar milagres que causam dano sagrado sua natureza faz esses milagres causarem dano  necrótico.O profano aprende a tirar poder de sacrilégios e heresias. Ao cometer alguma forma de desrespeito a uma das divindades boas, o profano recebe uma runa em seu braço, que pode ser usada como uma das runas da árvore de runas da classe feiticeiro. Estes atos de heresia são claras formas de vandalismo ou ataques diretos a ídolos e rituais realizados diretamente ligados a um deus considerado bom. É possível acumular até 3 runas desta forma. Não é necessário ter comprado as Regalias da árvore de runa para usá-las desta maneira.",
+        }]
+      },
+      "regalias": [
+        {
+          "nome": "Amaldiçoar Arma Melhorado",
+          "tipo": "Ação",
+          "descricao": "Amaldiçoa até 5 armas e muda o tipo de dano para Necrótico. Dura 10 rodadas. Aumenta o dano da arma em 1d4 pontos de dano.",
+          "custoMagia": 1,
+          "requisito": "Abençoar Arma"
+        },
+        {
+          "nome": "Empatia Maliciosa",
+          "tipo": "Ação",
+          "descricao": "Cria uma ligação com um alvo e divide a dor recebida pelo profano. 50% de chance de sucesso com alvo não voluntário. A divisão do dano é determinada por um rolamento de 1d4.",
+          "custoMagia": 8,
+          "chanceDeSucesso": "50%",
+          "efeitos": {
+            "ativo": "Divide o dano entre o profano e o alvo, com a porcentagem definida pelo rolamento de 1d4."
+          }
+        },
+        {
+          "nome": "Turbilhão de Gritos",
+          "tipo": "Ação",
+          "descricao": "O Profano grita injúrias ao alvo, deixando-o surdo, mudo e impossibilitado de usar habilidades, magias, feitiços ou milagres até o fim de seu próximo turno.",
+          "custoMagia": 6
+        },
+        {
+          "nome": "Manchar Alma",
+          "tipo": "Milagre",
+          "descricao": "Amaldiçoa um inimigo, com 60% de chance de deixá-lo cego, surdo e restringido até o fim do próximo turno. Após o turno, tem 30% de chance de causar 6d10 de dano necrótico ou 2d10 se passar no teste.",
+          "custoMagia": 10,
+          "chanceDeSucesso": "60%",
+          "dano": "6d10 (falha) ou 2d10 (sucesso)",
+          "modificadores": {
+            "bonusSucesso": "2 pontos de magia aumentam a chance de sucesso em 5%.",
+            "usoExtra": "Para cada 15 pontos extras, é possível amaldiçoar outra criatura."
+          }
+        },
+        {
+          "nome": "Proteção contra o Sagrado",
+          "tipo": "Ação",
+          "descricao": "Cria uma área protetora de 9 metros de raio que dá penalidade de -4 em ataques feitos por celestiais e criaturas divinas e -2 para outras criaturas. Dá bônus de Combate Arcano +1 para cada aliado protegido.",
+          "custoMagia": 7
+        },
+        {
+          "nome": "Lente Investigativa Melhorada",
+          "tipo": "Passiva",
+          "descricao": "Aumenta o alcance do milagre em 6m. Dura 10 minutos a mais. Cria meia luz em escuridão, destacando criaturas como se estivessem em luz completa. Criaturas que mentem sofrem 1d6 de dano sagrado por mentira.",
+          "efeitos": {
+            "passivo": "Ilumina a área e destaca criaturas, causa dano sagrado a mentirosos."
+          }
+        },
+        {
+          "nome": "Asas",
+          "tipo": "Metamorfose",
+          "descricao": "Ao tomar um Elixir, o profano pode escolher fazer com que asas apareçam como efeito adicional, que duram pelo tempo em que o elixir durar. Ganha uma velocidade de voo igual à sua velocidade de movimento.",
+          "custoMagia": 4,
+          "requisito": "Elixir Padrão",
+          "efeitos": {
+            "ativo": "Ganha uma velocidade de voo igual à sua velocidade de movimento pelo tempo de duração do elixir."
+          }
+        },
+        {
+          "nome": "Confusão",
+          "tipo": "Ação",
+          "descricao": "Cria 10 imagens de si em espaços vazios em uma distância de até 9 metros. Criaturas que se movimentarem para longe das cópias ou atacarem uma cópia têm 50% de chance de ficar atordoadas por um turno. O profano pode trocar de lugar com uma cópia em até 18 metros. Dura 10 rodadas.",
+          "custoMagia": 5,
+          "chanceDeSucesso": "50%",
+          "efeitos": {
+            "ativo": "Cria 10 imagens ilusórias que confundem inimigos, com chance de atordoar quem interage com elas. Pode trocar de lugar com uma cópia."
           },
           "modificadores": {
-            "bonusSucesso": "O metamorfo ganha 3 metros de velocidade adicional enquanto voa."
-          },
-          "bonus": null,
-          "interacoes": null
+            "bonusSucesso": "Para cada 5 pontos de magia extras, aumenta em 5% a chance de atordoar."
+          }
         },
         {
-          "nome": "Licantropia Cobra",
-          "tipo": "Metamorfose",
-          "descricao": "O metamorfo se transforma em um híbrido cobra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. Ao atacar com mordida, o metamorfo tem 50% de chance de inocular um veneno que causa 1d10 de dano extra. Ganha a capacidade de enxergar com fossetas loreais e um ataque de mordida que causa 2d4 pontos de dano perfurante. Dura 2 horas.",
-          "custoEstamina": null,
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": null,
-            "ativo": "O metamorfo pode atacar com mordida, podendo inocular veneno com chance de causar dano extra."
-          },
-          "modificadores": null,
-          "bonus": null,
-          "interacoes": null
-        },
-        {
-          "nome": "Licantropia Salamandra",
-          "tipo": "Metamorfose",
-          "descricao": "O metamorfo se transforma em um híbrido salamandra. Ganha visão no escuro de 6 metros, 1,5 metros de velocidade adicional e resistência aos danos cortante, perfurante e concussivo. O metamorfo é incendiado com chamas que não o ferem, mas causa 1d6 de dano a criaturas em até 1,5 metros de distância. Imbui seus ataques com fogo, ganhando 2 pontos de dano extra. Recebe 2d8 pontos de vida extra e consegue escalar paredes sem necessidade de teste. É vulnerável a dano de gelo. Dura 2 horas.",
-          "custoEstamina": null,
-          "custoMagia": 10,
-          "efeitos": {
-            "passivo": "O metamorfo causa dano a criaturas próximas com chamas e ganha bônus de dano nos ataques com fogo.",
-            "ativo": "Ao se transformar em salamandra, o metamorfo adquire resistência ao dano e ganha bônus de vida extra."
-          },
-          "modificadores": {
-            "bonusSucesso": "O metamorfo recebe 2d8 pontos de vida extra e 2 pontos de dano adicional nos ataques com fogo."
-          },
-          "bonus": null,
-          "interacoes": null
-        },
-        {
-          "nome": "Virar Animal",
-          "tipo": "Metamorfose",
-          "descricao": "O metamorfo pode se transformar em um animal grande ou menor por um número de horas igual ao seu nível. Mantém os pontos de vida atuais e ganha pontos de vida temporários iguais ao seu valor de fortitude.",
-          "custoEstamina": null,
-          "custoMagia": null,
-          "efeitos": {
-            "passivo": null,
-            "ativo": "Ao se transformar, o metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
-          },
-          "modificadores": null,
+          "nome": "Fantoche de Carne",
+          "tipo": "Ritual",
+          "descricao": "Anima uma pequena criatura com um espírito da natureza. A criatura usa o Combate Arcano do Feiticeiro e tem PV igual ao ritualismo x2. Causa 1 + ocultismo do Xamã em dano necrótico. Dura até ser destruída.",
+          "custoMagia": 5,
           "bonus": {
-            "vidaTemporaria": "O metamorfo ganha pontos de vida temporários equivalentes ao seu valor de fortitude."
-          },
-          "interacoes": null
+            "vidaTemporaria": "Para cada 1 ponto de magia extra, o fantoche recebe mais 2 pontos de vida."
+          }
+        },
+        {
+          "nome": "Necroanimação",
+          "tipo": "Ritual",
+          "descricao": "Reanima um ser grande ou menor como morto-vivo em um ritual de 1 hora. A criatura volta possuída por um espírito sob o comando do Xamã, mas não pode usar milagres ou receber cura de milagres.",
+          "custoMagia": 25,
+          "requisito": "Fantoche de Carne",
+          "interacoes": {
+            "comOutraRegalia": "Requer a regalia 'Fantoche de Carne' para ser realizado."
+          }
         }
       ]
     },
