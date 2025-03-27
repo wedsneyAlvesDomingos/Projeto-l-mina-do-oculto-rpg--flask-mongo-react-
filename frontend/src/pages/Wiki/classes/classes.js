@@ -20,6 +20,15 @@ import xama from "../../../assets/images/xama.png";
 import elementalista from "../../../assets/images/elementalista.png";
 import bruxo from "../../../assets/images/bruxo.png";
 import metamorfo from "../../../assets/images/metamorfo.png";
+import monge from "../../../assets/images/monge.png";
+import inquisidor from "../../../assets/images/inquisidor.png";
+import cacador_de_demonios from "../../../assets/images/cacador_de_demonios.png";
+import cavaleiro_arcano from "../../../assets/images/cavaleiro_arcano.png";
+import erudita   from "../../../assets/images/erudita.png";
+import profano   from "../../../assets/images/profano.png";
+import invocador   from "../../../assets/images/invocador.png";
+
+
 
 const ClassesPage = () => {
   const [thisvalue, thisThisvalue] = useState(0);
@@ -3523,7 +3532,7 @@ const ClassesPage = () => {
   const EspecializacaoMistaSkillsData = [
     {
       "titulo": "Monge",
-      "img": xama,
+      "img": monge,
       "descricao": "Desde os primeiros dias de sua jornada, o monge aprende que o corpo não é uma prisão, mas uma ponte para o mundo ao seu redor. Seus pés se firmam com a solidez da terra, mas seus passos fluem como a correnteza de um rio. Cada movimento é deliberado, cada respiração é um ciclo que alimenta não apenas seus músculos, mas seu próprio ser. O domínio dos chakras revela camadas mais profundas de seu potencial. O chakra da base confere uma resiliência inabalável, um alicerce que resiste tanto à toxina da carne quanto à corrupção da mente. Com o chakra abdominal aberto, o monge se torna indomável, desafiando o próprio conceito de equilíbrio e velocidade. Mais adiante, o plexo solar arde como uma fornalha interna, forjando sua determinação contra as sombras e chamas da maldade. No coração, reside a leveza — uma liberdade que ignora as amarras do terreno e dos grilhões. A garganta, por sua vez, dá voz à verdade imutável do universo, tornando o monge inabalável em espírito e palavra. Quando o terceiro olho desperta, o véu das ilusões se rasga diante dele, revelando a realidade como ela é. E no auge da jornada, a coroa se abre, unindo o corpo à alma e o espírito ao plano astral. O monge não busca poder, mas equilíbrio. Seu caminho é uma dança entre a força e a serenidade, entre o golpe e o silêncio. Ele não é herói ou vilão — é um fragmento da própria vontade do mundo, em constante movimento. ",
       "atributos": "Cada Regalia comprada na especialização Xamã fornece:\n- 4 Pontos de Vida\n- 4 Pontos de Estâmina\n- 2 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -3680,7 +3689,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Inquisidor",
-      "img": bruxo,
+      "img": inquisidor,
       "descricao": "O Inquisidor é uma figura imponente, cujas mãos são guiadas por uma fé inabalável e uma missão clara: purificar o mundo das trevas que o assolam. Vestido pela luz de um poder divino, ele não apenas carrega a espada, mas também um ardor espiritual que reverbera em sua essência. Com olhos afiados e alma diligente, ele caça aqueles que se escondem na escuridão, punindo com mão firme, não pela força do homem, mas pela força que emana do alto. Em sua busca, o Inquisidor invoca milagres com uma precisão quase ritualística. Quando a batalha se adensa, ele não hesita em chamar a Armadura de Fé, revestindo-se com uma defesa incomparável, que reflete o ardente fervor de sua crença. A armadura, feita não de aço, mas de energia sagrada, o torna uma muralha impenetrável, enquanto o escudo que a acompanha impede qualquer ofensiva contra sua missão. Cada golpe que ele desferir será abençoado, não com o sangue comum, mas com o fogo celestial que arde na ponta de sua lâmina. Seu armamento, imbuído de pureza, se torna uma extensão de sua vontade divina, trazendo a justiça não apenas de forma física, mas transcendental, como uma manifestação do próprio poder celeste. No entanto, a força do Inquisidor não se limita à sua imbatível resistência ou ao dano que ele inflige. Ele também é um farol para seus aliados, compartilhando seu peso nas batalhas e dividindo os ataques que o cercam com uma empatia de combate que transcende a mera parceria. Naqueles momentos mais sombrios, ele pode invocar uma montaria celestial, uma besta imponente que não só o transporta, mas também o revigora para enfrentar os desafios com a força de sua fé, guiando-o em sua cruzada implacável. Cada passo que dá é um passo em direção à luz, a um mundo purificado, onde o mal será erradicado.",
       "atributos": "Cada Regalia comprada na especialização Inquisidor(a) fornece:\n- 5 Pontos de Vida\n- 3 Pontos de Estâmina\n- 2 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -3825,7 +3834,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Combatente Arcano",
-      "img": elementalista,
+      "img": cavaleiro_arcano,
       "descricao": "Na quietude das antigas terras, onde a magia se entrelaça com o aço e os ventos sussurram segredos, o Combatente Arcano caminha com um propósito único, um guerreiro moldado não apenas pelo treinamento de combate, mas pela profunda compreensão das artes arcanas. Seu corpo e alma são templos de disciplina, onde o esforço físico se funde com o poder da magia, criando uma harmonia mortal. O Combatente Arcano não é um mero conjurador, nem um simples espadachim. Ele é o elo entre duas forças primordiais, um mestre em usar o poder arcano com a destreza de um combatente treinado. Seu corpo carrega o peso das armaduras mais pesadas, mas também é envolvido pela leveza da magia, permitindo-lhe conjurar escudos e armamentos de energia pura. Seus passos são guiados pela sabedoria arcana, e suas armas, muitas vezes, se tornam extensões de sua própria vontade, moldadas em pureza sagrada. Em batalha, o Combatente Arcano não depende apenas de sua espada ou de seu bastão, mas da estreita ligação entre sua alma e as forças místicas que governam o mundo. Ele pode evocar um escudo invisível que o protege das mais mortais investidas ou lançar uma lâmina de energia pura com a mesma facilidade com que invoca feitiçarias arcanas. Sua habilidade de conjurar magias não é limitada pela tradição ou pelo ritual; ele consegue, no calor do combate, moldar feitiços de abjuração, evocação e invocação com a mesma naturalidade com que desferiria um golpe mortal. No entanto, seu verdadeiro poder reside na simbiose com as armas que invoca. Cada lâmina conjurada, cada encantamento lançado, é parte de uma dança letal onde a magia e o aço se entrelaçam. E mesmo quando a batalha parece perdida, o Combatente Arcano tem a capacidade de se reposicionar, utilizando seu conhecimento arcano para saltar por distâncias inimagináveis e lançar o golpe final, onde a força do combate físico se junta ao poder devastador da magia. Ele é uma força não só de combate, mas de transformação, capaz de moldar a própria realidade ao seu redor, tornando-se um verdadeiro titã entre os mortais.",
       "atributos": "Cada Regalia comprada na especialização Combatente Arcano(a) fornece:\n- 5 Pontos de Vida\n- 2 Pontos de Estâmina\n- 3 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -3952,7 +3961,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Erudito",
-      "img": metamorfo,
+      "img": erudita,
       "descricao": "Os eruditos, aqueles que buscam as profundezas do conhecimento divino e arcano, são mestres de uma sabedoria vasta, que vai além das fronteiras do entendimento comum. Seu caminho é marcado pela disciplina e pelo estudo imensurável das forças que regem o mundo, seja no campo da magia, da teologia ou do ocultismo. A mente do erudito é como um templo de saber, onde cada pensamento se transforma em uma peça crucial no grande quebra-cabeça da existência. Com um olhar atento aos segredos ocultos, o erudito não apenas contempla os mistérios do universo, mas também se dedica a traduzi-los em ações práticas e poderosas. Seus milagres, embora incompreensíveis para muitos, são baseados em um entendimento profundo da estrutura das energias divinas. O que para outros é um ato de fé, para ele é um estudo meticuloso da interação entre o sagrado e o arcano. Ao conjurar um milagre, o erudito não apenas invoca forças sobrenaturais, mas também as compreende e as manipula com a precisão de um artesão, acumulando energia sagrada que pode ser utilizada para curar, proteger ou até mesmo reforçar sua defesa. No campo de batalha, o erudito não é um guerreiro de espada, mas de palavras e gestos, conjurando esferas de poder sagrado com a mesma naturalidade com que outros empunham lâminas. Seus aliados, muitas vezes, encontram proteção sob o manto divino que ele cria, uma barreira de luz que neutraliza as adversidades do ambiente e proporciona um refúgio de serenidade e cura. Sua capacidade de conjurar um templo invulnerável, onde o conhecimento e a cura se entrelaçam, reflete a grandeza de sua compreensão do cosmos. Cada gesto, cada palavra do erudito é um reflexo de uma vida dedicada ao aprendizado, ao aprimoramento e ao compartilhamento do conhecimento com aqueles que estão dispostos a ouvir. Em suas mãos, o poder não é apenas uma força destrutiva, mas um meio de restaurar o equilíbrio, proteger a vida e elevar a compreensão. O erudito, portanto, não é apenas um mestre da magia, mas um farol de sabedoria, cuja presença ilumina o caminho daqueles que buscam entender o universo em toda a sua complexidade.",
       "atributos": "Cada Regalia comprada na especialização Erudito(a) fornece:\n- 4 Pontos de Vida\n- 0 Pontos de Estâmina\n- 6 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -4094,7 +4103,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Caçador de dêmonios",
-      "img": metamorfo,
+      "img": cacador_de_demonios,
       "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
       "atributos": "Cada Regalia comprada na especialização Caçador de demônios(a) fornece:\n- 3 Pontos de Vida\n- 3 Pontos de Estâmina\n- 4 Ponto em Magia",
       "regaliaObrigatoria": {
@@ -4236,7 +4245,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Profano",
-      "img": metamorfo,
+      "img": profano,
       "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
       "atributos": "Cada Regalia comprada na especialização Profano(a) fornece:\n- 3 Pontos de Vida\n- 0 Pontos de Estâmina\n- 7 Ponto em Magia. Para se tornar um profano o deus escolhido ao pegar a classe noviço tem que possuir alinhamento maligno ou neutro.",
       "regaliaObrigatoria": {
@@ -4358,7 +4367,7 @@ const ClassesPage = () => {
     },
     {
       "titulo": "Invocador",
-      "img": metamorfo,
+      "img": invocador,
       "descricao": "Entre as sombras das florestas primevas e os vales intocados pelo tempo, caminham os metamorfos, figuras de essência mutável cuja ligação com o mundo natural transcende as formas fixas dos homens. Eles não são meros conhecedores das criaturas da terra, da água e do céu, mas partilham de sua linguagem, entendendo os sussurros do vento entre as copas das árvores e a cadência oculta dos passos de um lobo em perseguição. O corpo do metamorfo não conhece rigidez, moldando-se conforme a necessidade, tomando feições que lhe conferem força, destreza ou resistência, espelhando as qualidades das bestas que observa. Nos antigos mitos de aldeias distantes, são descritos como aqueles que percorrem o mundo sem que se saiba se são homem ou fera, seus olhos refletindo um entendimento que vai além das palavras e suas ações ditadas por instintos tão refinados quanto os da criatura mais astuta da mata. Se há um propósito em sua existência, ele se manifesta na fusão entre o humano e o selvagem, um equilíbrio onde a identidade não é uma âncora, mas um rio que flui, sem nunca se deter por completo.",
       "atributos": "Cada Regalia comprada na especialização Invocador(a) fornece:\n- 3 Pontos de Vida\n- 0 Pontos de Estâmina\n- 7 Ponto em Magia. Para se tornar um profano o deus escolhido ao pegar a classe noviço tem que possuir alinhamento maligno ou neutro.",
       "regaliaObrigatoria": {
