@@ -1,0 +1,62 @@
+.MainTitleC {
+    font-family: "Viaoda_Libre variant0", serif !important;
+    font-style: normal !important;
+    color: #5B1F0F;
+    text-align: center !important;
+}
+
+.boxTextTitleText {
+    color: #5B1F0F;
+    text-align: left;
+    font-family: "Esteban", serif !important;
+    text-align: justify;
+
+    text-indent: 20px !important;
+    margin-top: 2% !important;
+}
+
+.boxTextTitle {
+    color: #5B1F0F !important;
+    text-align: left !important;
+    font-family: "Esteban", serif !important;
+    text-align: center;
+    margin-top: 2% !important;
+}
+.tabs {
+    color: #7B3311 !important;
+    text-align: left !important;
+    font-family: "Esteban", serif !important;
+    text-align: center;
+    margin-top: 1% !important;
+    margin-left: 1% !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+}
+
+.bigBoxTextClasses {
+    font-size: 18px !important;
+    margin: 1% auto !important;
+    font-family: "Esteban", serif !important;
+    text-indent: 20px !important;
+    text-align: justify;
+}
+
+.esteban {
+    font-family: "Esteban", serif !important;
+    font-size: 18px !important;
+}
+.estebanText{
+    font-family: "Esteban", serif !important;
+}
+.font16{
+    font-size: 16px !important;
+}
+.armaCard::-webkit-scrollbar{
+    border-radius: 20px !important;
+    width:5px;
+    padding: 2px !important ;
+}
+.armaCard::-webkit-scrollbar-thumb{
+    background: #5B1F0F !important;
+    border-radius: 15px !important;
+}

@@ -8,6 +8,7 @@ import WhatIsLDO from "../pages/HomeLinks/LDOPresentation";
 import HowToMakeYourOwnGames from "../pages/HomeLinks/HowToMakeYourOwnGames";
 import StoryPage from "../pages/HomeLinks/HowToMakeStories";
 import ClassesPage from "../pages/Wiki/classes/classes";
+import EquipmentPage from "../pages/Wiki/equipment/equipment";
 
 export const general_routes = [
     {
@@ -75,6 +76,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <ClassesPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/equipment",
+        ele: <>
+            <ResponsiveAppBar />
+            <EquipmentPage />
 
         </>,
         availability: [ur.admin]

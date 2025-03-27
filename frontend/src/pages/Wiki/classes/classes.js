@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Tab, Tabs, Accordion, AccordionSummary, AccordionDetails, List, ListItem } from '@mui/material';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./classes.css";
@@ -24,18 +24,34 @@ import monge from "../../../assets/images/monge.png";
 import inquisidor from "../../../assets/images/inquisidor.png";
 import cacador_de_demonios from "../../../assets/images/cacador_de_demonios.png";
 import cavaleiro_arcano from "../../../assets/images/cavaleiro_arcano.png";
-import erudita   from "../../../assets/images/erudita.png";
-import profano   from "../../../assets/images/profano.png";
-import invocador   from "../../../assets/images/invocador.png";
+import erudita from "../../../assets/images/erudita.png";
+import profano from "../../../assets/images/profano.png";
+import invocador from "../../../assets/images/invocador.png";
 
 
 
 const ClassesPage = () => {
-  const [thisvalue, thisThisvalue] = useState(0);
+
+  const [thisvalue, thisThisvalue] = useState(() => {
+    const savedValue = localStorage.getItem('classeValue');
+    // Verifica se savedValue é null e retorna 0 caso contrário
+    return savedValue !== null ? JSON.parse(savedValue) : 0;
+  });
+
+  // Atualiza o localStorage sempre que equipmentValue mudar
+  useEffect(() => {
+    if (thisvalue !== null) {
+      localStorage.setItem('classeValue', JSON.stringify(thisvalue));
+    }
+  }, [thisvalue]);
 
   const handleTABChange = (event, newValue) => {
-    thisThisvalue(newValue);
+    // Garante que newValue seja válido
+    if (newValue !== null && newValue !== undefined) {
+      thisThisvalue(newValue);
+    }
   };
+
   const regaliaContructor = {
     "nome": "[Nome da Regalia]" || null,
     "tipo": "[Ação | Reação | Passiva]" || null,
