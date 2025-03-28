@@ -663,8 +663,6 @@ const EquipmentPage = () => {
         { nome: "Brunéia", defesa: "+6", preco: "1000 M.O." },
     ];
 
-
-
     const armadurasLeves = [
         { nome: "Armadura Acolchoada", defesa: "+1", preco: "100 M.O." },
         { nome: "Corset de Couro", defesa: "+2", preco: "200 M.O." },
@@ -673,17 +671,166 @@ const EquipmentPage = () => {
         { nome: "Armadura Cerimonial", defesa: "+5", preco: "1000 M.O." },
     ];
 
+    const itesGerais = [
+        {
+            category: 'Equipamento de Viagem', items: [
+                { name: 'Mochila', price: '1 M.O.', description: 'Bolsa resistente para carregar equipamentos e suprimentos.' },
+                { name: 'Saco de Dormir', price: '2 M.P.', description: 'Fornece conforto e isolamento térmico ao dormir ao relento.' },
+                { name: 'Pederneira e Isqueiro', price: '3 M.P.', description: 'Ferramentas para iniciar fogo, essenciais para sobrevivência.' },
+                { name: 'Algibeira', price: '2 M.P.', description: 'Pequena bolsa usada para carregar moedas e pequenos objetos.' },
+                { name: 'Rações de Viagem (1 dia)', price: '2 M.C.', description: 'Suprimentos básicos de comida para um dia de viagem.' },
+                { name: 'Corda de cânhamo (15 m)', price: '5 M.P.', description: 'Corda resistente útil para escalada e transporte de carga.' },
+                { name: 'Bolsa de água', price: '2 M.C.', description: 'Recipiente para armazenar e transportar água potável.' }
+            ]
+        },
+        {
+            category: 'Munições', items: [
+                { name: 'Flechas (30)', price: '1 M.O.', description: 'Projéteis para arcos, utilizados em combate ou caça.' },
+                { name: 'Virotes (20)', price: '1 M.O.', description: 'Projéteis para bestas, oferecendo alta precisão e impacto.' },
+                { name: 'Balas (20)', price: '3 M.O.', description: 'Munição utilizada por armas de pólvora, causando dano letal.' }
+            ]
+        },
+        {
+            category: 'Equipamento Geral', items: [
+                { name: 'Corrente (2 metros)', price: '1 M.P.', description: 'Corrente de metal resistente, usada para diversas finalidades.' },
+                { name: 'Caixa (metro cúbico)', price: '1 M.P.', description: 'Contêiner de madeira ou metal para armazenar itens.' },
+                { name: 'Arremessador de gancho', price: '3 M.P.', description: 'Dispositivo para lançar um gancho e facilitar escaladas.' },
+                { name: 'Martelo (de carpinteiro)', price: '1 M.P.', description: 'Ferramenta útil para construção e fixação de materiais.' },
+                { name: 'Instrumento musical', price: '1 M.O.', description: 'Item utilizado para entretenimento ou performances artísticas.' },
+                { name: 'Pítons', price: '3 M.C.', description: 'Pinos de metal usados para escalada e fixação de cordas.' },
+                { name: 'Tocha', price: '5 M.C.', description: 'Fonte de luz portátil, essencial para explorar locais escuros.' },
+                { name: 'Vestuário fino', price: '10 M.O.', description: 'Roupas de alta qualidade, usadas em ocasiões especiais.' },
+                { name: 'Frasco', price: '2 M.P.', description: 'Pequeno recipiente para armazenar líquidos diversos.' },
+                { name: 'Símbolo santo', price: '7 M.P.', description: 'Emblema sagrado usado por clérigos e paladinos.' },
+                { name: 'Lanterna Direcional', price: '3 M.P.', description: 'Iluminação portátil com foco ajustável.' },
+                { name: 'Corda de seda (2 metros)', price: '8 M.P.', description: 'Corda mais leve e resistente que a de cânhamo.' },
+                { name: 'Tenda', price: '7 M.P.', description: 'Abrigo portátil para proteger contra intempéries.' },
+                { name: 'Ferramentas para Ladrões', price: '3 M.O.', description: 'Conjunto de instrumentos usados para arrombamentos e furtos.' }
+            ]
+        }
+    ];
+
+    const mountData = [
+        ["Camelo", "50 M.O.", "9 metros", "140 kg"],
+        ["Burro ou mula", "8 M.O.", "7,5 metros", "160 kg"],
+        ["Elefante", "200 M.O.", "12 metros", "660 kg"],
+        ["Cavalo", "50 M.O.", "12 metros", "270 kg"],
+        ["Lagarto Açu", "75 M.O.", "15 metros", "240 kg"],
+        ["Mastiff", "25 M.O.", "9 metros", "97 kg"],
+        ["Pônei", "30 M.O.", "6 metros", "112 kg"],
+        ["Cavalo de guerra", "400 M.O.", "12 metros", "270 kg"],
+        ["Vaca", "20 M.O.", "9 metros", "200 kg"],
+        ["Búfalo", "100 M.O.", "7,5 metros", "280 kg"],
+    ];
+
+    const itemData = [
+        ["Rédia", "2 M.O.", "0.5 kg"],
+        ["Carrinho de carga", "100 M.O.", "300 kg"],
+        ["Carroça", "15 M.O.", "100 kg"],
+        ["Carruagem", "250 M.O.", "50 kg"],
+        ["Ração animal (por dia)", "5 cp", "5 kg"],
+        ["Sela exótica", "60 M.O.", "20 kg"],
+        ["Sela de guerra", "20 M.O.", "15 kg"],
+        ["Sela de carga", "5 M.O.", "7 kg"],
+        ["Sela montaria", "10 M.O.", "12 kg"],
+        ["Bolsa de sela", "4 M.O.", "4 kg"],
+        ["Trenó", "20 M.O.", "150 kg"],
+        ["Vagão de carga", "35 M.O.", "200 kg"],
+    ];
+
+    const shipData = [
+        ["Galé", "30,000 M.O.", "6 km/h"],
+        ["Barco de quilha", "3,000 M.O.", "2 km/h"],
+        ["Dracar", "10.000 M.O.", "4,5 km/h"],
+        ["Barco de Remo", "50 M.O.", "3 km/h"],
+        ["Barco de vela", "10.000 M.O.", "3,5 km/h"],
+        ["Navio de guerra", "25,000 M.O.", "3,5 km/h"],
+    ];
+    const montariaDEscriptions = [
+        { name: "Camelo", type: "Montaria", description: "Montaria adaptada para suportar o calor intenso, excelente para travessias desérticas. Sua resistência e capacidade de carga o tornam ideal para longas jornadas em ambientes áridos." },
+        { name: "Burro ou Mula", type: "Montaria", description: "Versátil e resistente, a mula é perfeita para terrenos acidentados e transporte de carga pesada em regiões montanhosas ou de difícil acesso." },
+        { name: "Elefante", type: "Montaria", description: "Montaria imponente e de grande porte, ideal para transportar cargas pesadas em terrenos difíceis. Sua força e resistência garantem uma performance superior em batalhas e travessias." },
+        { name: "Cavalo", type: "Montaria", description: "Montaria clássica, versátil e rápida, perfeita para viagens rápidas em terreno variado. Seu porte equilibrado permite tanto transporte de carga quanto cavalgadas velozes." },
+        { name: "Lagarto Açu", type: "Montaria", description: "Montaria ágil e adaptada a terrenos tropicais e de difícil acesso. Seu corpo resistente e destreza tornam-no ideal para ambientes selvagens e expedições arriscadas." },
+        { name: "Mastiff", type: "Montaria", description: "Cão de grande porte, treinado para carregar pequenas cargas e servir como montaria. Ideal para viajantes em busca de companheiros fiéis e resistentes em terrenos variados." },
+        { name: "Pônei", type: "Montaria", description: "Ideal para pequenas criaturas ou crianças, o pônei é uma montaria dócil e de fácil manejo, adequado para terrenos planos e viagens curtas." },
+        { name: "Cavalo de guerra", type: "Montaria", description: "Montaria especializada para batalhas, o cavalo de guerra é forte e resistente, projetado para suportar cargas pesadas e rápidos movimentos em combate." },
+        { name: "Vaca", type: "Terrestre", description: "Animal robusto, utilizado principalmente para transporte de cargas leves em regiões agrícolas. Sua natureza dócil e capacidade de carga moderada fazem dela uma escolha popular para tarefas cotidianas." },
+        { name: "Búfalo", type: "Terrestre", description: "Montaria de grande porte e resistência, ideal para quem precisa de uma montaria forte para cargas pesadas ou tarefas que exigem força bruta em terrenos difíceis." },
+        { name: "Galé", type: "Aquático", description: "Impressionante embarcação de guerra com grande capacidade de transporte e manobrabilidade. Ideal para operações navais de médio porte e transporte de tropas em águas calmas e abertas." },
+        { name: "Barco de quilha", type: "Aquático", description: "Embarcação robusta e estável, projetada para longas jornadas por mares tranquilos. Sua quilha a torna eficiente em navegação em águas abertas e com menor resistência ao vento." },
+        { name: "Dracar", type: "Aquático", description: "Navio viking ágil, com casco estreito e rápido. Ideal para incursões rápidas e ataques surpresa, além de ser uma embarcação leve para explorar territórios costeiros." },
+        { name: "Barco de remo", type: "Aquático", description: "Pequena e manobrável embarcação movida por remos. Ideal para viagens curtas em rios ou costas tranquilas, sendo fácil de operar e bastante versátil." },
+        { name: "Barco de vela", type: "Aquático", description: "Embarcação movida a vento, eficiente para viagens mais longas em mares abertos. Sua vela permite navegar em águas mais distantes com grande eficiência." },
+        { name: "Navio de guerra", type: "Aquático", description: "Imensa embarcação equipada para batalhas navais. Com uma poderosa estrutura e armamento, o navio de guerra é ideal para confrontos no mar e operações militares de larga escala." },
+    ];
+    
+    const kits = [
+        { nome: "Kit Médico", preco: "50 M.O.", descricao: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros." },
+        { nome: "Kit de Herborista", preco: "20 M.O.", descricao: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais." },
+        { nome: "Kit de Sobrevivência", preco: "30 M.O.", descricao: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre." },
+        { nome: "Kit de Ferramentas", preco: "25 M.O.", descricao: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos." },
+        { nome: "Kit de Alquimista", preco: "60 M.O.", descricao: "Inclui frascos vazios, substâncias químicas básicas, tubos de ensaio e outros itens para alquimia." },
+        { nome: "Kit de Ladrão", preco: "40 M.O.", descricao: "Contém ferramentas de arrombamento, pés de cabra, cordas e outros itens para atividades furtivas." },
+        { nome: "Kit de Explorador", preco: "35 M.O.", descricao: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido." },
+        { nome: "Kit de Disfarces", preco: "50 M.O.", descricao: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido." },
+        { nome: "Kit de Músico", preco: "55 M.O.", descricao: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música." },
+        { nome: "Kit de Arrombamento", preco: "45 M.O.", descricao: "Contém ferramentas especializadas, como pés de cabra, ganzúas e chave de fenda para abrir fechaduras." },
+        { nome: "Kit de Cartografia", preco: "30 M.O.", descricao: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações." },
+        { nome: "Kit de Venenos", preco: "70 M.O.", descricao: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas." },
+        { nome: "Kit de Engenhocas", preco: "60 M.O.", descricao: "Inclui engrenagens, molas, fios e outros itens para criar dispositivos e armadilhas improvisadas." },
+        { nome: "Kit de Escalada", preco: "40 M.O.", descricao: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel." },
+        { nome: "Kit de Caça", preco: "45 M.O.", descricao: "Inclui armadilhas, armas de caça, iscas e outros itens para caçar e rastrear animais." },
+        { nome: "Kit de Sobrevivência Aquática", preco: "50 M.O.", descricao: "Contém nadadeiras, redes de pesca, arpão e outros itens para sobreviver em ambientes aquáticos." },
+    ];
+
+    const habilidades = [
+        { nome: "Kit Médico", efeito: "Permite realizar Primeiros Socorros. Após 10 usos perde a utilidade." },
+        { nome: "Kit de Herborista", efeito: "Permite preparar remédios naturais. Restaura 5 pontos de Vida ou remove um efeito negativo leve. Após 5 usos perde a utilidade." },
+        { nome: "Kit de Sobrevivência", efeito: "Bônus de +2 em testes de Sobrevivência relacionados à caça e rastreamento." },
+        { nome: "Kit de Ferramentas", efeito: "Bônus de +2 em testes de Construção e Conserto de objetos." },
+        { nome: "Kit de Alquimista", efeito: "Permite criar poções e substâncias alquímicas básicas." },
+        { nome: "Kit de Ladrão", efeito: "Bônus de +2 em Furtividade e Arrombamento." },
+        { nome: "Kit de Explorador", efeito: "Bônus de +2 em Percepção, Orientação e Exploração." },
+        { nome: "Kit de Disfarces", efeito: "Bônus de +2 em testes de Enganação e Disfarce." },
+        { nome: "Kit de Músico", efeito: "Permite tocar música e influenciar o humor das pessoas." },
+        { nome: "Kit de Arrombamento", efeito: "Bônus de +2 em Desarmar Armadilhas e Abrir Fechaduras." },
+        { nome: "Kit de Cartografia", efeito: "Bônus de +2 em Orientação e Memória relacionadas à cartografia." },
+        { nome: "Kit de Venenos", efeito: "Bônus de +2 em Criar Veneno e Ataques Envenenados." },
+        { nome: "Kit de Engenhocas", efeito: "Bônus de +2 em Criar Armadilhas e Uso de Dispositivos." },
+        { nome: "Kit de Escalada", efeito: "Bônus de +2 em Escalar e Rapel." },
+        { nome: "Kit de Caça", efeito: "Bônus de +2 em Rastreamento, Armadilhas e Ataques contra animais." },
+        { nome: "Kit de Sobrevivência Aquática", efeito: "Bônus de +2 em Natação, Pesca e Sobrevivência em ambientes aquáticos." },
+    ];
+    const kitsCards = [
+        { name: "Kit Médico", desc: "Permite ao personagem realizar a ação 'Primeiros Socorros' em si mesmo ou em outros personagens. Após 10 usos perde a utilidade.", effect: "Permite ao personagem realizar a ação 'Primeiros Socorros' em si mesmo ou em outros personagens. Após 10 usos perde a utilidade.", price: "50 M.O." },
+        { name: "Kit de Herborista", desc: "Permite ao personagem preparar remédios naturais usando as ervas medicinais do kit. Como uma ação restaura 5 pontos de Vida ou remove um efeito negativo leve. Após 5 usos o kit perde a utilidade.", effect: "Permite ao personagem preparar remédios naturais usando as ervas medicinais do kit. Como uma ação restaura 5 pontos de Vida ou remove um efeito negativo leve. Após 5 usos o kit perde a utilidade.", price: "20 M.O." },
+        { name: "Kit de Sobrevivência", desc: "Concede ao personagem bônus de +2 em testes de Sobrevivência relacionados à sobrevivência ao ar livre, caça e rastreamento.", effect: "Concede ao personagem bônus de +2 em testes de Sobrevivência relacionados à sobrevivência ao ar livre, caça e rastreamento.", price: "30 M.O." },
+        { name: "Kit de Ferramentas", desc: "Permite ao personagem realizar testes de perícia relacionados à construção e conserto de objetos com um bônus de +2.", effect: "Permite ao personagem realizar testes de perícia relacionados à construção e conserto de objetos com um bônus de +2.", price: "25 M.O." },
+        { name: "Kit de Alquimista", desc: "Permite ao personagem criar poções ou substâncias alquímicas básicas. Essas poções podem ter efeitos variados, como curar pequenas quantidades de Vida ou conceder bônus temporários em testes de perícia.", effect: "Permite ao personagem criar poções ou substâncias alquímicas básicas. Essas poções podem ter efeitos variados, como curar pequenas quantidades de Vida ou conceder bônus temporários em testes de perícia.", price: "60 M.O." },
+        { name: "Kit de Ladrão", desc: "Concede ao personagem bônus de +2 em testes de Furtividade, arrombamento de fechaduras e atividades furtivas.", effect: "Concede ao personagem bônus de +2 em testes de Furtividade, arrombamento de fechaduras e atividades furtivas.", price: "40 M.O." },
+        { name: "Kit de Explorador", desc: "Concede ao personagem bônus de +2 em testes de Percepção, Orientação e Sobrevivência relacionados à exploração de territórios desconhecidos.", effect: "Concede ao personagem bônus de +2 em testes de Percepção, Orientação e Sobrevivência relacionados à exploração de territórios desconhecidos.", price: "35 M.O." },
+        { name: "Kit de Disfarces", desc: "Permite ao personagem criar disfarces convincentes. Isso concede um bônus de +2 em testes de Enganação e Disfarce para passar despercebido.", effect: "Permite ao personagem criar disfarces convincentes. Isso concede um bônus de +2 em testes de Enganação e Disfarce para passar despercebido.", price: "45 M.O." },
+        { name: "Kit de Músico", desc: "Permite ao personagem tocar música e realizar apresentações. Isso pode fornecer distração, entretenimento ou até mesmo influenciar o humor de outras pessoas.", effect: "Permite ao personagem tocar música e realizar apresentações. Isso pode fornecer distração, entretenimento ou até mesmo influenciar o humor de outras pessoas.", price: "30 M.O." },
+        { name: "Kit de Arrombamento", desc: "Concede ao personagem bônus de +2 em testes de Desarmar Armadilhas e Abrir Fechaduras.", effect: "Concede ao personagem bônus de +2 em testes de Desarmar Armadilhas e Abrir Fechaduras.", price: "40 M.O." },
+        { name: "Kit de Cartografia", desc: "Permite ao personagem desenhar mapas e fazer anotações precisas. Isso concede um bônus de +2 em testes de Orientação e Memória relacionados à cartografia.", effect: "Permite ao personagem desenhar mapas e fazer anotações precisas. Isso concede um bônus de +2 em testes de Orientação e Memória relacionados à cartografia.", price: "35 M.O." },
+        { name: "Kit de Venenos", desc: "Permite ao personagem criar e aplicar venenos. Isso concede um bônus de +2 em testes de Criar Veneno e Ataques Envenenados.", effect: "Permite ao personagem criar e aplicar venenos. Isso concede um bônus de +2 em testes de Criar Veneno e Ataques Envenenados.", price: "50 M.O." },
+        { name: "Kit de Engenhocas", desc: "Permite ao personagem criar dispositivos e armadilhas improvisadas. Isso concede um bônus de +2 em testes de Criar Armadilhas e Uso de Dispositivos.", effect: "Permite ao personagem criar dispositivos e armadilhas improvisadas. Isso concede um bônus de +2 em testes de Criar Armadilhas e Uso de Dispositivos.", price: "40 M.O." },
+        { name: "Kit de Escalada", desc: "Concede ao personagem bônus de +2 em testes de Escalar.", effect: "Concede ao personagem bônus de +2 em testes de Escalar.", price: "30 M.O." },
+        { name: "Kit de Caça", desc: "Concede ao personagem bônus de +2 em testes de Rastreamento, Armadilhas e Ataques contra animais.", effect: "Concede ao personagem bônus de +2 em testes de Rastreamento, Armadilhas e Ataques contra animais.", price: "35 M.O." },
+        { name: "Kit de Sobrevivência Aquática", desc: "Concede ao personagem bônus de +2 em testes de Natação, Pesca e Sobrevivência em ambientes aquáticos.", effect: "Concede ao personagem bônus de +2 em testes de Natação, Pesca e Sobrevivência em ambientes aquáticos.", price: "40 M.O." }
+    ];
     const TabelaDeArmaduras = ({ titulo, dados }) => (
 
 
         <TableContainer component={Paper} sx={{ mt: 2 }}>
-            <Typography className="MainTitleC" variant="h5" sx={{ my: 4 }}>{titulo}</Typography>
+            <Typography className="MainTitleC" variant="h5" sx={{ my: 2 }}>{titulo}</Typography>
             <Table>
                 <TableHead>
-                    <TableRow>
-                        <TableCell>Armadura</TableCell>
-                        <TableCell>Valor de Defesa</TableCell>
-                        <TableCell>Preço</TableCell>
+                    <TableRow className="headerLine">
+                        <TableCell className="bigBoxTextEquipsHeader">Armadura</TableCell>
+                        <TableCell className="bigBoxTextEquipsHeader">Valor de Defesa</TableCell>
+                        <TableCell className="bigBoxTextEquipsHeader">Preço</TableCell>
                         {dados[0]?.forca !== undefined && <TableCell>Força Mínima</TableCell>}
                     </TableRow>
                 </TableHead>
@@ -704,12 +851,12 @@ const EquipmentPage = () => {
 
     const WeaponTable = ({ title, data }) => (
         <TableContainer component={Paper} sx={{ mb: 3 }}>
-            <Typography className="MainTitleC" variant="h6" >
+            <Typography className="MainTitleC" variant="h5" sx={{ my: 2 }}>
                 {title}
             </Typography>
             <Table>
                 <TableHead>
-                    <TableRow>
+                    <TableRow className="headerLine">
                         <TableCell className="bigBoxTextEquips" >Item</TableCell>
                         <TableCell className="bigBoxTextEquips" >Dano</TableCell>
                         <TableCell className="bigBoxTextEquips" >Uma Mão/Duas Mãos</TableCell>
@@ -729,6 +876,89 @@ const EquipmentPage = () => {
             </Table>
         </TableContainer>
     );
+    const EquipmentTable = () => {
+        return (
+            <TableContainer>
+                <Typography className="MainTitleC" variant="h3" sx={{ mb: 4 }} >
+                    Equipamentos
+                </Typography>
+                <Typography className="bigBoxTextClasses" variant="body1">
+                    Esta tabela contém diversos itens úteis para aventuras, incluindo equipamentos de viagem, munições e ferramentas gerais. Cada item possui um preço e uma breve descrição de sua utilidade.
+                </Typography>
+
+                {itesGerais.map((section, index) => (
+                    <Table component={Paper} sx={{ mt: 4 }} key={index} >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell colSpan={2} >
+                                    <Typography className="MainTitleC" variant="h5">{section.category}</Typography>
+
+                                </TableCell>
+                            </TableRow>
+                            <TableRow className="headerLine">
+                                <TableCell sx={{ width: '25%' }} className="bigBoxTextEquipsHeader">Equipamento</TableCell>
+                                <TableCell sx={{ width: '65%' }} className="bigBoxTextEquipsHeader">Descrição</TableCell>
+                                <TableCell sx={{ width: '10%' }} className="bigBoxTextEquipsHeader">Preço</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {section.items.map((item, idx) => (
+                                <TableRow key={idx}>
+                                    <TableCell sx={{ width: '25%' }} className="bigBoxTextEquips">{item.name}</TableCell>
+                                    <TableCell sx={{ width: '65%' }} className="bigBoxTextEquips">{item.description}</TableCell>
+                                    <TableCell sx={{ width: '10%' }} className="bigBoxTextEquips">{item.price}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                ))}
+
+            </TableContainer>
+        );
+    }
+
+    const MontariaTable = ({ title, headers, data }) => (
+        <TableContainer component={Paper} sx={{ mb: 3 }}>
+            <Typography className="boxTextTitleText" variant="h5" sx={{ my: 2, textAlign: "center" }}>
+                {title}
+            </Typography>
+            <Table>
+                <TableHead>
+                    <TableRow className="headerLine">
+                        {headers.map((header, index) => (
+                            <TableCell className="bigBoxTextEquipsHeader" key={index} sx={{ fontWeight: "bold" }}>
+                                {header}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.map((row, rowIndex) => (
+                        <TableRow key={rowIndex}>
+                            {row.map((cell, cellIndex) => (
+                                <TableCell className="bigBoxTextEquips" key={cellIndex}>{cell}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+    const DescriptionPaper = ({ name, type, description }) => (
+        <Paper sx={{ padding: 2, mb: 2 }} elevation={3}>
+            <Typography  className="boxTextTitle" variant="h6" fontWeight="bold">{name}</Typography>
+            <Typography className="bigBoxTextEquips"><strong>Tipo:</strong> {type}</Typography>
+            <Typography className="bigBoxTextEquips">{description}</Typography>
+        </Paper>
+    );
+    const KitCard = ({ name, desc, effect, price }) => (
+        <Paper elevation={3} sx={{ px: 2, py: 4, m:2, width:'31%',display:'flex', flexWrap:'nowrap', flexDirection:'column', borderTop: "4px solid #162A22", borderBottom: "8px solid #162A22"  }}>
+            <h4 className="boxTextTitle"> {name}</h4>
+            <p className="bigBoxTextEquips">{desc}</p>
+            <p className="bigBoxTextEquips">{effect}</p>
+            <p className="bigBoxTextEquips">Preço: {price}</p>
+        </Paper>
+    );
 
     return (
         <Box sx={{ minHeight: '700px', width: '100%' }} >
@@ -747,7 +977,7 @@ const EquipmentPage = () => {
                     <Box>
                         {/* Título Principal */}
                         <Typography variant="h3" className="MainTitleC">
-                            Itens gerais
+                            Visão geral
                         </Typography>
 
                         {/* Caixa de Texto */}
@@ -780,9 +1010,9 @@ const EquipmentPage = () => {
 
                         {/* Aba de Negociação */}
                         <Paper sx={{ p: 4 }}>
-                            <Tabs value={0} indicatorColor="primary">
-                                <Tab label="Negociação com Habilidades de Personagem" />
-                            </Tabs>
+                            <Typography variant="h5" className="boxTextTitleText">
+                                Negociação com Habilidades de Personagem
+                            </Typography>
                             <Typography variant="body1" className="bigBoxTextClasses">
                                 Uma das mecânicas interessantes do sistema de LDO é a possibilidade de negociação de preços, influenciada
                                 pelas habilidades do personagem. O jogo permite que, com o tempo, os personagens melhorem suas habilidades
@@ -816,7 +1046,7 @@ const EquipmentPage = () => {
                 </Box>
             )}
 
-            {/* Aprendiz Tab Content (Empty for now) */}
+            {/*  Armas*/}
             {equipmentValue === 1 && (
                 <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
                     <Box>
@@ -918,11 +1148,11 @@ const EquipmentPage = () => {
                         <Typography variant="h5" sx={{ my: 4 }} className="boxTextTitle" >Descrição das armas</Typography>
                         <Box sx={{ display: "flex", flexWrap: 'wrap', justifyContent: 'left', gap: '1%' }}>
                             {armas.map((arma, index) => (
-                                <Paper key={index} elevation={3} sx={{ padding: 3, marginBottom: 2, width: '24%', height: "600px" }}>
-                                    <Typography className="estebanText" variant="h5" color="primary" gutterBottom>
+                                <Paper key={index} elevation={3} sx={{ padding: 3, marginBottom: 2, width: '24%', height: "650px", borderTop: "4px solid #162A22", borderBottom: "8px solid #162A22" }}>
+                                    <Typography className="boxTextTitleText" variant="h5" gutterBottom>
                                         {arma.nome}
                                     </Typography>
-                                    <Typography className="armaCard esteban font16" sx={{ textAlign: 'justify', overflowY: 'scroll', height: '370px', p: 2, border: '1px solid gray', borderRadius: "10px" }} paragraph>
+                                    <Typography className="armaCard esteban font16" sx={{ textAlign: 'justify', overflowY: 'scroll', height: '370px', p: 2, border: '1px solid #BB8130', borderRadius: "10px" }} paragraph>
                                         {arma.descricao}
                                     </Typography>
                                     <Grid container spacing={2}>
@@ -940,19 +1170,19 @@ const EquipmentPage = () => {
                 </Box>
             )}
 
-            {/* Combatente Tab Content (Empty for now) */}
+            {/*Armaduras*/}
             {equipmentValue === 2 && (
                 <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
-                    <Typography className="boxTextTitle" variant="h4" gutterBottom>Armaduras</Typography>
-                    <Typography className="estebanText" variant="body1" paragraph>
+                    <Typography className="MainTitleC" variant="h3" gutterBottom>Armaduras</Typography>
+                    <Typography className="bigBoxTextClasses" variant="body1" paragraph sx={{ pt: 4 }}>
                         <strong>Atenção:</strong> Armaduras pesadas requerem um mínimo de força. Se usadas sem esse pré-requisito, sofre as seguintes penalidades:
                     </Typography>
                     <ul>
-                        <li className="estebanText">-1,5 m de velocidade de movimento por ponto de força abaixo do requerido.</li>
-                        <li className="estebanText">-1 em rolamento de acerto de qualquer teste de combate por ponto de força abaixo do requerimento.</li>
-                        <li className="estebanText">Requer duas ações para usar a ação andar/correr ao invés de apenas uma.</li>
+                        <li className="bigBoxTextClasses">-1,5 m de velocidade de movimento por ponto de força abaixo do requerido.</li>
+                        <li className="bigBoxTextClasses">-1 em rolamento de acerto de qualquer teste de combate por ponto de força abaixo do requerimento.</li>
+                        <li className="bigBoxTextClasses">Requer duas ações para usar a ação andar/correr ao invés de apenas uma.</li>
                     </ul>
-                    <Typography className="estebanText" variant="body1" paragraph>
+                    <Typography className="bigBoxTextClasses" variant="body1" paragraph sx={{ pb: 4 }}>
                         Armaduras pesadas sofrem penalidade em testes de furtividade de -5 e armaduras médias sofrem uma penalidade de -2. Se uma criatura que não recebe capacidade de usar um tipo de armadura usá-la, se torna incapaz de conjurar magias, milagres, feitiços, manobras e quaisquer habilidades. Além disso, todo rolamento de habilidade possui desvantagem.
                     </Typography>
 
@@ -962,10 +1192,10 @@ const EquipmentPage = () => {
                     <Grid container spacing={3} sx={{ pt: 4 }}>
                         {armaduras.map((armadura, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
-                                <Card>
+                                <Card sx={{ height: '210px', background: '#ededed', borderTop: "4px solid #162A22", borderBottom: "8px solid #162A22" }}>
                                     <CardContent>
-                                        <Typography variant="h6">{armadura.nome}</Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="h6" className="boxTextTitle">{armadura.nome}</Typography>
+                                        <Typography variant="body2" className="bigBoxTextClasses" sx={{ py: 2 }}>
                                             {armadura.tipo} - Bônus de Defesa: {armadura.bonus}
                                         </Typography>
                                         <Typography variant="body2">{armadura.descricao}</Typography>
@@ -976,19 +1206,95 @@ const EquipmentPage = () => {
                     </Grid>
                 </Box>
             )}
+            {/*Itens gerais*/}
             {equipmentValue === 3 && (
                 <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
-
+                    <EquipmentTable />
                 </Box>
             )}
             {equipmentValue === 4 && (
                 <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
-                    =
+                    <MontariaTable title="Montarias" headers={["Montaria", "Preço", "Velocidade de Movimento", "Capacidade de Carga"]} data={mountData} />
+                    <MontariaTable title="Itens" headers={["Item", "Preço", "Peso"]} data={itemData} />
+                    <MontariaTable title="Veículos Marinhos" headers={["Veículo", "Preço", "Velocidade"]} data={shipData} />
+                    <Grid container spacing={2}>
+                        {montariaDEscriptions.map((item, index) => (
+                            <Grid item xs={12} sm={6} md={4} key={index}>
+                                <DescriptionPaper {...item} />
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Box>
             )}
             {equipmentValue === 5 && (
                 <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
 
+                    <Typography className="MainTitleC" variant="h4" gutterBottom align="center">
+                        Kits de equipamentos e ferramentas
+                    </Typography>
+
+                    {/* Tabela de Kits */}
+                    <Box sx={{ mb: 4, p: 2 }}>
+                        <Typography className="boxTextTitleText" variant="h6" gutterBottom>
+                            Lista de Kits
+                        </Typography>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow className="headerLine">
+                                        <TableCell className="bigBoxTextEquipsHeader"><strong>Nome</strong></TableCell>
+                                        <TableCell className="bigBoxTextEquipsHeader"><strong>Preço</strong></TableCell>
+                                        <TableCell className="bigBoxTextEquipsHeader"><strong>Descrição</strong></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {kits.map((kit, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell className="bigBoxTextEquips">{kit.nome}</TableCell>
+                                            <TableCell className="bigBoxTextEquips">{kit.preco}</TableCell>
+                                            <TableCell className="bigBoxTextEquips">{kit.descricao}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+
+                    {/* Tabela de Habilidades */}
+                    <Box sx={{ p: 2 }}>
+                        <Typography className="boxTextTitleText" variant="h6" gutterBottom>
+                            Efeitos dos Kits
+                        </Typography>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow className="headerLine">
+                                        <TableCell className="bigBoxTextEquipsHeader"><strong>Nome</strong></TableCell>
+                                        <TableCell className="bigBoxTextEquipsHeader"><strong>Efeito</strong></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {habilidades.map((hab, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell className="bigBoxTextEquips">{hab.nome}</TableCell>
+                                            <TableCell className="bigBoxTextEquips">{hab.efeito}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                    <Box sx={{display:'flex', flexWrap:'wrap'}}>
+                        {kitsCards.map((kit, index) => (
+                            <KitCard
+                                key={index}
+                                name={kit.name}
+                                desc={kit.desc}
+                                effect={kit.effect}
+                                price={kit.price}
+                            />
+                        ))}
+                    </Box>
                 </Box>
             )}
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -46,7 +46,16 @@
     text-indent: 20px !important;
     text-align: justify;
 }
-
+.bigBoxTextEquipsHeader{
+    font-size: 18px !important;
+    margin: 1% auto !important;
+    font-family: "Esteban", serif !important;
+    text-indent: 20px !important;
+    text-align: justify;
+}
+.headerLine{
+    border-bottom: 2px solid #BB8130 !important;
+}
 .esteban {
     font-family: "Esteban", serif !important;
     font-size: 18px !important;
