@@ -32,9 +32,15 @@
     font-size: 14px !important;
     border-radius: 10px !important;
 }
-
-.bigBoxTextClasses {
+.bigBoxTextClasses{
     font-size: 18px !important;
+    margin: 1% auto !important;
+    font-family: "Esteban", serif !important;
+    text-indent: 20px !important;
+    text-align: justify;
+}
+.bigBoxTextEquips{
+    font-size: 14px !important;
     margin: 1% auto !important;
     font-family: "Esteban", serif !important;
     text-indent: 20px !important;
