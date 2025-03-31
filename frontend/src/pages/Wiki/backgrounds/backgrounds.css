@@ -39,12 +39,20 @@
     text-indent: 20px !important;
     text-align: justify;
 }
+ 
 .bigBoxTextEquips{
     font-size: 14px !important;
     margin: 1% auto !important;
     font-family: "Esteban", serif !important;
     text-indent: 20px !important;
     text-align: justify;
+}
+.bigBoxTextBG{
+    font-size: 14px !important;
+    margin: 1% auto !important;
+    font-family: "Esteban", serif !important;
+    text-indent: 20px !important;
+    text-align: left;
 }
 .bigBoxTextEquipsHeader{
     font-size: 18px !important;
@@ -65,8 +73,10 @@
 }
 .font16{
     font-size: 16px !important;
+    
 }
 .armaCard::-webkit-scrollbar{
+
     border-radius: 20px !important;
     width:5px;
     padding: 2px !important ;
