@@ -9,6 +9,7 @@ import HowToMakeYourOwnGames from "../pages/HomeLinks/HowToMakeYourOwnGames";
 import StoryPage from "../pages/HomeLinks/HowToMakeStories";
 import ClassesPage from "../pages/Wiki/classes/classes";
 import EquipmentPage from "../pages/Wiki/equipment/equipment";
+import AntecendetesPage from "../pages/Wiki/backgrounds/backgrounds";
 
 export const general_routes = [
     {
@@ -85,6 +86,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <EquipmentPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/antecedentes",
+        ele: <>
+            <ResponsiveAppBar />
+            <AntecendetesPage />
 
         </>,
         availability: [ur.admin]
