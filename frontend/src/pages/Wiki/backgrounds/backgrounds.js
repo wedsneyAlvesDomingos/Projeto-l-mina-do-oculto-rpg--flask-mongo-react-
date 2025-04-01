@@ -567,13 +567,13 @@ const AntecendetesPage = () => {
         <Box sx={{ minHeight: '700px', width: '100%' }} >
 
             <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
-                <Typography className="MainTitleC" variant="h4" gutterBottom>
+                <Typography className="MainTitleC" variant="h4" gutterBottom >
                     Antecedentes
                 </Typography>
-                <Typography className="boxTextTitle" variant="h5" gutterBottom>
+                <Typography className="boxTextTitle" variant="h5" gutterBottom >
                     A Importância do Antecedente na Ficha do Personagem
                 </Typography>
-                <Typography className="bigBoxTextClasses" paragraph>
+                <Typography className="bigBoxTextClasses" paragraph >
                     O antecedente de um personagem desempenha um papel fundamental na construção de sua história e na definição de suas habilidades. Ele não apenas estabelece as bases do passado do personagem, mas também orienta suas decisões, ações e interações dentro do jogo. Através do antecedente, podemos entender de onde o personagem vem, que experiências moldaram sua vida e como ele enxerga o mundo ao seu redor.
                 </Typography>
                 <Typography className="bigBoxTextClasses" paragraph>
