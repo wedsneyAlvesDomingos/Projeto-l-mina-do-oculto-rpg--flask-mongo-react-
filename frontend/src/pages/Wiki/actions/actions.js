@@ -29,13 +29,114 @@ const Actionspage = () => {
         },
         {
             title: "Comandar Animal",
-            description: "Uma criatura que possui um companheiro animal ou que consegue tomar controle de um através de magia pode comandá-lo...",
+            description: "Uma criatura que possui um companheiro animal ou que consegue tomar controle de um através de magia ou feitiço pode comandá-lo com esta ação. É possível ordenar ao animal que use ações de ataque, movimento, buscar cobertura, interação com objetos (se possível), distrair ou derrubar (se possível).",
         },
         {
             title: "Distrair",
-            description: "Uma criatura pode distrair outra para ajudar seus aliados. Para isso, a criatura deve realizar uma ação que chame a atenção...",
+            description: "Uma criatura pode distrair outra para ajudar seus aliados. Para isso, a criatura deve realizar uma ação que chame a atenção das outras criaturas para si, como acender um fogo, gritar algo pessoal, fazer uma provocação ou até mesmo fingir uma morte dramática. Para distrair um inimigo, a criatura deve fazer um teste de Enganação, Persuasão ou Performance que supere o teste de intuição do inimigo. A criatura distraída sofre uma penalidade de 2 pontos em testes de ataque e percepção até o final de seu próximo turno.",
         },
+        {
+            title: "Derrubar",
+            description: "Uma criatura pode tentar derrubar seu oponente. Para isso, deve fazer um teste de Força ou Destreza contra a Força ou Destreza do adversário. Se for bem-sucedida, a criatura consegue derrubar o oponente, que fica na condição deitado. Se uma criatura falhar em derrubar seu oponente e tentar novamente no mesmo turno, sofrerá uma penalidade cumulativa de 1 ponto na próxima tentativa. No entanto, não é possível derrubar uma criatura duas vezes maior ou que possua mais de duas pernas, nem uma criatura sem pernas.",
+        },
+        {
+            title: "Desarmar",
+            description: "Uma criatura pode tentar desarmar seu oponente, realizando um teste de Destreza contra a Destreza do adversário. Se for bem-sucedida, a criatura consegue desarmar o oponente, fazendo-o soltar sua arma. Não é possível desarmar armas naturais ou aquelas presas ao corpo do inimigo.",
+        },
+        {
+            title: "Empurrar",
+            description: "Uma criatura pode tentar empurrar seu oponente, realizando um teste de Força contra a Força do adversário. Se for bem-sucedida, a criatura empurra o oponente para trás ou para o lado, em uma distância de 1,5 metros, desde que não haja obstáculos físicos ou outras criaturas no caminho. Se a criatura falhar em empurrar o oponente e tentar novamente no mesmo turno, sofrerá uma penalidade de 2 pontos na próxima tentativa. Não é possível empurrar uma criatura que seja 2 tamanhos maior ou esteja enraizada no chão.",
+        },
+        {
+            title: "Escapar",
+            description: "Uma criatura agarrada pode tentar escapar realizando um teste de Acrobacia ou Atletismo contra um teste de força da criatura que realiza o agarrão ou valor de dificuldade de um efeito que o deixou restringido. Se for agarrado ou restringido por magia, feitiço ou milagre leia o efeito do mesmo para saber como escapar. Se não houver nenhuma regra específica use o valor do sucesso de conjuração da habilidade.",
+        },
+        {
+            title: "Esconder",
+            description: "Durante o combate, uma criatura pode se esconder das outras. Ao ficar obscurecida pela falta de luz, fumaça ou outras condições semelhantes, a criatura pode fazer um teste de furtividade. O valor de dificuldade deste teste será determinado pelo mestre. Se for bem-sucedida, a criatura fica Escondida. É possível fazer mais de uma tentativa de esconder-se por turno, mas a criatura sofrerá uma penalidade cumulativa de 1 ponto por cada tentativa adicional. Uma criatura  que esteja em campo de visão de um ou mais inimigos não pode ser considerada Escondida  de outros ao se abaixar ou encolher atrás de objetos, criaturas ou outros sem se mover se esgueirando para mudar de posição. É preciso estar fora do campo de visão de toda e qualquer criatura hostil.",
+        },
+        {
+            title: "Esconder um objeto",
+            description: "Durante o combate, uma criatura pode esconder um objeto das outras. Se o objeto puder ser guardado em sua roupa, a criatura pode fazer um teste de furtividade. O valor desse teste será determinado pelo mestre. Se for bem-sucedida, as outras criaturas não perceberão que a criatura está com o objeto, embora possam suspeitar. Se o objeto for uma arma e o teste for um sucesso, a criatura ganha 1 ponto de Acerto ao realizar um ataque e deixa o alvo do ataque na condição surpreso. É possível fazer mais de uma tentativa de esconder o objeto por turno, mas a criatura sofrerá uma penalidade cumulativa de 1 ponto por cada tentativa adicional.",
+        },
+        {
+            title: "Esgueirar",
+            description: "Uma criatura pode mover-se em modo de esgueirar por um ambiente, desde que esteja obscurecida pelo ambiente ou fora do campo de visão de todos os inimigos. A velocidade de movimento ao esgueirar-se sofre uma penalidade de 1,5 metros.",
+        },
+        {
+            title: "Fintar",
+            description: "Uma criatura que esteja em combate corpo a corpo com uma ou mais criaturas pode fazer uma finta para ganhar vantagem no rolamento de ataque corpo a corpo. A criatura que tentar realizar essa ação deve fazer teste de enganação com valor 12 de dificuldade. Somente uma tentativa de finta pode ser feita por rodada. O vantagem de fintar aumenta em 1 dado por inimigo adicional que esteja a até 1,5 metros de distância.",
+        },
+        {
+            title: "Interagir",
+            description: "Uma criatura realiza uma interação com um objeto simples, como: Sacar uma arma ou escudo , Abrir uma porta , Ativar um item simples, mágico ou não , Retirar uma peça de roupa que não seja difícil de tirar , Guardar uma arma ou escudo , Tomar uma poção , Entregar uma poção",
+        },
+        {
+            title: "Intimidar",
+            description: "Uma criatura pode tentar intimidar um inimigo por meio de fala e/ou ações. O alvo deve fazer um teste de Intuição contra o teste de Intimidação do intimidador. Se o intimidador for bem-sucedido, o alvo ficará na condição aterrorizada até o fim de seu próximo turno.",
+        },
+        {
+            title: "Levantar",
+            description: "Uma criatura usa sua ação para se levantar do chão",
+        },
+        {
+            title: "Ler Ambiente",
+            description: "Uma criatura pode tentar compreender uma situação ou detectar emoções ou expressões específicas em uma pessoa, como medo ou mentira. A criatura que está tentando ler o ambiente deve fazer um teste de Intuição contra uma Habilidade Social correspondente ao que o alvo está demonstrando, como Enganação para mentiras, Persuasão para a verdade, Sedução para seduzir, etc.",
+        },
+        {
+            title: "Montar",
+            description: "Uma criatura monta em uma montaria ou sobe em um veículo aberto.",
+        },
+        {
+            title: "Pedir",
+            description: "Uma criatura pode pedir um item ou algo que esteja em posse de um aliado, desde que seja algo que o aliado tenha capacidade física de entregar.",
+        },
+        {
+            title: "Performar",
+            description: "Uma criatura pode realizar uma performance artística uma vez por turno. Essa performance pode ser usada para acalmar os ânimos de adversários com os quais prefere não lutar ou para inspirar seus aliados. Para tentar acalmar adversários, deve fazer um teste de Performance contra um teste de Intuição de cada adversário. Caso o adversário falhe no teste, o mestre determina o resultado da mudança de humor. É possível encerrar uma luta ou deixar o adversário incapaz de tomar ações hostis por um turno. Para inspirar um de seus aliados dentro de um alcance de 30 metros, a criatura deve fazer um teste de Performance. Dependendo do valor obtido no teste, são gerados bônus em no pŕoximo rolamento de um d20 dos aliado afetado. ",
+        },
+        {
+            title: "Preparar",
+            description: " Custa 2 Ações. Uma criatura pode preparar uma ação com um gatilho para ativá-la. Caso o gatilho ocorra até o seu próximo turno, ela pode usar a ação preparada. Caso contrário, a ação não ocorre.",
+        },
+        {
+            title: "Recordar Conhecimento",
+            description: "Uma criatura pode tentar fazer um teste de História, Ocultismo, Teologia, Religião, Tecnologia, Jurisprudência ou Arcanismo para recordar de um conhecimento relacionado ao que deseja saber. A dificuldade do teste depende do que o personagem deseja recordar e é definida pelo mestre. O personagem pode descobrir através desta ação vulnerabilidades e resistências de materiais , criaturas entre outras coisas. ",
+        }
     ];
+
+    const PerformTable = () => {
+        const rows = [
+            { range: '5 a 9', bonus: '+1 no rolamento' },
+            { range: '10 a 14', bonus: 'vantagem' },
+            { range: '15 a 19', bonus: 'vantagem + 1 no rolamento' },
+            { range: '20 a 24', bonus: 'vantagem + 2 no rolamento' },
+            { range: '25 a 29', bonus: 'vantagem + 3 no rolamento' },
+            { range: '30 ou mais', bonus: 'vantagem x 2 + 3 no rolamento' },
+        ];
+
+        return (
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Rolamento de Performance</TableCell>
+                            <TableCell>Bônus para aliados</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{row.range}</TableCell>
+                                <TableCell>{row.bonus}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
+
 
     const AcoesComponent = () => {
         return (
@@ -50,6 +151,9 @@ const Actionspage = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>{acao.description}</Typography>
+                            <Box>
+                                {acao.title && acao.title == "Performar" ? < PerformTable /> : ""}
+                            </Box>
                         </AccordionDetails>
                     </Accordion>
                 ))}
