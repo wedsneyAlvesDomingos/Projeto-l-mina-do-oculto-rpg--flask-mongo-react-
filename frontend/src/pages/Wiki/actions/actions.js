@@ -104,7 +104,78 @@ const Actionspage = () => {
             description: "Uma criatura pode tentar fazer um teste de História, Ocultismo, Teologia, Religião, Tecnologia, Jurisprudência ou Arcanismo para recordar de um conhecimento relacionado ao que deseja saber. A dificuldade do teste depende do que o personagem deseja recordar e é definida pelo mestre. O personagem pode descobrir através desta ação vulnerabilidades e resistências de materiais , criaturas entre outras coisas. ",
         }
     ];
+    const acoesTurnocompleto = [
+        {
+            title: "Primeiros Socorros",
+            description: "Uma criatura pode prestar primeiros socorros em outra criatura que esteja À Beira da Morte. Para isso, é necessário ter um kit de médico ou de herbalista. Essa ação permite estabilizar a criatura e impedir que ela morra.",
+        },
+        {
+            title: "Tratar Veneno",
+            description: "Uma criatura pode aplicar um antídoto em outra criatura que esteja Envenenada. Para isso, é necessário ter um frasco de antídoto adequado. Essa ação permite neutralizar os efeitos do veneno na criatura envenenada.",
+        },
+        {
+            title: "Disparada",
+            description: "Uma criatura pode correr o máximo que puder durante o tempo de uma rodada. Com essa ação de turno completo, a criatura pode mover até 4 vezes o valor de sua Velocidade de Movimento. No entanto, é importante observar que correr em alta velocidade pode impor penalidades em certas situações, como na capacidade de esquivar de ataques ou na realização de outras ações.",
+        },
+        {
+            title: "Desabilitar / Habilitar Dispositivo",
+            description: "Uma criatura pode tentar desabilitar uma armadilha ou trabalhar em um item mais complexo que requer mais tempo e Habilidade do que simplesmente interagir com o objeto. Essa ação de turno completo permite à criatura utilizar suas Habilidades e ferramentas apropriadas para desativar o dispositivo ou realizar a manutenção necessária para funcionar e ativá-lo. ",
+        },
+    ]
+    const reactions = [
+        {
+            title: "Atenuar Queda",
+            description: "Uma criatura pode usar sua reação para atenuar o impacto de uma queda, reduzindo o dano sofrido pela metade, com um mínimo de 1d4 de dano. Para ganhar essa redução de dano, a criatura deve passar em um teste de acrobacia com dificuldade determinado pelo mestre. A tabela fornecida é uma referência para o dano de queda em relação à altura da queda, onde cada altura corresponde a uma quantidade específica de dano. É importante lembrar que essa reação só pode ser usada quando a criatura está consciente e capaz de reagir à queda.",
+        },
+        {
+            title: "Ajudar",
+            description: "Uma criatura pode usar sua reação para ajudar um aliado em um teste de Habilidade que não seja um ataque. A criatura deve ter pelo menos um ponto na Habilidade em questão para poder ajudar. O mestre determinará o valor da ajuda fornecida, mas normalmente a criatura ajudada ganhará um bônus de 1 ponto em seu rolamento.  Essa reação é útil para dar suporte a um aliado em momentos cruciais e aumentar suas chances de sucesso. Alternativamente, uma criatura pode usar a reação para ajudar a se tornar um ponto de apoio para outra criatura usar a reação agarrar-se. Para isso ela deve ser pelo menos  1 tamanho maior  e estar em um situação que está segura e estável.",
+        },
+        {
+            title: "Agarrar-se",
+            description: "Uma criatura que esteja caindo de alguma altura ou sendo arremessada por uma força poderosa pode tentar se agarrar a uma beirada, coluna ou qualquer objeto firme que possa sustentar seu corpo. Essa reação permite que a criatura faça um teste de agarrar-se, geralmente usando a Habilidade de Atletismo ou reflexo (Agilidade), para determinar se ela consegue se segurar e evitar a queda. O sucesso nesse teste pode evitar que a criatura sofra o dano da queda ou permitir que ela reduza o dano de alguma forma. A dificuldade do teste e as possíveis consequências de falha são determinadas pelo mestre, com base nas circunstâncias e na situação em jogo. Essa reação é uma tentativa desesperada de evitar uma queda perigosa ou até mesmo mortal.",
+        },
 
+    ]
+    const acoesDeMovimento = [
+        {
+            title: "Andar ou Correr",
+            description: "Uma criatura usa uma ação para se movimentar por uma distância igual ou menor ao seu valor de Velocidade de Movimento.",
+        },
+        {
+            title: "Conduzir Montaria",
+            description: "Uma criatura usa uma ação para movimentar uma montaria por uma distância igual ou menor ao valor de Velocidade de Movimento da montaria.",
+        },
+        {
+            title: "Voar",
+            description: "Uma criatura, que tenha capacidade, usa uma ação para voar por uma distância igual ou menor ao seu valor de Velocidade de Movimento. Esse valor pode ser diferente apenas se alguma habilidade ou característica especificar o contrário.",
+        },
+        {
+            title: "Recuar Cuidadosamente",
+            description: "Algumas criaturas possuem a habilidade de realizar ataques de oportunidade quando uma criatura se afasta delas. No entanto, uma criatura pode recuar cuidadosamente por até 1,5 metros sem sofrer ataques de oportunidade.",
+        },
+        {
+            title: "Escalar",
+            description: "Uma criatura usa uma ação para escalar uma inclinação, desde que seja possível fazê-lo, por uma distância igual ou menor à metade do seu valor de Velocidade de Movimento. Caso seja uma escalada difícil, a criatura deve fazer um teste de Atletismo.",
+        },
+        {
+            title: "Nadar",
+            description: "Uma criatura usa uma ação para nadar por uma distância igual ou menor à metade do seu valor de Velocidade de Movimento. Esse valor pode ser diferente apenas se alguma Habilidade ou característica especificar o contrário. Se for uma natação difícil, a criatura deve fazer um teste de Atletismo. ",
+        },
+        {
+            title: "Rastejar",
+            description: "Uma criatura deitada pode rastejar por uma distância igual a um terço do seu valor de Velocidade de Movimento, arredondado para cima.",
+        },
+        {
+            title: "Saltar",
+            description: "Uma criatura pode realizar um salto horizontal com uma distância, em metros, igual ou menor à metade do seu valor de Atletismo, e um salto vertical com uma distância, em metros, igual ou menor a um terço do seu valor de Atletismo, arredondado para cima. A menor distância para o salto horizontal é de 2 metros e para o salto vertical é de 1 metro.",
+        },
+        {
+            title: "Atravessar Acrobaticamente",
+            description: "Uma criatura que tenta atravessar uma corda bamba, correr em um telhado ou qualquer outra ação que envolva andar ou correr em superfícies difíceis de se equilibrar ou evitar cair precisa realizar um teste de Acrobacia. A dificuldade deste teste será determinada pelo mestre. Em caso de falha, a criatura pode cair ou sofrer alguma consequência relacionada à situação.",
+        },
+
+    ]
     const PerformTable = () => {
         const rows = [
             { range: '5 a 9', bonus: '+1 no rolamento' },
@@ -136,23 +207,116 @@ const Actionspage = () => {
             </TableContainer>
         );
     }
+    const FallDamageTable = () => {
+        const rows = [
+            { height: '3 m', damage: '1 ponto' },
+            { height: '6 m', damage: '2 pontos' },
+            { height: '9 m', damage: '4 pontos' },
+            { height: '12 m', damage: '6 pontos' },
+            { height: '15 m', damage: '8 pontos' },
+            { height: '18 m', damage: '10 pontos' },
+            { height: '...', damage: '...' },
+            { height: '450 m', damage: '300 pontos' },
+        ];
+
+        return (
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Altura</TableCell>
+                            <TableCell>Dano de Queda</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{row.height}</TableCell>
+                                <TableCell>{row.damage}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    };
 
 
     const AcoesComponent = () => {
         return (
             <div>
-                <Typography variant="h4" gutterBottom>
+                <Typography className="boxTextTitle" variant="h4" gutterBottom>
                     Ações Primárias
                 </Typography>
                 {acoes.map((acao, index) => (
                     <Accordion key={index}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography variant="h6">{acao.title}</Typography>
+                            <Typography className="estebanText" variant="h6">{acao.title}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>{acao.description}</Typography>
+                            <Typography className="bigBoxTextClasses" > {acao.description}</Typography>
                             <Box>
                                 {acao.title && acao.title == "Performar" ? < PerformTable /> : ""}
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
+                <Typography className="boxTextTitle" variant="h4" gutterBottom>
+                    Ações de turno completo
+                </Typography>
+                {acoesTurnocompleto.map((acao, index) => (
+                    <Accordion key={index}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography className="estebanText" variant="h6">{acao.title}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography className="bigBoxTextClasses" >{acao.description}</Typography>
+                            <Box>
+                                {acao.title && acao.title == "Atenuar Queda" ? < FallDamageTable /> : ""}
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
+                <Typography className="boxTextTitle" variant="h4" gutterBottom>
+                    Reações
+                </Typography>
+                {reactions.map((acao, index) => (
+                    <Accordion key={index}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography className="estebanText" variant="h6">{acao.title}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography className="bigBoxTextClasses" >{acao.description}</Typography>
+                            <Box>
+                                {acao.title && acao.title == "Atenuar Queda" ? < FallDamageTable /> : ""}
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
+                <Typography className="boxTextTitle" variant="h4" gutterBottom>
+                    Ações de movimento
+                </Typography>
+                <Typography className="bigBoxTextClasses" >
+                    O movimento é uma ação que uma criatura pode tomar durante seu turno. Ao utilizar a ação de movimentar, a criatura pode avançar ou recuar em uma distância igual ou menor à sua velocidade de movimento. Se uma criatura optar por movimentar apenas metade de sua velocidade, realizar um ataque e depois recuar, será necessário utilizar uma ação para avançar, outra ação para realizar o ataque e uma última ação para recuar.<br/><br/>
+
+                    É importante destacar que uma criatura gasta o dobro de movimento ao passar por uma área caracterizada como terreno difícil. Essa penalidade de movimento se acumula com outras penalidades existentes. Além disso, uma criatura não pode atravessar o espaço ocupado por um inimigo.<br/><br/>
+
+                    Uma criatura pode se mover pelo espaço ocupado por aliados sem restrições. No entanto, quando se trata de se mover por criaturas hostis, é permitido apenas se a diferença de tamanho entre elas for de pelo menos duas categorias (sendo considerado terreno difícil).<br/><br/>
+
+                    É importante mencionar que ao sair do alcance de um inimigo, isso pode provocar um ataque de oportunidade do inimigo, se este tiver a Habilidade de realizar ataques de oportunidade, contra a criatura em movimento.<br/><br/>
+
+                    No caso de estar utilizando armaduras pesadas, há uma penalidade no movimento, que pode reduzir a velocidade de deslocamento da criatura em 1,5 metros.
+
+                </Typography>
+                {acoesDeMovimento.map((acao, index) => (
+                    <Accordion key={index}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography className="estebanText" variant="h6">{acao.title}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography className="bigBoxTextClasses" >{acao.description}</Typography>
+                            <Box>
+                                {acao.title && acao.title == "Atenuar Queda" ? < FallDamageTable /> : ""}
                             </Box>
                         </AccordionDetails>
                     </Accordion>
