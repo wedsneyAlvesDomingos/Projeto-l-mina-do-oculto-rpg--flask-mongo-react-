@@ -327,7 +327,189 @@ const HabilidadesPage = () => {
             </Paper>
         );
     };
+    const proficiencies = [
+        {
+            title: "Maestria em Armaduras e Escudos",
+            description: `
+            - Um ponto de proficiência permite o uso de armaduras leves, como couro, peles, tecidos reforçados e outros materiais leves que oferecem proteção básica. Essas armaduras são mais fáceis de se movimentar, mas oferecem menos proteção do que as armaduras pesadas. Também permite o uso de escudos simples.
+            - Com este ponto adicional na proficiência de Armadura, o personagem é capaz de utilizar armaduras médias. Essas armaduras oferecem uma proteção moderada, porém, são mais pesadas e podem limitar a furtividade do personagem.
+            - Ao alcançar o terceiro ponto nesta proficiência, o personagem ganha a Habilidade de utilizar armaduras pesadas. Essas armaduras fornecem a maior proteção possível, mas são as mais pesadas e restritivas, impactando a velocidade e furtividade do personagem.
+          `
+        },
+        {
+            title: "Condução de Veículos Terrestres",
+            description: `
+            Nota: Caso não possua essa proficiência o personagem tem desvantagem em todo e qualquer teste que envolva conduzir veículos terrestres.A capacidade de um personagem de usar montarias, carroças, charretes e outras formas de transporte tradicional terrestre. Criaturas só podem montar animais que sejam um tamanho maior que elas mesmas. Regalias podem usar essa proficiência como referência como parte de sua mecânica.
 
+            - Um ponto nesta proficiência permite uso de montarias simples: cavalos, burros, mulas, camelos, ou qualquer montaria comum que usa uma sela e rédea simples e anda em quatro patas. Alguma região pode ser mais comum andar em cachorros como um mastiff ou em tigre. Se a criatura for terrestre tem alto nível de inteligência ou formato menos convencional é considerada exótica.
+            - Um segundo ponto adicional permite o uso de carruagens, charretes, carroças e veículos de tração animal comuns.
+            - Um terceiro ponto adicional nesta proficiência permite a condução de veículos terrestres de grande porte, como trens, carros de combate ou veículos blindados.
+          `
+        },
+        {
+            title: "Condução de Veículos Aquáticos",
+            description: `
+            Nota: Caso não possua essa proficiência o personagem tem desvantagem em todo e qualquer teste que envolva conduzir veículos aquáticos.
+
+            A capacidade de um personagem de conduzir veículos aquáticos tradicionais como barcos, jangadas, navios e outros. Regalias podem usar essa Habilidade como referência como parte de sua mecânica.
+
+            - Um ponto nesta proficiência permite a condução de embarcações simples: canoas, barcos a remo, jangadas, caiaques ou qualquer embarcação comum que usa uma remos ou o próprio corpo simples para remar. 
+            - Um segundo ponto adicional permite a condução de escunas, pacotes e pequenas fragatas.
+            - Um terceiro ponto nesta proficiência permite a condução de naus, caravelas, galeras e grandes barcos.
+            - Um ponto adicional nesta proficiência permite a condução de embarcações maiores, como navios de guerra ou navios mercantes de grande porte.
+          `
+        },
+        {
+            title: "Condução Exótica",
+            description: `
+            Nota: Caso não possua essa proficiência o personagem tem desvantagem dupla em todo e qualquer teste que envolva conduzir veículos exóticos.
+
+            A capacidade de um personagem de rapidamente se adaptar às complexidades de novas formas de veículos que encontra em uma jornada, ou que já foi exposto no passado. Regalias podem usar essa Habilidade como referência como parte de sua mecânica.
+
+            - Um ponto nesta proficiência permite a condução de montarias consideradas exóticas.
+            - Um segundo ponto adicional permite a condução de pequenos e médios veículos considerados exóticos, que andam sobre ou sob a terra e de veículos que navegam sobre as águas.
+            - Um terceiro ponto nesta proficiência permite a condução de veículos exóticos que navegam sob as águas ou que voam.
+            - Um quarto ponto adicional nesta proficiência permite a condução de veículos exóticos que possuam Habilidades especiais, como veículos subaquáticos capazes de explorar o fundo do oceano ou veículos voadores mágicos capazes de sair da atmosfera.
+          `
+        },
+        {
+            title: "Kit de Arrombamento",
+            description: `
+            A capacidade de usar ferramentas especiais para abrir fechaduras e cadeados. Para executar essa tarefa é realizado um teste usando a destreza da criatura.
+
+            - Um primeiro ponto permite usar a ferramenta sem desvantagem .
+            - Um segundo ponto permite adicionar seu valor de Habilidade de destreza ao rolamento em um teste para abrir uma tranca .
+            - Um terceiro ponto permite usar apenas uma ação para realizar essa ação em combate.
+            - Um quarto ponto adicional nesta proficiência permite desativar armadilhas complexas com um kit de arrombamento.
+            - Um quinto ponto adicional nesta proficiência permite abrir fechaduras mágicas ou encantadas, que requerem conhecimento especializado e ferramentas aprimoradas. Também permite adicionar o valor de investigação ou percepção ao valor de destreza.
+          `
+        },
+        {
+            title: "Proficiência em Armas de Fogo",
+            description: `
+            A capacidade um personagem de usar especificamente armas de fogo, mesmo não sendo um combatente.
+            - Um ponto nesta proficiência permite o uso básico de armas de fogo, como pistolas e rifles.
+            - Um segundo ponto nesta proficiência permite usar armas de fogo exóticas ou experimentais, com habilidades especiais.
+          `
+        },
+        {
+            title: "Proficiência em Línguas Antigas",
+            description: `
+            - Um ponto nesta proficiência permite compreender e traduzir inscrições em línguas antigas que se relacionem com sua descendência.
+            - Um segundo ponto adicional permite decifrar línguas antigas completamente desconhecidas após 1 hora de estudo.
+            - Um terceiro ponto nesta proficiência permite aprender e falar línguas antigas, comunicando-se com seres de eras passadas após estudar por 24 horas a linguagem de alguma forma.
+          `
+        },
+        {
+            title: "Proficiência em Arqueologia",
+            description: `
+            A Proficiência em Arqueologia permite ao personagem se tornar um especialista em descobrir e estudar artefatos antigos. Com conhecimento teórico e Habilidades práticas, eles são capazes de identificar, desvendar e restaurar esses objetos valiosos, contribuindo para a preservação da história e da cultura do passado.\n
+            - Um ponto nesta proficiência permite ao personagem identificar e catalogar artefatos antigos de valor histórico. Eles possuem conhecimento sobre diferentes culturas, períodos e estilos arquitetônicos, permitindo-lhes reconhecer e compreender a importância desses objetos. O personagem pode fazer testes de Habilidade para identificar corretamente os artefatos e determinar seu valor histórico e cultural. Adicionalmente ao possuir essa proficiência, o personagem recebe um bônus de +2 em todos os testes de Habilidade relacionados à identificação de artefatos, desvendar segredos em ruínas e restauração de artefatos. O personagem pode utilizar ferramentas de arqueologia, como pincéis, lentes de aumento e instrumentos de medição, para auxiliar em suas tarefas. Essas ferramentas fornecem um bônus adicional de +2 nos testes de Habilidade específicos relacionados à arqueologia. Ao descobrir e catalogar artefatos, o personagem pode obter recompensas adicionais, como ganhar conhecimento sobre eventos históricos relevantes, receber financiamento para futuras expedições ou ser convidado para participar de projetos arqueológicos renomados.
+
+            - Um segundo ponto adicional amplia as Habilidades de arqueologia do personagem.o personagem recebe um bônus de +2 em todos os testes de Habilidade relacionados a testes de investigação de ruínas e descoberta de tesouros. esse valor estaca com o primeiro bônus.
+
+            - No terceiro ponto nesta proficiência, o personagem adquire habilidades avançadas de restauração e conservação de artefatos arqueológicos danificados. Eles possuem conhecimento sobre técnicas de preservação, como limpeza, estabilização e restauração de objetos antigos. O personagem pode fazer testes de Habilidade para restaurar adequadamente os artefatos danificados, garantindo sua integridade e aumentando seu valor histórico. Além disso, o bônus de +2 agora se aplica a todos os testes de Habilidade relacionados à restauração de artefatos.
+          `
+        },
+        {
+            title: "Proficiência em Liderança",
+            description: `
+            A Proficiência em Liderança capacita o personagem a se tornar um líder eficaz, inspirando e coordenando seus aliados para alcançar objetivos comuns. Essa habilidade não apenas fortalece o grupo em termos de combate, mas também permite ao personagem liderar e comandar grandes grupos de seguidores.\n
+
+            - Um ponto nesta proficiência permite ao personagem inspirar e motivar seus aliados, concedendo bônus em testes e combate. O personagem é capaz de usar uma ação para para elevar o moral do grupo, incentivando-os a dar o melhor de si. Isso se reflete em um bônus de +2 em testes de Habilidade, no próximo minuto, realizados por aliados próximos. Pode usar essa ação 3 vezes por descanso longo.
+
+            - Um segundo ponto adicional amplia as habilidades de liderança do personagem. Agora, eles são capazes de coordenar táticas e estratégias em combate, melhorando a eficiência do grupo como um todo.o personagem pode, como uma ação, realizar um testes de habilidade de intuição ou investigação para avaliar a situação do campo de batalha, identificar pontos fracos dos inimigos e fornecer orientações táticas para seus aliados. Isso resulta em um bônus adicional de +2 nas rolagens de ataque de todos os membros do grupo sob o comando do personagem.  Pode usar essa ação 3 vezes por descanso longo.
+            Ao possuir um segundo ponto nessa proficiência, o personagem recebe um bônus de +2 em todos os testes de Habilidade relacionados a persuasão e negociação.
+
+            - No terceiro ponto nesta proficiência, o personagem adquire habilidades de liderança avançadas. Eles são capazes de liderar grandes grupos de seguidores, comandar exércitos ou liderar organizações. O personagem pode realizar testes de habilidade para inspirar e influenciar um grande número de pessoas, mantendo sua lealdade e obediência. Sob a liderança do personagem, esses seguidores se tornam mais eficazes em combate e nas atividades relacionadas ao objetivo da organização. Isso resulta em um bônus adicional de +2 em todos os testes de Habilidade realizados por seguidores e um bônus de +2 nas rolagens de ataque e dano de todos os membros do grupo sob o comando do personagem.
+          `
+        },
+        {
+            title: "Proficiência em Armas Exóticas",
+            description: `
+            O personagem recebeu treinamento, ou descobriu sozinho treinando muito, como usar efetivamente armas exóticas:
+
+            - Um ponto nessa proficiência o personagem adquire proficiência com uma arma da lista de armas exóticas que não seja uma arma de fogo.
+            - Um segundo ponto nessa proficiência o personagem adquire proficiência com mais duas armas da lista de armas exóticas que não sejam armas de fogo.
+            - Um terceiro ponto nessa proficiência permite o uso de qualquer arma exótica que não seja uma arma de fogo.
+
+          `
+        },
+        {
+            title: "Proficiência em Esgrima",
+            description: `
+            Um ponto nessa proficiência, o personagem recebe o treinamento e a habilidade de lutar com espadas (não pesadas), adagas, floretes e sabres. Desde que não sejam armas exóticas.
+          `
+        },
+        {
+            title: "Proficiência em Arco e Besta",
+            description: `
+           Um ponto nessa proficiência permite ao personagem utilizar arcos e bestas. 
+          `
+        },
+        {
+            title: "Proficiência em Disfarce",
+            description: `
+           O personagem se torna capaz de usar disfarces para as mais diversas necessidades. Quando o personagem usa um disfarce o mestre pede um teste de enganação com dificuldade definida pelo contexto. quanto mais pontos de proficiência mais fácil o teste será.
+
+            - Um ponto nesta proficiência permite ao personagem criar disfarces simples para ocultar sua identidade em situações básicas. O personagem pode alterar sua aparência usando maquiagem, adereços e roupas adequadas. +2 em testes de furtividade e enganação enquanto disfarçado.
+
+            - Um segundo ponto adicional permite ao personagem criar disfarces mais elaborados e convincentes, enganando observadores atentos. O personagem pode imitar características físicas específicas, como altura, peso, voz e até mesmo traços faciais. +2 em testes de furtividade e enganação enquanto disfarçado.
+
+            - Um terceiro ponto nesta proficiência permite ao personagem se infiltrar em locais protegidos com maior facilidade.o personagem é capaz de imitar o comportamento e os trejeitos de uma pessoa ou criatura específica, tornando-se praticamente indistinguível dela. +10 em testes de furtividade e enganação enquanto disfarçado.
+
+          `
+        },
+        {
+            title: "Proficiência Contra Ataques em Área",
+            description: `
+            -Um ponto nessa proficiência concede a opção de, ao sofrer um ataque em área, o personagem fazer um teste de reflexo (Agilidade), como uma reação, e reduzir o dano em um valor igual a metade do seu valor de Fortitude.
+
+            -Um segundo ponto aumenta a redução de dano para igual ao valor de Fortitude.
+            
+            -Um terceiro ponto  aumenta a redução de dano para igual  2x ao valor de Fortitude.
+
+          `
+        },
+        {
+            title: "Proficiência em Combate Anti-conjuradores",
+            description: `
+          - Um ponto nesta proficiência permite ao personagem reconhecer sinais de magia e identificar conjuradores. Ele pode detectar a presença de magia ao seu redor e discernir quando alguém está lançando um feitiço ou utilizando habilidades mágicas. Se uma criatura conjurar qualquer Magia ou Feitiço (Regalias com essas tags) em uma distância dentro de seu alcance de ameaça, o personagem pode realizar um ataque de oportunidade.
+          
+          - Um segundo ponto adicional aumenta a resistência do personagem contra magia. Efeitos mágicos que possuem uma chance de sucesso em porcentagem  tem 10% menos chance de ter sucesso.
+          
+          - Um terceiro ponto nesta proficiência permite ao personagem interromper o efeito de Magias ou Feitiços. Ao realizar ataques contra um conjurador o personagem pode tentar desfazer um Feitiço ou Magia que tenha duração maior que instantâneo, conjurada pelo mesmo. Cada ataque que acertar tem 10% de chance de desfazer o efeito da habilidade. Se o personagem impedir um efeito mágico de acontecer ele recebe um ponto de magia temporário até o próximo descanso longo ou curto.
+
+          `
+        }
+    ];
+
+    // Componente de Acordions
+    const ProficienciesPage = () => {
+        return (
+            <Box sx={{ mt: 4 }}>
+                <Typography className="bigBoxTextClasses" sx={{ py: 2 }}>
+                    Atenção, para comprar proficiências um jogador deve usar um dos seguintes meios: usar dos 40 pontos da distribuição inicial ao criar o personagem (2 pontos para cada ponto de proficiência),  dos 4 pontos de proficiência (exclusivos para isso recebidos na criação de personagem), 2 pontos de Regalia para cada ponto de proficiência ou receber através de profissões , classes, espécies ou especializações.
+                </Typography>
+                <Paper sx={{ p: 2 }}>
+                    {proficiencies.map((prof, index) => (
+
+                        <Accordion key={index}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography className="esteban">{prof.title}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography lassName="esteban" variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                                    {prof.description}
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+
+                    ))}
+                </Paper>
+            </Box>
+        );
+    };
 
 
     return (
@@ -415,6 +597,10 @@ const HabilidadesPage = () => {
                 <Box sx={{ display: 'flex', alignItems: 'start', flexFlow: 'row wrap', justifyContent: 'center', width: '100%', mx: 'auto' }}>
                     <BodyCard /><KnowledgeSkillsCard />  <ExplorationSkillsCard /><ArcanaCard /><SocialCard />
                 </Box>
+                <Typography className="boxTextTitleText" variant="h5" gutterBottom>
+                    Proficiências
+                </Typography>
+                <ProficienciesPage />
             </Box>
 
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
