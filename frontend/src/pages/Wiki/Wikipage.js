@@ -37,7 +37,7 @@ const WikiPage = () => {
                     <a href="/antecedentes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
                         <Typography className="boxText">Antecedentes</Typography>
                     </a>
-                    <a href="" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}> 
+                    <a href="/habilidades" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}> 
                         <Typography className="boxText">Habilidades e Proficiências</Typography>
                     </a>
                     <a href="" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
@@ -66,7 +66,7 @@ const WikiPage = () => {
                 </Grid>
 
             </Grid>
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',position:'absolute', width:'100%' }}>
                 <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
             </Box>
         </Box>

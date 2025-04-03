@@ -297,13 +297,13 @@ const Actionspage = () => {
                     Ações de movimento
                 </Typography>
                 <Typography className="bigBoxTextClasses" >
-                    O movimento é uma ação que uma criatura pode tomar durante seu turno. Ao utilizar a ação de movimentar, a criatura pode avançar ou recuar em uma distância igual ou menor à sua velocidade de movimento. Se uma criatura optar por movimentar apenas metade de sua velocidade, realizar um ataque e depois recuar, será necessário utilizar uma ação para avançar, outra ação para realizar o ataque e uma última ação para recuar.<br/><br/>
+                    O movimento é uma ação que uma criatura pode tomar durante seu turno. Ao utilizar a ação de movimentar, a criatura pode avançar ou recuar em uma distância igual ou menor à sua velocidade de movimento. Se uma criatura optar por movimentar apenas metade de sua velocidade, realizar um ataque e depois recuar, será necessário utilizar uma ação para avançar, outra ação para realizar o ataque e uma última ação para recuar.<br /><br />
 
-                    É importante destacar que uma criatura gasta o dobro de movimento ao passar por uma área caracterizada como terreno difícil. Essa penalidade de movimento se acumula com outras penalidades existentes. Além disso, uma criatura não pode atravessar o espaço ocupado por um inimigo.<br/><br/>
+                    É importante destacar que uma criatura gasta o dobro de movimento ao passar por uma área caracterizada como terreno difícil. Essa penalidade de movimento se acumula com outras penalidades existentes. Além disso, uma criatura não pode atravessar o espaço ocupado por um inimigo.<br /><br />
 
-                    Uma criatura pode se mover pelo espaço ocupado por aliados sem restrições. No entanto, quando se trata de se mover por criaturas hostis, é permitido apenas se a diferença de tamanho entre elas for de pelo menos duas categorias (sendo considerado terreno difícil).<br/><br/>
+                    Uma criatura pode se mover pelo espaço ocupado por aliados sem restrições. No entanto, quando se trata de se mover por criaturas hostis, é permitido apenas se a diferença de tamanho entre elas for de pelo menos duas categorias (sendo considerado terreno difícil).<br /><br />
 
-                    É importante mencionar que ao sair do alcance de um inimigo, isso pode provocar um ataque de oportunidade do inimigo, se este tiver a Habilidade de realizar ataques de oportunidade, contra a criatura em movimento.<br/><br/>
+                    É importante mencionar que ao sair do alcance de um inimigo, isso pode provocar um ataque de oportunidade do inimigo, se este tiver a Habilidade de realizar ataques de oportunidade, contra a criatura em movimento.<br /><br />
 
                     No caso de estar utilizando armaduras pesadas, há uma penalidade no movimento, que pode reduzir a velocidade de deslocamento da criatura em 1,5 metros.
 
@@ -333,8 +333,60 @@ const Actionspage = () => {
                 <Typography className="MainTitleC" variant="h4" gutterBottom sx={{ my: 4 }}>
                     Ações
                 </Typography>
-                <Typography className="bigBoxTextClasses" paragraph sx={{ py: 4 }}>
-                    Durante seu turno, todo personagem tem a capacidade de realizar três ações. As opções de ações disponíveis podem variar e são definidas de acordo com as regras do jogo. Recomenda-se consultar a seção específica sobre ações para obter informações detalhadas sobre as ações que podem ser tomadas.
+                <Typography className="bigBoxTextClasses" paragraph sx={{ py: 1 }}>
+                    <Typography className="boxTextTitle" variant="h5" gutterBottom>
+                        Rodada, Turno e o Sistema de Ações
+                    </Typography>
+
+                    <Typography lassName="bigBoxTextClasses"  paragraph>
+                        Em um jogo de RPG de mesa (TTRPG), os conceitos de <strong>rodada</strong> e <strong>turno</strong> são fundamentais para estruturar a dinâmica do combate e da exploração. Embora possam parecer semelhantes, eles possuem diferenças importantes.
+                    </Typography>
+
+                    <Box sx={{ marginBottom: 3 }}>
+                        <Typography className="boxTextTitle" variant="h5" gutterBottom>
+                            Rodada vs. Turno
+                        </Typography>
+
+                        <Typography className="bigBoxTextClasses">
+                            <strong>Rodada:</strong> Representa um ciclo completo de ação no qual todos os personagens e criaturas participantes do combate realizam seus turnos. Uma rodada se encerra quando o último participante da ordem de iniciativa age, e uma nova rodada começa.
+                        </Typography>
+
+                        <Typography className="bigBoxTextClasses" sx={{ marginTop: 2 }}>
+                            <strong>Turno:</strong> Cada personagem, jogador ou inimigo tem um momento específico dentro da rodada para agir. Esse momento é chamado de turno. Durante seu turno, o personagem pode realizar suas ações disponíveis conforme permitido pelo sistema de jogo.
+                        </Typography>
+
+                        <Typography className="bigBoxTextClasses" sx={{ marginTop: 2 }}>
+                            Portanto, uma rodada é composta por vários turnos, um para cada participante do combate.
+                        </Typography>
+                    </Box>
+
+                    <Box sx={{ marginBottom: 3 }}>
+                        <Typography className="boxTextTitle" variant="h5" gutterBottom>
+                            O Sistema de 3 Ações e 1 Reação
+                        </Typography>
+
+                        <Typography className="bigBoxTextClasses" paragraph>
+                            Durante seu turno, cada personagem pode realizar <strong>três ações</strong>. As ações disponíveis podem incluir movimentação, ataque, uso de habilidades, entre outras opções, e algumas ações podem exigir mais de um desses três espaços disponíveis.
+                        </Typography>
+
+                        <Typography className="bigBoxTextClasses" paragraph>
+                            Além disso, <strong>fora do turno</strong>, cada personagem também possui <strong>uma reação por rodada</strong>. Uma reação é uma ação especial que pode ser ativada em resposta a um evento específico, como bloquear um ataque ou desviar de um golpe.
+                        </Typography>
+                    </Box>
+
+                    <Box sx={{ backgroundColor: "#f5f5f5", padding: 2, borderRadius: 2 }}>
+                        <Typography variant="h6" gutterBottom>
+                            Resumo do funcionamento:
+                        </Typography>
+
+                        <Typography  className="bigBoxTextClasses">- <strong>No turno do personagem:</strong> Ele pode gastar suas <strong>três ações</strong> livremente em qualquer combinação permitida.</Typography>
+                        <Typography  className="bigBoxTextClasses">- <strong>Fora do turno:</strong> Ele pode realizar <strong>uma reação</strong>, se houver uma condição que a permita ativar.</Typography>
+                        <Typography  className="bigBoxTextClasses">- <strong>Quando termina o turno do último participante:</strong> A rodada se encerra e uma nova começa, repetindo o ciclo.</Typography>
+                    </Box>
+
+                    <Typography  className="bigBoxTextClasses" sx={{ marginTop: 3 }}>
+                        Esse sistema torna o combate <strong>dinâmico e estratégico</strong>, permitindo que os jogadores decidam como distribuir suas ações de acordo com a situação no campo de batalha.
+                    </Typography>
 
                 </Typography>
 
