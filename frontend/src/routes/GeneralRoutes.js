@@ -12,6 +12,7 @@ import EquipmentPage from "../pages/Wiki/equipment/equipment";
 import AntecendetesPage from "../pages/Wiki/backgrounds/backgrounds";
 import Actionspage from "../pages/Wiki/actions/actions";
 import HabilidadesPage from "../pages/Wiki/habilidadesProenfiencias/habilidades";
+import EspeciesPage from "../pages/Wiki/especies/especies";
 
 export const general_routes = [
     {
@@ -115,6 +116,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <HabilidadesPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/especies",
+        ele: <>
+            <ResponsiveAppBar />
+            <EspeciesPage />
 
         </>,
         availability: [ur.admin]
