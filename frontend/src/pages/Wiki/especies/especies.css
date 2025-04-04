@@ -75,13 +75,13 @@
     font-size: 16px !important;
     
 }
-.armaCard::-webkit-scrollbar{
+.bigBoxTextClasses::-webkit-scrollbar{
 
     border-radius: 20px !important;
     width:5px;
     padding: 2px !important ;
 }
-.armaCard::-webkit-scrollbar-thumb{
+.bigBoxTextClasses::-webkit-scrollbar-thumb{
     background: #5B1F0F !important;
     border-radius: 15px !important;
 }
