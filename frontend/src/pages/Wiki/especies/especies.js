@@ -14,7 +14,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Typography variant="h4" className="MainTitleC">Espécies</Typography>
 
                 <Typography className="bigBoxTextClasses" sx={{ mt: 2 }}>
@@ -107,7 +107,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
                     <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Elfo</Typography>
 
@@ -205,7 +205,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
                     <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Anão</Typography>
 
@@ -302,7 +302,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
                     <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Feérico</Typography>
 
@@ -430,7 +430,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
                     <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Draconiano</Typography>
 
@@ -528,7 +528,7 @@ const EspeciesPage = () => {
         };
 
         return (
-            <Box sx={{ width: "100%", padding: "1rem" }}>
+            <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
                     <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Elfo</Typography>
 
@@ -589,8 +589,6 @@ const EspeciesPage = () => {
                         </ul>
 
                         <Typography className="bigBoxTextEquips"><strong>Determinação Humana (2):</strong><br /> A determinação do ser humano, e seus descendentes, é o que o leva a conquistar e ter sucesso. Um meio-elfo com essa Regalia pode rolar novamente o d20 em qualquer teste de Habilidade que tenha falhado, porém deve usar o novo resultado independente do resultado. Essa habilidade de poder mudar seu destino pode ser usada uma vez por dia. Além disso, ao sofrer dano que o levaria a zero pontos de vida, o humano pode, antes de entrar na condição À Beira da Morte, usar uma única ação como sua reação. Essa habilidade pode ser usada apenas uma vez por dia. </Typography>
-                        <Typography className="bigBoxTextEquips"><strong>Bafo de Dragão:</strong><br /> Escolha um dos 3 elementos naturais (fogo, gelo e raio) para ser o elemento de sua arma de sopro. Em um cone de 6 metros de comprimento e 60° de abertura em frente ao draconiano é expelido 2d10 de dano do elemento selecionado. Custa 1 ação e só pode ser feito 2 vezes a cada descanso curto.
-                        </Typography>
 
                         <Typography className="bigBoxTextEquips"><strong>Vida longa:</strong><br /> Recebe proficiência com as seguintes armas:<br />
                             - Espada de lâminas duplas<br />
@@ -612,7 +610,185 @@ const EspeciesPage = () => {
             </Box >
         );
     }
+    function EspecieMeioDemonio() {
+        const [tab, setTab] = useState(0);
 
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Demônio</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Meio-Demônios, criaturas marcadas pela dualidade em sua essência, são o resultado da união entre seres demoníacos e humanóides. Eles carregam uma herança mágica sombria e uma natureza única que os distingue em meio aos dois mundos de sua ancestralidade.<br />
+                            Com uma aparência que combina a complexidade dos traços humanos com a aura misteriosa dos demônios, os Meio-Demônios exibem uma beleza sobrenatural que oscila entre o fascínio e o temor. Seus olhos muitas vezes revelam um brilho ardente, refletindo a dualidade que reside em sua alma.<br />
+                            Além das características físicas marcantes, os Meio-Demônios herdam poderes sombrios e habilidades mágicas das profundezas do inferno. Eles são capazes de conjurar chamas infernais, sombras sedutoras e manipular as energias demoníacas a seu favor.<br />
+                            No entanto, essa dualidade não se limita à sua aparência e habilidades. Os Meio-Demônios frequentemente enfrentam uma luta interior, tentando encontrar um equilíbrio entre sua herança demoníaca e sua humanidade. Alguns abraçam seu lado sombrio, usando seus poderes para buscar objetivos nefastos, enquanto outros lutam para resistir à influência demoníaca, dedicando-se a causas nobres.<br />
+                            Essa raça é muitas vezes vista com desconfiança e preconceito, mas também com um certo fascínio, já que eles personificam a eterna luta entre a luz e a escuridão. Os Meio-Demônios carregam consigo a responsabilidade de moldar seus destinos, escolhendo entre a redenção e a perdição.<br />
+                            Com uma aura enigmática e uma alma dividida, os Meio-Demônios são uma encarnação da dualidade inerente ao ser humano, forjando seus próprios caminhos em meio à eterna luta entre o bem e o mal. Eles são testemunhas da complexidade da existência, representando a capacidade de escolher entre a luz e as sombras.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 11<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Médio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Demônio Arcano:</strong><br /> Um meio-demônio arcano é filho de um elfo, humano ou feérico com um demônio conjurador de feitiços. Com seu sangue demoníaco, o meio demônio desta linhagem pode conjurar feitiços ou magias com sua vitalidade quando estiver sem pontos de magia. Para cada ponto de magia necessário para conjurar uma magia ou feitiço são gastos 1d6 pontos de vida.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Demônio Guerreiro:</strong><br />Um meio-demônio guerreiro é filho de um elfo, humano ou feérico com um demônio do exército do inferno. Com seu sangue demoníaco, o meio demônio desta linhagem pode realizar manobras ou habilidades com sua vitalidade quando estiver sem pontos de Estâmina. Para cada ponto de Estâmina  necessário para usar uma Habilidade são gastos 1d6 pontos de vida.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Súcubos/Íncubos:</strong> <br />Um meio-demônio súcubo ou íncubo é filho de um elfo, humano ou feérico com uma súcubo ou íncubo. Com seu sangue demoníaco, o meio demônio desta linhagem pode tentar encantar uma criatura como uma ação. A criatura encantada não agirá de maneira hostil com o demônio, a não ser que este a ataque ou lhe cause algum mal. O personagem pode tentar uma criatura por vez e uma vez a cada um minuto. A chance de sucesso é de 50%.
+
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Hebrides:</strong>Testes de ritualismo para procurar por sinais de invocações demoníacas recebem +4 de bônus do rolamento.</li>
+                            <li><strong>Bode:</strong> Tentativas de uma criatura escalar rochas ou obstáculos, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Ovelha:</strong> Tentativas de enganar fingindo ser um civil normal em uma multidão recebem vantagem no rolamento do rolamento de Enganação.</li>
+                            <li><strong>Carneiro:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que saltar ou escalar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Olhos negros:</strong><br /> Um meio-demônio com essa Regalia é capaz de enxergar no escuro com alcance de 6 metros como se fosse meia luz na escuridão, e luz completa na meia luz.  Além disso, recebe um bônus de vantagem em testes de ocultismo para procurar rastros de contratos e resquícios de atividades demoníacas. </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Resistência Demoníaca (2):</strong><br />Um meio demônio com essa Regalia tem resistência a dano sombrio. Além disso, pode escolher resistir um ataque do elemento fogo uma vez por dia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Intimidação Infernal:</strong><br /> Um meio demônio com essa Regalia pode ativar sua herança infernal para brilhar seus olhos, crescer seus chifres e garras  de maneira ameaçadora. Ganha um bônus de vantagem em rolamentos para intimidar outra criatura. Pode usar essa habilidade 5 vezes em um dia.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Má Influência:</strong><br />Toda vez que fizer um teste de Habilidade e rolar um 20 no d20, o meio-demônio pode garantir a uma criatura uma penalidade de -2 no próximo rolamento. Se uma criatura sofrer a penalidade, imposta pelo meio-demônio em um ataque, o valor da penalidade aumenta para -5.  Pode usar essa habilidade 3 vezes em um dia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieMeioDemonio() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Demônio</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Meio-Celestiais são seres excepcionais, nascidos da união entre celestiais e humanóides. Eles carregam em si a luminosidade e a benevolência das esferas divinas, manifestando essa herança em sua existência terrena.<br />
+                            Com uma beleza angelical e uma aura de bondade, os Meio-Celestiais irradiam uma luz celestial que envolve todos aqueles que se aproximam deles. Suas características físicas exalam uma beleza etérea e uma sensação de harmonia que inspira admiração e respeito.<br />
+                            Além da aparência marcante, os Meio-Celestiais possuem dons divinos que variam dependendo de sua linhagem celestial. Eles podem curar feridas com um toque, invocar proteção divina e canalizar energias sagradas para banir o mal. Essas habilidades refletem a bênção de sua herança celestial.<br />
+                            Os Meio-Celestiais também possuem uma moral firme e um profundo senso de justiça. Eles são frequentemente vistos como guias espirituais e protetores de comunidades, buscando erradicar a injustiça e trazer cura aos necessitados.<br />
+                            No entanto, apesar de sua herança celestial, os Meio-Celestiais não estão isentos de desafios e tentações terrenas. Eles devem equilibrar sua natureza divina com as complexidades e imperfeições da vida mortal. Essa dualidade muitas vezes os leva a questionar seu propósito e a buscar uma compreensão mais profunda de sua existência.<br />
+                            Os Meio-Celestiais são uma presença iluminada no mundo, uma lembrança constante da divindade e da possibilidade de transcender as limitações terrenas. Sua influência é sentida em todas as esferas da vida, inspirando esperança, compaixão e um compromisso inabalável com o bem. Com sua luz radiante e determinação nobre, eles personificam a capacidade de elevar o espírito humano e relembram a todos que a bondade é uma força poderosa na luta contra as trevas.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 9<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Médio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Celestial Arcano:</strong><br /> Um meio celestial arcano é filho de um elfo, humano ou feérico com um celestial conjurador de magias e milagres. Com seu sangue sagrado, o meio celestial desta linhagem pode conjurar milagres ou magias com seu vigor quando estiver sem pontos de magia. Para cada ponto de magia necessário para conjurar uma magia ou feitiço são gastos 2 pontos de Estamina.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Celestial Guerreiro:</strong><br />Um meio-celestial guerreiro é filho de um elfo, humano ou feérico com um celestial do exército divino. Com seu sangue sagrado, o meio celestial desta linhagem pode realizar manobras ou Habilidades com sua magia quando estiver sem pontos de Estamina. Para cada ponto de Estamina  necessário para usar uma Habilidade são gastos 2 pontos de magia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Celestial Intermediador:</strong> <br />Um meio-celestial intermediador é filho de um elfo, humano ou feérico com um juiz sagrado. Com seu sangue sagrado, o meio celestial desta linhagem pode tentar apaziguar uma criatura como uma ação. A criatura encantada não agirá de maneira hostil com o celestial ou seus aliados, a não ser que a ataquem ou lhe causem algum mal. O personagem pode tentar uma criatura por vez,  uma vez a cada um minuto. A chance de sucesso é de 40%.
+
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Cordeiro:</strong>Testes de Persuasão para convencer outra criatura que quer evitar batalha recebem +5 de bônus do rolamento.</li>
+                            <li><strong>Cervo:</strong> Tentativas de encontrar água em ambientes de floresta recebem +5 de bônus do rolamento de sobrevivência.</li>
+                            <li><strong>Mariposa:</strong> Testes de ritualismo para procurar por sinais de invocações celestiais recebem +4 de bônus do rolamento.</li>
+                            <li><strong>Anjo do mar:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Olhos Iluminados:</strong><br /> Um meio-celestial com essa Regalia é capaz de enxergar no escuro com alcance de 6 metros como se fosse meia luz na escuridão, e luz completa na meia luz.  Além disso, recebe um bônus de vantagem em testes de teologia para procurar rastros de atividade derivada do divino.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Resistência Celestial(2):</strong><br />Um meio celestial com essa Regalia tem resistência a dano sagrado.
+                            Além disso, pode escolher resistir um ataque do elemento arcano uma vez por dia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Mãos Abençoadas:</strong><br />Ganha uma quantidade de pontos por nível de personagem igual a 4. Esses pontos podem ser usados para curar uma criatura em até 10 pontos de vida com uso de uma ação. Esses pontos são recuperados após um descanso longo.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Juiz:</strong><br />Um meio-celestial com essa  Regalia é capaz de criar uma área com 6 metros de raio ao redor de si. Dentro dessa área o meio celestial possui vantagem  em testes de intuição para determinar se alguém está mentindo. Essa área fica iluminada com meia luz, caso esteja escuro. Dura por tempo indeterminado, mas é percepitivel por todos a sua volta.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
     function TabPanel({ children, value, index }) {
         return (
             <div role="tabpanel" hidden={value !== index}>
@@ -630,6 +806,8 @@ const EspeciesPage = () => {
                 <EspecieAnao />
                 <EspecieFeerico />
                 <EspecieDraconiano />
+                <EspecieMeioElfo />
+                <EspecieMeioDemonio />
             </Box>
 
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
