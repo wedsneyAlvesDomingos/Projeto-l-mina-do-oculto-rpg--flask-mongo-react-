@@ -393,7 +393,7 @@ const EspeciesPage = () => {
 
                         <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
                         <Typography className="bigBoxTextEquips">
-                        Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
                         </Typography>
                         <ul className="bigBoxTextBG">
                             <li><strong>Coruja:</strong>Testes de Percepção na escuridão ou meia luz recebem vantagem do rolamento.</li>
@@ -421,6 +421,198 @@ const EspeciesPage = () => {
             </Box >
         );
     }
+
+    function EspecieDraconiano() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", padding: "1rem" }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Draconiano</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Nas vastas terras deste mundo, uma espécie singular conhecida como Draconianos deixa sua marca indelével. Estes seres, fruto da fusão entre dragões ancestrais e outras linhagens, são uma presença notável em nossa realidade.<br />
+                            Com uma aparência majestosa, os Draconianos podem ostentar asas imponentes, escamas iridescentes e olhos que irradiam sabedoria. Eles carregam não apenas a força e resistência de seus antecessores draconianos, mas também uma série de habilidades especiais que refletem o tipo de dragão a que estão ligados. Essas habilidades variam de controlar chamas, gelo ou raios, e são uma manifestação da diversidade mágica que permeia o mundo.<br />
+                            Os Draconianos desempenham papéis de destaque em nossa sociedade, muitas vezes ocupando cargos de liderança ou oferecendo sua experiência como conselheiros sábios. Sua influência é sentida em todos os cantos, e eles inspiram respeito e admiração.<br />
+                            Além de seu impacto na sociedade, a presença dos Draconianos enriquece a narrativa de nosso mundo. Eles podem ser heróis que protegem nossos reinos, ou personagens complexos com objetivos próprios. Seu papel é fundamental em nossa realidade, onde a magia e o extraordinário se entrelaçam em uma teia de maravilhas.
+
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 9<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 4,5 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Grande
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Dragão:</strong><br /> O meio dragão é fruto de uma quase incompatível combinação de um dragão com um elfo ou humano. Um meio dragão tem sua descendência de um dos três tipos de dragão: fogo, gelo e raio. O meio dragão tem resistência ao dano  correspondente de seu ancestral.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Wyvern:</strong><br />O meio wyvern é a mistura do dracônico wyvern com um bestial ou humano. É menor que meio dragão e meio draco, por isso é uma criatura considerada de tamanho médio. Um meio wyvern é o mais rápido dos draconianos e possui uma velocidade de movimento base de 6 m. O meio wyvern pode também usar uma ação para dar um grande avanço correspondente a 15 metros. Uma vez que ele tenha feito isso deve esperar ao menos 1 minuto para fazer de novo.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Wyrm:</strong> <br />O meio wyrm é uma mistura entre o dracônico wyrm com um feérico ou um humano. O meio wyrm é menor que meio dragão e meio draco, por isso é uma criatura considerada de tamanho médio. O meio wyrm traz consigo a mordida venenosa de seu parente e podem tentar como uma ação envenenar uma criatura com um ataque de mordida. Caso acerte o ataque causa 1d6 de dano e deixa o inimigo envenenado com dano por rodada de 1d4 de dano por 3 rodadas. Pode fazer essa mordida uma vez a cada 1 minuto.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Draco :</strong><br />O meio draco é uma mistura  do dracônico draco com um bestial ou troll. Esse draconiano é o único que não pode escolher a regalia de Asas Draconianas, então para se adaptar a sua vida terrestre possui longas garras e chifres. O meio draco pode usar sua garra como uma arma de uma mão e se tiver o treinamento considerar cada mão como uma arma. O dano de seu ataque com garra é de 1d10 de dano cortante.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Kobolds:</strong><br /> Kobolds são pequenos draconianos que são a mistura de raças pequenas ou minúsculas com qualquer tipo de dragão. Eles possuem uma velocidade de movimento igual a 4,5 m por serem pequenos. Eles têm a capacidade de usar sua criatividade e inteligência para solucionar problemas. Eles podem usar a ação esconder quando usar a ação Bustar cobertura ao mesmo tempo sem custo extra, como também conseguem usar a ação habilitar / desabilitar dispositivo como uma ação.
+
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Dragão ancião:</strong>Testes de percepção contra criaturas menores que o tamanho do portador da tatuagem recebem +1 de bônus do rolamento.</li>
+                            <li><strong>Dragão do fogo:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Dragão do trovão:</strong> Ganha 1,5 m de velocidade de movimento enquanto estiver fugindo de perseguidores.</li>
+                            <li><strong>Tartaruga dragão:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que usar Habilidades mágicas (magia, milagres e feitiços) que não causem dano.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Asa Draconiana (2):</strong><br /> Manifesta asas de couro e ossos igual a de seu ancestral draconiano. Ganha a Habilidade de voar igual à sua velocidade de movimento. </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Bafo de Dragão:</strong><br /> Escolha um dos 3 elementos naturais (fogo, gelo e raio) para ser o elemento de sua arma de sopro. Em um cone de 6 metros de comprimento e 60° de abertura em frente ao draconiano é expelido 2d10 de dano do elemento selecionado. Custa 1 ação e só pode ser feito 2 vezes a cada descanso curto.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Escamas(2):</strong><br /> O draconiano desenvolve uma forte carapaça com suas escamas que ficam em suas pernas, braços e torso. O valor de defesa base do draconiano com essa Regalia é de 10 + agilidade + armadura leve ou média, ao invés de 7.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Sabedoria Hereditária:</strong><br /> A linhagem ancestral dos dragões pulsa com conhecimento antigo e instintos aguçados. Como herdeiro do sangue dracônico, você carrega ecos da sabedoria dos grandes dragões anciões. Recebe um bônus de +5 em testes de História e Arcanismo relacionados a dragões, suas origens, cultos, territórios e influência mágica.<br />
+                            Além disso, recebe +5 em testes para Recordar Conhecimento sobre dragões específicos, suas fraquezas, hábitos e lendas associadas. Você também pode reconhecer a presença de um ninho de dragão ou área de influência dracônica quando estiver a até 1 km de distância, mesmo que ele esteja oculto — um instinto ancestral se manifesta em forma de sensações, sonhos ou visões breves.<br />
+                            Por fim, você tem vantagem em testes de Intuição ao lidar com dragões, sendo capaz de perceber motivações ocultas ou detectar mentiras vindas dessas criaturas majestosas.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieMeioElfo() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", padding: "1rem" }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Elfo</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Meio-Elfos, graciosos e dotados de beleza etérea, são a manifestação da união entre elfos e humanóides. Com uma herança mista que combina a paixão e a curiosidade dos humanos com a conexão profunda dos elfos com a natureza, eles se tornam um elo especial entre dois mundos.<br />
+                            Essa raça é abençoada com características marcantes: a pele delicada dos elfos e a resistência dos humanos, a agilidade dos primeiros e a versatilidade dos segundos. Os Meio-Elfos herdam a habilidade de se comunicar com a natureza, percebendo suas nuances e entrando em sintonia com o ambiente ao seu redor.<br />
+                            Mas sua singularidade não se limita apenas às características físicas. São também mediadores naturais, capazes de harmonizar comunidades diversas. Eles carregam consigo a riqueza das histórias e culturas de ambas as raças, criando pontes e promovendo a compreensão entre elfos e humanos.<br />
+                            Os Meio-Elfos são espíritos inquietos, sempre buscando um propósito maior. Eles podem escolher entre os caminhos de seus antecessores, abraçando a natureza e a magia, ou embarcar em jornadas de exploração e aventura em busca de seu destino.<br />
+                            Com uma beleza cativante e um espírito resiliente, os Meio-Elfos são a encarnação da diversidade e da harmonia, representando a fusão das tradições antigas e do ímpeto de novas descobertas. Eles são uma ponte entre dois mundos, unindo-os em uma só raça com um potencial ilimitado.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 9<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Médio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Exordial:</strong><br /> O meio exordial é um meio elfo formado por pais elfo exordial e humano. Este meio elfo é capaz de conversar telepaticamente com outras criaturas e não só elfos, porém só pode usar essa telepatia por 6 segundos. Após sua telepatia por 6 segundos deve esperar 10 minutos para usar novamente. Consegue usar a ação Desabilitar Dispositivo com duas ações.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Selvagem:</strong><br />O meio selvagem é um meio elfo formado por pais elfo selvagem e humano. Este meio elfo tem uma velocidade de movimento elevada, enquanto não usam armadura pesada, de 7,5 metros de velocidade de movimento base. Além disso, proficiência com espadas-diapasão.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Meio-Lunar:</strong> <br />O meio lunar é um meio elfo formado por pais elfo lunar e humano. Este meio elfo é capaz de enxergar no escuro com alcance de 6 metros como se fosse meia luz na escuridão, e luz completa na meia luz. Não esquece nada que leu ou ouviu nos últimos 30 dias.
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Falcão:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Touro:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Nove Caudas:</strong> Tentativas de seduzir criaturas que sentem atração pelo sexo do portador da tatuagem recebem +5 de bônus do rolamento de Sedução.</li>
+                            <li><strong>Tartaruga Leão:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que atacar com magia, feitiço ou milagre.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Determinação Humana (2):</strong><br /> A determinação do ser humano, e seus descendentes, é o que o leva a conquistar e ter sucesso. Um meio-elfo com essa Regalia pode rolar novamente o d20 em qualquer teste de Habilidade que tenha falhado, porém deve usar o novo resultado independente do resultado. Essa habilidade de poder mudar seu destino pode ser usada uma vez por dia. Além disso, ao sofrer dano que o levaria a zero pontos de vida, o humano pode, antes de entrar na condição À Beira da Morte, usar uma única ação como sua reação. Essa habilidade pode ser usada apenas uma vez por dia. </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Bafo de Dragão:</strong><br /> Escolha um dos 3 elementos naturais (fogo, gelo e raio) para ser o elemento de sua arma de sopro. Em um cone de 6 metros de comprimento e 60° de abertura em frente ao draconiano é expelido 2d10 de dano do elemento selecionado. Custa 1 ação e só pode ser feito 2 vezes a cada descanso curto.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Vida longa:</strong><br /> Recebe proficiência com as seguintes armas:<br />
+                            - Espada de lâminas duplas<br />
+                            - Espada diapasão<br />
+                            - Katar
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Vida longa, menos amigos:</strong><br /> Um meio elfo ainda possui grande ligação com humanos de vida curta. Ver seus parentes e amigos morrerem um a um enquanto permanece jovem pode afetar o meio-elfo. O meio-elfo com essa Regalia recebe +2 em testes de enganação ou persuasão para esconder seus verdadeiros sentimentos, e também um bônus de +3 em testes de intuição para tentar entender os verdadeiros sentimentos de outra criatura com rosto humano ou parecido.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Influência Social:</strong><br />Toda vez que fizer um teste de Habilidade e rolar um 20 no d20, o meio-elfo pode garantir a uma criatura um bônus de +4 em qualquer rolamento que faça no próximo minuto. O uso deste bônus deve ser anunciado antes da outra criatura fazer o rolamento.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+
     function TabPanel({ children, value, index }) {
         return (
             <div role="tabpanel" hidden={value !== index}>
@@ -437,6 +629,7 @@ const EspeciesPage = () => {
                 <EspecieElfo />
                 <EspecieAnao />
                 <EspecieFeerico />
+                <EspecieDraconiano />
             </Box>
 
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
