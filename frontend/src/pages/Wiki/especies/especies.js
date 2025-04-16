@@ -699,7 +699,7 @@ const EspeciesPage = () => {
             </Box >
         );
     }
-    function EspecieMeioDemonio() {
+    function EspecieMeioCelestial() {
         const [tab, setTab] = useState(0);
 
         const handleChange = (event, newValue) => {
@@ -709,7 +709,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Demônio</Typography>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Celestial</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -789,6 +789,708 @@ const EspeciesPage = () => {
             </Box >
         );
     }
+    function EspecieMeioGenio() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Gênio</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Meio-Gênios, fruto de uma união entre elementais e humanóides, são seres cujas almas estão profundamente entrelaçadas com os segredos dos elementos. Eles representam uma ligação especial entre os reinos elementais e o mundo dos mortais, trazendo consigo tanto os dons quanto as limitações dessa conexão única.<br />
+                            Com uma aparência que muitas vezes reflete os elementos dos quais descendem, os Meio-Gênios podem exibir características associadas à terra, fogo, água, ar ou outros elementos da natureza. Seus olhos costumam brilhar com uma energia inerente, sugerindo a influência dos elementos em sua essência.<br />
+                            Além da aparência marcante, os Meio-Gênios herdam certas afinidades elementais. Eles podem sentir as mudanças no clima e nos elementos, controlando em certa medida os poderes naturais ao seu redor. No entanto, essa capacidade é limitada em comparação com a dos gênios puros, e os Meio-Gênios geralmente precisam de um esforço maior para realizar feitos elementais extraordinários.<br />
+                            A dualidade da herança elemental dos Meio-Gênios também se estende à sua personalidade. Eles podem oscilar entre estados de calma e agitação, refletindo as mudanças nos elementos que os influenciam. Esta conexão com a natureza muitas vezes os torna peritos na resolução de problemas relacionados ao ambiente natural.<br />
+                            A influência dos Meio-Gênios na sociedade é palpável. Sua compreensão dos elementos e sua capacidade de mediar conflitos entre humanos e elementais os tornam líderes e diplomatas procurados. Além disso, suas habilidades com os elementos frequentemente os destacam como guardiões da natureza e protetores do equilíbrio ecológico.<br />
+                            Em última análise, os Meio-Gênios personificam a intersecção entre os segredos dos elementos e o mundo dos mortais. Eles lembram a todos que, mesmo nas limitações de sua herança, a conexão com a natureza e o respeito pelos elementos podem moldar um destino extraordinário.<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 10<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Médio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Gênio do Fogo:</strong><br /> Este meio gênio tem afinidade com o elemento fogo e possui resistência ao dano de fogo, porém tem vulnerabilidade a dano de gelo.Consegue acender velas e fogueiras com uma pequena chama em seus dedos.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Gênio do Gelo:</strong><br />Este meio gênio tem afinidade com o elemento Gelo e possui resistência ao dano de gelo, porém tem vulnerabilidade a dano de raio. Consegue resfriar objetos e congelar pequenas quantidades (10 cm cúbicos) de líquidos a cada 12 segundos.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Gênio do Raio:</strong> <br />Este meio gênio tem afinidade com o ar e o raio e possui resistência ao dano de raio, porém tem vulnerabilidade a dano de terra. Ele também consegue criar pequenas descargas elétricas que podem gerar luz por um minuto e faz o seu e cabelo e od e outras criaturas em até 3 metros ficar de pé.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Gênio da Terra:</strong> <br />Este meio gênio tem afinidade com o elemento terra e possui resistência ao dano de terra, porém tem vulnerabilidade a dano de fogo. Ele também consegue mover uma pequena quantidade (50 cm cúbicos) de terra com a mão a cada 6 segundos.
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Ar:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Terra:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Gelo:</strong> Testes para se esconder de perseguidores, em uma fuga, recebem vantagem do rolamento de Furtividade.</li>
+                            <li><strong>Fogo:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Domínio do Ar (2)</strong><br />
+                            Um meio gênio com essa Regalia perde sua afinidade com seu elemento e se torna neutro. Ao se tornar neutro perde a vulnerabilidade e a resistência que tinha antes de escolher essa Regalia. Ao fazer isso ganha a capacidade de voar com velocidade igual a de movimento e consegue segurar a respiração por 5 horas de uma só vez com um tempo de descanso de 10 minutos para fazer novamente.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Controle do Elemento Interior (2):</strong><br />
+                            Um meio gênio com essa Regalia consegue carregar elementalmente seus ataques desarmados durante um período de tempo. Ao imbuir seu corpo com dano elemental seus ataques desarmados ganham 1d6 de dano do elemento herdado, e consegue manter esse bônus por 1 minuto. Pode usar essa habilidade 3 vezes em um dia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Conceder desejos (2):</strong><br />
+                            Um meio gênio com essa Regalia concede um simples desejo a cada 3 dias. Esse desejo concede um item que caiba em sua mão e custe até 50 peças de Ouro. Se o item for uma cópia de um item real, a cópia fica evidente e não possui os efeitos mágicos do item, se houver, só a aparência.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieMeioTroll() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Troll</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Meio-Trolls são criaturas únicas, resultado da fusão entre humanóides e a resistência formidável dos trolls. Com uma linhagem que inclui diversos tipos de trolls, como os de areia, gelo e montanha, eles carregam em si a dualidade de uma herança selvagem e formidável.<br />
+                            A aparência dos Meio-Trolls varia amplamente, refletindo a diversidade de sua herança troll. Alguns podem exibir pele resistente e áspera, outros podem herdar a resistência ao frio ou uma afinidade com as alturas das montanhas. No entanto, todos compartilham a característica comum de regeneração acelerada, que lhes permite se curar mais rapidamente do que a maioria dos humanóides.<br />
+                            Além das características físicas impressionantes, os Meio-Trolls herdam uma resistência excepcional. Seja a resistência ao calor abrasador das dunas, a adaptabilidade ao frio glacial, ou a força formidável necessária para navegar pelas escarpas das montanhas, eles são capazes de enfrentar ambientes extremos com coragem e determinação.<br />
+                            A dualidade da herança dos Meio-Trolls também se estende à sua personalidade. Eles podem exibir uma natureza forte e impetuosa, mas também são conhecidos por sua determinação e resistência inabaláveis. Essa tenacidade muitas vezes os torna líderes em situações desafiadoras.<br />
+                            Os Meio-Trolls desempenham papéis importantes nas sociedades que habitam, frequentemente como protetores de suas comunidades e defensores contra ameaças externas. Sua resistência e habilidades de combate os tornam aliados valiosos, enquanto sua natureza adaptável lhes permite sobreviver e prosperar em condições adversas.<br />
+                            Em última análise, os Meio-Trolls personificam a força bruta e a adaptação à adversidade. Eles lembram a todos que, mesmo nas circunstâncias mais difíceis, a determinação e a coragem podem superar desafios aparentemente insuperáveis, e que a herança diversificada é uma força a ser valorizada.<br />
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 12<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 7,5 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Médio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>  Meio-Montanhoso:</strong><br /> Um meio-troll é a mistura de um troll com um ser humanoide. Esse mestiço pode arremessar qualquer objeto, forte o suficiente para causar dano que pese até 5kg. Causando 1d10 pontos de dano de impacto, com uma distância de 15 metros. Podendo utilizar esse arremesso uma vez a cada 10 minutos.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Geloso:</strong><br /> Um meio-troll é a mistura de um troll com um ser humanoide. Esse mestiço tem resistência ao dano elemental de gelo. Além de possuírem uma velocidade de movimento de 9 metros.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong> Meio-Arenoso:</strong> <br />Um meio-troll é a mistura de um troll com um ser humanoide. Esses mestiços são resistentes ao cansaço, não sofrem com os efeitos dos 2 primeiros níveis de cansado. Além de não sofrerem penalidade de movimento por andar em um terreno difícil.
+
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Nuvem:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Gelo:</strong> Ganha 1,5 m de velocidade de movimento enquanto estiver fugindo de perseguidores.</li>
+                            <li><strong>Areia:</strong>Testes de Percepção para sentir vibrações no solo  recebem +5 de bônus do rolamento.</li>
+                            <li><strong>Rocha:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Físico Incomparável</strong><br />
+                            Um meio troll com essa Regalia tem um físico incrível e possui uma capacidade de carga maior como se fosse um tamanho maior. Além disso, recebe vantagem dupla (rola 3 dados) em testes de atletismo para escalar superfícies naturais.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Descendente Monstruoso:</strong><br />
+                            Um meio troll com essa Regalia tem traços de um troll bem marcados em sua fisionomia. Em situações sociais em que trolls não sejam comuns o meio troll recebe +10 em intimidação e -5 em persuasão e negociação. Em todas as outras recebe apenas +2 em testes de intimidação, sem penalidades.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Gigante Pela Própria Natureza (2):</strong><br />
+                            Um meio troll com essa Regalia tem o tamanho  “Muito Grande” e recebe todas as vantagens de ter esse tamanho. Importante tomar a decisão de pegar este talendo com cuidado pois fisicamente muito maior o personagem pode ficar com dificuldade de acessar certos lugares normais que não estão preparados para receber uma criatura deste tamanho. Como seu tamanho muda ele sofre esta mutação ao dormir.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieBestial() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Bestial</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Bestiais são uma espécie singular que personifica a diversidade do reino animal em uma forma humanoide. Eles representam uma maravilhosa manifestação da natureza, trazendo consigo uma ampla variedade de características e habilidades, refletindo os muitos aspectos da vida selvagem.<br />
+                            Sua aparência é tão diversa quanto a própria natureza. Alguns exibem traços de aves, com asas que lhes permitem voar com graça e leveza, enquanto outros são imponentes e maciços, lembrando animais de grande porte. Há também aqueles que carregam características de caçadores terrestres, com velocidade e garras afiadas, e os pequenos e ágeis, que lembram os herbívoros ou onívoros ágeis e esquivos.<br />
+                            Mas a verdadeira beleza dos Bestiais vai além de sua aparência. Cada subespécie traz consigo habilidades únicas que se enraízam em sua herança animal. Alguns são mestres da caça e da sobrevivência, enquanto outros são habilidosos na arte de voar ou na capacidade de resistir aos desafios das terras inóspitas.<br />
+                            A presença dos Bestiais no mundo é uma lembrança constante da amplitude da natureza e de sua incrível capacidade de adaptação. Eles nos ensinam que, assim como a natureza é diversa, somos todos únicos em nossas habilidades e características. Os Bestiais são uma celebração da maravilha da vida e da riqueza que a natureza oferece em todas as suas formas.<br />
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 10<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Pequenos, Médios ou Grandes
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>  Alados:</strong><br />
+                            Bestiais alados são humanoides com traços de qualquer pássaro. Bestiais alados podem voar até sua velocidade de movimento. Enquanto um bestial alado estiver caindo pode usar sua reação para abrir suas asas e quebrar a queda. Ao realizar essa reação não sofrerá o dano da queda.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Brutamontes:</strong><br />
+                            Bestiais brutamontes são humanoides grandes com traços de animais que pesam naturalmente pelo menos 400 kg e possuem um valor de vida inicial igual a 12 (2 pontos acima do valor base da espécie). Após se mover por pelo menos 4,5 metros em linha reta, o Bestial brutamontes pode realizar um ataque com seu chifre, galhada ou cabeça, que causa 2d6 pontos de dano, além de empurrar seu inimigo por 3m. Se o rolamento de ataque for um acerto crítico, além do dano dobrado, empurra o dobro da distância.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Predadores:</strong><br />
+                            Bestiais predadores são humanóides carnívoros e caçadores terrestres (Canídeos, répteis e felinos principalmente). Predadores possuem uma maior velocidade de movimento de 7,5 metros e também possuem armas naturais, que podem ser garras ou presas. Essas armas naturais causam 1d10 pontos de dano perfurante ou cortante.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Herbivoraz:</strong><br />
+                            Bestiais herbivorazes são pequenos humanóides com traços de animais herbívoros ou onívoros leves e ágeis, seu valor de Velocidade de Movimento é igual a 4,5. Um bestial herbivoraz pode usar sua agilidade de fuga para escapar do perigo, ou corajosamente avançar para atacar primeiro como instinto de sobrevivência.<br />
+                            Um herbivoraz pode usar a ação disparada com o custo de duas ações ao invés de três. Ao usar a ação correr ou andar pode realizar, como parte da mesma ação,  usar a ação Buscar Cobertura. Desde que esteja usando um escudo ou tenha cobertura próximo de si.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips">
+                            <strong>  Aquáticos:</strong><br />
+                            Bestiais aquáticos são humanoides com traços de animais aquáticos como os mais variados peixes e anfíbios. Esses bestiais conseguem respirar debaixo d’água. Nadam em qualquer tipo de correnteza sem precisar de um teste de atletismo. Com as escamas que se formam em sua pele, um bestial aquático recebe um bônus de 2 pontos de valor de defesa enquanto não estiver usando armadura média ou pesada. Um bestial aquático que não fica submergido por pelo menos uma hora a cada 48 horas fica um nível de Cansado,  que pode acumular com outras fontes.
+
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Elfo:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Draconiano:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Feérico:</strong>Tentativas de enganar perseguidores em uma fuga recebem vantagem do rolamento de Enganação.</li>
+                            <li><strong>Anão:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Animal Noturno:</strong><br />
+                            Um bestial com essa Regalia consegue enxergar no escuro como se fosse meia luz e na meia luz como se fosse luz completa em uma distância de até 12 metros.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Instintivo:</strong><br />
+                            Um bestial com essa Regalia tem um forte senso de autopreservação e ao cair em uma armadilha natural ou ser pego por uma emboscada feita por animais selvagens ganham +3 de bônus em iniciativa e vantagem dupla em testes de atletismo para evitar a armadilha.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Reação instantânea:</strong><br />
+                            Um bestial com essa Regalia consegue usar sua reação para recuar 1,5 metros de uma criatura que se aproxima dele em um turno de combate. O bestial pode tomar a decisão de recuar se a criatura conseguir se aproximar a uma distância de pelo menos 6 metros dele. Pode fazer essa reação 5 vezes por dia.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieHalfling() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Halfling</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Os Halflings, apesar de seu tamanho modesto, são gigantes quando se trata de coragem e espírito aventureiro. Eles vivem suas vidas com uma determinação feroz, enfrentando desafios muito maiores do que eles mesmos. Seus sorrisos são tão amplos quanto seus corações, e sua disposição para explorar o desconhecido é incomparável.<br />
+                            Sua estatura pequena não é um impedimento, mas sim uma vantagem. Eles passam facilmente despercebidos e são mestres em navegar por lugares apertados e esconder-se nas sombras. Sua agilidade é lendária, e muitos inimigos subestimam a habilidade de um Halfling, apenas para serem surpreendidos por sua destreza em combate.<br />
+                            Nada é mais importante para um Halfling do que a família e os amigos. Eles estão dispostos a fazer qualquer coisa para proteger aqueles que amam e nunca recuam diante de um desafio. Sua determinação é incomparável, e sua alegria de viver é contagiante.<br />
+                            Os Halflings são uma prova viva de que o tamanho não define o heroísmo. Eles são uma espécie de espíritos aventureiros, prontos para enfrentar o mundo com um sorriso no rosto e uma sede insaciável por novas experiências. Eles são pequenos em estatura, mas grandes em coragem e determinação.<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 10<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 4,5 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Pequenos
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>  Comuns:</strong><br />
+                            Halflings que lembram pequenos humanos, são ágeis e agitados. Esses halflings possuem a capacidade de usar a ação Esconder estando logo atrás de um aliado. Um halfling consegue se esconder mas não buscar cobertura desta maneira.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Subterrâneos:</strong><br />
+                            Halflings que vivem nas profundezas das cavernas e túneis subterrâneos, em constante harmonia com a escuridão e os segredos das entranhas da terra. Eles possuem a pele pálida e avermelhada nas extremidades e olhos maiores que os comuns e que possuem pupilas enormes. Halflings do Subterrâneo possuem visão no escuro com alcance de 64 metros, enxergando como se estivessem em meia luz.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Monstruosidades:</strong><br />
+                            Halflings monstros são todas as espécies de goblinóides e kobolds (canídeos). Esses halflings são conhecidos por trabalhar em equipe e cultuar seres mais fortes. São muito orgulhosos do próprio povo ou de quem cultuam, esse orgulho se traduz em confiança e determinação em batalha. Quando realizam um ataque esses halflings conseguem usar ação Intimidar ao mesmo tempo. Essa habilidade pode ser usada 3 vezes ao dia. Quando estão com um ou mais aliados flanqueando um inimigo recebe vantagem em jogadas de acerto.
+
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Coruja Anã:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Pônei:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Raposa do deserto:</strong>Tentativas de enganar perseguidores em uma fuga recebem vantagem do rolamento de Enganação.</li>
+                            <li><strong>Caranguejo-ermitão:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Monstruoso:</strong><br />
+                            Um halfling monstruoso com essa Regalia tem traços assustadores para o humanóide comum. Em situações sociais em que essas criaturas não sejam comuns, recebem +10 em intimidação e -5 em persuasão e negociação.  Em todas as outras recebe +2 em testes de intimidação.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Pequeno e Frágil:</strong><br />
+                            Um halfling com essa Regalia consegue usar sua estatura e aparência frágil para fingir que é inofensivo. Como reação o halfling pode se encolher e fazer com que um atacante desista de um ataque contra ele e escolha um novo alvo. O halfling faz um teste de performance ou enganação contra a intuição do atacante, se for um sucesso ele não pode sofrer ataques deste atacante até o início do próximo turno do halfling. Pode fazer isso 3 vezes em um dia
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Entocar:</strong><br />
+                            Halflings têm uma maior elasticidade e capacidade de se dobrar e entrar em lugares apertados, além de serem menores. Um Halfling com esse talento tem um bônus de +4 em testes de acrobacia para entrar e passar por lugares apertados. Recebe +1 em qualquer outro teste de acrobacia. Uma vez em um espaço confinado descrito acima, todas tentativas de ser tirado de onde se encontra terá uma penalidade de -2.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieTroll() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Troll</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Trolls são seres colossais, conhecidos por sua resistência sobrenatural e presença imponente. Independentemente da variação específica de sua linhagem, todos os Trolls compartilham traços comuns que os tornam verdadeiras forças da natureza no mundo da alta fantasia.<br />
+                            Possuindo uma natureza monstruosa, os Trolls são gigantes imunes a muitos dos obstáculos que afetam criaturas menores. Sua imponência física e força descomunal lhes conferem a capacidade de realizar feitos impressionantes, como arremessar objetos maciços a grandes distâncias e transportar cargas consideráveis por curtos períodos de tempo.<br />
+                            Além disso, a resistência inerente dos Trolls permite que eles prosperem em ambientes extremos, como montanhas, tundras congeladas e desertos escaldantes. Seus corpos robustos e peles resistentes protegem-nos das agruras do ambiente, tornando-os mestres da sobrevivência em terrenos hostis.<br />
+                            A linhagem de um Troll é uma marca de sua jornada única e destino no mundo da alta fantasia. Cada subespécie de Troll representa uma adaptação especializada a um ambiente particular, mas todos compartilham a herança de força e resistência que os torna verdadeiramente formidáveis. Independentemente da variação, os Trolls são gigantes que se destacam, deixando sua marca indelével no mundo de aventuras e desafios.<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 15<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 4,5 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Muito grande
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>   Troll da Montanha:</strong><br />
+
+                            Um Troll da Montanha são grandes seres humanóides monstruosos. Eles podem arremessar qualquer objeto grande e pesado, como pedras, toras de madeira e etc. em uma distância de até 15m. Um alvo atingido por esses objetos sofrem 2d10 de dano. Arremessar um objeto é uma ação e exige que tenha tal objeto próximo. Seu físico incomparável os permite ultrapassar a sua capacidade de carga em até 50 quilos por ponto de força durante 1 hora. Após realizar tal feito é necessário ao menos um descanso curto.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Troll do Gelo:</strong><br />
+
+                            Um Troll do Gelo são grandes seres humanóides monstruosos. Esses trolls são imunes ao frio, ao dano de gelo e à condição Congelando.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Troll do Deserto:</strong><br />
+
+                            Um Troll do Deserto são grandes seres humanóides monstruosos. Esses trolls são imunes ao cansaço e são adaptados para andar na areia, ignorando terrenos difíceis naturais.
+
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Tatuagem tribal(2 pontos de Regalia):</strong></Typography>
+                        <Typography className="bigBoxTextEquips">
+                            Uma criatura com esse talento recebeu uma tatuagem mágica por ter passado em algum teste em sua tribo. Cada tatuagem tem uma vantagem, confira a seguir
+                        </Typography>
+                        <ul className="bigBoxTextBG">
+                            <li><strong>Harpia:</strong>Testes de Percepção para observar algo a mais de 100 metros de distância recebem vantagem do rolamento.</li>
+                            <li><strong>Bisão:</strong> Tentativas de uma criatura mover grandes rochas ou obstáculos mais pesados que ela mesma, recebem vantagem do rolamento de Atletismo.</li>
+                            <li><strong>Coiote:</strong>Tentativas de enganar perseguidores em uma fuga recebem vantagem do rolamento de Enganação.</li>
+                            <li><strong>Tatu:</strong> Uma criatura com essa tatuagem pode usar a ação Buscar Cobertura na mesma ação que for correr/andar.</li>
+                        </ul>
+
+                        <Typography className="bigBoxTextEquips"><strong>Físico Incomparável:</strong><br />
+                            Um troll com essa Regalia tem um físico incrível e possui uma capacidade de carga maior como se fosse um tamanho maior. Além disso, recebe um bônus de +5 em testes de atletismo para escalar superfícies naturais.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Monstruoso:</strong><br />
+                            Um troll com essa Regalia tem traços assustadores para o humanóide comum. Em situações sociais em que essas criaturas não sejam comuns, recebem +10 em intimidação e -5 em persuasão e negociação.
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Presas Esmagadoras(2):</strong><br />
+                            Um troll tem grandes bocas e mandíbulas fortíssimas. Um troll com essa Regalia consegue, 3 vezes ao dia, recuperar os usos em um descanso longo, morder com força esmagadora outra criatura ou objeto. Esse ataque causa 2d10 de dano.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong> Terreno Favorito:</strong><br />
+                            Um troll que estiver em seu ambiente de origem recebe um bônus de mais 3 metros de velocidade de movimento.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieConstructo() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Constructo</Typography>
+
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Regalia Obrigatória" className="tabs" />
+                        <Tab label="Regalias Opcionais" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Na penumbra do mundo da alta fantasia, os Constructos erguem-se como testemunhos vivos da união entre a magia ancestral e a habilidade criativa dos artífices. São entidades de energias elementais, infundidas com as almas ardentes do fogo, da eletricidade, do ar e da sombra, cada qual trazendo consigo uma personalidade distinta e um conjunto inigualável de talentos.<br />
+                            Nascidos de uma alquimia complexa e do domínio das artes mágicas, os Constructos são verdadeiras quimeras, distintas de qualquer forma de vida convencional. Eles não conhecem a vida como a compreendemos, mas em seu íntimo, mantêm uma consciência singular, originada das energias elementais que os compõem. O resultado é uma fusão fascinante de artifícios e elementos, um casamento de magia e engenhosidade.<br />
+                            Independentemente de suas vocações como utilitários, guerreiros, agentes infiltrados ou exploradores destemidos, todos os Constructos partilham uma verdade fundamental: a natureza de sua existência é essencialmente artificial. São criaturas que se destacam, em virtude de sua singularidade, destacando-se como a conjunção mais notável entre o mundo natural e o reino das criações mágicas.<br />
+                            Assim, os Constructos perduram como criaturas enigmáticas e imponentes, dotadas de habilidades incomuns, capazes de desempenhar tarefas intrincadas e superar muitas das limitações inerentes às formas de vida orgânicas. Essa união única entre magia elemental e artifício confere a eles um lugar ilustre no teatro de maravilhas e desafios que compõem o mundo da alta fantasia.<br />
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Pontos de Vida Inicial:</strong> 11<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Velocidade de Movimento:</strong> 6 metros<br />
+                        </Typography>
+                        <Typography className="bigBoxTextEquips" style={{ marginTop: "1rem" }}>
+                            <strong>Tamanho:</strong> Medio
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha uma entre:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>   Constructo de Utilidade:</strong><br />
+
+                            O constructo de utilidade foi criado ao usar um espírito elemental de fogo para alimentar uma máquina ajudante. Usadas em forjas, construções e transporte , essas máquinas são capazes de grande capacidade de carga, sendo capazes de carregar o dobro de carga que uma criatura orgânica de mesmo tamanho. Os constructos de Habilidade são duráveis porém lentos, sua velocidade de movimento é igual a 4,5 metros. Eles são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo um constructo precisa ficar parado em modo inativo por 4 horas, e seu descanso curto funciona de maneira padrão. São resistentes ao dano de fogo e imunes ao dano de venenos e a condição Envenenado ou Sangrando. São vulneráveis ao dano de gelo.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Constructo de Batalha:</strong><br />
+
+                            O constructo de batalha foi criado ao usar um espírito elemental de raio para alimentar uma máquina combatente. Usadas como guardas, soldados e assassinos, essas máquinas possuem uma armadura embutida que pode ser melhorada e reforçada. Seu valor de defesa inicial é de 15. Um constructo de batalha não pode adicionar sua agilidade ao seu valor de defesa e nem usar armaduras. Eles são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo um constructo precisa ficar parado em modo inativo por 4 horas, e seu descanso curto funciona de maneira padrão. São resistentes ao dano de raio e imunes ao dano de venenos, a condição Envenenado e a condição Sangrando. São vulneráveis ao dano de terra.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Constructo de Exploração:</strong><br />
+
+                            O constructo de exploração foi criado ao utilizar um espírito elemental do ar para alimentar uma máquina de exploração versátil. Essas máquinas são frequentemente usadas em missões de reconhecimento, exploração de áreas desconhecidas e busca de tesouros escondidos. Possuem uma capacidade de voo limitada, permitindo-lhe voar por 10 minutos a cada descanso curto ou longo. Sua velocidade de movimento é de 9 metros em terra e 18 metros no ar. Os constructos de exploração são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo, um constructo precisa ficar inativo em modo de economia de energia por 2 horas, enquanto seu descanso curto funciona como o padrão. São resistentes ao dano de raio e imunes ao dano de veneno e à condição Envenenado. São vulneráveis aos danos de gelo e terra.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Constructo de Invasão:</strong><br />
+
+                            O constructo de sigilo foi criado ao utilizar um espírito elemental sombrio para alimentar uma máquina furtiva especializada em missões secretas e espionagem. Essas máquinas são especialistas em se mover em silêncio e em se esconder nas sombras. Possuem a habilidade de camuflagem que as tornam quase invisíveis em ambientes escuros, fornecendo +3 em testes de furtividade enquanto fora de luz completa. Sua velocidade de movimento é de 6 metros, mas quando estão nas sombras, sua velocidade é dobrada para 12 metros. Eles não precisam de comida ou água e são imunes à condição Cansado. Para um descanso longo, um constructo de sigilo precisa de apenas 2 horas de inatividade nas sombras, enquanto seu descanso curto funciona de maneira padrão. São resistentes ao dano de sombra e imunes ao dano de veneno e à condição Envenenado. São vulneráveis aos danos sagrado e de fogo.
+
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography className="bigBoxTextEquipsHeader">Regalias:</Typography>
+
+
+                        <Typography className="bigBoxTextEquips"><strong>Programação de Emergência:</strong><br />
+
+                            Quando os pontos de vida do constructo caírem para 10 ou menos, ele receberá pontos de vida temporários do mesmo valor que seus pontos de magia máxima. Esses pontos de vida duram por 2 rodadas. Isso acontece uma vez por descanso longo.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Constructo da Natureza:</strong><br />
+
+                            Esse constructo pode substituir suas partes de metal por partes de madeira. Ao fazer isso ele se torna resistente à dano de impacto e perfurante. Contudo, fica vulnerável a dano de fogo.
+
+                        </Typography>
+
+                        <Typography className="bigBoxTextEquips"><strong>Um Sobrecarga Elemental:</strong><br />
+
+                            Após gastar ⅓ de seus pontos de magia ou estâmina  em um mesmo turno, o próximo ataque do constructo causará dano dobrado. Sendo a segunda parte do dano do mesmo elemento do seu espírito elemental.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong> Porta Gente (2)</strong><br />
+
+                            O constructo com essa Regalia é desmontado e remontado para ficar do tamanho grande. Um constructo desse tamanho consegue armazenar dentro de si uma criatura média voluntária ou menor como sua reação em combate.
+
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Aumento do valor da Habilidade:</strong><br /> Aumenta qualquer uma Habilidade que não seja de combate em +2 <br />
+                            Aumenta qualquer uma Habilidade que não seja de combate, força, destreza ou agilidade em +2
+                        </Typography>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
+    function EspecieSpecialOptions() {
+        const [tab, setTab] = useState(0);
+
+        const handleChange = (event, newValue) => {
+            setTab(newValue);
+        };
+        const mutacoes = [
+            {
+                nome: 'Pele Escamosa',
+                beneficio:
+                    'A pele do personagem se torna grossa e escamosa, fornecendo uma defesa natural a cortes e arranhões. A base do valor de defesa para o personagem sem armadura é de 10 ao invés de 7.',
+            },
+            {
+                nome: 'Olhos Multifacetados',
+                beneficio:
+                    'Os olhos do personagem se multiplicam e adquirem uma aparência insectóide, concedendo visão ampliada e a capacidade de enxergar no escuro. Visão no escuro, e meia luz, com alcance de 27 metros e bônus de +2 em testes de percepção que envolvam visão.',
+            },
+            {
+                nome: 'Boca Abissal',
+                beneficio:
+                    'A boca do personagem se expande, revelando uma mandíbula cheia de dentes afiados, permitindo ataques mordedores poderosos. Recebe uma arma natural com dano perfurante 4 + valor de força. Recebe +2 em testes de atletismo para agarrar um alvo com os dentes.',
+            },
+            {
+                nome: 'Membros Desproporcionais',
+                beneficio:
+                    'Os membros do personagem se alongam ou encurtam, concedendo versatilidade. Aumentam o alcance de ameaça em 1,5 metros ou reduz a criatura em um tamanho na escala, com um mínimo de minúsculo.',
+            },
+            {
+                nome: 'Cauda Serpentina',
+                beneficio:
+                    'Uma cauda serpentina cresce na parte inferior do corpo do personagem, permitindo uma maior capacidade de equilíbrio e agilidade em movimentos. O personagem ganha um bônus de +5 em testes de acrobacia para se equilibrar e consegue usar sua cauda para se segurar em beiradas, galhos e outros que possam ser enrolados por ela, deixando assim suas mãos livres.',
+            },
+            {
+                nome: 'Garras Retráteis',
+                beneficio:
+                    'O personagem desenvolve garras afiadas em suas mãos ou pés, fornecendo ataques mais letais e a habilidade de escalar superfícies verticais. Recebe uma arma natural com dano cortante 3 + valor de destreza. O personagem tem a capacidade de escalar superfícies verticais sem custo extra de movimento e sem necessidade de ferramentas extras.',
+            },
+            {
+                nome: 'Chifres Torcidos',
+                beneficio:
+                    'Chifres retorcidos e sinuosos crescem na cabeça do personagem, conferindo maior resistência física e a capacidade de empurrar objetos pesados. O personagem recebe +2 em testes de atletismo para se manter em pé ou derrubar um alvo. Recebe uma arma natural com dano de impacto 3 + valor de força.',
+            },
+            {
+                nome: 'Exoesqueleto Ósseo',
+                beneficio:
+                    'O corpo do personagem é envolvido por um exoesqueleto ósseo, tornando-o mais resistente a cortes. Se torna resistente ao dano cortante, porém se torna vulnerável ao dano de impacto. O exoesqueleto também aumenta a base do valor de defesa de 7 para 10.',
+            },
+            {
+                nome: 'Pernas de Aranha',
+                beneficio:
+                    'O personagem desenvolve pernas extras semelhantes às de uma aranha, permitindo maior mobilidade e a habilidade de escalar paredes. Pode escalar sem gastar movimento extra e ganha um bônus de 1.5 metros no valor de velocidade. Ganha um bônus de +5 em testes de atletismo para agarrar e para não ser derrubado.',
+            },
+            {
+                nome: 'Braços Tentaculares',
+                beneficio:
+                    'Braços adicionais em forma de tentáculos crescem no corpo do personagem, fornecendo uma vantagem de alcance em combate e a habilidade de agarrar objetos a distância. Recebe 1.5 metros a mais em seu alcance de ameaça e +2 em testes de atletismo para agarrar outra criatura.',
+            },
+        ];
+        return (
+            <Box sx={{ width: "100%", p: 2 }}>
+                <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
+                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Regalias obrigatórias alternativas</Typography>
+                    <Tabs value={tab} onChange={handleChange} centered>
+                        <Tab label="Descrição" className="tabs" />
+                        <Tab label="Psíquico" className="tabs" />
+                        <Tab label="Vampiro / Wight / Draugr" className="tabs" />
+                        <Tab label="Mutante" className="tabs" />
+                    </Tabs>
+
+                    <TabPanel value={tab} index={0}>
+
+                        <Typography className="bigBoxTextClasses" sx={{ width: "90%", height: '400px', overflowY: 'scroll', padding: 2 }}>
+                            Aqui o jogador pode encontrar opções para personalizar ainda mais seus personagens. A seguir temos várias opções que podem substituir a Regalia obrigatória de uma espécie. Assim sendo, como um exemplo,  o personagem pode ser humano e começar com uma das opções abaixo ao invés das que estão inicialmente disponíveis para ele. <br />
+                            O jogador que escolher ser um Psíquico, Vampiro ou Mutante deve gastar 2 pontos de Regalia ao invés de 1 ponto na Regalia inicial de espécie.
+                            Ao escolher uma das opções abaixo é proibido escolher uma das outras. Após trocar a regalia inicial de classe, adicione as outras opções que sobraram da lista de escolhas para regalias de sua espécie original.<br />
+
+                        </Typography>
+
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={1}>
+                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Psíquico</Typography>
+                        <Typography className="bigBoxTextEquipsHeader">Escolha um dos seguintes poderes psíquicos para começar:</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Telecinese:</strong><br />
+                            o personagem tem a habilidade de mover objetos com a mente. O personagem consegue mover até um objeto de até 5 quilos que esteja em um alcance de até 30 metros de distância. O movimento não é veloz e não pode realizar ataques com armas com essa habilidade. Além disso, 3 vezes ao dia o personagem pode usar a sua reação para empurrar, 3 metros para a direção  a sua escolha, uma criatura que se aproxime  dele em uma distância de 3 metros.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Telepatia:</strong><br />
+                            o personagem pode ler os pensamentos e se comunicar mentalmente com outras pessoas. O personagem consegue manter conversas telepáticas com criaturas que a possa entender em até 27 metros de distância. Além disso, o jogador pode escolher tentar ler a mente, com 70% chance de sucesso, de alguém que possa ver em até 18 metros de distância. O jogador com sucesso em sua tentativa  consegue ler os pensamentos superficiais do alvo, como o que ele está pensando no exato momento, contra a sua vontade.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong> Precognição:</strong><br />
+                            o personagem tem vislumbres do futuro, podendo ter flashes de eventos que ainda estão por acontecer. O jogador pode escolher passar em um teste de habilidade, desviar de um ataque certeiro ou acertar um ataque uma vez por dia, pois ele já sabia que aquilo ia acontecer e como.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>Controle Mental:</strong><br />
+                            O personagem pode influenciar suavemente a mente dos outros, fazendo sugestões. O jogador ganha +2 em todos os rolamentos da aba social e uma vez por dia pode transformar esse  bônus em um +10.
+                        </Typography>
+                    </TabPanel>
+
+                    <TabPanel value={tab} index={2}>
+                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Vampiro / Wight / Draugr</Typography>
+                        <Typography className="bigBoxTextEquipsHeader">Ao escolher ser um morto vivo, o personagem não pode ser curado por milagres. Escolha um dos seguintes poderes de mortos vivos para começar com (A habilidade Drenagem de Vida pode ser escolhido por qualquer tipo de morto vivo):</Typography>
+
+                        <Typography className="bigBoxTextEquips">
+                            <strong>Drenagem de Vida:</strong><br />
+                            o personagem pode sugar a energia vital de outras criaturas para se fortalecer. O jogador pode escolher realizar um ataque de combate corpo a corpo e sugar a vitalidade de um alvo, causando 1d8 de dano necrótico e o curando em 5, ou realizar uma versão mais fraca à distância, causando apenas 1d4 de dano necrótico e curando em 3, com alcance de 9m. Essa habilidade pode ser utilizada até 3 vezes por descanso longo.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong>  Transformação Noturna:</strong><br />
+                            o personagem ganha poderes especiais durante a noite, como aumento de força, velocidade ou poderes sombrios.
+                            Um personagem morto vivo recebe 1,5 de bônus de velocidade movimento a noite.
+                            Sua capacidade de carga aumenta, como se fosse um tamanho maior na tabela, durante a noite.
+                            O personagem consegue escalar paredes sem a necessidade de testes ou redução de velocidade e ganha +3 em testes de furtividade à noite.
+                        </Typography>
+                        <Typography className="bigBoxTextEquips"><strong> Hipnose:</strong><br />
+                            O personagem pode hipnotizar suas vítimas com seu olhar ou voz, exercendo influência sobre elas.o personagem consegue utilizar as magias Hipnose e Voz de Comando uma vez cada por dia e sem custo de mana.
+                        </Typography>
+                    </TabPanel>
+                    <TabPanel value={tab} index={3}>
+                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Mutante</Typography>
+                        <Typography className="bigBoxTextEquipsHeader">Uma criatura que sofreu de alguma forma uma exposição a um efeito que mudou permanentemente sua aparência e fisionomia é considerada um mutante.<br />
+                            O mutante tem uma penalidade de -2 em todos os testes da aba social, exceto intimidação, sempre que que tiver a mutação visível. Todos sabem que o personagem possui mutações, a não ser que o personagem a mantenha contida dentro de roupas, máscaras e afins. Ao escolher ser um mutante é necessário escolher apenas uma das opções abaixo:
+                        </Typography>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell><strong>Mutação Física</strong></TableCell>
+                                    <TableCell><strong>Benefício</strong></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {mutacoes.map((mutacao, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>{mutacao.nome}</TableCell>
+                                        <TableCell>{mutacao.beneficio}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TabPanel>
+                </Paper>
+            </Box >
+        );
+    }
     function TabPanel({ children, value, index }) {
         return (
             <div role="tabpanel" hidden={value !== index}>
@@ -808,6 +1510,14 @@ const EspeciesPage = () => {
                 <EspecieDraconiano />
                 <EspecieMeioElfo />
                 <EspecieMeioDemonio />
+                <EspecieMeioCelestial />
+                <EspecieMeioGenio />
+                <EspecieMeioTroll />
+                <EspecieBestial />
+                <EspecieHalfling />
+                <EspecieTroll />
+                <EspecieConstructo />
+                <EspecieSpecialOptions />
             </Box>
 
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
