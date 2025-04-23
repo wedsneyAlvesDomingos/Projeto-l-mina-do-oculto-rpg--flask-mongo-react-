@@ -16,6 +16,7 @@ import EspeciesPage from "../pages/Wiki/especies/especies";
 import JobsPage from "../pages/Wiki/jobs/jobs";
 import ConditionsPage from "../pages/Wiki/conditions/conditions";
 import GeneralRulesPage from "../pages/Wiki/GeneralRules/generalRules";
+import CombatRulesPage from "../pages/Wiki/CombatRules/CombateRules";
 
 export const general_routes = [
     {
@@ -155,6 +156,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <GeneralRulesPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/regrasCombate",
+        ele: <>
+            <ResponsiveAppBar />
+            <CombatRulesPage />
 
         </>,
         availability: [ur.admin]
