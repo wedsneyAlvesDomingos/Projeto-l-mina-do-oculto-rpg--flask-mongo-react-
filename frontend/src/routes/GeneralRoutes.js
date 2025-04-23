@@ -15,6 +15,7 @@ import HabilidadesPage from "../pages/Wiki/habilidadesProenfiencias/habilidades"
 import EspeciesPage from "../pages/Wiki/especies/especies";
 import JobsPage from "../pages/Wiki/jobs/jobs";
 import ConditionsPage from "../pages/Wiki/conditions/conditions";
+import GeneralRulesPage from "../pages/Wiki/GeneralRules/generalRules";
 
 export const general_routes = [
     {
@@ -145,6 +146,15 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <ConditionsPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/regrasGerais",
+        ele: <>
+            <ResponsiveAppBar />
+            <GeneralRulesPage />
 
         </>,
         availability: [ur.admin]
