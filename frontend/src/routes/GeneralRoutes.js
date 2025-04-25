@@ -17,6 +17,9 @@ import JobsPage from "../pages/Wiki/jobs/jobs";
 import ConditionsPage from "../pages/Wiki/conditions/conditions";
 import GeneralRulesPage from "../pages/Wiki/GeneralRules/generalRules";
 import CombatRulesPage from "../pages/Wiki/CombatRules/CombateRules";
+import PaginaNaoEncontrada from "../pages/404Page/pageNotFound";
+
+
 
 export const general_routes = [
     {
@@ -169,4 +172,13 @@ export const general_routes = [
         </>,
         availability: [ur.admin]
     },
+
+    {
+        path: "/*",
+        ele: <>
+            <ResponsiveAppBar />
+            <PaginaNaoEncontrada />
+        </>,
+        availability: [ur.admin]
+    }
 ]

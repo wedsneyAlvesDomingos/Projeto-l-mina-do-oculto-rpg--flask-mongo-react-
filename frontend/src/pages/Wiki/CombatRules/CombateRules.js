@@ -284,7 +284,7 @@ const CombatRulesPage = () => {
         return (
             <Box sx={{ py: 4 }}>
                 <Typography variant="h4" gutterBottom>
-                    Mecânica de Combate
+                    Mecânicas de Combate
                 </Typography>
                 <>
                     <Typography paragraph>
