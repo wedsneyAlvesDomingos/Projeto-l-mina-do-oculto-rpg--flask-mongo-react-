@@ -86,8 +86,10 @@ const WikiPage = () => {
                 <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center' }}>
                     <Autocomplete
                         freeSolo
-                        options={options}
+                        options={query.length > 0 ? options : []}
                         getOptionLabel={(option) => option.label}
+                        inputValue={query}
+                        onInputChange={(event, newInputValue) => setQuery(newInputValue)}
                         onChange={(event, newValue) => {
                             if (newValue && newValue.path) {
                                 navigate(newValue.path);
@@ -99,14 +101,13 @@ const WikiPage = () => {
                                 label="Pesquisar"
                                 size="small"
                                 variant="outlined"
-                                sx={{ background: '#ffffff', width: '100%', minWidth:'350px' }}
+                                sx={{ background: '#ffffff', width: '100%', minWidth: '350px' }}
                                 id="searchBar"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
                                 onKeyPress={handleKeyPress}
                             />
                         )}
                     />
+
                     <Button
                         className="esteban"
                         sx={{ background: '#162A22', color: '#ffffff', p: 1, width: '10%' }}

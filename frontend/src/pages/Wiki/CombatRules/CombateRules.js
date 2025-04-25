@@ -11,20 +11,20 @@ const CombatRulesPage = () => {
         {
             title: 'Turno e Rodada',
             content: (
-                <>
+                <Box id="turno">
                     <Typography paragraph>
                         Um turno é apenas a vez de um personagem agir. Após agir, o turno do personagem termina e o próximo turno começa. Uma rodada ocorre quando todos os participantes do combate ou cena agem, ou seja, desde o início do turno do primeiro colocado na lista de iniciativa até o fim do turno do último colocado. Cada rodada tem uma duração de 6 segundos para os personagens na história, mas para os jogadores o combate ocorre em turnos e pode durar o tempo que for necessário.
                     </Typography>
                     <Typography paragraph>
                         A lógica por trás disso é que na história todos os personagens do combate agem basicamente ao mesmo tempo com velocidade e responsividade, em poucos segundos várias coisas acontecem ao mesmo tempo e todos agem ou não de acordo com o que decidiram. Enquanto isso, na mesa em que o jogo acontece, os jogadores podem tomar decisões inteligentes e conversar entre si para trabalhar estratégias durante minutos por vez.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Iniciativa',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Quando um combate se inicia, ou quando vários personagens tomam uma ação ao mesmo tempo na cena, é necessário fazer um rolamento de iniciativa. Todos os envolvidos no combate ou cena calculam sua iniciativa, e uma lista é gerada do valor mais alto para o menor valor. O personagem com o valor mais alto fica em primeiro lugar na lista, enquanto o com o menor valor fica em último. Caso dois personagens lancem o mesmo valor, o que tiver o maior bônus de iniciativa vai na frente. Se mesmo assim os valores forem iguais, o mestre junto aos jogadores decidem como desempatar.
                     </Typography>
@@ -40,14 +40,14 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         <em>Nota:</em> A iniciativa pode ser utilizada quando uma situação requer uma ordem de ações específicas ou para organizar a linha de ação entre jogadores e gerar menos caos. Ou seja, a iniciativa é mais que uma forma de ordenar turnos em um combate, ela é uma forma de ordenar qualquer situação que o mestre julgue necessário.
                     </Typography>
-                </>
+                </Box>
             ),
         },
 
         {
             title: 'Acerto',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Em um combate, ou até mesmo fora dele, quando um personagem realiza um ataque, é feito um Rolamento de um D20. Após descobrir o resultado do Rolamento, o valor apropriado de uma das habilidades de Combate é somado ao tipo de ataque. Se houver bônus adicionais devido a condições ou
                         Habilidades diferentes, esses valores são somados ao resultado anterior para determinar o Valor de Acerto final. Se o valor de acerto for igual ao valor de defesa do alvo, o dano é reduzido pela metade. Acima do valor de defesa é um acerto e o valor de dano é aplicado no alvo do ataque. Abaixo do valor é considerado um erro e nenhum dano é causado.
@@ -56,13 +56,13 @@ const CombatRulesPage = () => {
                         Acerto = combate corpo a corpo /combate a distância / combate arcano + valor do D20
                         Por exemplo: (d20 = 10) + (combate corpo a corpo = 5) + (combate desarmado = 2) + (oração "Abençoar" = 2) = 19. .
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Acerto Crítico',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         O acerto crítico é determinado pela arma ou Regalia de um personagem.
                     </Typography>
@@ -81,13 +81,13 @@ const CombatRulesPage = () => {
                         Um ataque que obtém sucesso crítico causa desgaste na armadura do alvo (exceto armaduras naturais). Por outro lado, uma falha crítica (rolamento de 01 em um dado D20) acumula desgaste na arma do atacante. Após 5 falhas consecutivas, a arma sofre uma penalidade de -1 no acerto e no dano (com o valor mínimo de 1d4 de dano). A partir de 10 falhas, a penalidade aumenta para -2 (com o valor mínimo de 1d4 de dano) e, ao atingir 20 falhas, a arma tem seu dano reduzido para 1 e a penalidade de acerto se torna -3 (com o valor mínimo de 1d4 de dano).
                         A armadura perde 1 de valor de defesa até ser reparada em um descanso curto ou longo. Se sofrer 5 penalidades antes de ser consertada a armadura precisa ser reparada por um artesão do material.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Dano',
             content: (
-                <>
+                <Box>
 
                     <Typography paragraph>
                         Dano Físico:
@@ -122,13 +122,13 @@ const CombatRulesPage = () => {
                         Necrótico: É considerado forte contra todos os elementos, resultando em um dano duplicado. Contudo, é fraco contra o elemento sagrado, resultando em apenas metade do dano. Quando utilizado contra um alvo com o mesmo elemento (necrótico contra necrótico), o ataque cura o alvo.
                     </Typography>
 
-                </>
+                </Box>
             ),
         },
         {
             title: 'Velocidade de Movimento',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         A velocidade de movimento de um personagem é determinada pela soma da velocidade base da espécie com o valor relacionado ao valor de Agilidade, conforme indicado na tabela abaixo:
                     </Typography>
@@ -145,13 +145,13 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         É importante observar que o valor máximo para a Agilidade é de 12 pontos, resultando em um aumento máximo de 6 m na velocidade de movimento.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Defesa',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         O Valor de Defesa é calculado somando-se 7 ao valor de bônus da Agilidade, à Armadura e ao Escudo (se tiver proficiência). Essa fórmula é aplicável apenas para armaduras leves ou médias.
                     </Typography>
@@ -161,52 +161,52 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         Armaduras pesadas não adicionam o valor da Agilidade à Defesa. Nesses casos, apenas o valor base da armadura e escudo (se aplicável) é considerado, juntamente com o valor fixo de 7.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Pontos de Vida',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Os Pontos de Vida de um personagem são calculados somando-se o valor inicial da espécie, o valor fornecido por Regalias de classe e o dobro do valor da Habilidade Fortitude.
                     </Typography>
                     <Typography paragraph>
                         <strong>Pontos de Vida = Valor da Espécie + Valor por Regalia de Classe + 2 x Fortitude</strong>
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Pontos de Magia',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Os Pontos de Magia são determinados pelo valor fornecido por Regalias de classe, somado ao valor da Habilidade Arcanismo.
                     </Typography>
                     <Typography paragraph>
                         <strong>Pontos de Magia = Valor por Regalia de Classe + Arcanismo</strong>
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Pontos de Estamina',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Os Pontos de Estamina são calculados somando-se o valor fornecido por Regalias de classe ao valor da Habilidade Atletismo.
                     </Typography>
                     <Typography paragraph>
                         <strong>Pontos de Estamina = Valor por Regalia de Classe + Atletismo</strong>
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Proficiência em armas',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Quando um personagem realiza um ataque com uma arma com a qual não possui proficiência, não são adicionados os bônus de combate correspondentes (corpo a corpo, distância, mágico).
                     </Typography>
@@ -216,23 +216,23 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         Ataques com armas com as quais é proficiente não geram nenhuma das implicações acima e as regras de dano e acerto se aplicam normalmente.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Poções de Recuperação',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Cada poção consumida por um personagem irá sempre recuperar o mesmo valor indicado, a menos que alguma Regalia ou condição especifique o contrário.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Combate Montado',
             content: (
-                <>
+                <Box>
                     <Typography paragraph>
                         Durante o combate, uma criatura tem a capacidade de montar outra criatura, desde que esta esteja de acordo e quem for montar não seja maior do que a montaria.
                     </Typography>
@@ -245,13 +245,13 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         A cada novo teste realizado durante o mesmo combate, a dificuldade aumenta em +1. Ao finalizar o combate, os testes deixam de ser necessários e a dificuldade retorna ao valor inicial.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Alcance de Ameaça',
             content: (
-                <>
+                <Box id="alcance">
                     <Typography paragraph>
                         O alcance de ameaça refere-se ao alcance dos ataques corpo a corpo que uma criatura pode realizar.
                     </Typography>
@@ -261,20 +261,20 @@ const CombatRulesPage = () => {
                     <Typography paragraph>
                         Personagens que utilizam armas de ataque à distância possuem um alcance de ameaça de 1,5 metros.
                     </Typography>
-                </>
+                </Box>
             ),
         },
         {
             title: 'Campo de Visão',
             content: (
-                <>
+                <Box id="campoDeVisao">
                     <Typography paragraph>
                         O campo de visão de um personagem é igual a um cone de 100° de ângulo, e a distância depende da iluminação e da capacidade da criatura de enxergar no escuro.
                     </Typography>
                     <Typography paragraph>
                         Na luz completa, a criatura vê outra em até 500 metros de distância (sem obstruções físicas).
                     </Typography>
-                </>
+                </Box>
             ),
         },
 
@@ -283,27 +283,29 @@ const CombatRulesPage = () => {
     const CombatMechanicsPage = () => {
         return (
             <Box sx={{ py: 4 }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography className="MainTitleC" variant="h4" gutterBottom>
                     Mecânicas de Combate
                 </Typography>
-                <>
-                    <Typography paragraph>
+                <Box>
+                    <Typography className="bigBoxTextClasses" paragraph>
                         Um combate pode iniciar quando um ou mais jogadores ou NPCs realizarem uma ação que afete outros personagens de maneira agressiva ou manipulativa. Ao iniciar um combate, é feito um rolamento de iniciativa. Esse rolamento determina a ordem em que os personagens agem durante cada turno. Todos os envolvidos no combate rolam a iniciativa e a ordem de ação segue do maior para o menor valor, com o maior valor sendo o primeiro a agir.
                     </Typography>
-                    <Typography paragraph>
+                    <Typography className="bigBoxTextClasses" paragraph>
                         Todos os participantes do combate possuem 3 ações, a menos que alguma Regalia (mecânica de evolução de personagem) ou Condição diga o contrário. Cada movimento, ataque, manobra, magia ou milagre realizado consome um certo número de ações, conforme definido pela habilidade correspondente.
                     </Typography>
-                    <Typography paragraph>
+                    <Typography className="bigBoxTextClasses" paragraph>
                         Durante o jogo os personagens irão fazer rolamentos, isso quer dizer que irão rolar dados. No sistema Lâmina do Oculto os dados que são utilizados são: o d20 (dado de 20 lados), o d100 (um dado de 100 lados), o d12 (dado de 12 lados), o d10 (dado de 10 lados), o d8 (dado de 8 lados) e o d6 (dado de 6 lados). O d100 pode ser substituído pelo d20 quando for frações de 5% (20x5 =100).
                     </Typography>
-                </>
+                </Box>
                 {sections.map((section, index) => (
-                    <Accordion key={index} defaultExpanded={index === 0}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography variant="h6">{section.title}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>{section.content}</AccordionDetails>
-                    </Accordion>
+                    <Box key={index} mb={2} >
+                        <Typography variant="h6" className="boxTextTitle" gutterBottom>
+                            {section.title}
+                        </Typography>
+                        <Typography className="bigBoxTextClasses" variant="body1">
+                            {section.content}
+                        </Typography>
+                    </Box>
                 ))}
             </Box>
         );
