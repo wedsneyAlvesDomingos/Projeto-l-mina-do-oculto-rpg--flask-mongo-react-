@@ -601,7 +601,9 @@ const EquipmentPage = () => {
             ["Aji", "1d6", "1M", "20", "2 M.O."],
             ["Alabarda", "1d10", "2M", "20", "20 M.O."],
             ["Alfange", "1d8", "1M", "20", "25 M.O."],
+            ["Arco Composto", "1d12", "2M", "20", "60 P.O."],
             ["Arco Longo", "1d8", "2M", "20", "50 P.O."],
+            ["Balestra", "1d12", "2M", "18", "70 P.O."],
             ["Besta de Mão", "1d6", "1M", "20", "25 M.O."],
             ["Besta Pesada", "1d10", "2M", "20", "50 M.O."],
             ["Cajado de batalha", "1d4/1d6", "2M", "20", "2 M.P."],
@@ -613,7 +615,29 @@ const EquipmentPage = () => {
             ["Espada Longa", "1d8/1d10", "1M/2M", "20", "50 M.O."],
             ["Florete", "1d8", "1M", "20", "25 M.O."],
             ["Foice", "1d8", "1M", "18", "30 M.O."],
-            ["Katana", "1d8/1d10", "1M/2M", "20", "200 M.O."]
+            ["Katana", "1d8/1d10", "1M/2M", "20", "200 M.O."],
+            ["Lança de Falange", "1d10/1d12", "2M", "20", "5 M.O."],
+            ["Lança Montada", "2d6/1d10", "1M/2M", "20", "15 M.O."],
+            ["Maça Estrela", "1d8", "2M", "20", "15 M.O."],
+            ["Maça de Guerra", "1d12", "2M", "20", "30 M.O."],
+            ["Machado Anão", "1d12", "2M", "20", "50 M.O."],
+            ["Machado Grande", "1d12", "2M", "20", "30 M.O."],
+            ["Mangual", "1d8", "1M", "20", "10 M.O."],
+            ["Mangual Pesado", "1d10", "2M", "20", "20 M.P."],
+            ["Manopla Espada", "1d6", "1M", "20", "25 M.O."],
+            ["Marreta", "2d6", "2M", "20", "5 M.O."],
+            ["Marreta Estilhaçadora", "2d6", "2M", "20", "10 M.O."],
+            ["Martelo de guerra", "1d8", "2M", "20", "15 M.O."],
+            ["Mosquete", "2d8", "2M", "20", "500 M.O."],
+            ["Nunchaku", "1d6", "1M", "20", "2 M.O."],
+            ["Pique", "1d10", "2M", "20", "10 M.O."],
+            ["Pistola", "1d8", "1M", "20", "180 M.O."],
+            ["Pistola de Tambor", "1d8", "1M", "20", "400 M.O."],
+            ["Rede", "0", "1M", "20", "1 M.O."],
+            ["Sabre Serrilhado", "1d8", "1M", "20", "25 M.O."],
+            ["Sai", "1d4", "1M", "19", "10 M.O."],
+            ["Tridente", "1d10", "2M", "20", "5 M.O."],
+            ["Wakizashi", "1d6", "1M", "20", "150 M.O."]
         ],
         "Armas Exóticas": [
             ["Catapulta de Braço", "1d6", "2M", "20", "25 M.O."],
@@ -623,7 +647,19 @@ const EquipmentPage = () => {
             ["Espada Diapasão", "1d8", "1M", "20", "60 M.O."],
             ["Espada Táurica", "3d6", "2M", "20", "100 M.O."],
             ["Katana (uma mão)", "1d8", "1M", "20", "200 M.O."],
-            ["Katar", "1d4", "1M", "19", "40 M.O."]
+            ["Katar", "1d4", "1M", "19", "40 M.O."],
+            ["Lança Falange (uma mão)", "1d8", "1M", "20", "5 M.O."],
+            ["Lança foguete", "1d6/1d8", "2M", "20", "20 M.O."],
+            ["Lança Mola", "1d6/1d8", "1M/2M", "20", "5 M.O."],
+            ["Machado Anão (uma mão)", "1d10", "1M", "20", "50 M.O."],
+            ["Maça Granada", "1d8", "2M", "20", "20 M.O."],
+            ["Machado Táurico", "4d6", "2M", "20", "80 M.O."],
+            ["Marreta Pistão", "2d6", "2M", "20", "15 M.O."],
+            ["Martelo Pistão", "1d10", "2M", "20", "40 M.O."],
+            ["Montante Cinético", "3d6", "2M", "20", "250 M.O."],
+            ["Mosquetão", "4d8", "2M", "20", "500 M.O."],
+            ["Presa da Serpente", "2d4", "1M", "17", "30 M.O."],
+            ["Vara relâmpago", "3d8", "2M", "20", "300 M.O."]
         ],
         "Escudos": [
             ["Escudo simples", "Defesa +2", "1M", "20", "15 M.O."],
@@ -1105,7 +1141,7 @@ const EquipmentPage = () => {
                                 <ul>
                                     <li><strong>Sem Modificadores de Habilidade:</strong> O Ladino não adicionaria seu valor de combate corpo a corpo ao acerto nem de Força ao dano.</li>
                                     <li><strong>Sem Bônus de Habilidades:</strong> Qualquer bônus de habilidades de classe não se aplicaria.</li>
-                                    <li><strong>Dano Base Apenas:</strong> A alabarda causaria um dano fixo de 4.</li>
+                                    <li><strong>Dano Base Apenas:</strong> A alabarda causaria um dano fixo de 1d10.</li>
                                 </ul>
                             </Typography>
                         </Box>

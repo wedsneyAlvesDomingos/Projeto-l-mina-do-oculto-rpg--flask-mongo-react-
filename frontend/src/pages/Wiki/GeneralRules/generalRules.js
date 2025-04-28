@@ -178,6 +178,20 @@ const GeneralRulesPage = () => {
 
                 Se uma criatura passar dois dias consecutivos sem realizar um descanso longo, ela é considerada na condição Cansada. A cada dois dias adicionais sem um descanso longo, o nível de cansaço aumenta. Cada descanso longo realizado retira um nível de cansaço.
                 `} />
+
+                <Paragraph title="Regalias e Pontos de Regalia" text={`
+                    No sistema de Regalias, o personagem pode adquirir Regalias de Classe, Regalias de Profissão, Proficiências ou Regalias de Espécie usando Pontos de Regalia. O personagem recebe pontos de Regalia ao passar de nível com seu personagem.
+
+                    No primeiro nível, o personagem começa com 4 Pontos de Regalia, no segundo nível recebe mais 4 e a partir do terceiro nível, quando os pré requisitos para escolher uma classe são preenchidos, recebe 2 Pontos de Regalia por nível. Um personagem no nível 20 terá um total de 44 Pontos de Regalia, por exemplo.
+
+                    Dos quatro Pontos de Regalia do primeiro nível, três deles já estão pré-determinados. O primeiro ponto deve ser usado obrigatoriamente para comprar uma Regalia de Espécie, o segundo ponto para uma Regalia da Classe Aprendiz e o terceiro ponto para uma Regalia da Profissão escolhida. O quarto ponto pode ser gasto onde quiser e, assim como nos próximos níveis, e até mesmo guardá-lo para os próximos níveis com a intenção de comprar Regalias mais caras. Essa estrutura garante que os personagens tenham uma base sólida e equilibrada em termos de espécie, classe e profissão, promovendo diversidade e consistência no desenvolvimento inicial. Além disso, a flexibilidade do quarto ponto permite personalização e planejamento estratégico a longo prazo, incentivando a criação de personagens únicos e adaptáveis.
+
+                    As Regalias podem conceder várias Habilidades. Existem dois tipos principais de Regalias: passivas e ativas. Regalias passivas não precisam de pontos de Estâmina ou Magia para funcionar, apenas dependem da situação certa. Algumas Regalias passivas estão sempre ativas, enquanto outras precisam de uma ou mais condições específicas para funcionar, como usar uma ação específica.
+
+                    Por outro lado, as Regalias ativas são Habilidades que exigem a ativação por meio de uma ação ou mais, quase sempre com o gasto de pontos de Estâmina ou Magia. Essas Regalias podem ser ações normais ou reações a eventos específicos.
+
+                    É importante observar as descrições e requisitos das Regalias ao escolhê-las, pois algumas podem oferecer ataques especiais ou efeitos únicos, enquanto outras podem proporcionar benefícios passivos ou suporte. Certifique-se de entender como as Regalias funcionam e como elas se encaixam no estilo de jogo do seu personagem.
+                `} />
             </Box>
         );
     }

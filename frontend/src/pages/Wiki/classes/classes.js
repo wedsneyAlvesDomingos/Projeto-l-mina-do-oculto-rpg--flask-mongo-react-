@@ -51,6 +51,12 @@ const ClassesPage = () => {
       thisThisvalue(newValue);
     }
   };
+  const Paragraph = ({ title, text }) => (
+    <Box my={4}>
+      <Typography variant="h6" className="boxTextTitle" gutterBottom>{title}</Typography>
+      <Typography variant="body1" className="bigBoxTextClasses" paragraph>{text}</Typography>
+    </Box>
+  );
 
   const regaliaContructor = {
     "nome": "[Nome da Regalia]" || null,
@@ -4621,6 +4627,28 @@ const ClassesPage = () => {
           </Typography>
           <Grid container spacing={1} sx={{ my: 4 }}>
             <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+              <Paragraph title="Regalias e Pontos de Regalia" text={`
+                    No sistema de Regalias, o personagem pode adquirir Regalias de Classe, Regalias de Profissão, Proficiências ou Regalias de Espécie usando Pontos de Regalia. O personagem recebe pontos de Regalia ao passar de nível com seu personagem.
+
+                    No primeiro nível, o personagem começa com 4 Pontos de Regalia, no segundo nível recebe mais 4 e a partir do terceiro nível, quando os pré requisitos para escolher uma classe são preenchidos, recebe 2 Pontos de Regalia por nível. Um personagem no nível 20 terá um total de 44 Pontos de Regalia, por exemplo.
+
+                    Dos quatro Pontos de Regalia do primeiro nível, três deles já estão pré-determinados. O primeiro ponto deve ser usado obrigatoriamente para comprar uma Regalia de Espécie, o segundo ponto para uma Regalia da Classe Aprendiz e o terceiro ponto para uma Regalia da Profissão escolhida. O quarto ponto pode ser gasto onde quiser e, assim como nos próximos níveis, e até mesmo guardá-lo para os próximos níveis com a intenção de comprar Regalias mais caras. Essa estrutura garante que os personagens tenham uma base sólida e equilibrada em termos de espécie, classe e profissão, promovendo diversidade e consistência no desenvolvimento inicial. Além disso, a flexibilidade do quarto ponto permite personalização e planejamento estratégico a longo prazo, incentivando a criação de personagens únicos e adaptáveis.
+
+                    As Regalias podem conceder várias Habilidades. Existem dois tipos principais de Regalias: passivas e ativas. Regalias passivas não precisam de pontos de Estâmina ou Magia para funcionar, apenas dependem da situação certa. Algumas Regalias passivas estão sempre ativas, enquanto outras precisam de uma ou mais condições específicas para funcionar, como usar uma ação específica.
+
+                    Por outro lado, as Regalias ativas são Habilidades que exigem a ativação por meio de uma ação ou mais, quase sempre com o gasto de pontos de Estâmina ou Magia. Essas Regalias podem ser ações normais ou reações a eventos específicos.
+
+                    É importante observar as descrições e requisitos das Regalias ao escolhê-las, pois algumas podem oferecer ataques especiais ou efeitos únicos, enquanto outras podem proporcionar benefícios passivos ou suporte. Certifique-se de entender como as Regalias funcionam e como elas se encaixam no estilo de jogo do seu personagem.
+                `} />
+            </Grid>
+            
+            <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+              <Box sx={{ mx: 'auto', width: '100%', display:'flex', justifyContent:'end' }}>
+                <img src={classes} alt="Classes Image" style={{ width: '80%'}}/>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+              <Typography variant="h6" className="boxTextTitle" gutterBottom>Progressão</Typography>
               <Typography variant="h5" className="bigBoxTextClasses">
                 As classes deste sistema evoluem de maneira simples e são bem familiares para todos que gostam de rpg e fantasia. Quando um jogador de ttrpg decide jogar uma campanha é fundamental que as opções disponíveis possam atender o maior número de expectativas possíveis. Pensando nisso o sistema de classe do LDO foi pensado para uma progressão tanto vertical quanto horizontal, a depender das decisões do cliente. Para escolher uma classe primária, o jogador deve começar com a classe "Aprendiz" e escolher a Regalia de Aprendiz condizente com a classe primária desejada. Além disso, o personagem deve atingir pelo menos o nível 3 para poder escolher uma classe primária. As classes primárias devem ser escolhidas antes de qualquer classe secundária. O jogador começa com a classe "Aprendiz", e ao atingir o nível 3, pode optar por uma classe primária. O diagrama abaixo ilustra como funciona o processo de escolha das classes, a evolução das Regalias e a progressão de níveis.
               </Typography>
@@ -4630,11 +4658,6 @@ const ClassesPage = () => {
               <Typography variant="body1" className="bigBoxTextClasses">
                 O personagem pode comprar Regalias através de pontos de Regalia. Ao subir de nível, o personagem recebe dois pontos, que podem ser gastos em qualquer Regalia que tenha acesso, desde que tenha pontos suficientes. Se uma habilidade não tiver um número ao lado, a Regalia custa apenas um ponto. Caso tenha um número entre parênteses, a Habilidade custa o valor desse número em pontos de Regalia.
               </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-              <Box sx={{ mx: 'auto', width: '30%' }}>
-                <img src={classes} alt="Classes Image" />
-              </Box>
             </Grid>
           </Grid>
 

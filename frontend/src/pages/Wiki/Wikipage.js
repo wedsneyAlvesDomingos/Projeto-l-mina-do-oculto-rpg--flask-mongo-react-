@@ -20,7 +20,7 @@ const WikiPage = () => {
 
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
-    const options = [
+    const searchKeyWords = [
         { label: 'Regras de Combate', path: '/regrasCombate' },
         { label: 'Combate', path: '/regrasCombate' },
         { label: 'Turno', path: '/regrasCombate' },
@@ -221,7 +221,108 @@ const WikiPage = () => {
         { label: 'Itens gerais', path: '/equipment' },
         { label: 'Kits', path: '/equipment' },
         { label: 'Veículos e montarias', path: '/equipment' },
-        
+        { label: 'Proficiência com armas', path: '/equipment' },
+        { label: 'Adaga', path: '/equipment' },
+        { label: 'Adaga de mola', path: '/equipment' },
+        { label: 'Arco curto', path: '/equipment' },
+        { label: 'Azagaia', path: '/equipment' },
+        { label: 'Bastão acochoado', path: '/equipment' },
+        { label: 'Besta Leve', path: '/equipment' },
+        { label: 'Bordão', path: '/equipment' },
+        { label: 'Clava', path: '/equipment' },
+        { label: 'Espada curta', path: '/equipment' },
+        { label: 'Funda', path: '/equipment' },
+        { label: 'Lança', path: '/equipment' },
+        { label: 'Maça', path: '/equipment' },
+        { label: 'Machadinha', path: '/equipment' },
+        { label: 'Martelo leve', path: '/equipment' },
+        { label: 'Tacape', path: '/equipment' },
+        { label: 'Aji', path: '/equipment' },
+        { label: 'Alabarda  ', path: '/equipment' },
+        { label: 'Alfange', path: '/equipment' },
+        { label: 'Arco longo', path: '/equipment' },
+        { label: 'Besta de mão', path: '/equipment' },
+        { label: 'Besta pesada', path: '/equipment' },
+        { label: 'Cajado de batalha', path: '/equipment' },
+        { label: 'Chicote', path: '/equipment' },
+        { label: 'Cimitarra', path: '/equipment' },
+        { label: 'Corrente de cravos', path: '/equipment' },
+        { label: 'Espada bastarda', path: '/equipment' },
+        { label: 'Espada grande', path: '/equipment' },
+        { label: 'Espada longa', path: '/equipment' },
+        { label: 'Florete', path: '/equipment' },
+        { label: 'Foice', path: '/equipment' },
+        { label: 'Katana', path: '/equipment' },
+        { label: 'Catapulta de braço', path: '/equipment' },
+        { label: 'Manopla de espinhos', path: '/equipment' },
+        { label: 'Espada de lâminas duplas', path: '/equipment' },
+        { label: 'Espada de diapasão', path: '/equipment' },
+        { label: 'Espada táurica', path: '/equipment' },
+        { label: 'Katar', path: '/equipment' },
+        { label: 'Lança foguete', path: '/equipment' },
+        { label: 'Lança mola', path: '/equipment' },
+        { label: 'Machado anão', path: '/equipment' },
+        { label: 'Machado táurico', path: '/equipment' },
+        { label: 'Marreta pistão', path: '/equipment' },
+        { label: 'Martelo pistão', path: '/equipment' },
+        { label: 'Montante Cinético', path: '/equipment' },
+        { label: 'Mosquetão', path: '/equipment' },
+        { label: 'Presa da serpente', path: '/equipment' },
+        { label: 'Vara relâmpago', path: '/equipment' },
+        { label: 'Wakizashi', path: '/equipment' },
+        { label: 'Tridente', path: '/equipment' },
+        { label: 'Sai', path: '/equipment' },
+        { label: 'Sabre serrilhado', path: '/equipment' },
+        { label: 'Rede', path: '/equipment' },
+        { label: 'Pistola de tambor', path: '/equipment' },
+        { label: 'Pistola', path: '/equipment' },
+        { label: 'Pique', path: '/equipment' },
+        { label: 'Nunchaku', path: '/equipment' },
+        { label: 'Mosquete', path: '/equipment' },
+        { label: 'Martelo de guerra', path: '/equipment' },
+        { label: 'Marreta estilhaçadora', path: '/equipment' },
+        { label: 'Marreta', path: '/equipment' },
+        { label: 'Manopla espada', path: '/equipment' },
+        { label: 'Mangual', path: '/equipment' },
+        { label: 'Mangual Pesado', path: '/equipment' },
+        { label: 'Machado grande', path: '/equipment' },
+        { label: 'Maça de guerra', path: '/equipment' },
+        { label: 'Maça estrela', path: '/equipment' },
+        { label: 'Lança montada', path: '/equipment' },
+        { label: 'Lança de falange', path: '/equipment' },
+        { label: 'Arco composto', path: '/equipment' },
+        { label: 'Florete Agulha', path: '/equipment' },
+        { label: 'Fogo alquímico', path: '/equipment' },
+        { label: 'Pó de explosão solar', path: '/equipment' },
+        { label: 'Classes', path: '/classes' },
+        { label: 'Aprendiz', path: '/classes' },
+        { label: 'Regalias', path: '/regrasGerais' },
+        { label: 'Regalias de classe', path: '/classes' },
+        { label: 'Progressão de classe', path: '/classes' },
+        { label: 'Combatente', path: '/classes' },
+        { label: 'Noviço', path: '/classes' },
+        { label: 'Iniciado', path: '/classes' },
+        { label: 'Feiticeiro', path: '/classes' },
+        { label: 'Especializações', path: '/classes' },
+        { label: 'Cavaleiro', path: '/classes' },
+        { label: 'Caçador', path: '/classes' },
+        { label: 'Assassino', path: '/classes' },
+        { label: 'Bárbaro', path: '/classes' },
+        { label: 'Mago', path: '/classes' },
+        { label: 'Professor', path: '/classes' },
+        { label: 'Exorcista', path: '/classes' },
+        { label: 'Sarcedote', path: '/classes' },
+        { label: 'Xamã', path: '/classes' },
+        { label: 'Elementalista', path: '/classes' },
+        { label: 'Bruxo', path: '/classes' },
+        { label: 'Metamorfo', path: '/classes' },
+        { label: 'Monge', path: '/classes' },
+        { label: 'Inquisitor', path: '/classes' },
+        { label: 'Combatente Arcano', path: '/classes' },
+        { label: 'Erudito', path: '/classes' },
+        { label: 'Caçador de demônios', path: '/classes' },
+        { label: 'Profano', path: '/classes' },
+        { label: 'Invocador', path: '/classes' },
     ];
 
     const handleSearch = () => {
@@ -231,7 +332,7 @@ const WikiPage = () => {
             .toLowerCase()
             .replace(/\s+/g, '');
 
-        const found = options.find(opt =>
+        const found = searchKeyWords.find(opt =>
             opt.path.toLowerCase().includes(normalizedQuery)
         );
 
@@ -255,7 +356,7 @@ const WikiPage = () => {
                 <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center' }}>
                     <Autocomplete
                         freeSolo
-                        options={query.length > 0 ? options : []}
+                        searchKeyWords={query.length > 0 ? searchKeyWords : []}
                         getOptionLabel={(option) => option.label}
                         inputValue={query}
                         onInputChange={(event, newInputValue) => setQuery(newInputValue)}
