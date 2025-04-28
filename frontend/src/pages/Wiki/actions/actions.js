@@ -152,7 +152,7 @@ const Actionspage = () => {
         },
         {
             title: "Recuar Cuidadosamente",
-            description: "Algumas criaturas possuem a habilidade de realizar ataques de oportunidade quando uma criatura se afasta delas. No entanto, uma criatura pode recuar cuidadosamente por até 1,5 metros sem sofrer ataques de oportunidade.",
+            description: "Algumas criaturas possuem a habilidade de realizar ataques de oportunidade quando uma criatura se afasta delas. No entanto, uma criatura pode recuar cuidadosamente por até 3 metros, em qualuqer direção, sem sofrer ataques de oportunidade.",
         },
         {
             title: "Escalar",

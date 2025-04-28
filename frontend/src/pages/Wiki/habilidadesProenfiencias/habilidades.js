@@ -576,6 +576,7 @@ const HabilidadesPage = () => {
                         {tabIndex === 4 && (
                             <Typography className="bigBoxTextClasses">
                                 Um sucesso cŕitico nunca se configura como sucesso garantido, para um sucesso deve se passar no teste superando ou rolando um número igual ao valor de dificuldade.Considerando essa informação, no entanto,  cada 10 pontos atingidos acima do valor de dificuldade pode conceder benefícios extras de acordo com o mestre.<br /><br />
+                                Aqui estão algumas opções interessantes e variadas para o que pode acontecer quando um personagem rola um sucesso crítico:
                                 <ul>
                                     <li lassName="bigBoxTextClasses"><strong>Efeito Secundário Positivo:</strong> Além do sucesso principal, ocorre um efeito secundário positivo. Por exemplo, um ataque de espada que também desarma o oponente ou uma tentativa de intimidação que causa medo adicional a outros inimigos próximos.</li>
                                     <li lassName="bigBoxTextClasses"><strong>Recurso Recuperado:</strong>o personagem recupera parcialmente um recurso gasto, como pontos de magia, stamina, ou uma habilidade especial.</li>

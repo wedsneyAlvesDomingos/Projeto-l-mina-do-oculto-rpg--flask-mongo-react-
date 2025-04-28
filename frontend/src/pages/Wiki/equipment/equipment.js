@@ -995,10 +995,7 @@ const EquipmentPage = () => {
                             </Typography>
                         </Box>
 
-                        <Box >
-                            <Typography variant="h5" className="boxTextTitleText">
-                                Compra e Venda de Itens
-                            </Typography>
+                        <Box >  
                             <Typography variant="body1" className="bigBoxTextClasses">
                                 Quando um personagem decide comprar itens, ele precisa dispor de uma quantia suficiente de M.O. ou de
                                 outros recursos para completar a transação. Cada item tem um preço fixo, como especificado nas tabelas
