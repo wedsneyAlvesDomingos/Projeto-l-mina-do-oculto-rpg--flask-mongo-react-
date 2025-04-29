@@ -2,3 +2,6 @@ Flask
 python-dotenv
 flask-cors
 pymongo
+Flask-Mail
+itsdangerous
+flask_pymongo

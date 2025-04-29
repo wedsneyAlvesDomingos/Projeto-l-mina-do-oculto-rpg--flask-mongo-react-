@@ -56,23 +56,28 @@ const SignUpPage = () => {
     };
 
     const signup = async () => {
+        console.log(username, email, password);
+        
         // Verifica se o nome, email e senha estão definidos
         if (!username || !email || !password) {
             setPasswordError("Por favor, preencha todos os campos."); // Mensagem de erro se os campos estiverem vazios
             return;
         }
     
+        // Faz a requisição para criar o usuário
         fetch(`${baseUrl}/users`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: username, email: email, password: password }) // Incluindo email no corpo da requisição
+            body: JSON.stringify({ name: username, email: email, password: password })
+
         })
             .then(r => r.json())
             .then(r => {
-                if (r.id) { // Verifica se o id do usuário foi retornado
+                if (r.id) { // Verifica se o id do usuário foi retornado, ou se a confirmação de email é necessária
                     localStorage.setItem("user", JSON.stringify({ name: r.name, id: r.id }));
+                    alert('Verifique seu e-mail para confirmar o cadastro!');
     
                     // Armazenar o nome de usuário se o checkbox "Lembre-se de mim" estiver marcado
                     if (rememberMe) {
@@ -82,8 +87,14 @@ const SignUpPage = () => {
                     }
     
                     navigate("/home"); // Navega para a página inicial após o cadastro bem-sucedido
+                } else if (r.error === 'email_already_in_use') {
+                    setPasswordError("Este e-mail já está em uso. Tente outro e-mail."); // Erro se o email já estiver em uso
+                    setLoginError(true);
+                } else if (r.error === 'email_not_verified') {
+                    setPasswordError("Por favor, verifique seu e-mail antes de tentar novamente.");
+                    setLoginError(true);
                 } else {
-                    setPasswordError(r.error || "Erro ao criar usuário."); // Mensagem de erro se houver algum problema
+                    setPasswordError(r.error || "Erro ao criar usuário."); // Mensagem de erro genérica
                     setLoginError(true);
                 }
             })
@@ -93,6 +104,7 @@ const SignUpPage = () => {
                 setLoginError(true);
             });
     };
+    
     
 
     const [showPassword, setShowPassword] = React.useState(false);
