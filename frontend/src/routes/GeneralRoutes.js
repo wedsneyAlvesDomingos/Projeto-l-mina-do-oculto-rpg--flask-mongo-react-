@@ -31,6 +31,17 @@ import SarcedotePage from "../pages/Wiki/classes/sarcedote";
 import ExorcistaPage from "../pages/Wiki/classes/exorcista";
 import MagoPage from "../pages/Wiki/classes/mago";
 import ProfessorPage from "../pages/Wiki/classes/professor";
+import XamaPage from "../pages/Wiki/classes/xama";
+import ElementalistaPage from "../pages/Wiki/classes/xama";
+import BruxoPage from "../pages/Wiki/classes/bruxo";
+import MetamorfoPage from "../pages/Wiki/classes/metamorfo";
+import MongePage from "../pages/Wiki/classes/monge";
+import InquisidorPage from "../pages/Wiki/classes/inquisidor";
+import CacadorDeDemonionsPage from "../pages/Wiki/classes/cacadorDeDemonios";
+import CombatenteArcanoPage from "../pages/Wiki/classes/combatenteArcano";
+import EruditoPage from "../pages/Wiki/classes/erudito";
+import ProfanoPage from "../pages/Wiki/classes/profano";
+import InvocadorPage from "../pages/Wiki/classes/invocador";
 
 
 
@@ -217,6 +228,105 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <ProfessorPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/xama",
+        ele: <>
+            <ResponsiveAppBar />
+            <XamaPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/elementalista",
+        ele: <>
+            <ResponsiveAppBar />
+            <ElementalistaPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/bruxo",
+        ele: <>
+            <ResponsiveAppBar />
+            <BruxoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/metamorfo",
+        ele: <>
+            <ResponsiveAppBar />
+            <MetamorfoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/monge",
+        ele: <>
+            <ResponsiveAppBar />
+            <MongePage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/inquisidor",
+        ele: <>
+            <ResponsiveAppBar />
+            <InquisidorPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/combatenteArcano",
+        ele: <>
+            <ResponsiveAppBar />
+            <CombatenteArcanoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/erudito",
+        ele: <>
+            <ResponsiveAppBar />
+            <EruditoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/profano",
+        ele: <>
+            <ResponsiveAppBar />
+            <ProfanoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/invocador",
+        ele: <>
+            <ResponsiveAppBar />
+            <InvocadorPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/cacadorDeDemonios",
+        ele: <>
+            <ResponsiveAppBar />
+            <CacadorDeDemonionsPage/>
 
         </>,
         availability: [ur.admin]

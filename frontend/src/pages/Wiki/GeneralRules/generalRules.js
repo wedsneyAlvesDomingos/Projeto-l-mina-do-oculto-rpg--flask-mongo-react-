@@ -42,9 +42,9 @@ const GeneralRulesPage = () => {
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
-                        <TableRow>
+                        <TableRow className="headerLine">
                             {headers.map(header => (
-                                <TableCell key={header}><strong>{header}</strong></TableCell>
+                                <TableCell key={header} className="bigBoxTextEquips"><strong>{header}</strong></TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
@@ -52,7 +52,7 @@ const GeneralRulesPage = () => {
                         {data.map((row, index) => (
                             <TableRow key={index}>
                                 {row.map((cell, i) => (
-                                    <TableCell key={i}>{cell}</TableCell>
+                                    <TableCell className="bigBoxTextEquips" key={i}>{cell}</TableCell>
                                 ))}
                             </TableRow>
                         ))}

@@ -900,14 +900,14 @@ const JobsPage = () => {
       <Typography className="bigBoxTextClasses" sx={{ mt: 2 }}>
         Em muitos sistemas de RPG, as profissões desempenham um papel crucial no desenvolvimento do personagem, oferecendo uma forma tangível de especialização e aprimoramento à medida que ele avança em suas jornadas. Em nosso sistema, as profissões são concebidas como um conjunto de habilidades que evoluem ao longo do tempo, permitindo que o personagem se torne mais competente em sua área escolhida e, ao mesmo tempo, oferecendo uma gama de possibilidades durante o jogo.
       </Typography>
-      <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>
+      <Typography className="boxTextTitle" variant="h5"  sx={{ my: 2, mx: 3 }}>
         Progressão e Regalias</Typography>
       <Typography className="bigBoxTextClasses" sx={{ mt: 2 }}>
         Ao atingir novos níveis, o personagem tem a oportunidade de investir seus pontos de Regalia para melhorar sua profissão ou até mesmo escolher uma nova. Essa flexibilidade é essencial para garantir que o personagem tenha um senso de evolução contínua e relevância dentro do jogo.
         <br />
         Cada ponto de Regalia atribuído a uma profissão escolhida proporciona um avanço progressivo nas habilidades dessa profissão, sempre seguindo uma sequência numérica obrigatória. Essa sequência é importante para manter a lógica de evolução da profissão, proporcionando um crescimento coerente e estruturado para o personagem.
       </Typography>
-      <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>        Escolhas de Profissão e Habilidades</Typography>
+      <Typography className="boxTextTitle" variant="h5"  sx={{ my: 2, mx: 3 }}>        Escolhas de Profissão e Habilidades</Typography>
       <Typography className="bigBoxTextClasses" sx={{ mt: 2 }}>
         Quando o personagem atinge um novo nível e decide investir em sua profissão, ele pode escolher entre várias habilidades disponíveis dentro de sua profissão inicial ou até mesmo optar por uma nova profissão. Para as profissões que possuem habilidades ordenadas numericamente, o ponto de Regalia investido deve seguir essa ordem específica. Ou seja, um ponto de Regalia gasto no nível 1 concede a primeira habilidade, no nível 2 a segunda habilidade, e assim por diante.
         <br />
@@ -937,18 +937,18 @@ const JobsPage = () => {
       {profissoes.map((p, i) => (
         <Accordion key={i}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">{p.nome}</Typography>
+            <Typography className="boxTextTitle" variant="h6">{p.nome}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Box mb={2}>
-              {p.ambiente && <Typography variant="body2"><strong>Ambiente:</strong> {p.ambiente}</Typography>}
-              {p.ambienteEmprego && <Typography variant="body2"><strong>Ambiente de Emprego:</strong> {p.ambienteEmprego}</Typography>}
-              {p.rendimento != null && <Typography variant="body2"><strong>Rendimento:</strong> {p.rendimento} moedas</Typography>}
-              {p.rendaPorDia != null && <Typography variant="body2"><strong>Renda por Dia:</strong> {p.rendaPorDia} moedas</Typography>}
-              {p.chanceDeRisco && <Typography variant="body2"><strong>Chance de Risco:</strong> {p.chanceDeRisco}</Typography>}
+              {p.ambiente && <Typography className="bigBoxTextClasses" variant="body2"><strong>Ambiente:</strong> {p.ambiente}</Typography>}
+              {p.ambienteEmprego && <Typography className="bigBoxTextClasses" variant="body2"><strong>Ambiente de Emprego:</strong> {p.ambienteEmprego}</Typography>}
+              {p.rendimento != null && <Typography className="bigBoxTextClasses" variant="body2"><strong>Rendimento:</strong> {p.rendimento} moedas</Typography>}
+              {p.rendaPorDia != null && <Typography className="bigBoxTextClasses" variant="body2"><strong>Renda por Dia:</strong> {p.rendaPorDia} moedas</Typography>}
+              {p.chanceDeRisco && <Typography className="bigBoxTextClasses" variant="body2"><strong>Chance de Risco:</strong> {p.chanceDeRisco}</Typography>}
               {p.beneficiosFixos?.length > 0 && (
                 <>
-                  <Typography variant="subtitle2" mt={1}>Benefícios Fixos:</Typography>
+                  <Typography className="bigBoxTextClasses" variant="subtitle2" mt={1}>Benefícios Fixos:</Typography>
                   <List dense>
                     {p.beneficiosFixos.map((b, j) => (
                       <ListItem key={j}><ListItemText primary={b} /></ListItem>
@@ -959,11 +959,11 @@ const JobsPage = () => {
             </Box>
             {p.habilidades?.length > 0 && (
               <Box mt={2}>
-                <Typography variant="subtitle1">Habilidades:</Typography>
+                <Typography className="bigBoxTextClasses" variant="subtitle1">Habilidades:</Typography>
                 {p.habilidades.map((h, j) => (
                   <Box key={j} mb={2} ml={1}>
-                    <Typography variant="subtitle2">{h.nome}</Typography>
-                    {h.descricao && <Typography variant="body2">{h.descricao}</Typography>}
+                    <Typography className="bigBoxTextClasses" variant="subtitle2">{h.nome}</Typography>
+                    {h.descricao && <Typography className="bigBoxTextClasses" variant="body2">{h.descricao}</Typography>}
                     {"custoRegalia" in h && <Chip label={`Custo: ${h.custoRegalia} Regalia`} size="small" />}
                     {h.opcoes?.length > 0 && (
                       <List dense>{h.opcoes.map((o, k) => <ListItem key={k}><ListItemText primary={o} /></ListItem>)}</List>
@@ -977,13 +977,13 @@ const JobsPage = () => {
             )}
             {p.sistemasEspeciais && Object.keys(p.sistemasEspeciais).length > 0 && (
               <Box mt={2}>
-                <Typography variant="subtitle1">Sistemas Especiais:</Typography>
+                <Typography className="bigBoxTextClasses" variant="subtitle1">Sistemas Especiais:</Typography>
                 {Object.entries(p.sistemasEspeciais).map(([titulo, conteudo], j) => (
                   <Box key={j} ml={1} mt={1}>
-                    <Typography variant="subtitle2">{titulo}</Typography>
+                    <Typography className="bigBoxTextClasses" variant="subtitle2">{titulo}</Typography>
                     {conteudo.tabelas && Object.entries(conteudo.tabelas).map(([nome, valores], k) => (
                       <Box key={k} ml={2}>
-                        <Typography variant="body2"><strong>{nome}</strong></Typography>
+                        <Typography className="bigBoxTextClasses" variant="body2"><strong>{nome}</strong></Typography>
                         <List dense>
                           {Object.entries(valores).map(([faixa, valor], m) => (
                             <ListItem key={m}><ListItemText primary={`${faixa}: ${valor}`} /></ListItem>
@@ -995,7 +995,7 @@ const JobsPage = () => {
                 ))}
               </Box>
             )}
-            {p.pocoes && <Typography variant="h5" sx={{ my: 2 }}>Poções</Typography>}
+            {p.pocoes && <Typography className="boxTextTitle" variant="h5" sx={{ my: 2 }}>Poções</Typography>}
             {p.pocoes && <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -1022,7 +1022,7 @@ const JobsPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>}
-            {p.venenos && <Typography variant="h5" sx={{ my: 2 }}>Venenos de animais</Typography>}
+            {p.venenos && <Typography className="boxTextTitle" variant="h5" sx={{ my: 2 }}>Venenos de animais</Typography>}
             {p.venenos && <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -1050,7 +1050,7 @@ const JobsPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>}
-            {p.plantas && <Typography variant="h5" sx={{ my: 2 }}>Venenos de plantas</Typography>}
+            {p.plantas && <Typography className="boxTextTitle" variant="h5" sx={{ my: 2 }}>Venenos de plantas</Typography>}
             {p.plantas && <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -1078,7 +1078,7 @@ const JobsPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>}
-            {p.monstros && <Typography variant="h5" sx={{ my: 2 }}>Venenos de Monstros</Typography>}
+            {p.monstros && <Typography className="boxTextTitle" variant="h5" sx={{ my: 2 }}>Venenos de Monstros</Typography>}
             {p.monstros && <TableContainer component={Paper}>
               <Table>
                 <TableHead>

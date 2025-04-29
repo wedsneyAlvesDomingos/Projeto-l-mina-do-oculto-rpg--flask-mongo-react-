@@ -126,15 +126,15 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
     const Condicoes = () => {
         return (
             <Box  sx={{width:'90%', mt: 4, mb: 6 , mx:'auto'}}>
-                <Typography variant="h4" gutterBottom>
+                <Typography className="MainTitleC" variant="h4" gutterBottom>
                     Condições
                 </Typography>
                 <Box  sx={{ my: 4 }}>
           
-                        <Typography variant="h5" gutterBottom>
+                        <Typography className="boxTextTitle" variant="h5" gutterBottom>
                             Condições em RPG de Mesa
                         </Typography>
-                        <Typography variant="body1">
+                        <Typography  className="bigBoxTextClasses" variant="body1">
                             No coração de muitos sistemas de RPG de mesa, as condições representam mais do que simples estados temporários de personagens —
                             elas são o motor por trás da imprevisibilidade, profundidade tática e drama do combate. Trata-se de um conjunto de efeitos
                             narrativos e mecânicos que alteram diretamente a forma como uma criatura interage com o mundo ao seu redor e com os outros
@@ -145,10 +145,10 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
 
                 <Box sx={{my:2}}>
 
-                        <Typography variant="h6">O Que São Condições?</Typography>
+                        <Typography className="boxTextTitle" variant="h6">O Que São Condições?</Typography>
 
 
-                        <Typography variant="body2">
+                        <Typography  className="bigBoxTextClasses" variant="body2">
                             Condições são estados específicos que afetam um personagem ou criatura, temporariamente ou até que sejam tratados. Elas podem
                             surgir a partir de diversas fontes: manobras de combate bem-sucedidas, feitiços e magias poderosas, milagres divinos ou até
                             elementos do ambiente, como fogo, gelo, venenos ou armadilhas. Uma condição pode prejudicar, enfraquecer, restringir ou até
@@ -160,10 +160,10 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
 
                 <Box sx={{my:2}}>
                   
-                        <Typography variant="h6">Por Que Usar Condições?</Typography>
+                        <Typography className="boxTextTitle" variant="h6">Por Que Usar Condições?</Typography>
                    
                
-                        <Typography variant="body2">
+                        <Typography  className="bigBoxTextClasses" variant="body2">
                             O uso de condições em TTRPGs serve a vários propósitos fundamentais:
                             <ul>
                                 <li>
@@ -179,17 +179,17 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
                         </Typography>
                    
                 </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                <Typography variant="body2"  className="bigBoxTextClasses" color="text.secondary" sx={{ mb: 2 }}>
                     Lembrete: Apenas a maior penalidade ou bônus de acerto ou defesa é aplicada em uma criatura. Os outros efeitos são sim cumulativos.
                 </Typography>
                 <Box>
                     {condicoes.map((cond, index) => (
                         <Accordion key={index}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography variant="h6">{cond.titulo}</Typography>
+                                <Typography className="boxTextTitle" variant="h6">{cond.titulo}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography style={{ whiteSpace: 'pre-line' }}>
+                                <Typography  className="bigBoxTextClasses" style={{ whiteSpace: 'pre-line' }}>
                                     {cond.descricao}
                                 </Typography>
                             </AccordionDetails>
