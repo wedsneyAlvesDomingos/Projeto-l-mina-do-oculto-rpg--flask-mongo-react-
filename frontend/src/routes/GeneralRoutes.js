@@ -18,6 +18,19 @@ import ConditionsPage from "../pages/Wiki/conditions/conditions";
 import GeneralRulesPage from "../pages/Wiki/GeneralRules/generalRules";
 import CombatRulesPage from "../pages/Wiki/CombatRules/CombateRules";
 import PaginaNaoEncontrada from "../pages/404Page/pageNotFound";
+import AprendizPage from "../pages/Wiki/classes/aprendiz";
+import CombatentePage from "../pages/Wiki/classes/combatente";
+import IniciadoPage from "../pages/Wiki/classes/iniciado";
+import NovicoPage from "../pages/Wiki/classes/novico";
+import FeiticeiroPage from "../pages/Wiki/classes/feiticeiro";
+import CavaleiroPage from "../pages/Wiki/classes/cavaleiro";
+import CacadorPage from "../pages/Wiki/classes/cacador";
+import BarbaroPage from "../pages/Wiki/classes/barbaro";
+import AssassinoPage from "../pages/Wiki/classes/assassino";
+import SarcedotePage from "../pages/Wiki/classes/sarcedote";
+import ExorcistaPage from "../pages/Wiki/classes/exorcista";
+import MagoPage from "../pages/Wiki/classes/mago";
+import ProfessorPage from "../pages/Wiki/classes/professor";
 
 
 
@@ -87,6 +100,123 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <ClassesPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/aprendiz",
+        ele: <>
+            <ResponsiveAppBar />
+            <AprendizPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/combatente",
+        ele: <>
+            <ResponsiveAppBar />
+            <CombatentePage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/iniciado",
+        ele: <>
+            <ResponsiveAppBar />
+            <IniciadoPage />
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/novico",
+        ele: <>
+            <ResponsiveAppBar />
+            <NovicoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/feiticeiro",
+        ele: <>
+            <ResponsiveAppBar />
+            <FeiticeiroPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/cavaleiro",
+        ele: <>
+            <ResponsiveAppBar />
+            <CavaleiroPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/cacador",
+        ele: <>
+            <ResponsiveAppBar />
+            <CacadorPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/assassino",
+        ele: <>
+            <ResponsiveAppBar />
+            <AssassinoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/barbaro",
+        ele: <>
+            <ResponsiveAppBar />
+            <BarbaroPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/sarcedote",
+        ele: <>
+            <ResponsiveAppBar />
+            <SarcedotePage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/exorcista",
+        ele: <>
+            <ResponsiveAppBar />
+            <ExorcistaPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/mago",
+        ele: <>
+            <ResponsiveAppBar />
+            <MagoPage/>
+
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/classes/professor",
+        ele: <>
+            <ResponsiveAppBar />
+            <ProfessorPage/>
 
         </>,
         availability: [ur.admin]

@@ -295,23 +295,23 @@ const WikiPage = () => {
         { label: 'Fogo alquímico', path: '/equipment' },
         { label: 'Pó de explosão solar', path: '/equipment' },
         { label: 'Classes', path: '/classes' },
-        { label: 'Aprendiz', path: '/classes' },
+        { label: 'Aprendiz', path: '/classes/aprendiz' },
         { label: 'Regalias', path: '/regrasGerais' },
         { label: 'Regalias de classe', path: '/classes' },
         { label: 'Progressão de classe', path: '/classes' },
-        { label: 'Combatente', path: '/classes' },
-        { label: 'Noviço', path: '/classes' },
-        { label: 'Iniciado', path: '/classes' },
-        { label: 'Feiticeiro', path: '/classes' },
+        { label: 'Combatente', path: '/classes/combatente' },
+        { label: 'Noviço', path: '/classes/novico' },
+        { label: 'Iniciado', path: '/classes/iniciado' },
+        { label: 'Feiticeiro', path: '/classes/feiticeiro' },
         { label: 'Especializações', path: '/classes' },
-        { label: 'Cavaleiro', path: '/classes' },
-        { label: 'Caçador', path: '/classes' },
-        { label: 'Assassino', path: '/classes' },
-        { label: 'Bárbaro', path: '/classes' },
-        { label: 'Mago', path: '/classes' },
-        { label: 'Professor', path: '/classes' },
-        { label: 'Exorcista', path: '/classes' },
-        { label: 'Sarcedote', path: '/classes' },
+        { label: 'Cavaleiro', path: '/classes/cavaleiro' },
+        { label: 'Caçador', path: '/classes/cacador' },
+        { label: 'Assassino', path: '/classes/assassino' },
+        { label: 'Bárbaro', path: '/classes/barbaro' },
+        { label: 'Mago', path: '/classes/mago' },
+        { label: 'Professor', path: '/classes/professor' },
+        { label: 'Exorcista', path: '/classes/exorcista' },
+        { label: 'Sarcedote', path: '/classes/sarcedote' },
         { label: 'Xamã', path: '/classes' },
         { label: 'Elementalista', path: '/classes' },
         { label: 'Bruxo', path: '/classes' },
@@ -356,7 +356,7 @@ const WikiPage = () => {
                 <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center' }}>
                     <Autocomplete
                         freeSolo
-                        searchKeyWords={query.length > 0 ? searchKeyWords : []}
+                        options={query.length > 0 ? searchKeyWords : []}
                         getOptionLabel={(option) => option.label}
                         inputValue={query}
                         onInputChange={(event, newInputValue) => setQuery(newInputValue)}
