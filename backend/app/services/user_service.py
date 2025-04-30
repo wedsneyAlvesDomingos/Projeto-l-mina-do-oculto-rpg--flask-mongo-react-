@@ -78,15 +78,16 @@ class UserService:
 
         except Exception as e:
             raise ValueError(str(e))
-    
-
     def login_user(self, name, password):
         user = self.db.users.find_one({'name': name})
         if user and check_password_hash(user['password'], password):
+            if not user.get('email_confirmed', False):
+                raise ValueError("Email not confirmed")
             return {
                 'id': str(user['_id']),
                 'name': user['name'],
                 'email': user['email'],
-                'email_confirmed': user.get('email_confirmed', False)
+                'email_confirmed': True
             }
         return None
+

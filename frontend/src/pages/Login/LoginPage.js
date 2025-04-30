@@ -75,8 +75,13 @@ const LoginPage = () => {
 
                     navigate("/home");
                 } else {
-                    setPasswordError(r.error || "Usuário ou senha incorretos.");
-                    setLoginError(true);
+                    if(r.error  == "Invalid data: Email not confirmed"){
+                        setPasswordError("Confirme a sua conta por email.");
+                    }else{
+                        setPasswordError(r.error || "Usuário ou senha incorretos.");
+                        setLoginError(true);
+                    }
+
                 }
             })
             .catch(error => {
