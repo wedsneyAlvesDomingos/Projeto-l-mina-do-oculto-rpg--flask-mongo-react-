@@ -16,6 +16,8 @@ import { useCallback } from "react";
 
 const SignUpPage = () => {
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
+    const [feedbackMessage, setFeedbackMessage] = useState("");
+    const [feedbackType, setFeedbackType] = useState(""); // "success" ou "error"
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -76,18 +78,23 @@ const SignUpPage = () => {
             .then(r => r.json())
             .then(r => {
                 if (!r.error) {
-                    alert('Verifique seu e-mail para confirmar o cadastro! Importante: O email pode cair como spam!');
-                    setUsername("")
-                    setEmail("")
-                    setPassword("")
+                    setFeedbackType("success");
+                    setFeedbackMessage("Muito Bem! Cadastro concluido! Verifique seu e-mail para confirmar o cadastro! (Pode estar na caixa de spam)");
+                    setUsername("");
+                    setEmail("");
+                    setPassword("");
                 }
                 else if (r.error === 'Nome de usuário já cadastrado.') {
-                    alert('Nome de usuário já cadastrado.');
-                    setPasswordError("Este e-mail já está em uso. Tente outro e-mail."); // Erro se o email já estiver em uso
+                    setFeedbackType("error");
+                    setFeedbackMessage("Nome de usuário já cadastrado.");
+                    setPasswordError("Este nome já está em uso.");
                     setLoginError(true);
                 }
+
                 else if (r.error === 'E-mail já cadastrado.') {
                     alert('E-mail já cadastrado.');
+                    setFeedbackType("error");
+                    setFeedbackMessage('E-mail já cadastrado.');
                     setPasswordError("Este e-mail já está em uso. Tente outro e-mail."); // Erro se o email já estiver em uso
                     setLoginError(true);
                 }
@@ -131,6 +138,22 @@ const SignUpPage = () => {
                     }}
                 >
                     <img src={logo} style={{ margin: '10px' }} alt="logo" />
+                    {feedbackMessage && (
+                        <Box
+                            sx={{
+                                backgroundColor: feedbackType === "success" ? "#d4edda" : "#f8d7da",
+                                color: feedbackType === "success" ? "#155724" : "#721c24",
+                                border: `1px solid ${feedbackType === "success" ? "#c3e6cb" : "#f5c6cb"}`,
+                                borderRadius: "4px",
+                                padding: "10px",
+                                marginBottom: "16px",
+                                width:"90%",
+                            }}
+                        >
+                            {feedbackMessage}
+                        </Box>
+                    )}
+
                     <form style={{ width: '70%', margin: 'auto', display: 'flex', flexFlow: 'column wrap' }}>
                         <TextField
                             error={usernameError !== "" || loginError}
