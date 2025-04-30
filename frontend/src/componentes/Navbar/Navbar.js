@@ -110,7 +110,7 @@ function ResponsiveAppBar() {
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt={user.name.toUpperCase()} src={UIcon} />
+                                <Avatar alt={user.name} src={UIcon} />
                             </IconButton>
                         </Tooltip>
                         <Menu

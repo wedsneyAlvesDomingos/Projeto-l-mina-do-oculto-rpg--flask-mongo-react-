@@ -1,15 +1,18 @@
 from flask import Flask, request, jsonify
+from flask_mail import Mail
 from flask_cors import CORS
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson import ObjectId
 from datetime import datetime
+from services.user_service import UserService
 import os
 
 app = Flask(__name__)
 CORS(app)
 
 app.config.from_object('config.Config')
+app.config['MAIL_DEFAULT_SENDER'] = 'laminadoocultol@gmail.com'
 
 try:
     client = MongoClient(app.config['MONGO_URI'])
@@ -19,25 +22,10 @@ except Exception as e:
     print(f"Erro ao conectar ao MongoDB: {str(e)}")
     db = None
 
-class UserService:
-    @staticmethod
-    def create_user(name, email, password):
-        hashed_password = generate_password_hash(password)
-        user_data = {
-            'name': name,
-            'email': email,
-            'password': hashed_password
-        }
-        user_id = db.users.insert_one(user_data).inserted_id
-        return user_id
+mail = Mail(app)
+mail.init_app(app)
 
-    @staticmethod
-    def login_user(name, password):
-        user = db.users.find_one({'name': name})
-        if user and check_password_hash(user['password'], password):
-            return {'id': str(user['_id']), 'name': user['name'], 'email': user['email']}
-        return None
-
+user_service = UserService(db, mail, app.config['SECRET_KEY'])
 
 class PersonagemService:
     def __init__(self, db):
@@ -144,21 +132,54 @@ def create_personagem(user_id):
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
-    name = data.get('name')
-    email = data.get('email')
-    password = data.get('password')
-
-    if not name or not email or not password:
-        return jsonify({'error': 'Name, email, and password are required'}), 400
-
     try:
-        user_id = UserService.create_user(name, email, password)
-        return jsonify({'id': str(user_id), 'name': name, 'email': email}), 201
+        data = request.get_json()
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+
+        if not all([name, email, password]):
+            return jsonify({'error': 'Todos os campos são obrigatórios'}), 400
+        
+                # Verifica se já existe um usuário com o mesmo e-mail
+        if db.users.find_one({'email': email}):
+            return {'error': 'E-mail já cadastrado.'}, 400
+
+        # Verifica se já existe um usuário com o mesmo nome de usuário
+        if db.users.find_one({'name': name}):
+            return {'error': 'Nome de usuário já cadastrado.'}, 400
+
+        mail_sender_url = "http://192.168.0.169:5003"
+
+        result, status = user_service.create_user(name, email, password, mail_sender_url)
+
+        if status != 201:
+            return jsonify(result), status  # Erros como e-mail ou nome duplicado
+
+        return jsonify({
+            'message': 'Usuário criado. Verifique seu e-mail para confirmar.',
+            'user_id': result.get('user_id')
+        }), 201
+
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Erro interno do servidor', 'details': str(e)}), 500
 
+@app.route('/confirm_email', methods=['POST'])
+def confirm_email():
+    try:
+        data = request.get_json()
+        token = data.get('token')
 
+        if not token:
+            return jsonify({'message': 'Token não fornecido.'}), 400
+        
+        if user_service.confirm_email(token):
+            return jsonify({'message': 'Email confirmado com sucesso!'}), 200
+        else:
+            return jsonify({'message': 'Token inválido ou expirado.'}), 400
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+    
 @app.route('/login', methods=['POST'])
 def login():
     try:
@@ -173,7 +194,7 @@ def login():
         if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
 
-        user = UserService.login_user(email, password)
+        user = user_service.login_user(email, password)
         
         if user:
             return jsonify({'message': 'Login successful', 'user': user}), 200
@@ -191,7 +212,6 @@ def login():
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
 
 
 @app.route('/db')

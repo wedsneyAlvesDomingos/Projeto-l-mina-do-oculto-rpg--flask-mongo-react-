@@ -21,7 +21,7 @@ const LoginPage = () => {
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [loginError, setLoginError] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false); 
+    const [rememberMe, setRememberMe] = useState(false);
 
     const navigate = useNavigate();
     const handleNavigateToSignup = useCallback(() => {
@@ -60,7 +60,7 @@ const LoginPage = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: username, password })
+            body: JSON.stringify({ email: username, password: password })
         })
             .then(r => r.json())
             .then(r => {
@@ -150,8 +150,8 @@ const LoginPage = () => {
                             sx={{ mb: 2, mt: 0, width: 'fit-content' }}
                         />
                         <Box sx={{ display: 'flex' }}>
-                            <Button variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
-                            <Button variant="text" onClick={handleNavigateToSignup} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Cadastrar</Button>
+                            <Button id="buttonLogIn" variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
+                            <Button id="buttonLogIn2" variant="text" onClick={handleNavigateToSignup} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Cadastrar</Button>
                         </Box>
                     </form>
                 </Box>
