@@ -8,7 +8,7 @@ class PersonagemService:
         self.collection = db['personagens']
 
     def criar_personagem(self, user_id, nome_personagem, classe, nivel, habilidades=None, condicoes=None,
-                         proficiencias=None, regalias_de_especie=None, regalias_de_classe=None, 
+                         proficiencias=None, regalias_de_especie=None, regalias_de_aprendiz=None, regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
         
         personagem = {
@@ -21,7 +21,37 @@ class PersonagemService:
             "condições": condicoes if condicoes else {},
             "proficiencias": proficiencias if proficiencias else [],
             "regalias_de_especie": regalias_de_especie if regalias_de_especie else [],
-            "regalias_de_classe": regalias_de_classe if regalias_de_classe else [],
+            "regalias_de_aprendiz": regalias_de_aprendiz if regalias_de_aprendiz else {
+                "titulo": "",
+                "descricao": "", 
+                "Regalias": [
+                ]
+            },
+                "regalias_de_classe": regalias_de_classe if regalias_de_classe else {
+                "titulo": "",
+                "atributos":"",
+                "descricao": "",
+                "habilidade":"", 
+                "Regalias": [
+                ]
+            },
+            "regalias_de_especialization": regalias_de_especialization if regalias_de_especialization else {
+                "titulo": "",
+                "atributos":"",
+                "descricao": "",
+                "regaliaObrigatoria": {
+                    "descricao": "",
+                    "pontos":"",
+                    "outrasProficiencias":"",
+                    "habilidade":{
+                         "nome": "",
+                         "tipo": "" ,
+                         "descricao": "",
+                    }
+                    }, 
+                "Regalias": [
+                ]
+            },
             "regalias_de_profissão": regalias_de_profissao if regalias_de_profissao else [],
             "equipamentos": equipamentos if equipamentos else [],
             "criado_em": datetime.utcnow(),

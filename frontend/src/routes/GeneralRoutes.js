@@ -42,6 +42,7 @@ import CombatenteArcanoPage from "../pages/Wiki/classes/combatenteArcano";
 import EruditoPage from "../pages/Wiki/classes/erudito";
 import ProfanoPage from "../pages/Wiki/classes/profano";
 import InvocadorPage from "../pages/Wiki/classes/invocador";
+import CharacterSheet from "../pages/Character/characterSheet";
 
 export const general_routes = [
     {
@@ -65,6 +66,14 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <CharPage />
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/character/fichaDoPersonagem/:id",
+        ele: <>
+            <ResponsiveAppBar />
+            <CharacterSheet />
         </>,
         availability: [ur.admin]
     },
