@@ -27,7 +27,7 @@ mail = Mail(app)
 mail.init_app(app)
 
 user_service = UserService(db, mail, app.config['SECRET_KEY'])
-
+url = os.getenv('REACT_APP_LISTEN_ADDRESS')
 personagem_service = PersonagemService(db)
 
 @app.route('/users/<user_id>/personagens', methods=['POST'])
@@ -93,7 +93,7 @@ def create_user():
         if db.users.find_one({'name': name}):
             return {'error': 'Nome de usuário já cadastrado.'}, 400
 
-        mail_sender_url = "http://192.168.0.169:5003"
+        mail_sender_url = url +':5003'
 
         result, status = user_service.create_user(name, email, password, mail_sender_url)
 
