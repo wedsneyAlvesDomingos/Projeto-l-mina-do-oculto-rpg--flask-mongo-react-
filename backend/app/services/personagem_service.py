@@ -7,7 +7,7 @@ class PersonagemService:
     def __init__(self, db):
         self.collection = db['personagens']
 
-    def criar_personagem(self, user_id, nome_personagem, classe, nivel, habilidades=None, condicoes=None,
+    def criar_personagem(self, user_id, nome_personagem, genero ,idade,descricao, classe, nivel, habilidades=None, condicoes=None,
                          proficiencias=None, regalias_de_especie=None, regalias_de_aprendiz=None, regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
         
@@ -15,7 +15,10 @@ class PersonagemService:
             "_id": ObjectId(),
             "user_id": ObjectId(user_id),
             "nome_personagem": nome_personagem,
+            "genero": genero,
+            "idade": idade,
             "classe": classe,
+            "descricao": descricao,
             "nível": nivel,
             "habilidades": habilidades if habilidades else [],
             "condições": condicoes if condicoes else {},

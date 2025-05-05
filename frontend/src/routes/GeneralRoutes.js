@@ -43,6 +43,7 @@ import EruditoPage from "../pages/Wiki/classes/erudito";
 import ProfanoPage from "../pages/Wiki/classes/profano";
 import InvocadorPage from "../pages/Wiki/classes/invocador";
 import CharacterSheet from "../pages/Character/characterSheet";
+import CharCreationPage from "../pages/Character/criarPersonagem";
 
 export const general_routes = [
     {
@@ -74,6 +75,14 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <CharacterSheet />
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/criarPersonagem",
+        ele: <>
+            <ResponsiveAppBar />
+            <CharCreationPage />
         </>,
         availability: [ur.admin]
     },

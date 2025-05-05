@@ -386,8 +386,6 @@ const HowToMakeCharPage = () => {
         );
     };
 
-
-
     return (
         <Box >
             <Box sx={{ minHeight: '700px', width: '80%', mx: 'auto' }}>
@@ -453,8 +451,6 @@ const HowToMakeCharPage = () => {
                         O valor máximo de uma Habilidade é igual a 15. Se alguma Regalia lhe fornecer pontos em uma habilidade que já esteja no valor de 15, escolha outra habilidade do mesmo grupo (Físico, Conhecimento, Exploração, Arcana ou Social) para adicionar o ponto.
 
                     </ListItem>
-                    <ListItem sx={{ px: 0 }} className="esteban">
-                        O cálculo para o gasto de pontos de incrementos funciona apenas para Habilidades. Quando alocado em proficiências, cada  2 pontos de habilidade alocados garantem 1 nível naquela proficiência.</ListItem>
 
                     <ListItem sx={{ px: 0 }} className="esteban">
                         O personagem ganha 4 pontos de proficiência, além dos 40 pontos de habilidade anteriores, para aplicar apenas em proficiências.

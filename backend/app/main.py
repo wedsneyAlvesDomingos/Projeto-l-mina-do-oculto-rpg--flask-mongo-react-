@@ -38,7 +38,9 @@ def create_personagem(user_id):
         nome_personagem = data.get('nome_personagem')
         classe = data.get('classe')
         nivel = data.get('nível')
-
+        genero = data.get('genero')
+        idade = data.get('idade')
+        descricao = data.get('descricao')
         habilidades = data.get('habilidades', {})
         condicoes = data.get('condições', {})
         proficiencias = data.get('proficiencias', [])
@@ -56,6 +58,9 @@ def create_personagem(user_id):
             user_id=user_id,
             nome_personagem=nome_personagem,
             classe=classe,
+            idade=idade,
+            genero=genero,
+            descricao=descricao,
             nivel=nivel,
             habilidades=habilidades,
             condicoes=condicoes,
