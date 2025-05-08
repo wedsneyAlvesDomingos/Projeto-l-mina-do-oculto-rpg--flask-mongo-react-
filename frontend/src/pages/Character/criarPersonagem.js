@@ -27,8 +27,11 @@ function TabPanel({ children, value, index, ...other }) {
         </div>
     );
 }
-const Fisico = () => {
-    const data = [
+
+
+const CharCreationPage = () => {
+
+    const fisico = [
         {
             title: "Fortitude",
             description:
@@ -70,48 +73,7 @@ const Fisico = () => {
                 "Essa Habilidade está ligada à capacidade de executar uma tarefa complexa que exige grande Habilidade manual, e também determina o dano somado a ataques físicos feitos com armas de disparo ou arremesso e suas Habilidades. Regalias podem usar essa Habilidade como referência como parte de sua mecânica. Essa Habilidade é padrão para testes que envolvam desamarrar cordas ou amarrá-las, assim como tentar abrir uma fechadura, montar ou desmontar qualquer coisa que não seja obviamente impossível ou pesada demais. Ou seja, destreza tem a ver com manuseio preciso de ferramentas e objetos.Ao atingir 10 pontos nessa Habilidade o personagem ganha um bônus de +2 em todos os testes que fizer para operar com precisão quaisquer ferramentas."
         }
     ];
-
-    const [values, setValues] = React.useState(
-        Object.fromEntries(data.map((item) => [item.title, 0]))
-    );
-
-    const handleChange = (title, newValue) => {
-        setValues((prev) => ({ ...prev, [title]: parseInt(newValue) }));
-    };
-    console.log(values);
-
-    return (
-        <Paper elevation={3} sx={{ padding: 2, mx: 0, width: "19.5%", my: 1, borderBottom: '10px solid #7B3311', }}>
-            <Typography variant="h6" gutterBottom>
-                Físico
-                <Checkbox />
-            </Typography>
-            <Box display="flex" flexDirection="column" gap={2}>
-                {data.map((item, index) => (
-                    <Box key={index} gap={2} sx={{ justifyContent: 'space-around', display: "flex", alignItems: "center" }}>
-                        <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", cursor: "help" }}>
-                                {item.title}
-                            </Typography>
-                        </Tooltip>
-                        <TextField
-                            label="Valor"
-                            type="number"
-                            size="small"
-                            value={values[item.title]}
-                            onChange={(e) => handleChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
-                            inputProps={{ min: 0 }}
-                        />
-                    </Box>
-                ))}
-            </Box>
-        </Paper>
-    );
-};
-const Exploracao = () => {
-
-    const data = [
+    const exploracao = [
         {
             title: "Furtividade",
             description:
@@ -153,47 +115,7 @@ const Exploracao = () => {
                 "Essa Habilidade está relacionada à capacidade de um personagem de encontrar e desarmar armadilhas em um ambiente. Ao implantar armadilhas, então um teste com esta habilidade é feito e o resultado determina a dificuldade para desarmá-la. Regalias podem usar essa Habilidade como referência como parte de sua mecânica. Ao atingir 10 pontos nessa Habilidade o personagem se torna capaz de usar a ação de turno completo Desabilitar / Habilitar Dispositivo como uma ação desde que esteja desarmando ou armando uma armadilha. Além disso, o personagem consegue reduzir o dano de armadilhas, caso caia em uma, em metade. Se a armadilha causar mais algum efeito em seu corpo além de dano, o personagem pode escolher evitar esse efeito uma vez por dia."
         }
     ];
-
-    const [values, setValues] = React.useState(
-        Object.fromEntries(data.map((item) => [item.title, 0]))
-    );
-
-    const handleChange = (title, newValue) => {
-        setValues((prev) => ({ ...prev, [title]: parseInt(newValue) }));
-    };
-    console.log(values);
-
-    return (
-        <Paper elevation={3} sx={{ padding: 2, mx: 0, width: "19.5%", my: 1, borderBottom: '10px solid #7B3311', }}>
-            <Typography variant="h6" gutterBottom>
-                Exploração <Checkbox />
-            </Typography>
-            <Box display="flex" flexDirection="column" gap={2}>
-                {data.map((item, index) => (
-                    <Box key={index} gap={2} sx={{ justifyContent: 'space-around', display: "flex", alignItems: "center" }}>
-                        <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", cursor: "help" }}>
-                                {item.title}
-                            </Typography>
-                        </Tooltip>
-                        <TextField
-                            label="Valor"
-                            type="number"
-                            size="small"
-                            value={values[item.title]}
-                            onChange={(e) => handleChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
-                            inputProps={{ min: 0 }}
-                        />
-                    </Box>
-                ))}
-            </Box>
-        </Paper>
-    );
-};
-const Conhecimento = () => {
-
-    const data = [
+    const conhecimento = [
         {
             title: "História",
             description:
@@ -230,46 +152,7 @@ const Conhecimento = () => {
                 "Essa Habilidade está relacionada ao conhecimento sobre mecânica, física e matemática. Regalias podem usar essa Habilidade como referência como parte de sua mecânica. Ao atingir 10 pontos nessa Habilidade o personagem consegue usar a ação Recordar Conhecimento(Tecnologia) enquanto realiza qualquer  outra ação em seu turno. Também se torna capaz de usar a ação de turno completo Desabilitar / Habilitar Dispositivo como duas ações."
         }
     ];
-    const [values, setValues] = React.useState(
-        Object.fromEntries(data.map((item) => [item.title, 0]))
-    );
-
-    const handleChange = (title, newValue) => {
-        setValues((prev) => ({ ...prev, [title]: parseInt(newValue) }));
-    };
-    console.log(values);
-
-    return (
-        <Paper elevation={3} sx={{ padding: 2, mx: 0, width: "19.5%", my: 1, borderBottom: '10px solid #7B3311', }}>
-            <Typography variant="h6" gutterBottom>
-                Exploração <Checkbox />
-            </Typography>
-            <Box display="flex" flexDirection="column" gap={2}>
-                {data.map((item, index) => (
-                    <Box key={index} gap={2} sx={{ justifyContent: 'space-around', display: "flex", alignItems: "center" }}>
-                        <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", cursor: "help" }}>
-                                {item.title}
-                            </Typography>
-                        </Tooltip>
-                        <TextField
-                            label="Valor"
-                            type="number"
-                            size="small"
-                            value={values[item.title]}
-                            onChange={(e) => handleChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
-                            inputProps={{ min: 0 }}
-                        />
-                    </Box>
-                ))}
-            </Box>
-        </Paper>
-    );
-};
-const Arcana = () => {
-
-    const data = [
+    const arcana = [
         {
             title: "Arcanismo",
             description:
@@ -301,46 +184,7 @@ const Arcana = () => {
                 "Essa Habilidade está relacionada à capacidade de um personagem de lutar com magias, feitiços e milagres e determina o seu Valor de Acerto. Regalias podem usar essa Habilidade como referência como parte de sua mecânica. "
         }
     ];
-    const [values, setValues] = React.useState(
-        Object.fromEntries(data.map((item) => [item.title, 0]))
-    );
-
-    const handleChange = (title, newValue) => {
-        setValues((prev) => ({ ...prev, [title]: parseInt(newValue) }));
-    };
-    console.log(values);
-
-    return (
-        <Paper elevation={3} sx={{ padding: 2, mx: 0, width: "19.5%", my: 1, borderBottom: '10px solid #7B3311', }}>
-            <Typography variant="h6" gutterBottom>
-                Arcana <Checkbox />
-            </Typography>
-            <Box display="flex" flexDirection="column" gap={2}>
-                {data.map((item, index) => (
-                    <Box key={index} gap={2} sx={{ justifyContent: 'space-around', display: "flex", alignItems: "center" }}>
-                        <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", cursor: "help" }}>
-                                {item.title}
-                            </Typography>
-                        </Tooltip>
-                        <TextField
-                            label="Valor"
-                            type="number"
-                            size="small"
-                            value={values[item.title]}
-                            onChange={(e) => handleChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
-                            inputProps={{ min: 0 }}
-                        />
-                    </Box>
-                ))}
-            </Box>
-        </Paper>
-    );
-};
-const Social = () => {
-
-    const data = [
+    const social = [
         {
             title: "Enganação",
             description:
@@ -372,57 +216,156 @@ const Social = () => {
                 "Essa Habilidade está relacionada à capacidade de um personagem lidar com outras criaturas em uma situação de troca ou conflito. Regalias podem usar essa Habilidade como referência como parte de sua mecânica. Ao atingir 10 pontos nessa Habilidade o personagem recebe um bônus de +2 em testes de Persuasão, Enganação, Investigação, História e Intuição que beneficiem a conclusão de uma negociação. O personagem também consegue tentar usar seu turno em combate para negociar termos para uma trégua entre as partes, em um secesso no teste de Habilidade Negociação, com dificuldade definida pelo mestre, define se a luta acaba ou se  é interrompida apenas por um turno, onde ninguém pode usar ações ou reações maliciosas um contra outro."
         }
     ];
-    const [values, setValues] = React.useState(
-        Object.fromEntries(data.map((item) => [item.title, 0]))
-    );
+    const grupos = [
+        {
+            title: "Físico",
+            borderColor: "#7B3311",
+            data: fisico
+        },
+        {
+            title: "Exploração",
+            borderColor: "#7B3311",
+            data: exploracao
+        },
+        {
+            title: "Conhecimento",
+            borderColor: "#7B3311",
+            data: conhecimento
+        },
+        {
+            title: "Arcana",
+            borderColor: "#7B3311",
+            data: arcana
+        },
+        {
+            title: "Social",
+            borderColor: "#7B3311",
+            data: social
+        },
+        
+    ]
 
-    const handleChange = (title, newValue) => {
-        setValues((prev) => ({ ...prev, [title]: parseInt(newValue) }));
-    };
-    console.log(values);
-
-    return (
-        <Paper elevation={3} sx={{ padding: 2, mx: 0, width: "19.5%", my: 1, borderBottom: '10px solid #7B3311', }}>
-            <Typography variant="h6" gutterBottom>
-                Social <Checkbox />
-            </Typography>
-            <Box display="flex" flexDirection="column" gap={2}>
-                {data.map((item, index) => (
-                    <Box key={index} gap={2} sx={{ justifyContent: 'space-around', display: "flex", alignItems: "center" }}>
-                        <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", cursor: "help" }}>
-                                {item.title}
-                            </Typography>
-                        </Tooltip>
-                        <TextField
-                            label="Valor"
-                            type="number"
-                            size="small"
-                            value={values[item.title]}
-                            onChange={(e) => handleChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
-                            inputProps={{ min: 0 }}
-                        />
-                    </Box>
-                ))}
-            </Box>
-        </Paper>
-    );
-};
-const CharCreationPage = () => {
-    const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user'));
+    const MAX_POINTS = 40;
     const [tabIndex, setTabIndex] = useState(0);
-
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
 
-    const [tabRegrasIndex, setTabRegrasIndex] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setTabRegrasIndex(newValue);
+    const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311" }) => {
+        return (
+            <Paper
+                elevation={3}
+                sx={{
+                    padding: 2,
+                    mx: 0,
+                    width: "19.5%",
+                    my: 1,
+                    borderBottom: `10px solid ${borderColor}`
+                }}
+            >
+                <Typography variant="h6" gutterBottom className="esteban">
+                    {title} <Checkbox />
+                </Typography>
+                <Typography
+                    variant="body2"
+                    color={remainingPoints === 0 ? "error" : "textSecondary"}
+                    className="bigBoxTextClasses"
+                >
+                    Pontos restantes: {remainingPoints}
+                </Typography>
+                <Box display="flex" flexDirection="column" gap={2} mt={1}>
+                    {data.map((item, index) => (
+                        <Box
+                            key={index}
+                            gap={2}
+                            sx={{
+                                justifyContent: "space-around",
+                                display: "flex",
+                                alignItems: "center"
+                            }}
+                        >
+                            <Tooltip title={item.description} arrow placement="right">
+                                <Typography sx={{ width: "200px", textAlign: "start" }} className="bigBoxTextClasses">
+                                    {item.title}
+                                </Typography>
+                            </Tooltip>
+                            <TextField
+                                label="Valor"
+                                type="number"
+                                size="small"
+                                value={values[item.title]}
+                                onChange={(e) => onChange(item.title, e.target.value)}
+                                sx={{ width: "100px" }}
+                                inputProps={{
+                                    min: 0,
+                                    max: values[item.title] + remainingPoints
+                                }}
+                            />
+                        </Box>
+                    ))}
+                </Box>
+            </Paper>
+        );
     };
+
+    const calculateCustoEscalonado = (valor) => {
+        let custo = 0;
+        for (let i = 1; i <= valor; i++) {
+            if (i <= 4) custo += 1;
+            else if (i === 5) custo += 2;
+            else if (i === 6) custo += 3;
+            else custo += 4;
+        }
+        return custo;
+    };
+    
+    const AtributoContainer = ({ atributos }) => {
+        const [allValues, setAllValues] = React.useState(
+            Object.fromEntries(
+                atributos.flatMap((grupo) => grupo.data.map((item) => [item.title, 0]))
+            )
+        );
+    
+        const totalUsed = Object.values(allValues).reduce(
+            (acc, val) => acc + calculateCustoEscalonado(val),
+            0
+        );
+        const remainingPoints = MAX_POINTS - totalUsed;
+    
+        const handleChange = (title, newValue) => {
+            newValue = parseInt(newValue) || 0;
+    
+            setAllValues((prev) => {
+                const previousValue = prev[title];
+                const newCusto = calculateCustoEscalonado(newValue);
+                const prevCusto = calculateCustoEscalonado(previousValue);
+                const deltaCusto = newCusto - prevCusto;
+    
+                if (deltaCusto <= 0 || (totalUsed + deltaCusto <= MAX_POINTS && newValue >= 0)) {
+                    return { ...prev, [title]: newValue };
+                }
+    
+                return prev;
+            });
+        };
+    
+        return (
+            <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'space-between', width: '100%' }}>
+                {atributos.map((grupo, index) => (
+                    <AtributoBox
+                        key={index}
+                        title={grupo.title}
+                        data={grupo.data}
+                        values={allValues}
+                        onChange={handleChange}
+                        remainingPoints={remainingPoints}
+                        borderColor={grupo.borderColor}
+                    />
+                ))}
+            </Box>
+        );
+    };
+
     const [image, setImage] = useState(null);
     const fileInputRef = useRef();
 
@@ -559,10 +502,7 @@ const CharCreationPage = () => {
                         </ListItem>
                         <ListItem sx={{ px: 0 }} className="esteban">
 
-                            Aloque 40 pontos em Habilidades ou Proficiências. Ao alocar os pontos de habilidade, siga as regras a seguir: a partir do sétimo será 4 pontos de habilidade por incremento (ao invés de 3).
-
-                        </ListItem>
-                        <ListItem sx={{ px: 0 }} className="esteban">
+                            Aloque 40 pontos em Habilidades ou Proficiências. Ao alocar os pontos de habilidade, siga as regras a seguir:
                             Depois do quarto incremento em uma Habilidade, são necessários 2 pontos de habilidade para o quinto incremento (ao invés de 1) , 3 para um sexto (ao invés de 2) e a partir do sétimo será 4 pontos de habilidade por incremento (ao invés de 3).
 
                         </ListItem>
@@ -571,11 +511,8 @@ const CharCreationPage = () => {
 
                         </ListItem>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Fisico />
-                            <Exploracao />
-                            <Conhecimento />
-                            <Arcana />
-                            <Social />
+                        <AtributoContainer atributos={grupos} />
+
                         </Box>
                     </TabPanel>
 
