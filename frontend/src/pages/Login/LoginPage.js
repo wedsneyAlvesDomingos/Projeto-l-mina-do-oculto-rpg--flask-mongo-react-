@@ -155,7 +155,7 @@ const LoginPage = () => {
                             sx={{ mb: 2, mt: 0, width: 'fit-content' }}
                         />
                         <Box sx={{ display: 'flex' }}>
-                            <Button id="buttonLogIn" variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
+                            <Button type="submit" id="buttonLogIn" variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
                             <Button id="buttonLogIn2" variant="text" onClick={handleNavigateToSignup} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Cadastrar</Button>
                         </Box>
                     </form>
