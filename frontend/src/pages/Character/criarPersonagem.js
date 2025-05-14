@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Box, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button } from '@mui/material';
+import { Box, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -423,89 +423,89 @@ const CharCreationPage = () => {
 
     const MAX_PROF_POINTS = 4;
     const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoints, borderColor = '#7B3311' }) => (
-      <Paper
-        elevation={3}
-        sx={{ padding: 2, mx: 0, width: '24.5%', my: 1, borderBottom: `6px solid ${borderColor}` }}
-      >
-        <Typography variant="h6" gutterBottom>
-          {nome}
-        </Typography>
-        <Typography variant="body2" gutterBottom>
-          {descricao}
-        </Typography>
-        {notas?.length > 0 && (
-          <Box mb={1}>
-            {notas.map((nota, idx) => (
-              <Typography key={idx} variant="caption" display="block">
-                • {nota}
-              </Typography>
-            ))}
-          </Box>
-        )}
-        <Box display="flex" alignItems="center" gap={1} mt={1}>
-          <TextField
-            label="Nível"
-            type="number"
-            size="small"
-            value={value}
-            onChange={(e) => onChange(nome, parseInt(e.target.value) || 0)}
-            inputProps={{ min: 0, max: niveis.length, step: 1 }}
-            sx={{ width: '80px' }}
-          />
-          <Typography variant="body2" color={remainingPoints === 0 ? 'error' : 'textSecondary'}>
-            Restam: {remainingPoints}
-          </Typography>
-        </Box>
-        <Box display="flex" flexDirection="column" gap={1} mt={1}>
-          {niveis.map(({ nivel, descricao: nivelDesc }) => (
-            <Typography
-              key={nivel}
-              variant="body2"
-              sx={{ opacity: value >= nivel ? 1 : 0.5 }}
-            >
-              {nivel}. {nivelDesc}
+        <Paper
+            elevation={3}
+            sx={{ padding: 2, mx: 0, width: '24.5%', my: 1, borderBottom: `6px solid ${borderColor}` }}
+        >
+            <Typography variant="h6" gutterBottom>
+                {nome}
             </Typography>
-          ))}
-        </Box>
-      </Paper>
+            <Typography variant="body2" gutterBottom>
+                {descricao}
+            </Typography>
+            {notas?.length > 0 && (
+                <Box mb={1}>
+                    {notas.map((nota, idx) => (
+                        <Typography key={idx} variant="caption" display="block">
+                            • {nota}
+                        </Typography>
+                    ))}
+                </Box>
+            )}
+            <Box display="flex" alignItems="center" gap={1} mt={1}>
+                <TextField
+                    label="Nível"
+                    type="number"
+                    size="small"
+                    value={value}
+                    onChange={(e) => onChange(nome, parseInt(e.target.value) || 0)}
+                    inputProps={{ min: 0, max: niveis.length, step: 1 }}
+                    sx={{ width: '80px' }}
+                />
+                <Typography variant="body2" color={remainingPoints === 0 ? 'error' : 'textSecondary'}>
+                    Restam: {remainingPoints}
+                </Typography>
+            </Box>
+            <Box display="flex" flexDirection="column" gap={1} mt={1}>
+                {niveis.map(({ nivel, descricao: nivelDesc }) => (
+                    <Typography
+                        key={nivel}
+                        variant="body2"
+                        sx={{ opacity: value >= nivel ? 1 : 0.5 }}
+                    >
+                        {nivel}. {nivelDesc}
+                    </Typography>
+                ))}
+            </Box>
+        </Paper>
     );
     const ProfContainer = ({ proficiencias }) => {
-      const [values, setValues] = React.useState(
-        proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
-      );
-    
-      const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
-      const remainingPoints = MAX_PROF_POINTS - totalUsed;
-    
-      const handleChange = (nome, newVal) => {
-        if (newVal < 0) newVal = 0;
-        if (newVal > proficiencias.find(p => p.nome === nome).niveis.length) {
-          newVal = proficiencias.find(p => p.nome === nome).niveis.length;
-        }
-        const prevVal = values[nome];
-        const delta = newVal - prevVal;
-        if (delta <= remainingPoints) {
-          setValues(prev => ({ ...prev, [nome]: newVal }));
-        }
-      };
-    
-      return (
-        <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'start',gap:1, width: '100%' }}>
-          {proficiencias.map((prof, idx) => (
-            <ProfBox
-              key={idx}
-              nome={prof.nome}
-              descricao={prof.descricao}
-              notas={prof.notas}
-              niveis={prof.niveis}
-              value={values[prof.nome]}
-              onChange={handleChange}
-              remainingPoints={remainingPoints}
-              borderColor={prof.borderColor}
-            />
-          ))}
-        </Box>
-      );
+        const [values, setValues] = React.useState(
+            proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
+        );
+
+        const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
+        const remainingPoints = MAX_PROF_POINTS - totalUsed;
+
+        const handleChange = (nome, newVal) => {
+            if (newVal < 0) newVal = 0;
+            if (newVal > proficiencias.find(p => p.nome === nome).niveis.length) {
+                newVal = proficiencias.find(p => p.nome === nome).niveis.length;
+            }
+            const prevVal = values[nome];
+            const delta = newVal - prevVal;
+            if (delta <= remainingPoints) {
+                setValues(prev => ({ ...prev, [nome]: newVal }));
+            }
+        };
+
+        return (
+            <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'start', gap: 1, width: '100%' }}>
+                {proficiencias.map((prof, idx) => (
+                    <ProfBox
+                        key={idx}
+                        nome={prof.nome}
+                        descricao={prof.descricao}
+                        notas={prof.notas}
+                        niveis={prof.niveis}
+                        value={values[prof.nome]}
+                        onChange={handleChange}
+                        remainingPoints={remainingPoints}
+                        borderColor={prof.borderColor}
+                    />
+                ))}
+            </Box>
+        );
     };
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -733,9 +733,146 @@ const CharCreationPage = () => {
     const handleFileChange = (e) => {
         processFile(e.target.files[0]);
     };
+    const racas = {
+        humano: {
+            nome: 'Humano',
+            descricao: `Na vasta tapeçaria dos mundos, os seres humanos são frequentemente retratados como uma espécie de notável versatilidade. Eles são os sobreviventes por excelência, moldando-se e adaptando-se a uma miríade de circunstâncias desafiadoras, como a argila nas mãos de um habilidoso oleiro.
+            A resiliência dos seres humanos é uma característica que os destaca. Diante de adversidades intransponíveis, eles não apenas resistem, mas florescem. Desafiando os elementos, as ameaças e as adversidades do destino, os humanos provaram ser mais do que meros mortais. Eles são a personificação da determinação, da vontade indomável de superar obstáculos e de encontrar maneiras de prosperar, não importa quão sombrio seja o cenário.\n
+            Mas não é apenas a capacidade de sobrevivência que define os humanos. Sua capacidade destrutiva também é notável. Com criatividade e intelecto afiado, eles desvendam segredos, criam máquinas de guerra imponentes e dominam a magia como nenhuma outra espécie. Eles trazem a destruição, tanto com suas habilidades como com suas inovações, como uma força da natureza que molda o mundo ao seu redor.\n
+            Assim, os seres humanos em um mundo representam mais do que simples mortais. Eles personificam a versatilidade, resiliência e capacidade destrutiva que reside no coração de todos nós. Eles nos lembram que, no jogo da vida e da imaginação, somos todos heróis em nossas próprias histórias, prontos para enfrentar o desconhecido, resistir à adversidade e moldar nosso destino à medida que avançamos corajosamente em direção ao desconhecido.
+` ,
+            obrigatorias: [
+                {
+                    id: "prodigio",
+                    nome: "Prodígio Militar",
+                    descricao: `Um humano que seja um prodígio militar pode realizar um teste de Percepção na mesma ação de atacar, a fim de identificar as fraquezas e forças do seu adversário. Ao passar no teste de habilidade com dificuldade estipulada pelo mestre, o humano ganha vantagem no rolamento de acerto deste e dos próximos ataques, e sua margem de cŕitico diminui em um até o final de seu turno atual. Ele pode executar essa leitura 3 vezes em um mesmo dia. O valor do teste pode ser alternativamente estipulado pela percepção do alvo, com um padrão de 10 + valor de percepção, se ele não tiver valor declarado, tome como base a dificuldade 15.
+                    Além disso, possui proficiência com espadas bastardas.
+                    `
+                },
+                {
+                    id: "genio",
+                    nome: "Gênio Acadêmico",
+                    descricao: `Um humano que seja um gênio acadêmico possui um vasto conhecimento e memória excepcional. Um gênio acadêmico não esquece nada do que leu ou ouviu nos últimos 30 dias. Ele sempre sabe a hora do dia e a estação do ano. Gênios acadêmicos podem usar a ação Recordar Conhecimento enquanto realizam a ação Ler Ambiente ou Buscar Cobertura. Ele pode executar essa ação desta forma 5 vezes em um mesmo dia. 
+`
+                },
+                {
+                    id: "faztudo",
+                    nome: "Faz Tudo",
+                    descricao: `Um humano que seja um faz-tudo é um indivíduo que não se dedicou a dominar uma habilidade específica, mas aprendeu várias delas. Um faz-tudo pode realizar a ação Abrir fechadura e a ação Preparar com apenas uma ação, e a ação Desabilitar Dispositivo com duas ações.  Ele pode escolher uma destas opções para executar desta maneira 3 vezes ao dia. 
+                    Ou pode escolher uma Proficiência para alocar 1 ponto.
+                    `
+                }
+            ]
+        },
+        elfo: {
+            nome: 'Elfo',
+            descricao: `
+            Dentro dos vastos mundos, a raça dos Elfos, com suas três distintas facções - os Elfos Exordiais, os Elfos Selvagens e os Elfos Lunares, apesar das diferenças evidentes, compartilham algumas notáveis semelhanças que refletem a essência de sua linhagem comum.
+            Independentemente de suas origens, os Elfos são uma espécie que tende a viver vidas notavelmente longas, muitas vezes atingindo séculos de idade. Essa longevidade confere uma profunda perspectiva de vida, permitindo que eles acumulem conhecimento e sabedoria ao longo dos anos. Todos os Elfos possuem traços físicos distintos, como a delicadeza de seus traços faciais e a graça de sua aparência, que são igualmente apreciados nas três subespécies.
+            Os Elfos, em geral, compartilham uma conexão singular com a magia e o mundo natural. Eles são conhecidos por sua afinidade natural com a magia, o que é especialmente perceptível nos Elfos Lunares, que banham-se na luz noturna e tiram proveito da magia lunar. Os Elfos Exordiais também mantêm uma relação profunda com a magia, refletindo em sua habilidade telepática e visão única. Já os Elfos Selvagens, embora priorizem a natureza, também têm um respeito inabalável pelo equilíbrio mágico da vida selvagem.
+            As três subespécies de Elfos compartilham uma perspectiva unificada sobre a coexistência com outras raças, valorizando a diversidade e a paz inter-racial. Cada grupo reconhece que, apesar das diferenças, todos os seres têm um papel a desempenhar na narrativa do mundo.
+            Os Elfos Exordiais, enraizados nas origens da civilização élfica, possuem uma perspectiva de vida milenar. Eles carregam consigo um profundo respeito pelas tradições e pela sabedoria ancestral. Sua aparência física frequentemente reflete a antiguidade de sua linhagem, com traços delicados e refinados. Sua sociedade é centrada no compartilhamento de conhecimento, em que as histórias do passado são valorizadas e transmitidas às gerações mais jovens. Eles têm uma visão das relações inter-raciais que é enraizada no respeito pela história e pela continuidade da cultura élfica.
+            Os Elfos Selvagens, por outro lado, abraçam a natureza como parte fundamental de suas vidas. Sua aparência física muitas vezes apresenta características que se harmonizam com os ambientes naturais que habitam. Eles tendem a viver em ambientes intocados, onde a conexão com a natureza é mais forte do que qualquer outra coisa. Sua sociedade valoriza a proteção da vida selvagem e a coexistência pacífica com ela. Quando se relacionam com outras raças, a preservação da natureza é frequentemente um ponto de discordância e compreensão.
+            Os Elfos Lunares são noturnos por natureza, e suas vidas estão entrelaçadas com as fases da lua. Sua aparência frequentemente incorpora tons prateados e uma aura mágica que reflete sua afinidade com as estrelas e a luz da lua. Eles veem o cosmos como uma fonte de inspiração e poder, e sua sociedade é construída em torno da magia noturna e do conhecimento místico. Quando interagem com outras raças, muitas vezes são vistos como guardiões dos segredos do céu noturno, mas também como misteriosos e imprevisíveis.
+            Em resumo, a diversidade cultural e a relação com outras raças definem os Elfos. Suas perspectivas de vida milenar, aparência física e conexão com a natureza ou o cosmos moldam profundamente suas sociedades e interações em um mundo repleto de diversidade e maravilhas. Cada facção de Elfos traz consigo sua própria essência e valores, enriquecendo o panorama da civilização élfica e do mundo em que habitam.
+            `,
+            obrigatorias: [
+                {
+                    id: "ElfoExordial",
+                    nome: "Elfo Exordial",
+                    descricao: `Elfos Exordiais  são a espécie original dos primeiros elfos. Elfos exordiais Conseguem enxergar no escuro em até 9 metros de distância como se fosse em meia luz e como luz completa em meia luz. Elfos exordiais conseguem se comunicar com outros seres por telepatia, com uma distância máxima de 15 metros. Se o alvo da telepatia for outro elfo exordial esse alcance aumenta para 36 metros.`
+                },
+                {
+                    id: "ElfoSelvagem",
+                    nome: "Elfo Selvagem",
+                    descricao: `Elfos Selvagens gostam de viver em ambientes naturais com pouca intervenção para construir suas sociedades. Elfos selvagens não precisam de equipamento de acampamentos para conseguir os benefícios de um descanso longo. Elfos selvagens também tem uma velocidade de movimento elevada, enquanto não usam armadura pesada, de 12 metros de velocidade de movimento base. Possuem visão no escuro com alcance de até 18 metros de distância como se fosse em meia luz e como luz completa em meia luz.`
+                },
+                {
+                    id: "ElfoLunar",
+                    nome: "Elfo Lunar",
+                    descricao: `Elfos lunares gostam de se banhar na luz noturna e são mais ativos durante a noite. Elfos lunares conseguem enxergar no escuro com alcance de 18 metros como se fosse luz completa e adicionais 18 metros como se fossem meia luz, e 36 metros como luz completa em meia luz. Elfos lunares conseguem se direcionar através da posição dos astros do céu noturno e não ficam perdidos viajando em ambientes abertos durante a noite. Elfos lunares são resistentes ao dano sombrio.`
+                }
+            ]
+        },
+        anao: {
+            nome: 'Anão',
+            descricao: `Dentro da cultura geral dos Anões, as três vertentes - Domínio das Minas, Domínio da Forja e os Anões Exilados - são elementos cruciais que se entrelaçam e enriquecem a sociedade anã como um todo.
+            Os Anões, como um povo, são conhecidos por sua durabilidade e sua determinação inabalável. A cultura anã valoriza a honestidade, a lealdade e o senso de comunidade. Os princípios éticos e a profunda reverência pelas tradições são aspectos centrais da vida anã. As histórias e lendas passadas de geração em geração têm um papel crucial na manutenção da identidade e na transmissão dos valores.
+            A busca pela maestria e pela excelência é um componente intrínseco da cultura anã. Seja na habilidade de identificar minérios e antecipar desastres naturais dos Anões do Domínio das Minas, na habilidade de forjar e apreciar a qualidade das armas e armaduras dos Anões do Domínio da Forja, ou na versatilidade dos Anões Exilados, que valorizam a aprendizagem constante e a habilidade de se adaptar a diversas situações, todos compartilham o compromisso com a expertise e a excelência em seu campo.
+            Além disso, a sociedade anã é profundamente centrada na comunidade. Os laços familiares e a solidariedade entre clãs são inegociáveis. As cidades anãs são geralmente escavadas nas profundezas da terra e, embora cada vertente possua seu próprio espaço e funcionalidade específica, todas colaboram para o bem-estar da comunidade. A sociedade anã é altamente organizada, com sistemas de governo e hierarquias que garantem a ordem e a prosperidade.
+            A fé desempenha um papel significativo na vida dos Anões, independentemente da vertente. Eles geralmente veneram deuses relacionados à terra, mineração e forja. Seus rituais religiosos são eventos comunitários que fortalecem a coesão e a espiritualidade.
+            Em resumo, a cultura geral dos Anões é uma celebração da durabilidade, da expertise e da comunidade. As diferentes vertentes - Domínio das Minas, Domínio da Forja e os Anões Exilados - contribuem para essa cultura diversificada, enriquecendo o mosaico da sociedade anã. Independentemente da linhagem, os Anões compartilham um profundo respeito por suas tradições, valores éticos e um senso inabalável de identidade e comunidade.
+            `,
+            obrigatorias: [
+                {
+                    id: "DomíniodasMinas",
+                    nome: "Domínio das Minas",
+                    descricao: `Um anão que vem do domínio das minas tem uma linhagem de trabalhadores ou donos de minas. Um anão dessa linhagem reconhece  com mais precisão veias de minério em cavernas e túneis de pedra caso existam, ganhando um bônus de +10 em testes de conhecimento e exploração que envolve perceber ou identificar a presença de minério em cavernas e outros. \n
+                    Um anão desta linhagem também conseguem sentir tremores e vibrações na rocha relacionados a desastres naturais (terremotos, enchentes, deslizamentos), recebendo vantagem em testes de Habilidades(Investigação ou Percepção) para saber se irá acontecer algum tipo de deslocamento terrestre natural em rochas. \n
+                    Dentro do domínio das minas, um anão é treinado em perceber e navegar sem luz ou pouca luz e pode enxergar no escuro em até 9 metros como se fosse meia luz e como luz completa em meia luz.
+`
+                },
+                {
+                    id: "Domínio aForja",
+                    nome: "Domínio da Forja",
+                    descricao: `Um anão do domínio da forja se origina de uma linhagem de trabalhadores de metal e consegue reconhecer a qualidade de uma arma apenas de olhar para ela. Testes de Habilidade de história, Natureza ou apuração de itens mágicos recebe um valor igual a +1 quando se trata de itens forjados em metal.\n  
+                    Anões da forja também tem proficiência em machado anão. \n
+                    Anões da forja tem resistência a dano de fogo.
+                    `
+                },
+                {
+                    id: "Exilado",
+                    nome: "Exilado",
+                    descricao: `O Exilado é um indivíduo que nunca se dedicou a masterizar nenhuma habilidade por estar fora das linhagens principais da sociedade anã, porém aprendeu várias Habilidades mundo afora. Um exilado consegue usar a ação Abrir fechadura e Preparar com apenas uma ação e a ação Desabilitar Dispositivo com duas ações.  Ele pode escolher uma destas opções para executar desta maneira 3 vezes ao dia. 
+                    Ou pode escolher uma Proficiência para alocar 1 ponto.
+                    `
+                }
+            ]
+        },
+    };
 
+    const [especieSelecionada, setEspecieSelecionada] = useState('humano');
+
+    const handleChange = (event) => {
+        setEspecieSelecionada(event.target.value);
+    };
+    // Estado do React para guardar a escolha
+    const [regaliaEscolhida, setRegaliaEscolhida] = useState('');
+    const RegaliaDeEspecie = ({ data }) => {
+        return (
+            < Box >
+                < Typography className="bigBoxTextEquipsHeader" sx={{ mb: 2 }}>
+                    Escolha uma entre:
+                </Typography >
+
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Regalia Obrigatória</FormLabel>
+                    <RadioGroup
+                        name="regalia-obrigatoria"
+                        value={regaliaEscolhida}
+                        onChange={(e) => setRegaliaEscolhida(e.target.value)}
+                    >
+                        {data.obrigatorias.map((opcao) => (
+                            <FormControlLabel
+                                key={opcao.id}
+                                value={opcao.id}
+                                control={<Radio />}
+                                label={
+                                    <div>
+                                        <strong>{opcao.nome}</strong><br />
+                                        <Typography variant="body2">{opcao.descricao}</Typography>
+                                    </div>
+                                }
+                                sx={{ alignItems: 'flex-start', my: 2 }}
+                            />
+                        ))}
+                    </RadioGroup>
+                </FormControl>
+            </Box >
+        )
+    }
     return (
-        <Box sx={{ width: '100%', minHeight: '850px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             {/* User header */}
             <Box>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
@@ -863,8 +1000,25 @@ const CharCreationPage = () => {
                     </TabPanel>
 
                     <TabPanel value={tabIndex} index={3}>
-                        <Typography>Escolha regalias de espécie.</Typography>
-                        {/* Inputs para regalias_de_especie */}
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="select-especie-label">Espécie</InputLabel>
+                            <Select
+                                labelId="select-especie-label"
+                                label="Espécie"
+                                value={especieSelecionada}
+                                onChange={handleChange}
+                                sx={{ borderRadius: '4px 4px 4px' }}
+                            >
+                                {Object.keys(racas).map((key) => (
+                                    <MenuItem key={key} value={key}>
+                                        {racas[key].nome}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <Typography variant="h6">{racas[especieSelecionada].nome}</Typography>
+                        <Typography className="bigBoxTextClasses" paragraph>{racas[especieSelecionada].descricao}</Typography>
+                        <RegaliaDeEspecie data={racas[especieSelecionada]} />
                     </TabPanel>
 
                     <TabPanel value={tabIndex} index={4}>

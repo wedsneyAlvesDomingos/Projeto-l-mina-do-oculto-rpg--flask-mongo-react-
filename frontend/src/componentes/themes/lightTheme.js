@@ -38,13 +38,7 @@ const lightTheme = createTheme({
         },
       },
     },
-    MuiSelect: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#162A22',
-        },
-      },
-    },
+    
     MuiInput: {
       styleOverrides: {
         root: {

@@ -10,12 +10,7 @@
     font-family: "Esteban", serif !important;
 }
 
-.MuiOutlinedInput-notchedOutline {
-    border-style: solid !important;
-    border-width: 1px !important;
-    border-color: #756A34 !important;
-    border-radius: 4px 0px 0px 4px !important;
-}
+
 #criarButtom{
     min-width: 250px !important;
     width:fit-content !important;
