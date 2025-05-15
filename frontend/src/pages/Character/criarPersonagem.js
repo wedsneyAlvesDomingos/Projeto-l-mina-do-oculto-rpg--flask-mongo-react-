@@ -829,6 +829,430 @@ const CharCreationPage = () => {
                 }
             ]
         },
+        feerico: {
+            nome: 'Feérico',
+            descricao: `Em meio a um mundo repleto de criaturas feéricas de todas as formas e tamanhos, a sociedade feérica é uma tapeçaria de diversidade e mágica. Cada subespécie, como os Gnomos, Pixies, Dríades, Sátiros, Ninfas da Névoa, Mariposas Eternas e Menecmas, contribui de maneira única para a intrincada teia da convivência e interações entre esses seres mágicos e o mundo que os cerca.
+            Os Gnomos, pequenos e ágeis, são habilidosos em se mover através de ambientes hostis e em permanecerem despercebidos. Eles frequentemente servem como mensageiros e exploradores, fornecendo informações valiosas para sua sociedade feérica. Sua destreza é uma ferramenta importante em ambientes densos e perigosos.
+            As Pixies e Sprites, com suas asas brilhantes, trazem a alegria da liberdade e da exploração. Eles são embaixadores naturais entre a sociedade feérica e as criaturas do ar, proporcionando uma conexão única com as alturas. Sua capacidade de se mesclar com o ambiente torna-os mestres da evasão e do sigilo.
+            As Dríades, ancestrais das árvores, são guardiãs dos bosques e matas. Sua habilidade de atravessar madeira e ganhar força com a energia das árvores é essencial para a preservação das florestas. Elas servem como sentinelas e curandeiras da natureza.
+            Os Sátiros, com sua mistura de natureza e animalidade, trazem a vitalidade e a alegria da dança e da música para a sociedade feérica. Sua agilidade e capacidade de saltar os tornam excelentes exploradores das áreas selvagens.
+            As Ninfas da Névoa, ligadas à névoa e ao orvalho, são especialistas em evasão e movimento furtivo. Sua habilidade de evitar ataques físicos e deslizar através de frestas torna-as mensageiras eficazes e exploradoras de terrenos perigosos.
+            As Mariposas Eternas, com asas iridescentes, possuem habilidades únicas de ilusão que adicionam uma camada de encanto e diversão à sociedade feérica. Elas frequentemente atuam como artistas e ilusionistas, cativando multidões com seu espetáculo de luzes e cores.
+            Os Menecmas, mestres da ilusão e da transformação, são diplomatas e espiões consumados. Sua habilidade de assumir a forma de outras criaturas permite que estabeleçam conexões e obtenham informações cruciais para a sociedade feérica.
+            Em conjunto, essas subespécies feéricas criam uma sociedade complexa e rica em diversidade, onde cada ser desempenha um papel único e vital. Suas interações com o mundo humano e outras criaturas moldam o equilíbrio mágico do universo de fantasia, criando um cenário onde a magia, a diversão e a intriga se entrelaçam de maneiras fascinantes.
+            Hierarquia na Sociedade Feérica:
+            Famílias e Clãs Feéricos: A base da sociedade feérica é frequentemente composta por famílias e clãs, cada um com sua própria linhagem e tradições. Os líderes dessas famílias muitas vezes detêm grande influência sobre seus membros, e a hierarquia interna pode variar. Os clãs são responsáveis por manter tradições, cuidar da natureza e gerenciar recursos mágicos.
+            Reis e Rainhas Feéricos: Em algumas sociedades feéricas, há reis e rainhas que governam sobre várias famílias e clãs. Eles são frequentemente escolhidos com base em suas habilidades mágicas, sabedoria e conexão com a natureza. Sua autoridade é reconhecida, mas pode variar em extensão, dependendo da sociedade.
+            Conselhos e Assembleias: Alguns grupos feéricos têm conselhos ou assembleias formados por líderes de famílias e clãs. Esses órgãos podem ser consultados para tomar decisões importantes e resolver disputas. Os líderes eleitos ou designados servem como representantes de suas comunidades.
+            Protetores da Natureza: Muitas subespécies feéricas, como as Dríades e as Ninfas da Névoa, desempenham papéis fundamentais na preservação e proteção da natureza. Elas são vistas como guardiãs e líderes espirituais de seus territórios naturais, recebendo respeito e deferência de outras criaturas feéricas.
+            Artesãos e Curandeiros: A sociedade feérica valoriza habilidades artísticas e mágicas. Artesãos habilidosos, como as Mariposas Eternas, são respeitados por suas contribuições culturais, enquanto curandeiros e curandeiras têm um papel vital na manutenção da saúde e bem-estar da comunidade.
+            Exploradores e Emissários: Alguns feéricos assumem a tarefa de explorar o mundo exterior e estabelecer relações com outras raças. Isso pode envolver embaixadores, emissários e espiões, como os Menecmas. Sua habilidade de assumir a forma de outras criaturas é uma vantagem nesses papéis.
+
+            Características da Sociedade Feérica:
+            Diversidade Cultural: A sociedade feérica é caracterizada por uma rica diversidade de culturas e tradições. Cada subespécie tem suas próprias práticas e crenças, mas elas muitas vezes coexistem em harmonia.
+            Celebrações Mágicas: Festivais e celebrações mágicas desempenham um papel importante na sociedade feérica. Eles são oportunidades para compartilhar histórias, músicas e danças, além de fortalecer os laços com a natureza.
+            Respeito pela Natureza: A natureza é reverenciada e protegida, pois os feéricos têm uma conexão profunda com o mundo natural. A preservação da flora e fauna é uma responsabilidade compartilhada por todos.
+            Magia e Artes: As artes mágicas desempenham um papel central na sociedade feérica. Muitos feéricos praticam magia, seja como curandeiros, invocadores de ilusões ou mestres de elementos naturais.
+            Espírito Comunitário: Os feéricos geralmente têm um forte senso de comunidade e cuidado mútuo. A cooperação é valorizada, e muitas decisões são tomadas coletivamente.
+
+            A sociedade feérica é um reflexo da magia e diversidade que permeiam seu mundo. Suas hierarquias variam entre as subespécies, mas todas compartilham um profundo respeito pela natureza, uma conexão mágica e uma cultura rica. Ela é um lugar de encanto e mistério, onde a harmonia com o mundo natural é essencial.
+
+            `,
+            obrigatorias: [
+                {
+                    id: "Gnomo",
+                    nome: "Gnomo",
+                    descricao: `O gnomo é um ser feérico minúsculo e, por isso, sua velocidade de movimento é de 4,5 metros. Um gnomo, por ser pequeno e ágil, consegue atravessar por debaixo de criaturas médias ou maiores sem penalidade de movimento. Um gnomo tem a capacidade de ficar tão imóvel que chega a parecer parte do ambiente e recebe vantagem em testes de furtividade enquanto imóvel em um ambiente de luz completa  ou meia luz, e de vantagem dupla em ambientes escuros.`
+                },
+                {
+                    id: "PixiesSprite",
+                    nome: "Pixies/Sprites",
+                    descricao: `A pixie ou o sprite  são fadas minúsculas e sua velocidade de movimento base por terra é de 4,5 metros, porém eles têm uma velocidade de movimento base de voo igual a 7,5 metros.  Em um combate, a fada/sprite pode usar a ação esconder junto com a ação recuar cuidadosamente, para mesclar mágicamente  com o ambiente e se esconder se passar, sumindo da visão de todos e ficando Obscurecido.
+                    `
+                },
+                {
+                    id: "Driade",
+                    nome: "Dríade",
+                    descricao: `A dríade é um espírito, de tamanho médio ou pequeno, feérico antigo de carvalhos e outros membros anciões de uma mata ou floresta. Dríades conseguem atravessar superfícies de madeira de até 1,5 metros de espessura e podem escalar árvores sem precisar realizar um teste de atletismo. Ao realizar um descanso longo em um ambiente de floresta a dríade ganha o seu nível em pontos de vida temporários, que duram até perdê-los ou receber uma nova fonte de vida temporária.
+                    `
+                },
+                {
+                    id: "Satiro",
+                    nome: "Sátiro",
+                    descricao: `O sátiro é uma criatura de tamanho médio ou pequeno, metade cervo/bode e metade homem. Esse ser feérico tem a capacidade de saltar igual a sua velocidade de movimento em um salto horizontal, ou metade de sua velocidade de movimento para um salto vertical. Pode usar seu chifre como uma arma natural que causa 1d8 de dano de impacto.
+                    `
+                },
+                {
+                    id: "NinfadaNevoa",
+                    nome: "Ninfa da Névoa",
+                    descricao: `As Névoa Ninfas são seres humanóides feéricos, de tamanho médio ou grande, associados à névoa e ao orvalho. Sua velocidade de movimento é de 7,5 metros, mas podem se transformar em névoa por um curto período (1 minuto), permitindo-lhes deslizar através de fendas e frestas inacessíveis para a maioria. Quando em forma de névoa, são quase intangíveis e podem evitar ataques físicos, porém não podem atacar enquanto nesta forma.
+                    `
+                },
+                {
+                    id: "MariposasEternas",
+                    nome: "Mariposas Eternas",
+                    descricao: `São fadas humanoides de tamanho médio que se assemelham a mariposas com asas iridescentes. Sua velocidade de voo é incrivelmente rápida, atingindo 12 metros por turno. Elas têm a habilidade de criar ilusões  coloridas pequenas, com uma ação em combate de até um cubo com 1,5m de aresta, que podem distrair e confundir inimigos possuem valor de dificuldade 10 para discernir se é uma ilusão ou não com um teste de Investigação, tornando-as mestres da ilusão.
+                    `
+                },
+                {
+                    id: "Menecma",
+                    nome: "Menecma",
+                    descricao: `O menecma é um humanóide feérico capaz de assumir aparência de seres de tamanho médio ou pequeno. Ele pode roubar a aparência de qualquer humanóide de tamanho parecido do seu que tenha visto. A transformação é mágica, aparece em detecção de magia e possui duração de 1 hora. Pode se transformar dessa forma até 4 vezes em um dia.
+                    `
+                },
+            ]
+        },
+        draconiano: {
+            nome: 'Draconiano',
+            descricao: `
+            Nas vastas terras deste mundo, uma espécie singular conhecida como Draconianos deixa sua marca indelével. Estes seres, fruto da fusão entre dragões ancestrais e outras linhagens, são uma presença notável em nossa realidade.
+            Com uma aparência majestosa, os Draconianos podem ostentar asas imponentes, escamas iridescentes e olhos que irradiam sabedoria. Eles carregam não apenas a força e resistência de seus antecessores draconianos, mas também uma série de habilidades especiais que refletem o tipo de dragão a que estão ligados. Essas habilidades variam de controlar chamas, gelo ou raios, e são uma manifestação da diversidade mágica que permeia o mundo.
+            Os Draconianos desempenham papéis de destaque em nossa sociedade, muitas vezes ocupando cargos de liderança ou oferecendo sua experiência como conselheiros sábios. Sua influência é sentida em todos os cantos, e eles inspiram respeito e admiração.
+            Além de seu impacto na sociedade, a presença dos Draconianos enriquece a narrativa de nosso mundo. Eles podem ser heróis que protegem nossos reinos, ou personagens complexos com objetivos próprios. Seu papel é fundamental em nossa realidade, onde a magia e o extraordinário se entrelaçam em uma teia de maravilhas.
+            `,
+            obrigatorias: [
+                {
+                    id: "MeioDragao",
+                    nome: "Meio-Dragão",
+                    descricao: `
+                    O meio dragão é fruto de uma quase incompatível combinação de um dragão com um elfo ou humano. Um meio dragão tem sua descendência de um dos três tipos de dragão: fogo, gelo e raio. O meio dragão tem resistência ao dano  correspondente de seu ancestral.
+                    `
+                },
+                {
+                    id: "MeioWyvern",
+                    nome: "Meio-Wyvern",
+                    descricao: `O meio wyvern é a mistura do dracônico wyvern com um bestial ou humano. É menor que meio dragão e meio draco, por isso é uma criatura considerada de tamanho médio. Um meio wyvern é o mais rápido dos draconianos e possui uma velocidade de movimento base de 6 m. O meio wyvern pode também usar uma ação para dar um grande avanço correspondente a 15 metros. Uma vez que ele tenha feito isso deve esperar ao menos 1 minuto para fazer de novo.  
+                    `
+                },
+                {
+                    id: "MeioWyrm",
+                    nome: "Meio-Wyrm",
+                    descricao: `O meio wyrm é uma mistura entre o dracônico wyrm com um feérico ou um humano. O meio wyrm é menor que meio dragão e meio draco, por isso é uma criatura considerada de tamanho médio. O meio wyrm traz consigo a mordida venenosa de seu parente e podem tentar como uma ação envenenar uma criatura com um ataque de mordida. Caso acerte o ataque causa 1d6 de dano e deixa o inimigo envenenado com dano por rodada de 1d4 de dano por 3 rodadas. Pode fazer essa mordida uma vez a cada 1 minuto.
+                    `
+                },
+                {
+                    id: "MeioDraco",
+                    nome: "Meio-Draco",
+                    descricao: `O meio draco é uma mistura  do dracônico draco com um bestial ou troll. Esse draconiano é o único que não pode escolher a regalia de Asas Draconianas, então para se adaptar a sua vida terrestre possui longas garras e chifres. O meio draco pode usar sua garra como uma arma de uma mão e se tiver o treinamento considerar cada mão como uma arma. O dano de seu ataque com garra é de 1d10 de dano cortante.
+                    `
+                },
+                {
+                    id: "Kobolds",
+                    nome: "Kobolds",
+                    descricao: `Kobolds são pequenos draconianos que são a mistura de raças pequenas ou minúsculas com qualquer tipo de dragão. Eles possuem uma velocidade de movimento igual a 4,5 m por serem pequenos. Eles têm a capacidade de usar sua criatividade e inteligência para solucionar problemas. Eles podem usar a ação esconder quando usar a ação Bustar cobertura ao mesmo tempo sem custo extra, como também conseguem usar a ação habilitar / desabilitar dispositivo como uma ação.
+                    `
+                },
+            ]
+        },
+        meioElfo: {
+            nome: 'Meio-Elfos',
+            descricao: `
+            Os Meio-Elfos, graciosos e dotados de beleza etérea, são a manifestação da união entre elfos e humanóides. Com uma herança mista que combina a paixão e a curiosidade dos humanos com a conexão profunda dos elfos com a natureza, eles se tornam um elo especial entre dois mundos.
+            Essa raça é abençoada com características marcantes: a pele delicada dos elfos e a resistência dos humanos, a agilidade dos primeiros e a versatilidade dos segundos. Os Meio-Elfos herdam a habilidade de se comunicar com a natureza, percebendo suas nuances e entrando em sintonia com o ambiente ao seu redor.
+            Mas sua singularidade não se limita apenas às características físicas. São também mediadores naturais, capazes de harmonizar comunidades diversas. Eles carregam consigo a riqueza das histórias e culturas de ambas as raças, criando pontes e promovendo a compreensão entre elfos e humanos.
+            Os Meio-Elfos são espíritos inquietos, sempre buscando um propósito maior. Eles podem escolher entre os caminhos de seus antecessores, abraçando a natureza e a magia, ou embarcar em jornadas de exploração e aventura em busca de seu destino.
+            Com uma beleza cativante e um espírito resiliente, os Meio-Elfos são a encarnação da diversidade e da harmonia, representando a fusão das tradições antigas e do ímpeto de novas descobertas. Eles são uma ponte entre dois mundos, unindo-os em uma só raça com um potencial ilimitado.
+            `,
+            obrigatorias: [
+                {
+                    id: "MeioExordial",
+                    nome: "Meio-Exordial",
+                    descricao: `
+                   O meio exordial é um meio elfo formado por pais elfo exordial e humano. Este meio elfo é capaz de conversar telepaticamente com outras criaturas e não só elfos, porém só pode usar essa telepatia por 6 segundos. Após sua telepatia por 6 segundos deve esperar 10 minutos para usar novamente. Consegue usar a ação Desabilitar Dispositivo com duas ações.
+                    `
+                },
+                {
+                    id: "MeioSelvagem",
+                    nome: "Meio-Selvagem",
+                    descricao: `O meio selvagem é um meio elfo formado por pais elfo selvagem e humano. Este meio elfo tem uma velocidade de movimento elevada, enquanto não usam armadura pesada, de 7,5 metros de velocidade de movimento base. Além disso, proficiência com espadas-diapasão.  
+                    `
+                },
+                {
+                    id: "MeioLunar",
+                    nome: "Meio-Lunar",
+                    descricao: `O meio lunar é um meio elfo formado por pais elfo lunar e humano. Este meio elfo é capaz de enxergar no escuro com alcance de 6 metros como se fosse meia luz na escuridão, e luz completa na meia luz. Não esquece nada que leu ou ouviu nos últimos 30 dias.
+                    `
+                },
+            ]
+        },
+        meioDemonio: {
+            nome: 'Meio-Demônio',
+            descricao: `
+            Os Meio-Demônios, criaturas marcadas pela dualidade em sua essência, são o resultado da união entre seres demoníacos e humanóides. Eles carregam uma herança mágica sombria e uma natureza única que os distingue em meio aos dois mundos de sua ancestralidade.
+            Com uma aparência que combina a complexidade dos traços humanos com a aura misteriosa dos demônios, os Meio-Demônios exibem uma beleza sobrenatural que oscila entre o fascínio e o temor. Seus olhos muitas vezes revelam um brilho ardente, refletindo a dualidade que reside em sua alma.
+            Além das características físicas marcantes, os Meio-Demônios herdam poderes sombrios e habilidades mágicas das profundezas do inferno. Eles são capazes de conjurar chamas infernais, sombras sedutoras e manipular as energias demoníacas a seu favor.
+            No entanto, essa dualidade não se limita à sua aparência e habilidades. Os Meio-Demônios frequentemente enfrentam uma luta interior, tentando encontrar um equilíbrio entre sua herança demoníaca e sua humanidade. Alguns abraçam seu lado sombrio, usando seus poderes para buscar objetivos nefastos, enquanto outros lutam para resistir à influência demoníaca, dedicando-se a causas nobres.
+            Essa raça é muitas vezes vista com desconfiança e preconceito, mas também com um certo fascínio, já que eles personificam a eterna luta entre a luz e a escuridão. Os Meio-Demônios carregam consigo a responsabilidade de moldar seus destinos, escolhendo entre a redenção e a perdição.
+            Com uma aura enigmática e uma alma dividida, os Meio-Demônios são uma encarnação da dualidade inerente ao ser humano, forjando seus próprios caminhos em meio à eterna luta entre o bem e o mal. Eles são testemunhas da complexidade da existência, representando a capacidade de escolher entre a luz e as sombras.
+            `,
+            obrigatorias: [
+                {
+                    id: "DemonioArcano",
+                    nome: "Demônio Arcano",
+                    descricao: `
+                   Um meio-demônio arcano é filho de um elfo, humano ou feérico com um demônio conjurador de feitiços. Com seu sangue demoníaco, o meio demônio desta linhagem pode conjurar feitiços ou magias com sua vitalidade quando estiver sem pontos de magia. Para cada ponto de magia necessário para conjurar uma magia ou feitiço são gastos 1d6 pontos de vida.
+                    `
+                },
+                {
+                    id: "DemonioGuerreiro",
+                    nome: "Demônio Guerreiro",
+                    descricao: `Um meio-demônio guerreiro é filho de um elfo, humano ou feérico com um demônio do exército do inferno. Com seu sangue demoníaco, o meio demônio desta linhagem pode realizar manobras ou habilidades com sua vitalidade quando estiver sem pontos de Estâmina. Para cada ponto de Estâmina  necessário para usar uma Habilidade são gastos 1d6 pontos de vida.  
+                    `
+                },
+                {
+                    id: "SucubosIncubos",
+                    nome: "Súcubos/Íncubos",
+                    descricao: `Um meio-demônio súcubo ou íncubo é filho de um elfo, humano ou feérico com uma súcubo ou íncubo. Com seu sangue demoníaco, o meio demônio desta linhagem pode tentar encantar uma criatura como uma ação. A criatura encantada não agirá de maneira hostil com o demônio, a não ser que este a ataque ou lhe cause algum mal. O personagem pode tentar uma criatura por vez e uma vez a cada um minuto. A chance de sucesso é de 50%.
+                    `
+                },
+            ]
+        },
+        meioCelestial: {
+            nome: 'Meio-Celestial',
+            descricao: `
+            Os Meio-Celestiais são seres excepcionais, nascidos da união entre celestiais e humanóides. Eles carregam em si a luminosidade e a benevolência das esferas divinas, manifestando essa herança em sua existência terrena.
+            Com uma beleza angelical e uma aura de bondade, os Meio-Celestiais irradiam uma luz celestial que envolve todos aqueles que se aproximam deles. Suas características físicas exalam uma beleza etérea e uma sensação de harmonia que inspira admiração e respeito.
+            Além da aparência marcante, os Meio-Celestiais possuem dons divinos que variam dependendo de sua linhagem celestial. Eles podem curar feridas com um toque, invocar proteção divina e canalizar energias sagradas para banir o mal. Essas habilidades refletem a bênção de sua herança celestial.
+            Os Meio-Celestiais também possuem uma moral firme e um profundo senso de justiça. Eles são frequentemente vistos como guias espirituais e protetores de comunidades, buscando erradicar a injustiça e trazer cura aos necessitados.
+            No entanto, apesar de sua herança celestial, os Meio-Celestiais não estão isentos de desafios e tentações terrenas. Eles devem equilibrar sua natureza divina com as complexidades e imperfeições da vida mortal. Essa dualidade muitas vezes os leva a questionar seu propósito e a buscar uma compreensão mais profunda de sua existência.
+            Os Meio-Celestiais são uma presença iluminada no mundo, uma lembrança constante da divindade e da possibilidade de transcender as limitações terrenas. Sua influência é sentida em todas as esferas da vida, inspirando esperança, compaixão e um compromisso inabalável com o bem. Com sua luz radiante e determinação nobre, eles personificam a capacidade de elevar o espírito humano e relembram a todos que a bondade é uma força poderosa na luta contra as trevas.
+            `,
+            obrigatorias: [
+                {
+                    id: "CelestialArcano",
+                    nome: "Celestial Arcano",
+                    descricao: `
+                   Um meio celestial arcano é filho de um elfo, humano ou feérico com um celestial conjurador de magias e milagres. Com seu sangue sagrado, o meio celestial desta linhagem pode conjurar milagres ou magias com seu vigor quando estiver sem pontos de magia. Para cada ponto de magia necessário para conjurar uma magia ou feitiço são gastos 2 pontos de Estamina.
+                    `
+                },
+                {
+                    id: "CelestialGuerreiro",
+                    nome: "Celestial Guerreiro",
+                    descricao: `Um meio-celestial guerreiro é filho de um elfo, humano ou feérico com um celestial do exército divino. Com seu sangue sagrado, o meio celestial desta linhagem pode realizar manobras ou Habilidades com sua magia quando estiver sem pontos de Estamina. Para cada ponto de Estamina  necessário para usar uma Habilidade são gastos 2 pontos de magia. 
+                    `
+                },
+                {
+                    id: "CelestialIntermediador",
+                    nome: "Celestial Intermediador",
+                    descricao: `Um meio-celestial intermediador é filho de um elfo, humano ou feérico com um juiz sagrado. Com seu sangue sagrado, o meio celestial desta linhagem pode tentar apaziguar uma criatura como uma ação. A criatura encantada não agirá de maneira hostil com o celestial ou seus aliados, a não ser que a ataquem ou lhe causem algum mal. O personagem pode tentar uma criatura por vez,  uma vez a cada um minuto. A chance de sucesso é de 40%.
+                    `
+                },
+            ]
+        },
+        meioGenio: {
+            nome: 'Meio-Gênio',
+            descricao: `
+            Os Meio-Gênios, fruto de uma união entre elementais e humanóides, são seres cujas almas estão profundamente entrelaçadas com os segredos dos elementos. Eles representam uma ligação especial entre os reinos elementais e o mundo dos mortais, trazendo consigo tanto os dons quanto as limitações dessa conexão única.
+            Com uma aparência que muitas vezes reflete os elementos dos quais descendem, os Meio-Gênios podem exibir características associadas à terra, fogo, água, ar ou outros elementos da natureza. Seus olhos costumam brilhar com uma energia inerente, sugerindo a influência dos elementos em sua essência.
+            Além da aparência marcante, os Meio-Gênios herdam certas afinidades elementais. Eles podem sentir as mudanças no clima e nos elementos, controlando em certa medida os poderes naturais ao seu redor. No entanto, essa capacidade é limitada em comparação com a dos gênios puros, e os Meio-Gênios geralmente precisam de um esforço maior para realizar feitos elementais extraordinários.
+            A dualidade da herança elemental dos Meio-Gênios também se estende à sua personalidade. Eles podem oscilar entre estados de calma e agitação, refletindo as mudanças nos elementos que os influenciam. Esta conexão com a natureza muitas vezes os torna peritos na resolução de problemas relacionados ao ambiente natural.
+            A influência dos Meio-Gênios na sociedade é palpável. Sua compreensão dos elementos e sua capacidade de mediar conflitos entre humanos e elementais os tornam líderes e diplomatas procurados. Além disso, suas habilidades com os elementos frequentemente os destacam como guardiões da natureza e protetores do equilíbrio ecológico.
+            Em última análise, os Meio-Gênios personificam a intersecção entre os segredos dos elementos e o mundo dos mortais. Eles lembram a todos que, mesmo nas limitações de sua herança, a conexão com a natureza e o respeito pelos elementos podem moldar um destino extraordinário.
+            `,
+            obrigatorias: [
+                {
+                    id: "MeioGenioDoFogo",
+                    nome: "Meio-Gênio do Fogo",
+                    descricao: `
+                   Este meio gênio tem afinidade com o elemento fogo e possui resistência ao dano de fogo, porém tem vulnerabilidade a dano de gelo.Consegue acender velas e fogueiras com uma pequena chama em seus dedos.
+                    `
+                },
+                {
+                    id: "MeioGenioDoGelo",
+                    nome: "Meio-Gênio do Gelo",
+                    descricao: `Este meio gênio tem afinidade com o elemento Gelo e possui resistência ao dano de gelo, porém tem vulnerabilidade a dano de raio. Consegue resfriar objetos e congelar pequenas quantidades (10 cm cúbicos) de líquidos a cada 12 segundos. 
+                    `
+                },
+                {
+                    id: "MeioGenioDoRaio",
+                    nome: "Meio-Gênio do Raio",
+                    descricao: `Este meio gênio tem afinidade com o raio e possui resistência ao dano de raio, porém tem vulnerabilidade a dano de terra. Ele também consegue criar pequenas descargas elétricas que podem gerar luz por um minuto e faz o cabelo ficar de pé.
+                    `
+                },
+                {
+                    id: "MeioGenioDoTerra",
+                    nome: "Meio-Gênio do Terra",
+                    descricao: `Este meio gênio tem afinidade com o elemento terra e possui resistência ao dano de terra, porém tem vulnerabilidade a dano de fogo. Ele também consegue mover uma pequena quantidade (50 cm cúbicos) de terra com a mão a cada 6 segundos.
+                    `
+                },
+            ]
+        },
+        meioTroll: {
+            nome: 'Meio-Troll',
+            descricao: `
+            Os Meio-Trolls são criaturas únicas, resultado da fusão entre humanóides e a resistência formidável dos trolls. Com uma linhagem que inclui diversos tipos de trolls, como os de areia, gelo e montanha, eles carregam em si a dualidade de uma herança selvagem e formidável.
+            A aparência dos Meio-Trolls varia amplamente, refletindo a diversidade de sua herança troll. Alguns podem exibir pele resistente e áspera, outros podem herdar a resistência ao frio ou uma afinidade com as alturas das montanhas. No entanto, todos compartilham a característica comum de regeneração acelerada, que lhes permite se curar mais rapidamente do que a maioria dos humanóides.
+            Além das características físicas impressionantes, os Meio-Trolls herdam uma resistência excepcional. Seja a resistência ao calor abrasador das dunas, a adaptabilidade ao frio glacial, ou a força formidável necessária para navegar pelas escarpas das montanhas, eles são capazes de enfrentar ambientes extremos com coragem e determinação.
+            A dualidade da herança dos Meio-Trolls também se estende à sua personalidade. Eles podem exibir uma natureza forte e impetuosa, mas também são conhecidos por sua determinação e resistência inabaláveis. Essa tenacidade muitas vezes os torna líderes em situações desafiadoras.
+            Os Meio-Trolls desempenham papéis importantes nas sociedades que habitam, frequentemente como protetores de suas comunidades e defensores contra ameaças externas. Sua resistência e habilidades de combate os tornam aliados valiosos, enquanto sua natureza adaptável lhes permite sobreviver e prosperar em condições adversas.
+            Em última análise, os Meio-Trolls personificam a força bruta e a adaptação à adversidade. Eles lembram a todos que, mesmo nas circunstâncias mais difíceis, a determinação e a coragem podem superar desafios aparentemente insuperáveis, e que a herança diversificada é uma força a ser valorizada.
+            `,
+            obrigatorias: [
+                {
+                    id: "MeioMontanhoso",
+                    nome: "Meio-Montanhoso",
+                    descricao: `
+                   Um meio-troll é a mistura de um troll com um ser humanoide. Esse mestiço pode arremessar qualquer objeto, forte o suficiente para causar dano que pese até 5kg. Causando 1d10 pontos de dano de impacto, com uma distância de 15 metros. Podendo utilizar esse arremesso uma vez a cada 10 minutos.
+                    `
+                },
+                {
+                    id: "MeioGeloso",
+                    nome: "Meio-Geloso",
+                    descricao: `Um meio-troll é a mistura de um troll com um ser humanoide. Esse mestiço tem resistência ao dano elemental de gelo. Além de possuírem uma velocidade de movimento de 9 metros. 
+                    `
+                },
+                {
+                    id: "MeioArenoso",
+                    nome: "Meio-Arenoso",
+                    descricao: `Um meio-troll é a mistura de um troll com um ser humanoide. Esses mestiços são resistentes ao cansaço, não sofrem com os efeitos dos 2 primeiros níveis de cansado. Além de não sofrerem penalidade de movimento por andar em um terreno difícil.
+                    `
+                },
+            ]
+        },
+        bestial: {
+            nome: 'Bestial',
+            descricao: `
+            Os Bestiais são uma espécie singular que personifica a diversidade do reino animal em uma forma humanoide. Eles representam uma maravilhosa manifestação da natureza, trazendo consigo uma ampla variedade de características e habilidades, refletindo os muitos aspectos da vida selvagem.
+            Sua aparência é tão diversa quanto a própria natureza. Alguns exibem traços de aves, com asas que lhes permitem voar com graça e leveza, enquanto outros são imponentes e maciços, lembrando animais de grande porte. Há também aqueles que carregam características de caçadores terrestres, com velocidade e garras afiadas, e os pequenos e ágeis, que lembram os herbívoros ou onívoros ágeis e esquivos.
+            Mas a verdadeira beleza dos Bestiais vai além de sua aparência. Cada subespécie traz consigo habilidades únicas que se enraízam em sua herança animal. Alguns são mestres da caça e da sobrevivência, enquanto outros são habilidosos na arte de voar ou na capacidade de resistir aos desafios das terras inóspitas.
+            A presença dos Bestiais no mundo é uma lembrança constante da amplitude da natureza e de sua incrível capacidade de adaptação. Eles nos ensinam que, assim como a natureza é diversa, somos todos únicos em nossas habilidades e características. Os Bestiais são uma celebração da maravilha da vida e da riqueza que a natureza oferece em todas as suas formas.
+
+            `,
+            obrigatorias: [
+                {
+                    id: "Alados",
+                    nome: "Alados",
+                    descricao: `
+                   Bestiais alados são humanoides com traços de qualquer pássaro. Bestiais alados podem voar até sua velocidade de movimento. Enquanto um bestial alado estiver caindo pode usar sua reação para abrir suas asas e quebrar a queda. Ao realizar essa reação não sofrerá o dano da queda. 
+                    `
+                },
+                {
+                    id: "Brutamontes",
+                    nome: "Brutamontes",
+                    descricao: `Bestiais brutamontes são humanoides grandes com traços de animais que pesam naturalmente pelo menos 400 kg e possuem um valor de vida inicial igual a 12 (2 pontos acima do valor base da espécie). Após se mover por pelo menos 4,5 metros em linha reta, o Bestial brutamontes pode realizar um ataque com seu chifre, galhada ou cabeça, que causa 2d6 pontos de dano, além de empurrar seu inimigo por 3m. Se o rolamento de ataque for um acerto crítico, além do dano dobrado, empurra o dobro da distância. 
+                    `
+                },
+                {
+                    id: "Predadores",
+                    nome: "Predadores",
+                    descricao: `Bestiais predadores são humanóides carnívoros e caçadores terrestres (Canídeos, répteis e felinos principalmente). Predadores possuem uma maior velocidade de movimento de 7,5 metros e também possuem armas naturais, que podem ser garras ou presas. Essas armas naturais causam 1d10 pontos de dano perfurante ou cortante.
+                    `
+                },
+                {
+                    id: "Herbivoraz",
+                    nome: "Herbivoraz",
+                    descricao: `Bestiais herbivorazes são pequenos humanóides com traços de animais herbívoros ou onívoros leves e ágeis, seu valor de Velocidade de Movimento é igual a 4,5. Um bestial herbivoraz pode usar sua agilidade de fuga para escapar do perigo, ou corajosamente avançar para atacar primeiro como instinto de sobrevivência. 
+                    Um herbivoraz pode usar a ação disparada com o custo de duas ações ao invés de três. Ao usar a ação correr ou andar pode realizar, como parte da mesma ação,  usar a ação Buscar Cobertura. Desde que esteja usando um escudo ou tenha cobertura próximo de si.
+
+                    `
+                },
+                {
+                    id: "Aquaticos",
+                    nome: "Aquaticos",
+                    descricao: `Bestiais aquáticos são humanoides com traços de animais aquáticos como os mais variados peixes e anfíbios. Esses bestiais conseguem respirar debaixo d’água. Nadam em qualquer tipo de correnteza sem precisar de um teste de atletismo. Com as escamas que se formam em sua pele, um bestial aquático recebe um bônus de 2 pontos de valor de defesa enquanto não estiver usando armadura média ou pesada. Um bestial aquático que não fica submergido por pelo menos uma hora a cada 48 horas fica um nível de Cansado,  que pode acumular com outras fontes.
+                    `
+                },
+            ]
+        },
+        halfling: {
+            nome: 'Halfling',
+            descricao: `
+            Os Halflings, apesar de seu tamanho modesto, são gigantes quando se trata de coragem e espírito aventureiro. Eles vivem suas vidas com uma determinação feroz, enfrentando desafios muito maiores do que eles mesmos. Seus sorrisos são tão amplos quanto seus corações, e sua disposição para explorar o desconhecido é incomparável.
+            Sua estatura pequena não é um impedimento, mas sim uma vantagem. Eles passam facilmente despercebidos e são mestres em navegar por lugares apertados e esconder-se nas sombras. Sua agilidade é lendária, e muitos inimigos subestimam a habilidade de um Halfling, apenas para serem surpreendidos por sua destreza em combate.
+            Nada é mais importante para um Halfling do que a família e os amigos. Eles estão dispostos a fazer qualquer coisa para proteger aqueles que amam e nunca recuam diante de um desafio. Sua determinação é incomparável, e sua alegria de viver é contagiante.
+            Os Halflings são uma prova viva de que o tamanho não define o heroísmo. Eles são uma espécie de espíritos aventureiros, prontos para enfrentar o mundo com um sorriso no rosto e uma sede insaciável por novas experiências. Eles são pequenos em estatura, mas grandes em coragem e determinação.
+            `,
+            obrigatorias: [
+                {
+                    id: "Comuns",
+                    nome: "Comuns",
+                    descricao: `
+                   Halflings que lembram pequenos humanos, são ágeis e agitados. Esses halflings possuem a capacidade de usar a ação Esconder estando logo atrás de um aliado. Um halfling consegue se esconder mas não buscar cobertura desta maneira. 
+                    `
+                },
+                {
+                    id: "Subterraneos",
+                    nome: "Subterrâneos",
+                    descricao: `Halflings que vivem nas profundezas das cavernas e túneis subterrâneos, em constante harmonia com a escuridão e os segredos das entranhas da terra. Eles possuem a pele pálida avermelhada nas extremidades e olhos maiores que os comuns e que possuem pupilas enormes. Halflings do Submundo possuem visão no escuro com alcance de 64 metros, enxergando como se estivessem em meia luz.
+                    `
+                },
+                {
+                    id: "Monstruosidades",
+                    nome: "Monstruosidades",
+                    descricao: `Halflings monstros são todas as espécies de goblinóides e kobolds (canídeos). Esses halflings são conhecidos por trabalhar em equipe e cultuar seres mais fortes. São muito orgulhosos do próprio povo ou de quem cultuam, esse orgulho se traduz em confiança e determinação em batalha. Quando realizam um ataque esses halflings conseguem usar ação Intimidar ao mesmo tempo. Essa habilidade pode ser usada 3 vezes ao dia. Quando estão com um ou mais aliados flanqueando um inimigo recebe vantagem em jogadas de acerto.
+                    `
+                },
+            ]
+        },
+        troll: {
+            nome: 'Troll',
+            descricao: `
+            Trolls são seres colossais, conhecidos por sua resistência sobrenatural e presença imponente. Independentemente da variação específica de sua linhagem, todos os Trolls compartilham traços comuns que os tornam verdadeiras forças da natureza no mundo da alta fantasia.
+            Possuindo uma natureza monstruosa, os Trolls são gigantes imunes a muitos dos obstáculos que afetam criaturas menores. Sua imponência física e força descomunal lhes conferem a capacidade de realizar feitos impressionantes, como arremessar objetos maciços a grandes distâncias e transportar cargas consideráveis por curtos períodos de tempo.
+            Além disso, a resistência inerente dos Trolls permite que eles prosperem em ambientes extremos, como montanhas, tundras congeladas e desertos escaldantes. Seus corpos robustos e peles resistentes protegem-nos das agruras do ambiente, tornando-os mestres da sobrevivência em terrenos hostis.
+            A linhagem de um Troll é uma marca de sua jornada única e destino no mundo da alta fantasia. Cada subespécie de Troll representa uma adaptação especializada a um ambiente particular, mas todos compartilham a herança de força e resistência que os torna verdadeiramente formidáveis. Independentemente da variação, os Trolls são gigantes que se destacam, deixando sua marca indelével no mundo de aventuras e desafios.
+            `,
+            obrigatorias: [
+                {
+                    id: "TrollDaMontanha",
+                    nome: "Troll da Montanha",
+                    descricao: `
+                   Um Troll da Montanha são grandes seres humanóides monstruosos. Eles podem arremessar qualquer objeto grande e pesado, como pedras, toras de madeira e etc. em uma distância de até 15m. Um alvo atingido por esses objetos sofrem 2d10 de dano. Arremessar um objeto é uma ação e exige que tenha tal objeto próximo. Seu físico incomparável os permite ultrapassar a sua capacidade de carga em até 50 quilos por ponto de força durante 1 hora. Após realizar tal feito é necessário ao menos um descanso curto.
+                    `
+                },
+                {
+                    id: "TrolldoGelo",
+                    nome: "Troll do Gelo",
+                    descricao: `Um Troll do Gelo são grandes seres humanóides monstruosos. Esses trolls são imunes ao frio, ao dano de gelo e à condição Congelando. 
+                    `
+                },
+                {
+                    id: "TrollDoDeserto",
+                    nome: "Troll do Deserto",
+                    descricao: `Um Troll do Deserto são grandes seres humanóides monstruosos. Esses trolls são imunes ao cansaço e são adaptados para andar na areia, ignorando terrenos difíceis naturais.
+                    `
+                },
+            ]
+        },
+        constructo: {
+            nome: 'Constructo',
+            descricao: `
+            Na penumbra do mundo da alta fantasia, os Constructos erguem-se como testemunhos vivos da união entre a magia ancestral e a habilidade criativa dos artífices. São entidades de energias elementais, infundidas com as almas ardentes do fogo, da eletricidade, do ar e da sombra, cada qual trazendo consigo uma personalidade distinta e um conjunto inigualável de talentos.
+            Nascidos de uma alquimia complexa e do domínio das artes mágicas, os Constructos são verdadeiras quimeras, distintas de qualquer forma de vida convencional. Eles não conhecem a vida como a compreendemos, mas em seu íntimo, mantêm uma consciência singular, originada das energias elementais que os compõem. O resultado é uma fusão fascinante de artifícios e elementos, um casamento de magia e engenhosidade.
+            Independentemente de suas vocações como utilitários, guerreiros, agentes infiltrados ou exploradores destemidos, todos os Constructos partilham uma verdade fundamental: a natureza de sua existência é essencialmente artificial. São criaturas que se destacam, em virtude de sua singularidade, destacando-se como a conjunção mais notável entre o mundo natural e o reino das criações mágicas.
+            Assim, os Constructos perduram como criaturas enigmáticas e imponentes, dotadas de habilidades incomuns, capazes de desempenhar tarefas intrincadas e superar muitas das limitações inerentes às formas de vida orgânicas. Essa união única entre magia elemental e artifício confere a eles um lugar ilustre no teatro de maravilhas e desafios que compõem o mundo da alta fantasia.
+            `,
+            obrigatorias: [
+                {
+                    id: "ConstructoDeUtilidade",
+                    nome: "Constructo de Utilidade",
+                    descricao: `
+                   O constructo de utilidade foi criado ao usar um espírito elemental de fogo para alimentar uma máquina ajudante. Usadas em forjas, construções e transporte , essas máquinas são capazes de grande capacidade de carga, sendo capazes de carregar o dobro de carga que uma criatura orgânica de mesmo tamanho. Os constructos de Habilidade são duráveis porém lentos, sua velocidade de movimento é igual a 4,5 metros. Eles são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo um constructo precisa ficar parado em modo inativo por 4 horas, e seu descanso curto funciona de maneira padrão. São resistentes ao dano de fogo e imunes ao dano de venenos e a condição Envenenado ou Sangrando. São vulneráveis ao dano de gelo.
+                    `
+                },
+                {
+                    id: "ConstructoDeBatalha",
+                    nome: "Constructo de Batalha",
+                    descricao: `
+                   O constructo de batalha foi criado ao usar um espírito elemental de raio para alimentar uma máquina combatente. Usadas como guardas, soldados e assassinos, essas máquinas possuem uma armadura embutida que pode ser melhorada e reforçada. Seu valor de defesa inicial é de 15. Um constructo de batalha não pode adicionar sua agilidade ao seu valor de defesa e nem usar armaduras. Eles são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo um constructo precisa ficar parado em modo inativo por 4 horas, e seu descanso curto funciona de maneira padrão. São resistentes ao dano de raio e imunes ao dano de venenos, a condição Envenenado e a condição Sangrando. São vulneráveis ao dano de terra.
+                    `
+                },
+                {
+                    id: "ConstructoDeExploracao",
+                    nome: "Constructo de Exploração",
+                    descricao: `
+                   O constructo de exploração foi criado ao utilizar um espírito elemental do ar para alimentar uma máquina de exploração versátil. Essas máquinas são frequentemente usadas em missões de reconhecimento, exploração de áreas desconhecidas e busca de tesouros escondidos. Possuem uma capacidade de voo limitada, permitindo-lhe voar por 10 minutos a cada descanso curto ou longo. Sua velocidade de movimento é de 9 metros em terra e 18 metros no ar. Os constructos de exploração são imunes à condição de Cansado e não precisam de comida ou água. Para um descanso longo, um constructo precisa ficar inativo em modo de economia de energia por 2 horas, enquanto seu descanso curto funciona como o padrão. São resistentes ao dano de raio e imunes ao dano de veneno e à condição Envenenado. São vulneráveis aos danos de gelo e terra.
+                    `
+                },
+                {
+                    id: "ConstructoDeInvasao",
+                    nome: "Constructo de Invasão",
+                    descricao: `
+                    O constructo de sigilo foi criado ao utilizar um espírito elemental sombrio para alimentar uma máquina furtiva especializada em missões secretas e espionagem. Essas máquinas são especialistas em se mover em silêncio e em se esconder nas sombras. Possuem a habilidade de camuflagem que as tornam quase invisíveis em ambientes escuros, fornecendo +3 em testes de furtividade enquanto fora de luz completa. Sua velocidade de movimento é de 6 metros, mas quando estão nas sombras, sua velocidade é dobrada para 12 metros. Eles não precisam de comida ou água e são imunes à condição Cansado. Para um descanso longo, um constructo de sigilo precisa de apenas 2 horas de inatividade nas sombras, enquanto seu descanso curto funciona de maneira padrão. São resistentes ao dano de sombra e imunes ao dano de veneno e à condição Envenenado. São vulneráveis aos danos sagrado e de fogo.
+                    `
+                },
+            ]
+        },
     };
 
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
@@ -872,9 +1296,9 @@ const CharCreationPage = () => {
         )
     }
     return (
-        <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m:'auto' }}>
             {/* User header */}
-            <Box>
+            <Box sx={{ width: '90%', mx:'auto'}}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
 
                 <Tabs
