@@ -1253,7 +1253,103 @@ const CharCreationPage = () => {
                 },
             ]
         },
+
     };
+    const regaliasOpcionais = {
+        "regalias_opcionais": [
+            {
+                "tipo": "Psíquico",
+                "custo": 2,
+                "descricao": 'Escolha um dos seguintes poderes psíquicos para começar:',
+                "opcoes": [
+                    {
+                        "nome": "Telecinese",
+                        "descricao": "personagem tem a habilidade de mover objetos com a mente. O personagem consegue mover até um objeto de até 5 quilos que esteja em um alcance de até 30 metros de distância. O movimento não é veloz e não pode realizar ataques com armas com essa habilidade. Além disso, 3 vezes ao dia o personagem pode usar a sua reação para empurrar, 3 metros para a direção  a sua escolha, uma criatura que se aproxime  dele em uma distância de 3 metros."
+                    },
+                    {
+                        "nome": "Telepatia",
+                        "descricao": "personagem pode ler os pensamentos e se comunicar mentalmente com outras pessoas. O personagem consegue manter conversas telepáticas com criaturas que a possa entender em até 27 metros de distância. Além disso, o jogador pode escolher tentar ler a mente, com 70% chance de sucesso, de alguém que possa ver em até 18 metros de distância. O jogador com sucesso em sua tentativa  consegue ler os pensamentos superficiais do alvo, como o que ele está pensando no exato momento, contra a sua vontade. "
+                    },
+                    {
+                        "nome": "Precognição",
+                        "descricao": "personagem tem vislumbres do futuro, podendo ter flashes de eventos que ainda estão por acontecer. O jogador pode escolher passar em um teste de habilidade, desviar de um ataque certeiro ou acertar um ataque uma vez por dia, pois ele já sabia que aquilo ia acontecer e como."
+                    },
+                    {
+                        "nome": "Controle Mental",
+                        "descricao": "personagem pode influenciar suavemente a mente dos outros, fazendo sugestões. O jogador ganha +2 em todos os rolamentos da aba social e uma vez por dia pode transformar esse  bônus em um +10."
+                    }
+                ]
+            },
+            {
+                "tipo": "Vampiro / Wight / Draugr",
+                "custo": 2,
+                "descricao": "Ao escolher ser um morto vivo, o personagem não pode ser curado por milagres. Escolha um dos seguintes poderes de mortos vivos para começar com (A habilidade Drenagem de Vida pode ser escolhido por qualquer tipo de morto vivo):",
+                "observacao": "Não pode ser curado por milagres.",
+                "opcoes": [
+                    {
+                        "nome": "Drenagem de Vida",
+                        "descricao": "personagem pode sugar a energia vital de outras criaturas para se fortalecer. O jogador pode escolher realizar um ataque de combate corpo a corpo e sugar a vitalidade de um alvo, causando 1d8 de dano necrótico e o curando em 5, ou realizar uma versão mais fraca à distância, causando apenas 1d4 de dano necrótico e curando em 3, com alcance de 9m. Essa habilidade pode ser utilizada até 3 vezes por descanso longo."
+                    },
+                    {
+                        "nome": "Transformação Noturna",
+                        "descricao": "personagem ganha poderes especiais durante a noite, como aumento de força, velocidade ou poderes sombrios. Um personagem morto vivo recebe 1,5 de bônus de velocidade movimento a noite. Sua capacidade de carga aumenta, como se fosse um tamanho maior na tabela, durante a noite. O personagem consegue escalar paredes sem a necessidade de testes ou redução de velocidade e ganha +3 em testes de furtividade à noite."
+                    },
+                    {
+                        "nome": "Hipnose",
+                        "descricao": "personagem pode hipnotizar suas vítimas com seu olhar ou voz, exercendo influência sobre elas.o personagem consegue utilizar as magias Hipnose e Voz de Comando uma vez cada por dia e sem custo de mana."
+                    }
+                ]
+            },
+            {
+                "tipo": "Mutante",
+                "custo": 2,
+                "descricao": 'Uma criatura que sofreu de alguma forma uma exposição a um efeito que mudou permanentemente sua aparência e fisionomia é considerada um mutante. O mutante tem uma penalidade de -2 em todos os testes da aba social, exceto intimidação, sempre que que tiver a mutação visível. Todos sabem que o personagem possui mutações, a não ser que o personagem a mantenha contida dentro de roupas, máscaras e afins. Ao escolher ser um mutante é necessário escolher apenas uma das opções abaixo:',
+                "penalidade": "-2 em testes da aba social (exceto Intimidação) com mutação visível.",
+                "opcoes": [
+                    {
+                        "nome": "Pele Escamosa",
+                        "descricao": "A pele do personagem se torna grossa e escamosa, fornecendo uma defesa natural a cortes e arranhões. A base do valor de defesa para o personagem sem armadura é de 10 ao invés de 7."
+                    },
+                    {
+                        "nome": "Olhos Multifacetados",
+                        "descricao": "Os olhos do personagem se multiplicam e adquirem uma aparência insectóide, concedendo visão ampliada e a capacidade de enxergar no escuro. Visão no escuro, e meia luz, com alcance de 27 metros e bônus de +2 em testes de percepção que envolvam visão."
+                    },
+                    {
+                        "nome": "Boca Abissal",
+                        "descricao": "A boca do personagem se expande, revelando uma mandíbula cheia de dentes afiados, permitindo ataques mordedores poderosos. Recebe uma arma natural com dano perfurante  4 + valor de força. Recebe +2 em testes de atletismo para agarrar um alvo com os dentes."
+                    },
+                    {
+                        "nome": "Membros Desproporcionais",
+                        "descricao": "Os membros do personagem se alongam ou encurtam, concedendo versatilidade. Aumentam o alcance de ameaça em 1,5 metros ou reduz a criatura em um tamanho na escala, com um mínimo de minúsculo."
+                    },
+                    {
+                        "nome": "Cauda Serpentina",
+                        "descricao": "Uma cauda serpentina cresce na parte inferior do corpo do personagem, permitindo uma maior capacidade de equilíbrio e agilidade em movimentos.o personagem ganha um bônus de +5 em testes de acrobacia para se equilibrar e consegue usar sua cauda para se segurar em beiradas, galhos e outros que possam ser enrolados por ela, deixando assim suas mãos livres."
+                    },
+                    {
+                        "nome": "Garras Retráteis",
+                        "descricao": "O personagem desenvolve garras afiadas em suas mãos ou pés, fornecendo ataques mais letais e a habilidade de escalar superfícies verticais. Recebe uma arma natural com dano cortante   3 + valor de destreza. O personagem tem a capacidade de escalar superfícies verticais sem custo extra de movimento e sem necessidade de ferramentas extras."
+                    },
+                    {
+                        "nome": "Chifres Torcidos",
+                        "descricao": "Chifres retorcidos e sinuosos crescem na cabeça do personagem, conferindo maior resistência física e a capacidade de empurrar objetos pesados. O personagem recebe +2 em testes de atletismo para se manter em pé ou derrubar um alvo. Recebe uma arma natural com dano de impacto  3 + valor de força."
+                    },
+                    {
+                        "nome": "Exoesqueleto Ósseo",
+                        "descricao": "O corpo do personagem é envolvido por um exoesqueleto ósseo, tornando-o mais resistente a cortes. Se torna resistente ao dano cortante, porém se torna vulnerável ao dano de impacto. O exoesqueleto também aumenta a base do valor de defesa de 7 para 10."
+                    },
+                    {
+                        "nome": "Pernas de Aranha",
+                        "descricao": "O personagem desenvolve pernas extras semelhantes às de uma aranha, permitindo maior mobilidade e a habilidade de escalar paredes. Pode escalar sem gastar movimento extra e ganha um bônus de 1.5 metros no valor de velocidade. Ganha um bônus de +5 em testes de atletismo para agarrar e para não ser derrubado."
+                    },
+                    {
+                        "nome": "Braços Tentaculares",
+                        "descricao": "Braços adicionais em forma de tentáculos crescem no corpo do personagem, fornecendo uma vantagem de alcance em combate e a habilidade de agarrar objetos a distância. Recebe 1.5 metros a mais em seu alcance de ameaça e +2 em testes de atletismo para agarrar outra criatura."
+                    }
+                ]
+            }
+        ]
+    }
 
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
 
@@ -1263,19 +1359,22 @@ const CharCreationPage = () => {
     // Estado do React para guardar a escolha
     const [regaliaEscolhida, setRegaliaEscolhida] = useState('');
     const RegaliaDeEspecie = ({ data }) => {
+        const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
+
         return (
-            < Box >
-                < Typography className="bigBoxTextEquipsHeader" sx={{ mb: 2 }}>
+            <Box>
+                <Typography className="bigBoxTextEquipsHeader" sx={{ mb: 2 }}>
                     Escolha uma entre:
-                </Typography >
+                </Typography>
 
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Regalia Obrigatória</FormLabel>
                     <RadioGroup
-                        name="regalia-obrigatoria"
+                        name="regalia-escolhida"
                         value={regaliaEscolhida}
                         onChange={(e) => setRegaliaEscolhida(e.target.value)}
                     >
+                        {/* Regalias Obrigatórias */}
                         {data.obrigatorias.map((opcao) => (
                             <FormControlLabel
                                 key={opcao.id}
@@ -1290,15 +1389,62 @@ const CharCreationPage = () => {
                                 sx={{ alignItems: 'flex-start', my: 2 }}
                             />
                         ))}
+                        <Box>
+                            <Typography variant="h6" className="bigBoxTextClasses" sx={{ mb: 2 }}>
+
+                                REGALIAS OPCIONAIS DE ESPÉCIE
+                            </Typography>
+                            <Typography className="bigBoxTextClasses">
+                                Aqui o jogador pode encontrar opções para personalizar ainda mais seus personagens. A seguir temos várias opções que podem substituir a Regalia obrigatória de uma espécie. Assim sendo, como um exemplo,  o personagem pode ser humano e começar com uma das opções abaixo ao invés das que estão inicialmente disponíveis para ele.
+                                Ao escolher uma das opções abaixo é proibido escolher uma das outras. Após trocar a regalia inicial de classe, adicione as outras opções que sobraram da lista de escolhas para regalias de sua espécie original.
+
+                            </Typography>
+                        </Box>
+                        {/* Regalias Especiais agrupadas por tipo */}
+                        {regaliasOpcionais.regalias_opcionais.map((grupo) => (
+                            <Box key={grupo.tipo} sx={{ mt: 3, display: 'flex', flexDirection: 'column', flexWrap: 'nowrap' }}>
+                                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                    Regalias Especiais - {grupo.tipo}
+                                </Typography>
+                                {grupo.observacao &&
+                                    <Typography sx={{  mb: 1 }}>
+                                        {grupo.observacao}
+                                    </Typography>}
+                                {grupo.penalidade &&
+                                    <Typography sx={{ mb: 1 }}>
+                                        {grupo.penalidade}
+                                    </Typography>}
+                                <Typography sx={{ mb: 1 }}>
+                                    {grupo.descricao}
+                                </Typography>
+                                {grupo.opcoes.map((opcao) => (
+                                    <FormControlLabel
+                                        key={opcao.nome}
+                                        value={opcao.nome}
+                                        control={<Radio />}
+                                        label={
+                                            <Box>
+                                                <strong>{opcao.nome}</strong>
+                                                <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                                    {opcao.descricao.trim()}
+                                                </Typography>
+                                            </Box>
+                                        }
+                                        sx={{ alignItems: 'flex-start', my: 1 }}
+                                    />
+                                ))}
+                            </Box>
+                        ))}
                     </RadioGroup>
                 </FormControl>
-            </Box >
-        )
-    }
+            </Box>
+        );
+    };
+
     return (
-        <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m:'auto' }}>
+        <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
             {/* User header */}
-            <Box sx={{ width: '90%', mx:'auto'}}>
+            <Box sx={{ width: '90%', mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
 
                 <Tabs
