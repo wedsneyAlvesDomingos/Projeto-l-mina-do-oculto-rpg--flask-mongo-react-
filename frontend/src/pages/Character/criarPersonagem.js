@@ -1264,19 +1264,19 @@ const CharCreationPage = () => {
                 "opcoes": [
                     {
                         "nome": "Telecinese",
-                        "descricao": "personagem tem a habilidade de mover objetos com a mente. O personagem consegue mover até um objeto de até 5 quilos que esteja em um alcance de até 30 metros de distância. O movimento não é veloz e não pode realizar ataques com armas com essa habilidade. Além disso, 3 vezes ao dia o personagem pode usar a sua reação para empurrar, 3 metros para a direção  a sua escolha, uma criatura que se aproxime  dele em uma distância de 3 metros."
+                        "descricao": " Opersonagem tem a habilidade de mover objetos com a mente. O personagem consegue mover até um objeto de até 5 quilos que esteja em um alcance de até 30 metros de distância. O movimento não é veloz e não pode realizar ataques com armas com essa habilidade. Além disso, 3 vezes ao dia o personagem pode usar a sua reação para empurrar, 3 metros para a direção  a sua escolha, uma criatura que se aproxime  dele em uma distância de 3 metros."
                     },
                     {
                         "nome": "Telepatia",
-                        "descricao": "personagem pode ler os pensamentos e se comunicar mentalmente com outras pessoas. O personagem consegue manter conversas telepáticas com criaturas que a possa entender em até 27 metros de distância. Além disso, o jogador pode escolher tentar ler a mente, com 70% chance de sucesso, de alguém que possa ver em até 18 metros de distância. O jogador com sucesso em sua tentativa  consegue ler os pensamentos superficiais do alvo, como o que ele está pensando no exato momento, contra a sua vontade. "
+                        "descricao": "Ler pensamentos e se comunicar mentalmente com outras pessoas. O personagem consegue manter conversas telepáticas com criaturas que a possa entender em até 27 metros de distância. Além disso, o jogador pode escolher tentar ler a mente, com 70% chance de sucesso, de alguém que possa ver em até 18 metros de distância. O jogador com sucesso em sua tentativa  consegue ler os pensamentos superficiais do alvo, como o que ele está pensando no exato momento, contra a sua vontade. "
                     },
                     {
                         "nome": "Precognição",
-                        "descricao": "personagem tem vislumbres do futuro, podendo ter flashes de eventos que ainda estão por acontecer. O jogador pode escolher passar em um teste de habilidade, desviar de um ataque certeiro ou acertar um ataque uma vez por dia, pois ele já sabia que aquilo ia acontecer e como."
+                        "descricao": "Consegue ter vislumbres do futuro, gerando flashes de eventos que ainda estão por acontecer. O jogador pode escolher passar em um teste de habilidade, desviar de um ataque certeiro ou acertar um ataque uma vez por dia, pois ele já sabia que aquilo ia acontecer e como."
                     },
                     {
                         "nome": "Controle Mental",
-                        "descricao": "personagem pode influenciar suavemente a mente dos outros, fazendo sugestões. O jogador ganha +2 em todos os rolamentos da aba social e uma vez por dia pode transformar esse  bônus em um +10."
+                        "descricao": "Capacidade de influenciar suavemente a mente dos outros, fazendo sugestões. O jogador ganha +2 em todos os rolamentos da aba social e uma vez por dia pode transformar esse  bônus em um +10."
                     }
                 ]
             },
@@ -1288,15 +1288,15 @@ const CharCreationPage = () => {
                 "opcoes": [
                     {
                         "nome": "Drenagem de Vida",
-                        "descricao": "personagem pode sugar a energia vital de outras criaturas para se fortalecer. O jogador pode escolher realizar um ataque de combate corpo a corpo e sugar a vitalidade de um alvo, causando 1d8 de dano necrótico e o curando em 5, ou realizar uma versão mais fraca à distância, causando apenas 1d4 de dano necrótico e curando em 3, com alcance de 9m. Essa habilidade pode ser utilizada até 3 vezes por descanso longo."
+                        "descricao": "O personagem pode sugar a energia vital de outras criaturas para se fortalecer. O jogador pode escolher, como uma ação, realizar um ataque de combate corpo a corpo e sugar a vitalidade de um alvo, causando 1d8 de dano necrótico e o curando em 5 pontos, ou realizar uma versão mais fraca à distância, causando apenas 1d4 de dano necrótico e curando em 3, com alcance de 9m. Essa habilidade pode ser utilizada até 3 vezes por descanso longo."
                     },
                     {
                         "nome": "Transformação Noturna",
-                        "descricao": "personagem ganha poderes especiais durante a noite, como aumento de força, velocidade ou poderes sombrios. Um personagem morto vivo recebe 1,5 de bônus de velocidade movimento a noite. Sua capacidade de carga aumenta, como se fosse um tamanho maior na tabela, durante a noite. O personagem consegue escalar paredes sem a necessidade de testes ou redução de velocidade e ganha +3 em testes de furtividade à noite."
+                        "descricao": "Ganha poderes especiais durante a noite, como aumento de força, velocidade ou poderes sombrios. Um personagem morto vivo recebe 1,5 de bônus de velocidade movimento a noite. Sua capacidade de carga aumenta, como se fosse um tamanho maior na tabela, durante a noite. O personagem consegue escalar paredes sem a necessidade de testes ou redução de velocidade e ganha +3 em testes de furtividade à noite."
                     },
                     {
                         "nome": "Hipnose",
-                        "descricao": "personagem pode hipnotizar suas vítimas com seu olhar ou voz, exercendo influência sobre elas.o personagem consegue utilizar as magias Hipnose e Voz de Comando uma vez cada por dia e sem custo de mana."
+                        "descricao": "Hipnotiza suas vítimas com seu olhar ou voz, exercendo influência sobre elas. O personagem consegue utilizar as magias Hipnose e Voz de Comando uma vez cada por dia e sem custo de mana."
                     }
                 ]
             },
@@ -1312,11 +1312,11 @@ const CharCreationPage = () => {
                     },
                     {
                         "nome": "Olhos Multifacetados",
-                        "descricao": "Os olhos do personagem se multiplicam e adquirem uma aparência insectóide, concedendo visão ampliada e a capacidade de enxergar no escuro. Visão no escuro, e meia luz, com alcance de 27 metros e bônus de +2 em testes de percepção que envolvam visão."
+                        "descricao": "Os olhos do personagem se multiplicam e adquirem uma aparência insectóide, concedendo visão ampliada e a capacidade de enxergar no escuro. Visão no escuro, e meia luz, com alcance de 27 metros e bônus de +2 em testes de percepção que envolvam visão. Além disso possui visão 360°"
                     },
                     {
                         "nome": "Boca Abissal",
-                        "descricao": "A boca do personagem se expande, revelando uma mandíbula cheia de dentes afiados, permitindo ataques mordedores poderosos. Recebe uma arma natural com dano perfurante  4 + valor de força. Recebe +2 em testes de atletismo para agarrar um alvo com os dentes."
+                        "descricao": "A boca do personagem se expande, revelando uma mandíbula cheia de dentes afiados, permitindo ataques mordedores poderosos. Recebe uma arma natural com dano perfurante  1d10 + valor de força. Recebe +2 em testes de atletismo para agarrar um alvo com os dentes."
                     },
                     {
                         "nome": "Membros Desproporcionais",
@@ -1324,19 +1324,19 @@ const CharCreationPage = () => {
                     },
                     {
                         "nome": "Cauda Serpentina",
-                        "descricao": "Uma cauda serpentina cresce na parte inferior do corpo do personagem, permitindo uma maior capacidade de equilíbrio e agilidade em movimentos.o personagem ganha um bônus de +5 em testes de acrobacia para se equilibrar e consegue usar sua cauda para se segurar em beiradas, galhos e outros que possam ser enrolados por ela, deixando assim suas mãos livres."
+                        "descricao": "Uma cauda serpentina cresce na parte inferior do corpo do personagem, permitindo uma maior capacidade de equilíbrio e agilidade em movimentos.o personagem ganha um bônus de +5 em testes de acrobacia para se equilibrar e consegue usar sua cauda para se segurar em beiradas, galhos e outros que possam ser enrolados por ela, deixando assim suas mãos livres. A calda pode ser usada para segurar objetos mas não realizar ataques ou defender de ataques."
                     },
                     {
                         "nome": "Garras Retráteis",
-                        "descricao": "O personagem desenvolve garras afiadas em suas mãos ou pés, fornecendo ataques mais letais e a habilidade de escalar superfícies verticais. Recebe uma arma natural com dano cortante   3 + valor de destreza. O personagem tem a capacidade de escalar superfícies verticais sem custo extra de movimento e sem necessidade de ferramentas extras."
+                        "descricao": "O personagem desenvolve garras afiadas em suas mãos ou pés, fornecendo ataques mais letais e a habilidade de escalar superfícies verticais. Recebe uma arma natural com dano cortante   1d6 + valor de destreza. O personagem tem a capacidade de escalar superfícies verticais sem custo extra de movimento e sem necessidade de ferramentas extras."
                     },
                     {
                         "nome": "Chifres Torcidos",
-                        "descricao": "Chifres retorcidos e sinuosos crescem na cabeça do personagem, conferindo maior resistência física e a capacidade de empurrar objetos pesados. O personagem recebe +2 em testes de atletismo para se manter em pé ou derrubar um alvo. Recebe uma arma natural com dano de impacto  3 + valor de força."
+                        "descricao": "Chifres retorcidos e sinuosos crescem na cabeça do personagem, conferindo maior resistência física e a capacidade de empurrar objetos pesados. O personagem recebe +2 em testes de atletismo para se manter em pé ou derrubar um alvo. Recebe uma arma natural com dano de impacto  1d6 + valor de força."
                     },
                     {
                         "nome": "Exoesqueleto Ósseo",
-                        "descricao": "O corpo do personagem é envolvido por um exoesqueleto ósseo, tornando-o mais resistente a cortes. Se torna resistente ao dano cortante, porém se torna vulnerável ao dano de impacto. O exoesqueleto também aumenta a base do valor de defesa de 7 para 10."
+                        "descricao": "O corpo do personagem é envolvido por um exoesqueleto ósseo, tornando-o mais resistente a cortes. Se torna resistente ao dano cortante, porém se torna vulnerável ao dano de impacto. O exoesqueleto também aumenta a base do valor de defesa de 7 para 12."
                     },
                     {
                         "nome": "Pernas de Aranha",
@@ -1356,8 +1356,6 @@ const CharCreationPage = () => {
     const handleChange = (event) => {
         setEspecieSelecionada(event.target.value);
     };
-    // Estado do React para guardar a escolha
-    const [regaliaEscolhida, setRegaliaEscolhida] = useState('');
     const RegaliaDeEspecie = ({ data }) => {
         const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
 
@@ -1407,7 +1405,7 @@ const CharCreationPage = () => {
                                     Regalias Especiais - {grupo.tipo}
                                 </Typography>
                                 {grupo.observacao &&
-                                    <Typography sx={{  mb: 1 }}>
+                                    <Typography sx={{ mb: 1 }}>
                                         {grupo.observacao}
                                     </Typography>}
                                 {grupo.penalidade &&
@@ -1440,6 +1438,178 @@ const CharCreationPage = () => {
             </Box>
         );
     };
+
+    const handleRegaliasUpdate = ({ regalias, comprada }) => {
+        console.log('Regalias selecionadas:', regalias);
+        console.log('Regalia comprada:', comprada);
+        // Aqui você pode salvar no estado do pai, fazer API, etc.
+    };
+    const AprendizClass = ({ onRegaliaChange }) => {
+        const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
+        const [RegaliaComprada, setRegaliaComprada] = useState('');
+
+        const handleRegaliaChange = (regaliaId) => {
+            const alreadySelected = RegaliasDeAprendiz.includes(regaliaId);
+
+            if (alreadySelected) {
+                const updated = RegaliasDeAprendiz.filter((id) => id !== regaliaId);
+                setRegaliasDeAprendiz(updated);
+                onRegaliaChange({ regalias: updated, comprada: RegaliaComprada });
+            } else {
+                if (RegaliasDeAprendiz.length < 2) {
+                    const updated = [...RegaliasDeAprendiz, regaliaId];
+                    setRegaliasDeAprendiz(updated);
+                    onRegaliaChange({ regalias: updated, comprada: RegaliaComprada });
+                }
+            }
+        };
+        const regaliasDeAprendiz = [
+            {
+                id: 'combatente',
+                nome: 'Combatente Aprendiz',
+                descricao: `1 ponto em Força, Fortitude ou Destreza.
+                1 ponto em Combate Corpo a Corpo ou Combate À Distância.
+                Proficiência em Armas Marciais, Armaduras Leves e Médias, e Escudo Simples.
+                Habilidade: Recuperar Fôlego – Ação de turno completo para recuperar 4 PV (custa 2 Magia). Pode recuperar também 4 Estamina por mais 2 Magia.`
+            },
+            {
+                id: 'novico',
+                nome: 'Noviço(a) Aprendiz',
+                descricao: `1 ponto em Teologia, Arcanismo ou Medicina.
+                1 ponto em Combate Arcano, Corpo a Corpo ou Distância.
+                Milagres: 
+                - Abençoar Água: sagrada por 1h, usada para encantar arma ou causar 1d12 em mortos-vivos.
+                - Facilitar Cura: cura até 4d6 PV de até 2 criaturas (10 min, 2 Magia).
+                - Tocha Sagrada: ilumina e cega mortos-vivos no 1º turno.`
+            },
+            {
+                id: 'iniciado',
+                nome: 'Iniciado(a) Aprendiz',
+                descricao: `1 ponto em Arcanismo, Ritualismo ou Apuração de Itens Mágicos.
+                1 ponto em Combate Arcano.
+                Magias:
+                - Míssil Arcano: 1d4 por míssil (2 Magia cada, até 5).
+                - Detectar Magia: detecta e identifica magia (2–6 Magia).
+                - Iluminação Arcana: cria luz por 1h (1 Magia).`
+            },
+            {
+                id: 'feiticeiro',
+                nome: 'Feiticeiro(a) Aprendiz',
+                descricao: `1 ponto em Ocultismo ou Ritualismo.
+                1 ponto em Combate Arcano.
+                Feitiços:
+                - Orbe Caótico: 2d6 de dano de elemento aleatório (2 Magia).
+                - Azaralhar: alvo atordoado até próximo turno (4 Magia + chance).
+                - Luz Guia: cria luz por 1h (1 Magia).`
+            },
+            {
+                id: 'diplomata',
+                nome: 'Diplomata Aprendiz',
+                descricao: `2 pontos em Persuasão ou Enganação.
+                1 ponto em Negociação.
+                2 pontos em Sedução e Intimidação.
+                Habilidade: Barganhar – negociação com serviços (não mercadorias), 1x por pessoa/semana.
+                Rolamento define desconto: 5% com sucesso moderado, maiores descontos com rolagens maiores.`
+            },
+            {
+                id: 'explorador',
+                nome: 'Explorador Aprendiz',
+                descricao: `2 pontos em Rastreamento ou Investigação.
+                1 ponto em Sobrevivência e Navegação.
+                2 Pontos em Percepção ou Furtividade.
+                Proficiente com kit de arrombamento.
+                Aprende a Habilidade:
+                Visão para abrigo:
+                Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 80%. Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
+                ` // Placeholder, adicione os detalhes aqui quando disponíveis
+            },
+            {
+                id: 'academico',
+                nome: 'Acadêmico Aprendiz',
+                descricao: `2 pontos em História ou Intuição
+                1 ponto em Jurisprudência e Teologia
+                2 Pontos em Medicina ou Natureza
+                Aprende a Habilidade:
+                Já li sobre isso:
+                Um acadêmico tem +2 em qualquer rolamento de conhecimento. Um acadêmico também recebe + 3 em testes de persuasão que o ajude a entrar em uma biblioteca, templo ou centro acadêmico com conhecimento registrado de alguma forma.
+                ` // Placeholder, adicione os detalhes aqui quando disponíveis
+            },
+        ];
+
+        const handleCompradaChange = (event) => {
+            const value = event.target.value;
+            setRegaliaComprada(value);
+            onRegaliaChange({ regalias: RegaliasDeAprendiz, comprada: value });
+        };
+
+        return (
+            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                    Classe: Aprendiz
+                </Typography>
+
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                    Ouro inicial: 100 PO
+                </Typography>
+
+                <FormControl component="fieldset" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
+                    <FormLabel component="legend">Escolha até duas regalias de aprendiz</FormLabel>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3, width: '50%' }}>
+                        {regaliasDeAprendiz.map((sc) => {
+                            const checked = RegaliasDeAprendiz.includes(sc.id);
+                            return (
+                                <FormControlLabel
+                                    key={sc.id}
+                                    control={
+                                        <Checkbox
+                                            checked={checked}
+                                            onChange={() => handleRegaliaChange(sc.id)}
+                                        />
+                                    }
+                                    label={
+                                        <Box>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                {sc.nome}
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                                {sc.descricao}
+                                            </Typography>
+                                        </Box>
+                                    }
+                                    sx={{ alignItems: 'flex-start', my: 1 }}
+                                />
+                            );
+                        })}
+                    </Box>
+                </FormControl>
+
+                {/* <FormControl component="fieldset">
+              <FormLabel component="legend">Regalia comprada (opcional)</FormLabel>
+              <RadioGroup value={RegaliaComprada} onChange={handleCompradaChange}>
+                {regaliasDeAprendiz.map((sc) => (
+                  <FormControlLabel
+                    key={sc.id}
+                    value={sc.id}
+                    control={<Radio />}
+                    label={
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                          {sc.nome}
+                        </Typography>
+                        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                          {sc.descricao}
+                        </Typography>
+                      </Box>
+                    }
+                    sx={{ alignItems: 'flex-start', my: 1 }}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl> */}
+            </Box>
+        );
+    };
+
 
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
@@ -1592,8 +1762,12 @@ const CharCreationPage = () => {
                     </TabPanel>
 
                     <TabPanel value={tabIndex} index={4}>
-                        <Typography>Escolha regalias de aprendiz.</Typography>
-                        {/* Inputs para regalias_de_aprendiz */}
+                        <Typography variant="h6">
+                            Aprendiz
+                        </Typography>
+                        <Typography className="bigBoxTextClasses" paragraph>
+                            A jornada de um herói nem sempre começa com glória e reconhecimento. No vasto e implacável mundo, onde reinos se erguem e caem e os perigos espreitam nas sombras, aqueles que buscam se aventurar precisam mais do que coragem — precisam de preparo. É nesse vácuo de inexperiência que surge a figura do Aprendiz.Nem todos nascem nobres guerreiros, poderosos magos ou astutos exploradores.Muitos são apenas jovens sedentos por conhecimento, sobreviventes forçados a trilhar caminhos incertos, ou estudiosos que, diante da realidade, percebem que a teoria, sozinha, não os salvará.O Aprendiz é aquele que entende que antes de se tornar mestre, precisa aprender; antes de empunhar uma lâmina com destreza, deve compreender seu peso; antes de lançar feitiços que dobram a realidade, precisa sentir a magia pulsar dentro de si.Seja empunhando uma espada, curando feridos com bênçãos sagradas ou desbravando mistérios ocultos, o Aprendiz dá seus primeiros passos rumo ao desconhecido.Ele não é um especialista, mas também não é um amador indefeso.Seu papel no mundo é crescer, explorar e se moldar ao destino que escolheu — ou ao que o destino escolheu para ele.Mas a trilha do Aprendiz não é apenas feita de livros e lições simples. O mundo é um mestre cruel, e cada cicatriz, cada batalha perdida, cada erro cometido esculpe sua jornada. É na forja da experiência que o Aprendiz se torna algo mais. Alguns seguirão o caminho do aço, tornando-se guerreiros temidos. Outros dominarão os segredos da magia, dobrando as forças arcanas à sua vontade. Alguns escolherão a diplomacia, a exploração ou a fé, guiando-se não pela lâmina, mas pela palavra, pelo conhecimento ou pelo instinto.Independentemente do caminho escolhido, o Aprendiz carrega uma verdade inabalável: ele ainda não é um mestre, mas já deixou de ser um mero iniciante. E, no fim, o que define seu destino não é de onde veio, mas para onde está indo.</Typography>
+                        <AprendizClass onRegaliaChange={handleRegaliasUpdate} />
                     </TabPanel>
 
                     <TabPanel value={tabIndex} index={5}>
