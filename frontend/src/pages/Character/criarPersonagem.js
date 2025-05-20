@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Box, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -1520,8 +1520,8 @@ const CharCreationPage = () => {
                 Proficiente com kit de arrombamento.
                 Aprende a Habilidade:
                 Visão para abrigo:
-                Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 80%. Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
-                ` // Placeholder, adicione os detalhes aqui quando disponíveis
+                Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 100%. E se não houver abrigos naturais, ele pode criar um com elemenos locais, mesmo se não tiver itens de acampamento.  Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
+                `
             },
             {
                 id: 'academico',
@@ -1544,13 +1544,7 @@ const CharCreationPage = () => {
 
         return (
             <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
-                <Typography variant="h6" sx={{ mb: 2 }}>
-                    Classe: Aprendiz
-                </Typography>
 
-                <Typography variant="body1" sx={{ mb: 2 }}>
-                    Ouro inicial: 100 PO
-                </Typography>
 
                 <FormControl component="fieldset" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
                     <FormLabel component="legend">Escolha até duas regalias de aprendiz</FormLabel>
@@ -1610,13 +1604,41 @@ const CharCreationPage = () => {
         );
     };
 
+    function NavigationButtons() {
 
+        const handleNext = () => {
+            if (tabIndex < 6) {
+                setTabIndex(prev => prev + 1);
+            }
+        };
+
+        const handlePrevious = () => {
+            if (tabIndex > 0) {
+                setTabIndex(prev => prev - 1);
+            }
+        };
+
+        return (
+            <Stack direction="row" spacing={2} alignItems="center" sx={{display:'flex', justifyContent:'center', py:'1', my:4 }}>
+                {tabIndex > 0 && (
+                    <Button variant="outline" className="navagationButtons" onClick={handlePrevious}>
+                        Anterior
+                    </Button>
+                )}
+                {tabIndex < 6 && (
+                    <Button variant="outline" className="navagationButtons" onClick={handleNext}>
+                        Próximo
+                    </Button>
+                )}
+            </Stack>
+        );
+    }
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
             {/* User header */}
             <Box sx={{ width: '90%', mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
-
+                <NavigationButtons sx={{width:'100%'}} />
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
