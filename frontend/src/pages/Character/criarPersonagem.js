@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack } from '@mui/material';
+import { Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -1466,7 +1466,6 @@ const CharCreationPage = () => {
             </Box>
         );
     };
-
     const [tabIndex, setTabIndex] = useState(0);
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
@@ -1662,10 +1661,8 @@ const CharCreationPage = () => {
             </Box>
         );
     };
-
     const [image, setImage] = useState(null);
     const fileInputRef = useRef();
-
     const processFile = (file) => {
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
@@ -1675,21 +1672,16 @@ const CharCreationPage = () => {
             reader.readAsDataURL(file);
         }
     };
-
     const handleDrop = useCallback((e) => {
         e.preventDefault();
         processFile(e.dataTransfer.files[0]);
     }, []);
-
     const handleDragOver = (e) => {
         e.preventDefault();
     };
-
     const handleButtonClick = () => {
         fileInputRef.current.click();
     };
-
-
     const handleFileChange = (e) => {
         processFile(e.target.files[0]);
     };
@@ -2310,9 +2302,7 @@ const CharCreationPage = () => {
             }
         ]
     }
-
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
-
     const handleChange = (event) => {
         setEspecieSelecionada(event.target.value);
     };
@@ -2398,7 +2388,6 @@ const CharCreationPage = () => {
             </Box>
         );
     };
-
     const handleRegaliasUpdate = ({ regalias, comprada }) => {
         console.log('Regalias selecionadas:', regalias);
         console.log('Regalia comprada:', comprada);
@@ -2568,7 +2557,6 @@ const CharCreationPage = () => {
             </Box>
         );
     };
-
     function NavigationButtons() {
 
         const handleNext = () => {
@@ -2598,6 +2586,162 @@ const CharCreationPage = () => {
             </Stack>
         );
     }
+    const goldLimit = 450;
+
+    const categories = {
+        "Armaduras Pesadas": [
+            { name: "Loriga segmentada", price: 325 },
+            { name: "O-Yoroi", price: 575 },
+            { name: "Cota de talas", price: 800 },
+            { name: "Meia armadura", price: 1000 },
+            { name: "Armadura completa", price: 1500 },
+        ],
+        "Armaduras Médias": [
+            { name: "Gibão de peles", price: 250 },
+            { name: "Couraça", price: 375 },
+            { name: "Cota de malha", price: 750 },
+            { name: "Brunéia", price: 1000 },
+        ],
+        "Escudos": [
+            { name: "Escudo simples", price: 15 },
+            { name: "Escudo pesado", price: 30 },
+            { name: "Escudo de duelo", price: 50 },
+        ],
+        "Armas Simples": [
+            { name: "Adaga", price: 2 },
+            { name: "Espada curta", price: 10 },
+            { name: "Clava", price: 1 },
+            { name: "Maça", price: 50 },
+            { name: "Tacape", price: 0 },
+        ],
+        "Equipamentos de Viagem": [
+            { name: "Mochila", price: 1 },
+            { name: "Saco de Dormir", price: 0.2 },
+            { name: "Rações de Viagem", price: 0.02 },
+            { name: "Bolsa de água", price: 0.02 },
+        ],
+        "Montaria": [
+            { name: "Cavalo", price: 50 },
+            { name: "Cavalo de guerra", price: 400 },
+            { name: "Burro ou mula", price: 8 },
+        ],
+        "Kits": [
+            { name: "Kit Médico", price: 50 },
+            { name: "Kit de Sobrevivência", price: 30 },
+            { name: "Kit de Alquimista", price: 40 },
+        ]
+    };
+
+    function ShopForm() {
+        const [selectedItems, setSelectedItems] = useState([]);
+    
+        const handleChange = (category, item) => {
+            const key = `${category}-${item.name}`;
+            const index = selectedItems.findIndex(i => i.key === key);
+    
+            if (index !== -1) {
+                const existingItem = selectedItems[index];
+                const newTotal = totalSpent() + item.price;
+                if (newTotal <= goldLimit) {
+                    const updatedItems = [...selectedItems];
+                    updatedItems[index] = {
+                        ...existingItem,
+                        quantity: existingItem.quantity + 1
+                    };
+                    setSelectedItems(updatedItems);
+                }
+            } else {
+                const newTotal = totalSpent() + item.price;
+                if (newTotal <= goldLimit) {
+                    setSelectedItems(prev => [...prev, {
+                        key,
+                        category,
+                        ...item,
+                        quantity: 1
+                    }]);
+                }
+            }
+        };
+    
+        const handleRemove = (item) => {
+            const index = selectedItems.findIndex(i => i.key === item.key);
+            if (index !== -1) {
+                const updatedItems = [...selectedItems];
+                if (updatedItems[index].quantity > 1) {
+                    updatedItems[index].quantity -= 1;
+                } else {
+                    updatedItems.splice(index, 1);
+                }
+                setSelectedItems(updatedItems);
+            }
+        };
+    
+        const totalSpent = () =>
+            selectedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    
+        var inicialMoney = 450;
+        var goldLimit = inicialMoney;
+    
+        return (
+            <Box sx={{ width: '100%' }}>
+                <Box my={4}>
+                    <Typography className="esteban" variant="h4" gutterBottom>
+                        Loja de Itens 
+                    </Typography>
+    
+                    <Typography className="esteban" variant="h6" color={totalSpent() > goldLimit ? "error" : "primary"}>
+                        Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
+                    </Typography>
+    
+                    <Box mt={4}>
+                        <Typography className="esteban" variant="h5">Itens Selecionados:</Typography>
+                        {selectedItems.length === 0 ? (
+                            <Typography className="esteban">Nenhum item selecionado.</Typography>
+                        ) : (
+                            selectedItems.map(item => (
+                                <Chip
+                                    key={item.key}
+                                    label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
+                                    onDelete={() => handleRemove(item)}
+                                    sx={{ m: 0.5 }}
+                                />
+                            ))
+                        )}
+                    </Box>
+                    {Object.entries(categories).map(([category, items]) => (
+                        <Box key={category} my={3} sx={{display:'flex !important',flexDirection:'row',flexWrap:'wrap', justifyContent:'start'}}>
+                            <Typography className="esteban" sx={{color:'#40150A', my:3}} variant="h6">{category}</Typography>
+                            <Grid container spacing={1} sx={{display:'flex !important',flexDirection:'row',flexWrap:'wrap', justifyContent:'start'}}>
+                                {items.map(item => {
+                                    const key = `${category}-${item.name}`;
+                                    const selected = selectedItems.some(i => i.key === key);
+                                    const disabled = totalSpent() + item.price > goldLimit;
+    
+                                    return (
+                                        <Box sx={{width:'fitContent'}} key={key} >
+                                            <Button
+                                                className="esteban"
+                                                variant={selected ? "contained" : "outlined"}
+                                                color={disabled ? "inherit" : "primary"}
+                                                disabled={disabled}
+                                                onClick={() => handleChange(category, item)}
+                                                sx={{fontSize:'14px !important', }}
+                                            >
+                                                {item.name} ({item.price} M.O.)
+                                            </Button>
+                                        </Box>
+                                    );
+                                })}
+                            </Grid>
+                            <Divider sx={{ my: 2 }} />
+                        </Box>
+                    ))}
+    
+                </Box>
+            </Box>
+        );
+    }
+    
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
             {/* User header */}
@@ -2792,7 +2936,7 @@ const CharCreationPage = () => {
 
                     <TabPanel value={tabIndex} index={6}>
                         <Typography>Adicione equipamentos iniciais.</Typography>
-                        {/* Inputs para equipamentos */}
+                        <ShopForm />
                     </TabPanel>
 
                 </Box>

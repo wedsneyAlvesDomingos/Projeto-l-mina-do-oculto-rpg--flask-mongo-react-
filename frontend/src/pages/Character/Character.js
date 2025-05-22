@@ -50,7 +50,7 @@ const CharPage = () => {
                 </Grid>
 
             </Grid>
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute',width:"100%", bottom: 0 }}>
                 <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
             </Box>
         </Box>
