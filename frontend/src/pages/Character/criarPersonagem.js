@@ -1,11 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip } from '@mui/material';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
 import UIcon from '../../assets/images/userIcon.png';
 import './char.css';
 import Checkbox from '@mui/material/Checkbox';
@@ -2280,6 +2276,83 @@ function TabPanel({ children, value, index, ...other }) {
         </div>
     );
 }
+const regaliasDeAprendiz = [
+    {
+        id: 'combatente',
+        nome: 'Combatente Aprendiz',
+        descricao: `1 ponto em Força, Fortitude ou Destreza.
+            1 ponto em Combate Corpo a Corpo ou Combate À Distância.
+            Proficiência em Armas Marciais, Armaduras Leves e Médias, e Escudo Simples.
+            Habilidade: Recuperar Fôlego – Ação de turno completo para recuperar 4 PV (custa 2 Magia). Pode recuperar também 4 Estamina por mais 2 Magia.`
+    },
+    {
+        id: 'novico',
+        nome: 'Noviço(a) Aprendiz',
+        descricao: `1 ponto em Teologia, Arcanismo ou Medicina.
+            1 ponto em Combate Arcano, Corpo a Corpo ou Distância.
+            Milagres: 
+            - Abençoar Água: sagrada por 1h, usada para encantar arma ou causar 1d12 em mortos-vivos.
+            - Facilitar Cura: cura até 4d6 PV de até 2 criaturas (10 min, 2 Magia).
+            - Tocha Sagrada: ilumina e cega mortos-vivos no 1º turno.`
+    },
+    {
+        id: 'iniciado',
+        nome: 'Iniciado(a) Aprendiz',
+        descricao: `1 ponto em Arcanismo, Ritualismo ou Apuração de Itens Mágicos.
+            1 ponto em Combate Arcano.
+            Magias:
+            - Míssil Arcano: 1d4 por míssil (2 Magia cada, até 5).
+            - Detectar Magia: detecta e identifica magia (2–6 Magia).
+            - Iluminação Arcana: cria luz por 1h (1 Magia).`
+    },
+    {
+        id: 'feiticeiro',
+        nome: 'Feiticeiro(a) Aprendiz',
+        descricao: `1 ponto em Ocultismo ou Ritualismo.
+            1 ponto em Combate Arcano.
+            Feitiços:
+            - Orbe Caótico: 2d6 de dano de elemento aleatório (2 Magia).
+            - Azaralhar: alvo atordoado até próximo turno (4 Magia + chance).
+            - Luz Guia: cria luz por 1h (1 Magia).`
+    },
+    {
+        id: 'diplomata',
+        nome: 'Diplomata Aprendiz',
+        descricao: `2 pontos em Persuasão ou Enganação.
+            1 ponto em Negociação.
+            2 pontos em Sedução e Intimidação.
+            Habilidade: Barganhar – negociação com serviços (não mercadorias), 1x por pessoa/semana.
+            Rolamento define desconto: 5% com sucesso moderado, maiores descontos com rolagens maiores.`
+    },
+    {
+        id: 'explorador',
+        nome: 'Explorador Aprendiz',
+        descricao: `2 pontos em Rastreamento ou Investigação.
+            1 ponto em Sobrevivência e Navegação.
+            2 Pontos em Percepção ou Furtividade.
+            Proficiente com kit de arrombamento.
+            Aprende a Habilidade:
+            Visão para abrigo:
+            Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 100%. E se não houver abrigos naturais, ele pode criar um com elemenos locais, mesmo se não tiver itens de acampamento.  Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
+            `
+    },
+    {
+        id: 'academico',
+        nome: 'Acadêmico Aprendiz',
+        descricao: `2 pontos em História ou Intuição
+            1 ponto em Jurisprudência e Teologia
+            2 Pontos em Medicina ou Natureza
+            Aprende a Habilidade:
+            Já li sobre isso:
+            Um acadêmico tem +2 em qualquer rolamento de conhecimento. Um acadêmico também recebe + 3 em testes de persuasão que o ajude a entrar em uma biblioteca, templo ou centro acadêmico com conhecimento registrado de alguma forma.
+            ` // Placeholder, adicione os detalhes aqui quando disponíveis
+    },
+    {
+        id: 'guardarPonto',
+        nome: 'Guardar ponto',
+        descricao: `Guarda este ponto de regalia para o próximo nível` // Placeholder, adicione os detalhes aqui quando disponíveis
+    },
+];
 
 const CharCreationPage = () => {
 
@@ -2288,11 +2361,25 @@ const CharCreationPage = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [image, setImage] = useState(null);
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
+    const [selectedId, setSelectedId] = React.useState('');
+    const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
+    const [RegaliaComprada, setRegaliaComprada] = useState('');
+    const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
+    const [values, setValues] = React.useState(
+        proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
+    );
+    const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
+    const remainingPoints = MAX_PROF_POINTS - totalUsed;
     var inicialMoney = 450;
     var goldLimit = inicialMoney || 450;
     const MAX_POINTS = 40;
     const MAX_PROF_POINTS = 4;
     const fileInputRef = useRef();
+
+    const handleToggle = (profissao, habNome) => {
+        const id = `${profissao}::${habNome}`;
+        setSelectedId(prev => prev === id ? '' : id);
+    };
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
@@ -2373,80 +2460,6 @@ const CharCreationPage = () => {
         console.log('Regalias selecionadas:', regalias);
         console.log('Regalia comprada:', comprada);
     };
-    function ProfessionContainer() {
-        const [selectedId, setSelectedId] = React.useState('');
-
-        const handleToggle = (profissao, habNome) => {
-            const id = `${profissao}::${habNome}`;
-            setSelectedId(prev => prev === id ? '' : id);
-        };
-
-        return (
-            <Box sx={{ mt: 4 }}>
-                <Grid container spacing={3}>
-                    {profissoes.map((prof) => (
-                        <Grid item xs={12} md={6} key={prof.nome}>
-                            <Card
-                                variant={selectedId.startsWith(prof.nome + '::') ? 'outlined' : 'elevation'}
-                                sx={{
-                                    borderBottom: '6px solid #7B3311',
-                                    height: '320px',
-                                    overflowY: 'scroll',
-                                    background: '#EDEDED',
-                                    borderColor: selectedId.startsWith(prof.nome + '::') ? 'primary.main' : undefined
-                                }}
-                            >
-                                <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
-                                <CardContent>
-                                    {prof.habilidades
-                                        .filter(hab => {
-                                            const nome = hab.nome;
-
-                                            // Filtro por nível
-                                            const nivelMatch = nome.match(/Nível (\d+)/i);
-                                            if (nivelMatch && parseInt(nivelMatch[1], 10) >= 2) return false;
-
-                                            // Filtro por "+X"
-                                            const plusMatch = nome.match(/\+(\d+)/);
-                                            if (plusMatch && parseInt(plusMatch[1], 10) >= 2) return false;
-
-                                            return true;
-                                        })
-                                        .map((hab) => {
-                                            const id = `${prof.nome}::${hab.nome}`;
-                                            return (
-                                                <Box key={id} mb={1}>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox
-                                                                checked={selectedId === id}
-                                                                onChange={() => handleToggle(prof.nome, hab.nome)}
-                                                            />
-                                                        }
-                                                        label={
-                                                            <Box>
-                                                                <Typography variant="subtitle2" component="div">
-                                                                    {hab.nome}
-                                                                </Typography>
-                                                                <Typography variant="body2" color="text.secondary">
-                                                                    {hab.descricao}
-                                                                </Typography>
-                                                            </Box>
-                                                        }
-                                                    />
-                                                </Box>
-                                            );
-                                        })}
-
-
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-        );
-    }
     const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoints, borderColor = '#7B3311' }) => (
         <Paper
             elevation={3}
@@ -2494,43 +2507,16 @@ const CharCreationPage = () => {
             </Box>
         </Paper>
     );
-    const ProfContainer = ({ proficiencias }) => {
-        const [values, setValues] = React.useState(
-            proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
-        );
-
-        const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
-        const remainingPoints = MAX_PROF_POINTS - totalUsed;
-
-        const handleChange = (nome, newVal) => {
-            if (newVal < 0) newVal = 0;
-            if (newVal > proficiencias.find(p => p.nome === nome).niveis.length) {
-                newVal = proficiencias.find(p => p.nome === nome).niveis.length;
-            }
-            const prevVal = values[nome];
-            const delta = newVal - prevVal;
-            if (delta <= remainingPoints) {
-                setValues(prev => ({ ...prev, [nome]: newVal }));
-            }
-        };
-
-        return (
-            <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'start', gap: 1, width: '100%' }}>
-                {proficiencias.map((prof, idx) => (
-                    <ProfBox
-                        key={idx}
-                        nome={prof.nome}
-                        descricao={prof.descricao}
-                        notas={prof.notas}
-                        niveis={prof.niveis}
-                        value={values[prof.nome]}
-                        onChange={handleChange}
-                        remainingPoints={remainingPoints}
-                        borderColor={prof.borderColor}
-                    />
-                ))}
-            </Box>
-        );
+    const handleProficienciaChange = (nome, newVal) => {
+        if (newVal < 0) newVal = 0;
+        if (newVal > proficiencias.find(p => p.nome === nome).niveis.length) {
+            newVal = proficiencias.find(p => p.nome === nome).niveis.length;
+        }
+        const prevVal = values[nome];
+        const delta = newVal - prevVal;
+        if (delta <= remainingPoints) {
+            setValues(prev => ({ ...prev, [nome]: newVal }));
+        }
     };
     const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311", onCheckboxClick, isChecked }) => {
         const handleCheckboxChange = () => {
@@ -2722,251 +2708,20 @@ const CharCreationPage = () => {
             </Box>
         );
     }
-    const RegaliaDeEspecie = ({ data }) => {
-        const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
+    const handleRegaliaChange = (regaliaId) => {
+        const alreadySelected = RegaliasDeAprendiz.includes(regaliaId);
 
-        return (
-            <Box>
-                <Typography className="bigBoxTextEquipsHeader" sx={{ mb: 2 }}>
-                    Escolha uma entre:
-                </Typography>
-
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Regalia Obrigatória</FormLabel>
-                    <RadioGroup
-                        name="regalia-escolhida"
-                        value={regaliaEscolhida}
-                        onChange={(e) => setRegaliaEscolhida(e.target.value)}
-                    >
-                        {/* Regalias Obrigatórias */}
-                        {data.obrigatorias.map((opcao) => (
-                            <FormControlLabel
-                                key={opcao.id}
-                                value={opcao.id}
-                                control={<Radio />}
-                                label={
-                                    <div>
-                                        <strong>{opcao.nome}</strong><br />
-                                        <Typography variant="body2">{opcao.descricao}</Typography>
-                                    </div>
-                                }
-                                sx={{ alignItems: 'flex-start', my: 2 }}
-                            />
-                        ))}
-                        <Box>
-                            <Typography variant="h6" className="bigBoxTextClasses" sx={{ mb: 2 }}>
-
-                                REGALIAS OPCIONAIS DE ESPÉCIE
-                            </Typography>
-                            <Typography className="bigBoxTextClasses">
-                                Aqui o jogador pode encontrar opções para personalizar ainda mais seus personagens. A seguir temos várias opções que podem substituir a Regalia obrigatória de uma espécie. Assim sendo, como um exemplo,  o personagem pode ser humano e começar com uma das opções abaixo ao invés das que estão inicialmente disponíveis para ele.
-                                Ao escolher uma das opções abaixo é proibido escolher uma das outras. Após trocar a regalia inicial de classe, adicione as outras opções que sobraram da lista de escolhas para regalias de sua espécie original.
-
-                            </Typography>
-                        </Box>
-                        {/* Regalias Especiais agrupadas por tipo */}
-                        {regaliasOpcionais.regalias_opcionais.map((grupo) => (
-                            <Box key={grupo.tipo} sx={{ mt: 3, display: 'flex', flexDirection: 'column', flexWrap: 'nowrap' }}>
-                                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
-                                    Regalias Especiais - {grupo.tipo}
-                                </Typography>
-                                {grupo.observacao &&
-                                    <Typography sx={{ mb: 1 }}>
-                                        {grupo.observacao}
-                                    </Typography>}
-                                {grupo.penalidade &&
-                                    <Typography sx={{ mb: 1 }}>
-                                        {grupo.penalidade}
-                                    </Typography>}
-                                <Typography sx={{ mb: 1 }}>
-                                    {grupo.descricao}
-                                </Typography>
-                                {grupo.opcoes.map((opcao) => (
-                                    <FormControlLabel
-                                        key={opcao.nome}
-                                        value={opcao.nome}
-                                        control={<Radio />}
-                                        label={
-                                            <Box>
-                                                <strong>{opcao.nome}</strong>
-                                                <Typography variant="body2" sx={{ mt: 0.5 }}>
-                                                    {opcao.descricao.trim()}
-                                                </Typography>
-                                            </Box>
-                                        }
-                                        sx={{ alignItems: 'flex-start', my: 1 }}
-                                    />
-                                ))}
-                            </Box>
-                        ))}
-                    </RadioGroup>
-                </FormControl>
-            </Box>
-        );
-    };
-    const AprendizClass = ({ onRegaliaChange }) => {
-        const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
-        const [RegaliaComprada, setRegaliaComprada] = useState('');
-
-        const handleRegaliaChange = (regaliaId) => {
-            const alreadySelected = RegaliasDeAprendiz.includes(regaliaId);
-
-            if (alreadySelected) {
-                const updated = RegaliasDeAprendiz.filter((id) => id !== regaliaId);
+        if (alreadySelected) {
+            const updated = RegaliasDeAprendiz.filter((id) => id !== regaliaId);
+            setRegaliasDeAprendiz(updated);
+            handleRegaliasUpdate({ regalias: updated, comprada: RegaliaComprada });
+        } else {
+            if (RegaliasDeAprendiz.length < 2) {
+                const updated = [...RegaliasDeAprendiz, regaliaId];
                 setRegaliasDeAprendiz(updated);
-                onRegaliaChange({ regalias: updated, comprada: RegaliaComprada });
-            } else {
-                if (RegaliasDeAprendiz.length < 2) {
-                    const updated = [...RegaliasDeAprendiz, regaliaId];
-                    setRegaliasDeAprendiz(updated);
-                    onRegaliaChange({ regalias: updated, comprada: RegaliaComprada });
-                }
+                handleRegaliasUpdate({ regalias: updated, comprada: RegaliaComprada });
             }
-        };
-        const regaliasDeAprendiz = [
-            {
-                id: 'combatente',
-                nome: 'Combatente Aprendiz',
-                descricao: `1 ponto em Força, Fortitude ou Destreza.
-                1 ponto em Combate Corpo a Corpo ou Combate À Distância.
-                Proficiência em Armas Marciais, Armaduras Leves e Médias, e Escudo Simples.
-                Habilidade: Recuperar Fôlego – Ação de turno completo para recuperar 4 PV (custa 2 Magia). Pode recuperar também 4 Estamina por mais 2 Magia.`
-            },
-            {
-                id: 'novico',
-                nome: 'Noviço(a) Aprendiz',
-                descricao: `1 ponto em Teologia, Arcanismo ou Medicina.
-                1 ponto em Combate Arcano, Corpo a Corpo ou Distância.
-                Milagres: 
-                - Abençoar Água: sagrada por 1h, usada para encantar arma ou causar 1d12 em mortos-vivos.
-                - Facilitar Cura: cura até 4d6 PV de até 2 criaturas (10 min, 2 Magia).
-                - Tocha Sagrada: ilumina e cega mortos-vivos no 1º turno.`
-            },
-            {
-                id: 'iniciado',
-                nome: 'Iniciado(a) Aprendiz',
-                descricao: `1 ponto em Arcanismo, Ritualismo ou Apuração de Itens Mágicos.
-                1 ponto em Combate Arcano.
-                Magias:
-                - Míssil Arcano: 1d4 por míssil (2 Magia cada, até 5).
-                - Detectar Magia: detecta e identifica magia (2–6 Magia).
-                - Iluminação Arcana: cria luz por 1h (1 Magia).`
-            },
-            {
-                id: 'feiticeiro',
-                nome: 'Feiticeiro(a) Aprendiz',
-                descricao: `1 ponto em Ocultismo ou Ritualismo.
-                1 ponto em Combate Arcano.
-                Feitiços:
-                - Orbe Caótico: 2d6 de dano de elemento aleatório (2 Magia).
-                - Azaralhar: alvo atordoado até próximo turno (4 Magia + chance).
-                - Luz Guia: cria luz por 1h (1 Magia).`
-            },
-            {
-                id: 'diplomata',
-                nome: 'Diplomata Aprendiz',
-                descricao: `2 pontos em Persuasão ou Enganação.
-                1 ponto em Negociação.
-                2 pontos em Sedução e Intimidação.
-                Habilidade: Barganhar – negociação com serviços (não mercadorias), 1x por pessoa/semana.
-                Rolamento define desconto: 5% com sucesso moderado, maiores descontos com rolagens maiores.`
-            },
-            {
-                id: 'explorador',
-                nome: 'Explorador Aprendiz',
-                descricao: `2 pontos em Rastreamento ou Investigação.
-                1 ponto em Sobrevivência e Navegação.
-                2 Pontos em Percepção ou Furtividade.
-                Proficiente com kit de arrombamento.
-                Aprende a Habilidade:
-                Visão para abrigo:
-                Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 100%. E se não houver abrigos naturais, ele pode criar um com elemenos locais, mesmo se não tiver itens de acampamento.  Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
-                `
-            },
-            {
-                id: 'academico',
-                nome: 'Acadêmico Aprendiz',
-                descricao: `2 pontos em História ou Intuição
-                1 ponto em Jurisprudência e Teologia
-                2 Pontos em Medicina ou Natureza
-                Aprende a Habilidade:
-                Já li sobre isso:
-                Um acadêmico tem +2 em qualquer rolamento de conhecimento. Um acadêmico também recebe + 3 em testes de persuasão que o ajude a entrar em uma biblioteca, templo ou centro acadêmico com conhecimento registrado de alguma forma.
-                ` // Placeholder, adicione os detalhes aqui quando disponíveis
-            },
-            {
-                id: 'guardarPonto',
-                nome: 'Guardar ponto',
-                descricao: `Guarda este ponto de regalia para o próximo nível` // Placeholder, adicione os detalhes aqui quando disponíveis
-            },
-        ];
-
-        const handleCompradaChange = (event) => {
-            const value = event.target.value;
-            setRegaliaComprada(value);
-            onRegaliaChange({ regalias: RegaliasDeAprendiz, comprada: value });
-        };
-
-        return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
-
-
-                <FormControl component="fieldset" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
-                    <FormLabel component="legend">Escolha até duas regalias de aprendiz</FormLabel>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3, width: '50%' }}>
-                        {regaliasDeAprendiz.map((sc) => {
-                            const checked = RegaliasDeAprendiz.includes(sc.id);
-                            return (
-                                <FormControlLabel
-                                    key={sc.id}
-                                    control={
-                                        <Checkbox
-                                            checked={checked}
-                                            onChange={() => handleRegaliaChange(sc.id)}
-                                        />
-                                    }
-                                    label={
-                                        <Box>
-                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                                                {sc.nome}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                                                {sc.descricao}
-                                            </Typography>
-                                        </Box>
-                                    }
-                                    sx={{ alignItems: 'flex-start', my: 1 }}
-                                />
-                            );
-                        })}
-                    </Box>
-                </FormControl>
-
-                {/* <FormControl component="fieldset">
-              <FormLabel component="legend">Regalia comprada (opcional)</FormLabel>
-              <RadioGroup value={RegaliaComprada} onChange={handleCompradaChange}>
-                {regaliasDeAprendiz.map((sc) => (
-                  <FormControlLabel
-                    key={sc.id}
-                    value={sc.id}
-                    control={<Radio />}
-                    label={
-                      <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                          {sc.nome}
-                        </Typography>
-                        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                          {sc.descricao}
-                        </Typography>
-                      </Box>
-                    }
-                    sx={{ alignItems: 'flex-start', my: 1 }}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl> */}
-            </Box>
-        );
+        }
     };
     function NavigationButtons() {
 
@@ -2997,137 +2752,7 @@ const CharCreationPage = () => {
             </Stack>
         );
     }
-    function ShopForm() {
-        return (
-            <Box sx={{ width: '80%', position: 'relative', marginBottom:'200px', m:'auto' }} >
-                <Box my={4}>
-                    <Typography className="esteban" variant="h4" gutterBottom>
-                        Loja de Itens
-                    </Typography>
 
-                    <Typography className="esteban" variant="h6" color={totalSpent() > goldLimit ? "error" : "primary"}>
-                        Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
-                    </Typography>
-                    <Typography className="esteban" sx={{ my: 2 }}>
-                        Atenção:<br />
-                        Armaduras pesadas requerem um mínimo de força, se usadas sem esse pré requisito sofre as seguintes penalidades:<br />
-                        -1,5 m de velocidade de  movimento por ponto de força abaixo do requerido.<br />
-                        -1 em rolamento de acerto de qualquer teste de combate por ponto de força abaixo do requerimento.<br />
-                        Requer duas ações para usar a ação andar/correr ao invés de apenas uma.<br />
-
-                        Armaduras pesadas, mesmo se atingir o requerimento de força, sofrem penalidade em testes de furtividade de -5 e armaduras médias sofrem uma penalidade de -2.<br />
-                        Se uma criatura que não receber capacidade de usar um tipo de armadura usá-la mesmo assim se torna incapaz de conjurar magias, milagres, feitiços, manobras e quaisquer habilidades. Além disso, todo rolamento de habilidade possui desvantagem.
-
-                    </Typography>
-                    <Box mt={4}>
-                        <Typography className="esteban" variant="h5">Itens Selecionados:</Typography>
-                        {selectedItems.length === 0 ? (
-                            <Typography className="esteban">Nenhum item selecionado.</Typography>
-                        ) : (
-                            selectedItems.map(item => (
-
-                                <Chip
-                                    key={item.key}
-                                    label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
-                                    onDelete={() => handleRemove(item)}
-                                    sx={{ m: 0.5 }}
-                                />
-                            ))
-                        )}
-                    </Box>
-
-                    <Box
-                        sx={{
-                            position: 'fixed',
-                            bottom: 16,
-                            right: 16,
-                            backgroundColor: 'white',
-                            padding: 2,
-                            borderRadius: 2,
-                            boxShadow: 3,
-                            zIndex: 1000,
-                            maxWidth: '200px',
-                            minWidth:'200px',
-                            overflowY:'scroll',
-                            height:'300px'
-                        }}
-                    >
-                        <Typography className="esteban" variant="h5" sx={{color:'#7B3311 !important'}}>
-                            Inventário
-                        </Typography>
-                        <Typography className="esteban" variant="subtitle" color={totalSpent() > goldLimit ? "error" : "primary"} sx={{fontSize:'12px !important'}}>
-                            Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
-                        </Typography>
-                        <Box mt={1}>
-                            <Typography className="esteban" sx={{ fontSize: '12px !important' }} variant="subtitle1">Itens Selecionados:</Typography>
-                            {selectedItems.length === 0 ? (
-                                <Typography className="esteban" sx={{ fontSize: '12px !important' }} variant="body2">Nenhum item selecionado.</Typography>
-                            ) : (
-                                selectedItems.map(item => (
-                                    <Chip
-                                        key={item.key}
-                                        label={` ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
-                                        onDelete={() => handleRemove(item)}
-                                        sx={{ m: 0.5 }}
-                                    />
-                                ))
-                            )}
-                        </Box>
-                    </Box>
-
-
-                    {Object.entries(categories).map(([category, items]) => (
-                        <Box key={category} my={3}>
-                            <Typography className="esteban" sx={{ color: '#40150A', my: 3 }} variant="h6">{category}</Typography>
-                            <Grid container spacing={1} sx={{ display: 'flex !important', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'start', gap: 1 }}>
-                                {items.map(item => {
-                                    const key = `${category}-${item.name}`;
-                                    const selected = selectedItems.some(i => i.key === key);
-                                    const disabled = totalSpent() + item.price > goldLimit;
-                                    const forcaRequisito = item.forca ? `Requisito de força: ${item.forca}` : ""
-                                    return (
-                                        item.description ?
-                                            <Tooltip title={`${item.description} ${forcaRequisito}`}>
-                                                <Box sx={{ width: 'fitContent' }} key={key} >
-
-                                                    <Button
-                                                        className="esteban"
-                                                        variant={selected ? "contained" : "outlined"}
-                                                        color={disabled ? "inherit" : "primary"}
-                                                        disabled={disabled}
-                                                        onClick={() => handleChangeShop(category, item)}
-                                                        sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED", }}
-                                                    >
-                                                        {item.name} ({item.price} M.O.)
-                                                    </Button>
-
-                                                </Box>
-                                            </Tooltip> :
-                                            <Box sx={{ width: 'fitContent' }} key={key} >
-
-                                                <Button
-                                                    className="esteban"
-                                                    variant={selected ? "contained" : "outlined"}
-                                                    color={disabled ? "inherit" : "primary"}
-                                                    disabled={disabled}
-                                                    onClick={() => handleChangeShop(category, item)}
-                                                    sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED", }}
-                                                >
-                                                    {item.name} ({item.price} M.O.)
-                                                </Button>
-
-                                            </Box>
-                                    );
-                                })}
-                            </Grid>
-                            <Divider sx={{ my: 2 }} />
-                        </Box>
-                    ))}
-
-                </Box>
-            </Box>
-        );
-    }
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
             {/* User header */}
@@ -3277,7 +2902,21 @@ const CharCreationPage = () => {
                     <TabPanel value={tabIndex} index={2}>
                         <Typography>Selecione proficiências iniciais.</Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <ProfContainer proficiencias={proficiencias} />
+                            <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'start', gap: 1, width: '100%' }}>
+                                {proficiencias.map((prof, idx) => (
+                                    <ProfBox
+                                        key={idx}
+                                        nome={prof.nome}
+                                        descricao={prof.descricao}
+                                        notas={prof.notas}
+                                        niveis={prof.niveis}
+                                        value={values[prof.nome]}
+                                        onChange={handleProficienciaChange}
+                                        remainingPoints={remainingPoints}
+                                        borderColor={prof.borderColor}
+                                    />
+                                ))}
+                            </Box>
 
                         </Box>
                     </TabPanel>
@@ -3300,23 +2939,315 @@ const CharCreationPage = () => {
                         </FormControl>
                         <Typography variant="h6">{racas[especieSelecionada].nome}</Typography>
                         <Typography className="bigBoxTextClasses" paragraph>{racas[especieSelecionada].descricao}</Typography>
-                        <RegaliaDeEspecie data={racas[especieSelecionada]} />
+                        <Box>
+                            <Typography className="bigBoxTextEquipsHeader" sx={{ mb: 2 }}>
+                                Escolha uma entre:
+                            </Typography>
+
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">Regalia Obrigatória</FormLabel>
+                                <RadioGroup
+                                    name="regalia-escolhida"
+                                    value={regaliaEscolhida}
+                                    onChange={(e) => setRegaliaEscolhida(e.target.value)}
+                                >
+                                    {/* Regalias Obrigatórias */}
+                                    {racas[especieSelecionada].obrigatorias.map((opcao) => (
+                                        <FormControlLabel
+                                            key={opcao.id}
+                                            value={opcao.id}
+                                            control={<Radio />}
+                                            label={
+                                                <div>
+                                                    <strong>{opcao.nome}</strong><br />
+                                                    <Typography variant="body2">{opcao.descricao}</Typography>
+                                                </div>
+                                            }
+                                            sx={{ alignItems: 'flex-start', my: 2 }}
+                                        />
+                                    ))}
+                                    <Box>
+                                        <Typography variant="h6" className="bigBoxTextClasses" sx={{ mb: 2 }}>
+
+                                            REGALIAS OPCIONAIS DE ESPÉCIE
+                                        </Typography>
+                                        <Typography className="bigBoxTextClasses">
+                                            Aqui o jogador pode encontrar opções para personalizar ainda mais seus personagens. A seguir temos várias opções que podem substituir a Regalia obrigatória de uma espécie. Assim sendo, como um exemplo,  o personagem pode ser humano e começar com uma das opções abaixo ao invés das que estão inicialmente disponíveis para ele.
+                                            Ao escolher uma das opções abaixo é proibido escolher uma das outras. Após trocar a regalia inicial de classe, adicione as outras opções que sobraram da lista de escolhas para regalias de sua espécie original.
+
+                                        </Typography>
+                                    </Box>
+                                    {/* Regalias Especiais agrupadas por tipo */}
+                                    {regaliasOpcionais.regalias_opcionais.map((grupo) => (
+                                        <Box key={grupo.tipo} sx={{ mt: 3, display: 'flex', flexDirection: 'column', flexWrap: 'nowrap' }}>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                                Regalias Especiais - {grupo.tipo}
+                                            </Typography>
+                                            {grupo.observacao &&
+                                                <Typography sx={{ mb: 1 }}>
+                                                    {grupo.observacao}
+                                                </Typography>}
+                                            {grupo.penalidade &&
+                                                <Typography sx={{ mb: 1 }}>
+                                                    {grupo.penalidade}
+                                                </Typography>}
+                                            <Typography sx={{ mb: 1 }}>
+                                                {grupo.descricao}
+                                            </Typography>
+                                            {grupo.opcoes.map((opcao) => (
+                                                <FormControlLabel
+                                                    key={opcao.nome}
+                                                    value={opcao.nome}
+                                                    control={<Radio />}
+                                                    label={
+                                                        <Box>
+                                                            <strong>{opcao.nome}</strong>
+                                                            <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                                                {opcao.descricao.trim()}
+                                                            </Typography>
+                                                        </Box>
+                                                    }
+                                                    sx={{ alignItems: 'flex-start', my: 1 }}
+                                                />
+                                            ))}
+                                        </Box>
+                                    ))}
+                                </RadioGroup>
+                            </FormControl>
+                        </Box>
                     </TabPanel>
                     <TabPanel value={tabIndex} index={4}>
                         <Typography variant="h6">
                             Aprendiz
                         </Typography>
                         <Typography className="bigBoxTextClasses" paragraph>
-                            A jornada de um herói nem sempre começa com glória e reconhecimento. No vasto e implacável mundo, onde reinos se erguem e caem e os perigos espreitam nas sombras, aqueles que buscam se aventurar precisam mais do que coragem — precisam de preparo. É nesse vácuo de inexperiência que surge a figura do Aprendiz.Nem todos nascem nobres guerreiros, poderosos magos ou astutos exploradores.Muitos são apenas jovens sedentos por conhecimento, sobreviventes forçados a trilhar caminhos incertos, ou estudiosos que, diante da realidade, percebem que a teoria, sozinha, não os salvará.O Aprendiz é aquele que entende que antes de se tornar mestre, precisa aprender; antes de empunhar uma lâmina com destreza, deve compreender seu peso; antes de lançar feitiços que dobram a realidade, precisa sentir a magia pulsar dentro de si.Seja empunhando uma espada, curando feridos com bênçãos sagradas ou desbravando mistérios ocultos, o Aprendiz dá seus primeiros passos rumo ao desconhecido.Ele não é um especialista, mas também não é um amador indefeso.Seu papel no mundo é crescer, explorar e se moldar ao destino que escolheu — ou ao que o destino escolheu para ele.Mas a trilha do Aprendiz não é apenas feita de livros e lições simples. O mundo é um mestre cruel, e cada cicatriz, cada batalha perdida, cada erro cometido esculpe sua jornada. É na forja da experiência que o Aprendiz se torna algo mais. Alguns seguirão o caminho do aço, tornando-se guerreiros temidos. Outros dominarão os segredos da magia, dobrando as forças arcanas à sua vontade. Alguns escolherão a diplomacia, a exploração ou a fé, guiando-se não pela lâmina, mas pela palavra, pelo conhecimento ou pelo instinto.Independentemente do caminho escolhido, o Aprendiz carrega uma verdade inabalável: ele ainda não é um mestre, mas já deixou de ser um mero iniciante. E, no fim, o que define seu destino não é de onde veio, mas para onde está indo.</Typography>
-                        <AprendizClass onRegaliaChange={handleRegaliasUpdate} />
+                            A jornada de um herói nem sempre começa com glória e reconhecimento. No vasto e implacável mundo, onde reinos se erguem e caem e os perigos espreitam nas sombras, aqueles que buscam se aventurar precisam mais do que coragem — precisam de preparo. É nesse vácuo de inexperiência que surge a figura do Aprendiz.Nem todos nascem nobres guerreiros, poderosos magos ou astutos exploradores.Muitos são apenas jovens sedentos por conhecimento, sobreviventes forçados a trilhar caminhos incertos, ou estudiosos que, diante da realidade, percebem que a teoria, sozinha, não os salvará.O Aprendiz é aquele que entende que antes de se tornar mestre, precisa aprender; antes de empunhar uma lâmina com destreza, deve compreender seu peso; antes de lançar feitiços que dobram a realidade, precisa sentir a magia pulsar dentro de si.Seja empunhando uma espada, curando feridos com bênçãos sagradas ou desbravando mistérios ocultos, o Aprendiz dá seus primeiros passos rumo ao desconhecido.Ele não é um especialista, mas também não é um amador indefeso.Seu papel no mundo é crescer, explorar e se moldar ao destino que escolheu — ou ao que o destino escolheu para ele.Mas a trilha do Aprendiz não é apenas feita de livros e lições simples. O mundo é um mestre cruel, e cada cicatriz, cada batalha perdida, cada erro cometido esculpe sua jornada. É na forja da experiência que o Aprendiz se torna algo mais. Alguns seguirão o caminho do aço, tornando-se guerreiros temidos. Outros dominarão os segredos da magia, dobrando as forças arcanas à sua vontade. Alguns escolherão a diplomacia, a exploração ou a fé, guiando-se não pela lâmina, mas pela palavra, pelo conhecimento ou pelo instinto.Independentemente do caminho escolhido, o Aprendiz carrega uma verdade inabalável: ele ainda não é um mestre, mas já deixou de ser um mero iniciante. E, no fim, o que define seu destino não é de onde veio, mas para onde está indo.
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
+                            <FormControl component="fieldset" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
+                                <FormLabel component="legend">Escolha até duas regalias de aprendiz</FormLabel>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3, width: '50%' }}>
+                                    {regaliasDeAprendiz.map((sc) => {
+                                        const checked = RegaliasDeAprendiz.includes(sc.id);
+                                        return (
+                                            <FormControlLabel
+                                                key={sc.id}
+                                                control={
+                                                    <Checkbox
+                                                        checked={checked}
+                                                        onChange={() => handleRegaliaChange(sc.id)}
+                                                    />
+                                                }
+                                                label={
+                                                    <Box>
+                                                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                            {sc.nome}
+                                                        </Typography>
+                                                        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                                            {sc.descricao}
+                                                        </Typography>
+                                                    </Box>
+                                                }
+                                                sx={{ alignItems: 'flex-start', my: 1 }}
+                                            />
+                                        );
+                                    })}
+                                </Box>
+                            </FormControl>
+                        </Box>
+
                     </TabPanel>
                     <TabPanel value={tabIndex} index={5}>
-                        <Typography>Escolha uma regalia de profissão.</Typography>
-                        <ProfessionContainer />
+                        <Box sx={{ mt: 4 }}>
+                            <Grid container spacing={3}>
+                                {profissoes.map((prof) => (
+                                    <Grid item xs={12} md={6} key={prof.nome}>
+                                        <Card
+                                            variant={selectedId.startsWith(prof.nome + '::') ? 'outlined' : 'elevation'}
+                                            sx={{
+                                                borderBottom: '6px solid #7B3311',
+                                                height: '320px',
+                                                overflowY: 'scroll',
+                                                background: '#EDEDED',
+                                                borderColor: selectedId.startsWith(prof.nome + '::') ? 'primary.main' : undefined
+                                            }}
+                                        >
+                                            <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
+                                            <CardContent>
+                                                {prof.habilidades
+                                                    .filter(hab => {
+                                                        const nome = hab.nome;
+
+                                                        // Filtro por nível
+                                                        const nivelMatch = nome.match(/Nível (\d+)/i);
+                                                        if (nivelMatch && parseInt(nivelMatch[1], 10) >= 2) return false;
+
+                                                        // Filtro por "+X"
+                                                        const plusMatch = nome.match(/\+(\d+)/);
+                                                        if (plusMatch && parseInt(plusMatch[1], 10) >= 2) return false;
+
+                                                        return true;
+                                                    })
+                                                    .map((hab) => {
+                                                        const id = `${prof.nome}::${hab.nome}`;
+                                                        return (
+                                                            <Box key={id} mb={1}>
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            checked={selectedId === id}
+                                                                            onChange={() => handleToggle(prof.nome, hab.nome)}
+                                                                        />
+                                                                    }
+                                                                    label={
+                                                                        <Box>
+                                                                            <Typography variant="subtitle2" component="div">
+                                                                                {hab.nome}
+                                                                            </Typography>
+                                                                            <Typography variant="body2" color="text.secondary">
+                                                                                {hab.descricao}
+                                                                            </Typography>
+                                                                        </Box>
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        );
+                                                    })}
+
+
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
                     </TabPanel>
                     <TabPanel value={tabIndex} index={6}>
-                        <Typography>Adicione equipamentos iniciais.</Typography>
-                        <ShopForm />
+                        <Box sx={{ width: '80%', position: 'relative', marginBottom: '200px', }} >
+                            <Box my={4}>
+                                <Typography className="esteban" sx={{ color: '#7B3311 !important', fontSize: '22px !important' }} variant="h4" gutterBottom>
+                                    Loja de Itens
+                                </Typography>
+
+                                <Typography className="esteban" variant="h6" color={totalSpent() > goldLimit ? "error" : "primary"}>
+                                    Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
+                                </Typography>
+                                <Typography className="esteban" sx={{ my: 2 }}>
+                                    Atenção:<br />
+                                    Armaduras pesadas requerem um mínimo de força, se usadas sem esse pré requisito sofre as seguintes penalidades:<br />
+                                    -1,5 m de velocidade de  movimento por ponto de força abaixo do requerido.<br />
+                                    -1 em rolamento de acerto de qualquer teste de combate por ponto de força abaixo do requerimento.<br />
+                                    Requer duas ações para usar a ação andar/correr ao invés de apenas uma.<br />
+
+                                    Armaduras pesadas, mesmo se atingir o requerimento de força, sofrem penalidade em testes de furtividade de -5 e armaduras médias sofrem uma penalidade de -2.<br />
+                                    Se uma criatura que não receber capacidade de usar um tipo de armadura usá-la mesmo assim se torna incapaz de conjurar magias, milagres, feitiços, manobras e quaisquer habilidades. Além disso, todo rolamento de habilidade possui desvantagem.
+
+                                </Typography>
+                                <Box mt={4}>
+                                    <Typography className="esteban" variant="h5">Itens Selecionados:</Typography>
+                                    {selectedItems.length === 0 ? (
+                                        <Typography className="esteban">Nenhum item selecionado.</Typography>
+                                    ) : (
+                                        selectedItems.map(item => (
+                                            <Chip
+                                                key={item.key}
+                                                label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
+                                                onDelete={() => handleRemove(item)}
+                                                sx={{ m: 0.5 }}
+                                            />
+                                        ))
+                                    )}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        position: 'fixed',
+                                        bottom: 16,
+                                        right: 16,
+                                        backgroundColor: 'white',
+                                        padding: 2,
+                                        borderRadius: 2,
+                                        boxShadow: 3,
+                                        zIndex: 1000,
+                                        maxWidth: '300px',
+                                        minWidth: '200px',
+                                        overflowY: 'scroll',
+                                        height: '300px'
+                                    }}
+                                >
+                                    <Typography className="esteban" variant="h5" sx={{ color: '#7B3311 !important' }}>
+                                        Inventário
+                                    </Typography>
+                                    <Typography className="esteban" variant="subtitle" color={totalSpent() > goldLimit ? "error" : "primary"} sx={{ fontSize: '12px !important' }}>
+                                        Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
+                                    </Typography>
+                                    <Box mt={1}>
+                                        <Typography className="esteban" sx={{ fontSize: '12px !important' }} variant="subtitle1">Itens Selecionados:</Typography>
+                                        {selectedItems.length === 0 ? (
+                                            <Typography className="esteban" sx={{ fontSize: '12px !important' }} variant="body2">Nenhum item selecionado.</Typography>
+                                        ) : (
+                                            selectedItems.map(item => (
+                                                <Chip
+                                                    key={item.key}
+                                                    label={` ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
+                                                    onDelete={() => handleRemove(item)}
+                                                    sx={{ m: 0.5 }}
+                                                />
+                                            ))
+                                        )}
+                                    </Box>
+                                </Box>
+
+
+                                {Object.entries(categories).map(([category, items]) => (
+                                    <Box key={category} my={3}>
+                                        <Typography className="esteban" sx={{ color: '#40150A', my: 3 }} variant="h6">{category}</Typography>
+                                        <Grid container spacing={1} sx={{ display: 'flex !important', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'start', gap: 1 }}>
+                                            {items.map(item => {
+                                                const key = `${category}-${item.name}`;
+                                                const selected = selectedItems.some(i => i.key === key);
+                                                const disabled = totalSpent() + item.price > goldLimit;
+                                                const forcaRequisito = item.forca ? `Requisito de força: ${item.forca}` : ""
+                                                return (
+                                                    item.description ?
+                                                        <Tooltip title={`${item.description} ${forcaRequisito}`}>
+                                                            <Box sx={{ width: 'fitContent' }} key={key} >
+
+                                                                <Button
+                                                                    className="esteban"
+                                                                    variant={selected ? "contained" : "outlined"}
+                                                                    color={disabled ? "inherit" : "primary"}
+                                                                    disabled={disabled}
+                                                                    onClick={() => handleChangeShop(category, item)}
+                                                                    sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED", }}
+                                                                >
+                                                                    {item.name} ({item.price} M.O.)
+                                                                </Button>
+
+                                                            </Box>
+                                                        </Tooltip> :
+                                                        <Box sx={{ width: 'fitContent' }} key={key} >
+
+                                                            <Button
+                                                                className="esteban"
+                                                                variant={selected ? "contained" : "outlined"}
+                                                                color={disabled ? "inherit" : "primary"}
+                                                                disabled={disabled}
+                                                                onClick={() => handleChangeShop(category, item)}
+                                                                sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED", }}
+                                                            >
+                                                                {item.name} ({item.price} M.O.)
+                                                            </Button>
+
+                                                        </Box>
+                                                );
+                                            })}
+                                        </Grid>
+                                        <Divider sx={{ my: 2 }} />
+                                    </Box>
+                                ))}
+
+                            </Box>
+                        </Box>
                     </TabPanel>
                 </Box>
             </Box>
