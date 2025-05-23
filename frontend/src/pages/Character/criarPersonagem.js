@@ -2686,9 +2686,9 @@ const CharCreationPage = () => {
             }
         ],
         "Escudos": [
-            { name: "Escudo simples", price: 15, bonusDefesa: 2 },
-            { name: "Escudo pesado", price: 30, bonusDefesa: 2 },
-            { name: "Escudo de duelo", price: 50, bonusDefesa: 1 },
+            { name: "Escudo simples", description: "Concede +2 no Valor de Defesa.", price: 15, bonusDefesa: 2 },
+            { name: "Escudo pesado", price: 30, description: "Ação Buscar Cobertura: posiciona no chão para cobertura completa contra um inimigo até seu próximo turno (não podendo atacar e seu movimento é reduzido pela metade).Escudo robusto que pode ser fincado no solo para proteção estática.", bonusDefesa: 2 },
+            { name: "Escudo de duelo", description: "Reação: aparar um golpe para ganhar +2 no Valor de Defesa até o início do próximo turno.Escudo leve que permite aparar ataques com o braço livre.", price: 50, bonusDefesa: 1 },
         ],
         "Armas Simples": [
             { name: "Adaga", description: "Esta faca afiada é muito usada por ladrões e assassinos, por ser facilmente escondida. O personagem recebe um bônus de +4 em testes de furtividade para escondê-la com a ação Esconder. Críticos têm 3 pontos de dano adicionais após dobrar o dano causado. Será considerado acerto crítico em 19 ou 20 no rolamento.", price: 2, dano: "1d4", critico: 19 },
@@ -2696,10 +2696,10 @@ const CharCreationPage = () => {
             { name: "Arco curto", description: "Uso comum em florestas e ambientes fechados, próprio para caçadas.", price: 25, dano: "1d6", critico: 20 },
             { name: "Azagaia", price: 4, description: "Lança curta e delgada usada como arma de arremesso por caçadores.", dano: "1d6", critico: 20 },
             { name: "Bastão acolchoado", description: "Um pedaço sólido de madeira, coberto por uma camada grossa de lã, causa dano não-letão.", price: 5, dano: "1d4", critico: 20 },
-            { name: "Besta leve",description: "Um arco montado sobre uma coronha de madeira com gatilho, dispara virotes com grande potência.", price: 25, dano: "1d8", critico: 20 },
-            { name: "Bordão",description: "Um cajado apreciado por viajantes e camponeses; prático como uma clava e de custo zero.", price: 0, dano: "1d6", critico: 20 },
+            { name: "Besta leve", description: "Um arco montado sobre uma coronha de madeira com gatilho, dispara virotes com grande potência.", price: 25, dano: "1d8", critico: 20 },
+            { name: "Bordão", description: "Um cajado apreciado por viajantes e camponeses; prático como uma clava e de custo zero.", price: 0, dano: "1d6", critico: 20 },
             { name: "Clava", description: "Pedaço de madeira usado como arma improvisada; custo zero.", price: 1, dano: "1d4", critico: 20 },
-            { name: "Espada curta",description: "Espada de 40–50 cm, versátil e fácil de manejar.Combatente com 1 ponto em Combate Defensivo recebe +1 de acerto se usar esta arma com escudo.", price: 10, dano: "1d6", critico: 20 },
+            { name: "Espada curta", description: "Espada de 40–50 cm, versátil e fácil de manejar.Combatente com 1 ponto em Combate Defensivo recebe +1 de acerto se usar esta arma com escudo.", price: 10, dano: "1d6", critico: 20 },
             { name: "Funda", price: 0.2, dano: "1d4", critico: 20 },
             { name: "Lança", price: 1, dano: "1d6/1d8", critico: 20 },
             { name: "Maça", price: 50, dano: "1d6", critico: 20 },
@@ -2708,19 +2708,38 @@ const CharCreationPage = () => {
             { name: "Tacape", price: 0, dano: "1d8", critico: 20 },
         ],
         "Armas Marciais": [
-            { name: "Aji",description: "Peça metálica em forma de arco, onde a lâmina seria o arco propriamente dito e a empunhadura seria a corda. Pode ser usada em conjunto em ambas as mãos sem estilo especial.", price: 2, dano: "1d6", critico: 20 },
-            { name: "Alabarda",description: "Pode usar a ação Derrubar junto ao ataque, uma vez por turno. Se o alvo estiver a 1,5 m, o dano cai para 1d8.Arma de infantaria padrão em fortificações. Haste longa com lâmina meia-lua e ponta perfurante.", price: 20, dano: "1d10", critico: 20 },
-            { name: "Alfange",description: "Vantagem em manter na mão e desvantagem do oponente ao tentar desarmar.Espada de lâmina larga e curva, usada por guerreiros do Deserto.", price: 25, dano: "1d8", critico: 20 },
-            { name: "Arco Longo",description: "Aplica modificador de Força em ataque e dano.Arco recurvado de materiais laminados que mantém a tensão mesmo desarmado, disparando com mais força.", price: 50, dano: "1d8", critico: 20 },
-            {name: "Balestra", price: 70, dano: "1d12", critico: 18-20, description: "Recarregar é uma ação; crítico em 18+; aplica modificador de Força no dano.Besta com mecanismo pesado que permite usar toda a força ao engatilhar."},
-            { name: "Besta de Mão", price: 25, dano: "1d6", critico: 20 },
-            { name: "Besta Pesada", price: 50, dano: "1d10", critico: 20 },
-            { name: "Cajado de batalha", price: 0.2, dano: "1d4/1d6", critico: 20 },
-            { name: "Chicote", price: 10, dano: "1d4", critico: 20 },
-            { name: "Cimitarra", price: 25, dano: "1d4", critico: 20 },
-            { name: "Corrente com Cravos", price: 30, dano: "1d4", critico: 20 },
-            { name: "Espada Bastarda", price: 30, dano: "1d10/1d12", critico: 20 },
-            { name: "Espada Grande", price: 15, dano: "2d6", critico: 20 },
+            { name: "Aji", description: "Peça metálica em forma de arco, onde a lâmina seria o arco propriamente dito e a empunhadura seria a corda. Pode ser usada em conjunto em ambas as mãos sem estilo especial.", price: 2, dano: "1d6", critico: 20 },
+            { name: "Alabarda", description: "Pode usar a ação Derrubar junto ao ataque, uma vez por turno. Se o alvo estiver a 1,5 m, o dano cai para 1d8.Arma de infantaria padrão em fortificações. Haste longa com lâmina meia-lua e ponta perfurante.", price: 20, dano: "1d10", critico: 20 },
+            { name: "Alfange", description: "Vantagem em manter na mão e desvantagem do oponente ao tentar desarmar.Espada de lâmina larga e curva, usada por guerreiros do Deserto.", price: 25, dano: "1d8", critico: 20 },
+            { name: "Arco Longo", description: "Aplica modificador de Força em ataque e dano.Arco recurvado de materiais laminados que mantém a tensão mesmo desarmado, disparando com mais força.", price: 50, dano: "1d8", critico: 20 },
+            { name: "Balestra", price: 70, dano: "1d12", critico: 18 - 20, description: "Recarregar é uma ação; crítico em 18+; aplica modificador de Força no dano.Besta com mecanismo pesado que permite usar toda a força ao engatilhar." },
+            { name: "Besta de Mão", description: "Saque e ataque na mesma rodada: oponente desprevenido (uma vez por combate) e vantagem no ataque; recarregar é ação.Miniatura de besta para ocultar sob casaco, usada por nobres e assassinos.", price: 25, dano: "1d6", critico: 20 },
+            {
+                name: "Besta de Repetição",
+                price: 100,
+                dano: "1d8",
+                tipo: "perfurante",
+                alcance: "24/120 m",
+                propriedades: ["cartucho de 10 virotes"],
+                usoEspecial: "",
+                description: "Trocar ou recarregar o cartucho: ação.Besta acoplada a caixa com mecanismo automático que recarrega até dez virotes."
+            },
+            {
+                name: "Besta Pesada",
+                price: 50,
+                dano: "1d10",
+                tipo: "perfurante",
+                alcance: "30/120 m",
+                propriedades: ["duas mãos"],
+                usoEspecial: "",
+                description: "Carregar exige uma ação ou um ataque.Versão maior e mais potente da besta leve, exige as duas mãos para usar."
+            },
+            { name: "Cajado de batalha", description: "Cajado de madeira reforçado com chapas de metal nas pontas, usado por andarilhos que não querem levantar suspeitas.", price: 0.2, dano: "1d4/1d6", critico: 20 },
+            { name: "Chicote", description: "Pode trocar um ataque para tentar derrubar ou desarmar (60% de chance de acerto). Arma longa e flexível que pode enroscar-se no adversário, ideal para manobras de controle.", price: 10, dano: "1d4", critico: 20 },
+            { name: "Cimitarra", description: "Vantagem em manter na mão e desvantagem para quem tenta desarmar. Espada de lâmina larga e curva, usada por guerreiros do Mar.", price: 25, dano: "1d4", critico: 20 },
+            { name: "Corrente com Cravos", description: "Pode trocar um ataque para agarrar (DC 10 + bônus de proficiência); alvo preso só se move em direção à outra ponta ou sofre 1d4 perfurante.Corrente com pequenos espinhos, ótima para controlar e prender o inimigo.", price: 30, dano: "1d4", critico: 20 },
+            { name: "Espada Bastarda",description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10/1d12", critico: 20 },
+            { name: "Espada Grande",description: "Golpe carregado: ao realizar um ataque pode escolher fazê-lo carregado causando o dobro do dano, entretanto perde –1 no Valor de Defesa até o próximo turno para cada ataque carregado feito. Requer Força ≥ 5 ou faça todo ataque co esta arma com desvantagem. Espada de 1,5 m, poderosa mas pesada, ideal para um único golpe decisivo.", price: 15, dano: "2d6", critico: 20 },
             { name: "Espada Longa", price: 50, dano: "1d8/1d10", critico: 20 },
             { name: "Florete", price: 25, dano: "1d8", critico: 20 },
             { name: "Foice", price: 30, dano: "1d8", critico: 18 },
@@ -2749,11 +2768,11 @@ const CharCreationPage = () => {
             { name: "Wakizashi", price: 150, dano: "1d6", critico: 20 },
         ],
         "Armas Exóticas": [
-            { name: "Catapulta de Braço", price: 25, dano: "1d6", critico: 20 },
-            { name: "Manopla de espinhos", price: 10, dano: "+1 ataques desarmados", critico: 20 },
-            { name: "Espada Bastarda (uma mão)", price: 30, dano: "1d10", critico: 20 },
-            { name: "Espada Lâminas Duplas", price: 40, dano: "1d8", critico: 20 },
-            { name: "Espada Diapasão", price: 60, dano: "1d8", critico: 20 },
+            { name: "Catapulta de Braço", description: "Recarregar é uma ação livre.Engenho halfling preso ao braço que arremessa pedras quase tão longe quanto um arco.", price: 25, dano: "1d6", critico: 20 },
+            { name: "Manopla de espinhos", description: "Luva de couro com espinhos, usada por pugilistas; concede +1 no dano de ataques desarmados. Não pode sofrer desarme.", price: 10, dano: "+1 ataques desarmados", critico: 20 },
+            { name: "Espada Bastarda (uma mão)",description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10", critico: 20 },
+            { name: "Espada Lâminas Duplas",  description: "Pode fazer um ataque bônus sempre que usar a ação de atacar.Duas lâminas opostas num mesmo cabo; exige treino para evitar ferir-se.", price: 40, dano: "1d8", critico: 20 },
+            { name: "Espada Diapasão",description: "Interagir com o chão como ação para fazê-la vibrar: ataques seguintes causam +1d6 até o fim do próximo turno.Espada com lâminas duplas paralelas que ressoam para desorientar oponentes.", price: 60, dano: "1d8", critico: 20 },
             { name: "Espada Táurica", price: 100, dano: "3d6", critico: 20 },
             { name: "Katana (uma mão)", price: 200, dano: "1d8", critico: 20 },
             { name: "Katar", price: 40, dano: "1d4", critico: 19 },
@@ -2894,151 +2913,8 @@ const CharCreationPage = () => {
     };
     const armas = {
         "Armas": [
-            {
-                name: "Besta de Mão",
-                price: 75,
-                dano: "1d6",
-                tipo: "perfurante",
-                alcance: "9/27 m",
-                propriedades: ["uma mão"],
-                usoEspecial: "Saque e ataque na mesma rodada: oponente desprevenido (uma vez por combate) e vantagem no ataque; recarregar é ação.",
-                description: "Miniatura de besta para ocultar sob casaco, usada por nobres e assassinos."
-            },
-            {
-                name: "Besta de Repetição",
-                price: 100,
-                dano: "1d8",
-                tipo: "perfurante",
-                alcance: "24/120 m",
-                propriedades: ["cartucho de 10 virotes"],
-                usoEspecial: "Trocar ou recarregar o cartucho: ação.",
-                description: "Besta acoplada a caixa com mecanismo automático que recarrega até dez virotes."
-            },
-            {
-                name: "Besta Pesada",
-                price: 50,
-                dano: "1d10",
-                tipo: "perfurante",
-                alcance: "30/120 m",
-                propriedades: ["duas mãos"],
-                usoEspecial: "Carregar exige uma ação bônus ou um ataque.",
-                description: "Versão maior e mais potente da besta leve, exige as duas mãos para usar."
-            },
-            {
-                name: "Cajado de Batalha",
-                price: "2 PP",
-                dano: "2d4 (1 mão) / 3d4 (2 mãos)",
-                tipo: "impacto",
-                propriedades: ["versátil"],
-                description: "Cajado de madeira reforçado com chapas de metal nas pontas, usado por andarilhos que não querem levantar suspeitas."
-            },
-            {
-                name: "Catapulta-de-Braço",
-                price: 25,
-                dano: "1d6",
-                tipo: "impacto",
-                alcance: "9/18 m",
-                propriedades: ["arremessável"],
-                usoEspecial: "Recarregar é uma ação livre.",
-                description: "Engenho halfling preso ao braço que arremessa pedras quase tão longe quanto um arco."
-            },
-            {
-                name: "Manopla de Espinhos",
-                price: 10,
-                dano: "dano desarmado + 1",
-                tipo: "perfurante",
-                propriedades: ["não pode ser desarmada"],
-                description: "Luva de couro com espinhos, usada por pugilistas; concede +1 no dano de ataques desarmados."
-            },
-            {
-                name: "Chicote",
-                price: 10,
-                dano: "1d4",
-                tipo: "corte",
-                alcance: "4,5 m",
-                propriedades: ["leve", "acuidade", "desvantagem a 1,5 m"],
-                usoEspecial: "Pode trocar um ataque para tentar derrubar ou desarmar (DC 10 + bônus de proficiência).",
-                description: "Arma longa e flexível que pode enroscar-se no adversário, ideal para manobras de controle."
-            },
-            {
-                name: "Cimitarra",
-                price: 25,
-                dano: "1d4",
-                tipo: "corte",
-                propriedades: ["leve", "acuidade", "espada de uma mão"],
-                usoEspecial: "Vantagem em manter na mão e desvantagem para quem tenta desarmar.",
-                description: "Espada de lâmina larga e curva, usada por guerreiros do Mar."
-            },
-            {
-                name: "Corrente com Cravos",
-                price: 30,
-                dano: "1d4",
-                tipo: "perfurante",
-                alcance: "4,5 m",
-                propriedades: ["desvantagem a 1,5 m"],
-                usoEspecial: "Pode trocar um ataque para agarrar (DC 10 + bônus de proficiência); alvo preso só se move em direção à outra ponta ou sofre 1d4 perfurante.",
-                description: "Corrente com pequenos espinhos, ótima para controlar e prender o inimigo."
-            },
-            {
-                name: "Escudo Simples",
-                price: 10,
-                bonusDefesa: 2,
-                tipo: "escudo",
-                description: "Concede +2 no Valor de Defesa."
-            },
-            {
-                name: "Escudo Pesado",
-                price: 20,
-                bonusDefesa: 2,
-                tipo: "escudo",
-                usoEspecial: "Ação Buscar Cobertura: posiciona no chão para cobertura completa em uma direção até seu próximo turno (sem atacar e movimento reduzido pela metade).",
-                description: "Escudo robusto que pode ser fincado no solo para proteção estática."
-            },
-            {
-                name: "Escudo de Duelo",
-                price: 30,
-                bonusDefesa: 1,
-                tipo: "escudo",
-                propriedades: ["leve"],
-                usoEspecial: "Reação: aparar um golpe para ganhar +2 no Valor de Defesa até o início do próximo turno.",
-                description: "Escudo leve que permite aparar ataques com o braço livre."
-            },
-            {
-                name: "Espada Bastarda",
-                price: 30,
-                dano: "1d10 (1 mão) / 1d12 (2 mãos)",
-                tipo: "corte",
-                propriedades: ["pesada", "exótica", "versátil"],
-                usoEspecial: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).",
-                description: "Espada grande e exótica, eficaz contra armaduras completas."
-            },
-            {
-                name: "Espada de Lâminas Duplas",
-                price: 40,
-                dano: "1d8",
-                tipo: "corte",
-                propriedades: ["leve", "acuidade", "exótica", "duas mãos"],
-                usoEspecial: "Pode fazer um ataque bônus sempre que usar a ação de atacar.",
-                description: "Duas lâminas opostas num mesmo cabo; exige treino para evitar ferir-se."
-            },
-            {
-                name: "Espada-Diapasão",
-                price: 60,
-                dano: "1d8",
-                tipo: "corte",
-                propriedades: ["exótica", "espada de uma mão"],
-                usoEspecial: "Interagir com o chão como ação para fazê-la vibrar: ataques seguintes causam +1d6 até o fim do próximo turno.",
-                description: "Espada com lâminas duplas paralelas que ressoam para desorientar oponentes."
-            },
-            {
-                name: "Espada Grande",
-                price: 50,
-                dano: "3d4",
-                tipo: "corte",
-                propriedades: ["pesada"],
-                usoEspecial: "Ação de golpe carregado: dobro do dano, mas perde –1 no Valor de Defesa até o próximo turno; requer Força ≥ 5 ou ataque com desvantagem.",
-                description: "Espada de 1,5 m, poderosa mas pesada, ideal para um único golpe decisivo."
-            },
+  
+          
             {
                 name: "Espada Longa",
                 price: 15,
@@ -3708,7 +3584,8 @@ const CharCreationPage = () => {
                                         position: 'relative',
                                         height: '100%',
                                         display: 'flex',
-                                        flexDirection: 'column'
+                                        flexDirection: 'column',
+                                        maxHeight: '600px'
                                     }}
                                 >
                                     <Box>
@@ -3736,7 +3613,7 @@ const CharCreationPage = () => {
                                             component="img"
                                             src={image}
                                             alt="Imagem do personagem"
-                                            sx={{ mt: 2, maxWidth: '50%', margin: '0 auto', borderRadius: 1 }}
+                                            sx={{ mt: 2, maxWidth: '50%', margin: '0 auto', borderRadius: 1, maxHeight: '300px' }}
                                         />
                                     )}
                                 </Box>
