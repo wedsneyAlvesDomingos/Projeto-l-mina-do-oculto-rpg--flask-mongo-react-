@@ -2999,7 +2999,7 @@ const CharCreationPage = () => {
     }
     function ShopForm() {
         return (
-            <Box sx={{ width: '100%', position: 'relative' }}>
+            <Box sx={{ width: '80%', position: 'relative', marginBottom:'200px', m:'auto' }} >
                 <Box my={4}>
                     <Typography className="esteban" variant="h4" gutterBottom>
                         Loja de Itens
@@ -3042,12 +3042,14 @@ const CharCreationPage = () => {
                             bottom: 16,
                             right: 16,
                             backgroundColor: 'white',
-                            padding: 4,
+                            padding: 2,
                             borderRadius: 2,
                             boxShadow: 3,
                             zIndex: 1000,
-                            maxWidth: '300px',
-                            minWidth:'250px'
+                            maxWidth: '200px',
+                            minWidth:'200px',
+                            overflowY:'scroll',
+                            height:'300px'
                         }}
                     >
                         <Typography className="esteban" variant="h5" sx={{color:'#7B3311 !important'}}>
@@ -3064,7 +3066,7 @@ const CharCreationPage = () => {
                                 selectedItems.map(item => (
                                     <Chip
                                         key={item.key}
-                                        label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
+                                        label={` ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
                                         onDelete={() => handleRemove(item)}
                                         sx={{ m: 0.5 }}
                                     />
@@ -3075,7 +3077,7 @@ const CharCreationPage = () => {
 
 
                     {Object.entries(categories).map(([category, items]) => (
-                        <Box key={category} my={3} >
+                        <Box key={category} my={3}>
                             <Typography className="esteban" sx={{ color: '#40150A', my: 3 }} variant="h6">{category}</Typography>
                             <Grid container spacing={1} sx={{ display: 'flex !important', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'start', gap: 1 }}>
                                 {items.map(item => {
