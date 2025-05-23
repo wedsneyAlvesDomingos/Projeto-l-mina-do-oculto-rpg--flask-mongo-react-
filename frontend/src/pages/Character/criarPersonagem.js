@@ -2700,12 +2700,12 @@ const CharCreationPage = () => {
             { name: "Bordão", description: "Um cajado apreciado por viajantes e camponeses; prático como uma clava e de custo zero.", price: 0, dano: "1d6", critico: 20 },
             { name: "Clava", description: "Pedaço de madeira usado como arma improvisada; custo zero.", price: 1, dano: "1d4", critico: 20 },
             { name: "Espada curta", description: "Espada de 40–50 cm, versátil e fácil de manejar.Combatente com 1 ponto em Combate Defensivo recebe +1 de acerto se usar esta arma com escudo.", price: 10, dano: "1d6", critico: 20 },
-            { name: "Funda", price: 0.2, dano: "1d4", critico: 20 },
-            { name: "Lança", price: 1, dano: "1d6/1d8", critico: 20 },
-            { name: "Maça", price: 50, dano: "1d6", critico: 20 },
-            { name: "Machadinha", price: 5, dano: "1d6", critico: 20 },
+            { name: "Funda", description: "Tira de couro usada para arremessar balas de metal ou pedras.Aplica modificador de Força ao dano; colocar munição é ação.", price: 0.2, dano: "1d4", critico: 20 },
+            { name: "Lança", description: "Haste com ponta afiada; facilmente fabricada e arremessável.", price: 1, dano: "1d6/1d8", critico: 20 },
+            { name: "Maça", description: "Bastão metálico com peso protuberante, efetivo contra não mortos.Dobra o dano contra constructos e esqueletos.", price: 50, dano: "1d6", critico: 20 },
+            { name: "Machadinha", description: "Ferramenta leve de corte que também funciona como arma arremessável.", price: 5, dano: "1d6", critico: 20 },
             { name: "Martelo leve", price: 2, dano: "1d4", critico: 20 },
-            { name: "Tacape", price: 0, dano: "1d8", critico: 20 },
+            { name: "Tacape", description: "Clava grande, às vezes cravada de pregos, simples mas brutal.", price: 0, dano: "1d8", critico: 20 },
         ],
         "Armas Marciais": [
             { name: "Aji", description: "Peça metálica em forma de arco, onde a lâmina seria o arco propriamente dito e a empunhadura seria a corda. Pode ser usada em conjunto em ambas as mãos sem estilo especial.", price: 2, dano: "1d6", critico: 20 },
@@ -2738,56 +2738,101 @@ const CharCreationPage = () => {
             { name: "Chicote", description: "Pode trocar um ataque para tentar derrubar ou desarmar (60% de chance de acerto). Arma longa e flexível que pode enroscar-se no adversário, ideal para manobras de controle.", price: 10, dano: "1d4", critico: 20 },
             { name: "Cimitarra", description: "Vantagem em manter na mão e desvantagem para quem tenta desarmar. Espada de lâmina larga e curva, usada por guerreiros do Mar.", price: 25, dano: "1d4", critico: 20 },
             { name: "Corrente com Cravos", description: "Pode trocar um ataque para agarrar (DC 10 + bônus de proficiência); alvo preso só se move em direção à outra ponta ou sofre 1d4 perfurante.Corrente com pequenos espinhos, ótima para controlar e prender o inimigo.", price: 30, dano: "1d4", critico: 20 },
-            { name: "Espada Bastarda",description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10/1d12", critico: 20 },
-            { name: "Espada Grande",description: "Golpe carregado: ao realizar um ataque pode escolher fazê-lo carregado causando o dobro do dano, entretanto perde –1 no Valor de Defesa até o próximo turno para cada ataque carregado feito. Requer Força ≥ 5 ou faça todo ataque co esta arma com desvantagem. Espada de 1,5 m, poderosa mas pesada, ideal para um único golpe decisivo.", price: 15, dano: "2d6", critico: 20 },
-            { name: "Espada Longa", price: 50, dano: "1d8/1d10", critico: 20 },
-            { name: "Florete", price: 25, dano: "1d8", critico: 20 },
-            { name: "Foice", price: 30, dano: "1d8", critico: 18 },
-            { name: "Katana", price: 200, dano: "1d8/1d10", critico: 20 },
-            { name: "Lança de Falange", price: 5, dano: "1d10/1d12", critico: 20 },
-            { name: "Lança Montada", price: 15, dano: "2d6/1d10", critico: 20 },
-            { name: "Maça Estrela", price: 15, dano: "1d8", critico: 20 },
-            { name: "Maça de Guerra", price: 30, dano: "1d12", critico: 20 },
-            { name: "Machado Anão", price: 50, dano: "1d12", critico: 20 },
-            { name: "Machado Grande", price: 30, dano: "1d12", critico: 20 },
-            { name: "Mangual", price: 10, dano: "1d8", critico: 20 },
-            { name: "Mangual Pesado", price: 0.2, dano: "1d10", critico: 20 },
-            { name: "Manopla Espada", price: 25, dano: "1d6", critico: 20 },
-            { name: "Marreta", price: 5, dano: "2d6", critico: 20 },
-            { name: "Marreta Estilhaçadora", price: 10, dano: "2d6", critico: 20 },
-            { name: "Martelo de guerra", price: 15, dano: "1d8", critico: 20 },
-            { name: "Mosquete", price: 500, dano: "2d8", critico: 20 },
-            { name: "Nunchaku", price: 2, dano: "1d6", critico: 20 },
-            { name: "Pique", price: 10, dano: "1d10", critico: 20 },
-            { name: "Pistola", price: 180, dano: "1d8", critico: 20 },
-            { name: "Pistola de Tambor", price: 400, dano: "1d8", critico: 20 },
-            { name: "Rede", price: 1, dano: "0", critico: 20 },
-            { name: "Sabre Serrilhado", price: 25, dano: "1d8", critico: 20 },
-            { name: "Sai", price: 10, dano: "1d4", critico: 19 },
-            { name: "Tridente", price: 5, dano: "1d10", critico: 20 },
-            { name: "Wakizashi", price: 150, dano: "1d6", critico: 20 },
+            { name: "Espada Bastarda", description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10/1d12", critico: 20 },
+            { name: "Espada Grande", description: "Golpe carregado: ao realizar um ataque pode escolher fazê-lo carregado causando o dobro do dano, entretanto perde –1 no Valor de Defesa até o próximo turno para cada ataque carregado feito. Requer Força ≥ 5 ou faça todo ataque co esta arma com desvantagem. Espada de 1,5 m, poderosa mas pesada, ideal para um único golpe decisivo.", price: 15, dano: "2d6", critico: 20 },
+            { name: "Espada Longa", description: "Espada versátil e prática que pode ser usada com uma ou duas mãos.Uma vez por rodada, ao usar a ação Atacar com duas mãos, causa +1d8 de dano adicional (manobra de alavanca).", price: 50, dano: "1d8/1d10", critico: 20 },
+            { name: "Florete", description: "Lâmina fina e afiada, muito precisa, usada para manobras de engano.Uma vez por combate, pode finta como ação de ataque para impor –1 em acertos contra si até o fim do turno (50% de chance de funcionar).", price: 25, dano: "1d8", critico: 20 },
+            {
+                name: "Florete-Agulha",
+                price: 40,
+                dano: "1d8",
+                tipo: "perfurante",
+                propriedades: ["leve", "acuidade", "espada de uma mão"],
+                usoEspecial: "",
+                description: "Florete com êmbolo interno que injeta veneno no alvo.Como o florete, + interno de veneno de contato (aplicar é ação inteira); inimigos têm –1 para se livrar do veneno."
+            },
+            {
+                name: "Fogo Alquímico",
+                price: 50,
+                dano: "1d6",
+                tipo: "impacto / fogo",
+                alcance: "alcance à distância",
+                propriedades: ["frágil"],
+                usoEspecial: "Acerto causa condição Queimando (1d6 no fim do próximo turno); erro causa metade do dano, sem fogo.",
+                description: "Frasco de substância que inflama ao contato com o ar."
+            },
+            { name: "Foice", description: "Foice de combate bem equilibrada, capaz de infligir ferimentos profundos.Após um ataque, como reação pode tentar causar condição Sangrando (40% de chance; não pode repetir no mesmo turno).", price: 30, dano: "1d8", critico: 18 },
+            { name: "Katana", description: "Lâmina curva única, temperada e incrustada, considerada obra-prima.Obra-prima: +1 no rolamento de acerto.", price: 200, dano: "1d8/1d10", critico: 20 },
+            { name: "Lança de Falange", description: "Versão longa da lança, balanceada para falange; pesada e arremessável.", price: 5, dano: "1d10/1d12", critico: 20 },
+            { name: "Lança Montada", description: "Lança adaptada para uso a cavalo, permite golpe de investida poderoso.Investida montada: dano dobrado; só funciona montado (1 mão).", price: 15, dano: "2d6/1d10", critico: 20 },
+            { name: "Maça Estrela", description: "Maça com espinhos pontiagudos que causam ferimentos profundos.Dobra o dano contra constructos e esqueletos.", price: 15, dano: "1d8", critico: 20 },
+            { name: "Maça de Guerra", description: "Maça pesada com cabeça metálica, poderosa mas desajeitada.–1 no ataque; dobra dano contra constructos e esqueletos.", price: 30, dano: "1d12", critico: 20 },
+            { name: "Machado Anão", description: "Machado favorito dos anões; pesado demais sem treino.", price: 50, dano: "1d12", critico: 20 },
+            {
+                name: "Machado de Batalha",
+                price: 10,
+                dano: "1d8 (1 mão) / 1d10 (2 mãos)",
+                tipo: "corte",
+                propriedades: ["versátil"],
+                usoEspecial: "",
+                description: "Machado grande de guerra, com chance de dano bônus no crítico. No rolamento de um 20 no d20: o ataque causa +1d6 de dano extra."
+            },
+            { name: "Machado Grande", description: "Imenso machado de lâmina dupla, perigoso e com chance de dano bônus no crítico.No rolamento de 0 no d20: +1d6 de dano extra (após cálculo de crítico).", price: 30, dano: "1d12", critico: 20 },
+            { name: "Mangual", description: "Haste metálica ligada a esfera de aço, ideal para desarmar e combater escudos.Pode enroscar e desarmar ao atacar (uma vez por turno) e recebe +1 em acertos contra oponentes com escudos.", price: 10, dano: "1d8", critico: 20 },
+            { name: "Mangual Pesado", description: "Versão mais pesada do mangual, para uso a duas mãos, com desarme e bônus contra escudos.Mesmas habilidades do mangual normal, mas usada com duas mãos.", price: 0.2, dano: "1d10", critico: 20 },
+            { name: "Manopla Espada", description: "Braçadeira com lâmina paralela ao antebraço, protege o braço e oferece bônus de defesa.Concede +1 no Valor de Defesa (ou +2 se usar uma em cada braço com Regalia de Combate com Duas Armas).", price: 25, dano: "1d6", critico: 20 },
+            { name: "Marreta", description: "Martelo com cabo longo e cabeça pesada, desajeitado mas poderoso contra construções.Causa dano dobrado a estruturas e construtos de pedra.", price: 5, dano: "2d6", critico: 20 },
+            { name: "Marreta Estilhaçadora", description: "Grande marreta de guerra que despedaça armaduras e reduz armadura em crítico.Crítico: ao invés de multiplicar dano, reduz em 2 o bônus de armadura natural ou da armadura do alvo até o fim do próximo turno.", price: 10, dano: "2d6", critico: 20 },
+            {
+                "name": "Martelo",
+                "price": 2,
+                "dano": "1d4 impacto",
+                "tipo": "impacto",
+                "propriedades": ["leve", "1 mão", "dano máximo contra esqueletos e construtos de ossos"],
+                "usoEspecial": "",
+                description: "Ferramenta para pregos que vira arma eficaz contra esqueletos.Sempre causa dano máximo contra esqueletos e construtos de ossos."
+            },
+            { name: "Martelo de guerra", description: "Versão militar do martelo, preferida por anões, efetiva contra mortos-vivos.Sempre causa dano máximo contra esqueletos e construtos de ossos.", price: 15, dano: "1d8", critico: 20 },
+            { name: "Mosquete", description: "Arma de uso complicado e devastadora, com longo alcance e recarga lenta.Produz enorme som ao disparar; recarregar é uma ação.", price: 500, dano: "2d8", critico: 20 },
+            { name: "Nunchaku", description: "Dois bastões unidos por corrente; versátil para artes marciais com efeitos especiais para monges.Quando usado por monge, causa 1d10 de impacto e impõe desvantagem no teste para não ser atordoado.", price: 2, dano: "1d6", critico: 20 },
+            { name: "Pique", description: "Lança muito longa, ideal para manter distância e punir montados.Bônus de +1 em acertos contra alvos montados ou voadores no alcance.", price: 10, dano: "1d10", critico: 20 },
+            { name: "Pistola", description: "Arma de fogo leve de dois tiros, popular e beneficiada por empunhadura estável.Ganha +2 na iniciativa; se usada com duas mãos, +1 na jogada de acerto.", price: 180, dano: "1d8", critico: 20 },
+            { name: "Pistola de Tambor", description: "Pistola com tambor giratório que permite até quatro disparos antes de recarregar.+2 na iniciativa quando empunhada em uma mãe e nada na outra", price: 400, dano: "1d8", critico: 20 },
+            {
+                "name": "Pó da Explosão Solar",
+                "price": 100,
+                "dano": "—",
+                "tipo": "granada",
+                "propriedades": ["consumível", "área 6 m", "atordoamento"],
+                description: "Frasco de cerâmica com pó explosivo que ofusca e atordoa no impacto.Ao quebrar, todas as criaturas num raio de 6 m ficam atordoadas por 1 rodada."
+            },
+            { name: "Rede", description: "Rede com dentes na trama, usada para imobilizar e controlar inimigos.Acerto restringe e permite limitar movimento; é preciso ação completa + teste (CD 10) ou rasgar (5 PV) para liberar.", price: 1, dano: "0", critico: 20 },
+            { name: "Sabre Serrilhado", description: "Lâmina dentada que rasga e prende na carne, causando dano contínuo até ser removida. No crítico, fica presa: arrancar provoca 2d4 de dano; enquanto preso, causa 1d4 a cada ação da vítima.", price: 25, dano: "1d8", critico: 20 },
+            { name: "Sai", description: "Adaga em forma de garfo, ideal para prender e desarmar armas adversárias.Pode trocar um ataque pela ação desarmar; crítico em 19–20", price: 10, dano: "1d4", critico: 19 },
+            { name: "Tridente", description: "Lança com múltiplas pontas, menos penetrante sem armadura, mas letal na água.+1 em acertos contra criaturas aquáticas quando em água.", price: 5, dano: "1d10", critico: 20 },
+            { name: "Wakizashi", description: "versão mais curta da Katana. Junto com ela formam o Daisho, armas tradicionais do guerreiro de katana. A katana e a wakizashi são armas obra-prima (+1 acerto). Se usada em conjunto a uma katana, pode se atacar com a wakizashi na mesma ação que a katana. Ao atacar com a wakizashi desta maneira é gerado penalidade de ataque para o próximo ação de ataque como se fossem duas ações e não uma.", price: 150, dano: "1d6", critico: 20 },
         ],
         "Armas Exóticas": [
             { name: "Catapulta de Braço", description: "Recarregar é uma ação livre.Engenho halfling preso ao braço que arremessa pedras quase tão longe quanto um arco.", price: 25, dano: "1d6", critico: 20 },
             { name: "Manopla de espinhos", description: "Luva de couro com espinhos, usada por pugilistas; concede +1 no dano de ataques desarmados. Não pode sofrer desarme.", price: 10, dano: "+1 ataques desarmados", critico: 20 },
-            { name: "Espada Bastarda (uma mão)",description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10", critico: 20 },
-            { name: "Espada Lâminas Duplas",  description: "Pode fazer um ataque bônus sempre que usar a ação de atacar.Duas lâminas opostas num mesmo cabo; exige treino para evitar ferir-se.", price: 40, dano: "1d8", critico: 20 },
-            { name: "Espada Diapasão",description: "Interagir com o chão como ação para fazê-la vibrar: ataques seguintes causam +1d6 até o fim do próximo turno.Espada com lâminas duplas paralelas que ressoam para desorientar oponentes.", price: 60, dano: "1d8", critico: 20 },
-            { name: "Espada Táurica", price: 100, dano: "3d6", critico: 20 },
-            { name: "Katana (uma mão)", price: 200, dano: "1d8", critico: 20 },
-            { name: "Katar", price: 40, dano: "1d4", critico: 19 },
-            { name: "Lança Falange (uma mão)", price: 5, dano: "1d8", critico: 20 },
-            { name: "Lança foguete", price: 20, dano: "1d6/1d8", critico: 20 },
-            { name: "Lança Mola", price: 5, dano: "1d6/1d8", critico: 20 },
-            { name: "Machado Anão (uma mão)", price: 50, dano: "1d10", critico: 20 },
-            { name: "Maça Granada", price: 20, dano: "1d8", critico: 20 },
-            { name: "Machado Táurico", price: 80, dano: "4d6", critico: 20 },
-            { name: "Marreta Pistão", price: 15, dano: "2d6", critico: 20 },
-            { name: "Martelo Pistão", price: 40, dano: "1d10", critico: 20 },
-            { name: "Montante Cinético", price: 250, dano: "3d6", critico: 20 },
-            { name: "Mosquetão", price: 500, dano: "4d8", critico: 20 },
-            { name: "Presa da Serpente", price: 30, dano: "2d4", critico: 17 },
-            { name: "Vara relâmpago", price: 300, dano: "3d8", critico: 20 },
+            { name: "Espada Bastarda (uma mão)", description: "Se empunhada com uma mão sem nada na outra, pode usar ação bônus para arco de corte em área (dano = mod. de Força).Espada grande e exótica, eficaz contra armaduras completas.", price: 30, dano: "1d10", critico: 20 },
+            { name: "Espada Lâminas Duplas", description: "Pode fazer um ataque bônus sempre que usar a ação de atacar.Duas lâminas opostas num mesmo cabo; exige treino para evitar ferir-se.", price: 40, dano: "1d8", critico: 20 },
+            { name: "Espada Diapasão", description: "Interagir com o chão como ação para fazê-la vibrar: ataques seguintes causam +1d6 até o fim do próximo turno.Espada com lâminas duplas paralelas que ressoam para desorientar oponentes.", price: 60, dano: "1d8", critico: 20 },
+            { name: "Espada Táurica", description: "Espada gigantesca usada pelos campeões minotauros.Requer Força ≥ 10 ou sofre desvantagem para cada 3 pontos abaixo de 10. Se tiver força inferior a 3 não consegue manusear a espada. Desvantagem em ambientes fechados.", price: 100, dano: "3d6", critico: 20 },
+            { name: "Katana (uma mão)", description: "Lâmina curva única, temperada e incrustada, considerada obra-prima.Obra-prima: +1 no rolamento de acerto.", price: 200, dano: "1d8", critico: 20 },
+            { name: "Katar", description: "Punho com lâminas frontais, ideal para golpes perfurantes.Crítico triplica o dano em vez de dobrar.", price: 40, dano: "1d4", critico: 19 },
+            { name: "Lança Falange (uma mão)", description: "Versão longa da lança, balanceada para falange; pesada e arremessável.", price: 5, dano: "1d8", critico: 20 },
+            { name: "Lança foguete", description: "Lança com reservatório de pólvora que boosta o próximo arremesso.Ação livre ativa foguete: próximo arremesso tem alcance dobrado, vantagem e +1d6 de dano. Depois, inútil.", price: 20, dano: "1d6/1d8", critico: 20 },
+            { name: "Lança Mola", description: "Haste retrátil com mola interna para ataque de curto alcance aprimorado.Ação livre dispara mola (+2 no ataque, alcance = 3 m); desmontar/regenerar mola é ação.", price: 5, dano: "1d6/1d8", critico: 20 },
+            { name: "Machado Anão (uma mão)", description: "Machado favorito dos anões; pesado demais sem treino.", price: 50, dano: "1d10", critico: 20 },
+            { name: "Maça Granada", description: "Maça com carga explosiva na cabeça, que detona sob grande pressão em acerto crítico.Acerto crítico: além de infligir dano dobrado, causa explosão (4d4 fogo no alvo e 2d4 fogo no usuário). Após explodir, fica inutilizada.", price: 20, dano: "1d8", critico: 20 },
+            { name: "Machado Táurico", description: "Exige Força 12 ou mais para ser manuseado. Quando um atacante usando esta arma rola um acerto crítico esta arma causa 1d12 de dano extra. Esta arma de duas mãos causa 4d6 de dano cortante com alcance de 3 metros. ", price: 80, dano: "4d6", critico: 20 },
+            { name: "Marreta Pistão", description: "Marreta de duas mãos com carga de vapor, poderosa contra estruturas e construtos.Ação para carregar vapor concede dupla vantagem na jogada de acerto; dano dobrado em estruturas.", price: 15, dano: "2d6", critico: 20 },
+            { name: "Martelo Pistão", description: "Martelo avançado com mecanismo interno de vapor, letal contra esqueletos.Ação para carregar pistão concede dupla vantagem na jogada de acerto; dano máximo em esqueletos.", price: 40, dano: "1d10", critico: 20 },
+            { name: "Montante Cinético", description: "Imensa espada com esferas internas que aumentam impacto, mas pode ferir o usuário. Em rolamento de 1 no d20, na jogada de ataque: você sofre o dano da arma (com bônus) em si mesmo.", price: 250, dano: "3d6", critico: 20 },
+            { name: "Mosquetão", description: "Mosquete de cano grosso, foca em curto alcance com grande impacto, mas com desvantagem.Se errar ataque proficiente, ainda causa 1d8 perfurante sem bônus de Destreza.", price: 500, dano: "4d8", critico: 20 },
+            { name: "Presa da Serpente", description: "Espada de obsidiana frágil que impõe sangramento e pode se partir em combate.Acertos causam  a condição Sangrando; se o total do ataque ≤ 8 ou falha crítica, a arma quebra.", price: 30, dano: "2d4", critico: 17 },
+            { name: "Vara relâmpago", description: "Vara arcana que dispara descargas elétricas corpo a corpo, recarregável com PMs.Crítico: triplica o dano e consome 3 cargas (se não houver, descarrega tudo sem bônus).", price: 300, dano: "3d8", critico: 20 },
         ],
         "Equipamentos de Viagem": [
             { name: "Mochila", price: 1 },
@@ -2911,452 +2956,6 @@ const CharCreationPage = () => {
             }
         ]
     };
-    const armas = {
-        "Armas": [
-  
-          
-            {
-                name: "Espada Longa",
-                price: 15,
-                dano: "1d8 (1 mão) / 1d10 (2 mãos)",
-                tipo: "corte",
-                propriedades: ["versátil", "espada de uma mão"],
-                usoEspecial: "Uma vez por rodada, ao usar a ação Atacar com duas mãos, causa +1d8 de dano adicional (manobra de alavanca).",
-                description: "Espada versátil e prática que pode ser usada com uma ou duas mãos."
-            },
-            {
-                name: "Espada Táurica",
-                price: 100,
-                dano: "3d6",
-                tipo: "corte",
-                alcance: "3 m",
-                propriedades: ["exótica", "pesada"],
-                usoEspecial: "Requer Força ≥ 10 ou sofre desvantagem; desvantagem em ambientes fechados.",
-                description: "Espada gigantesca usada pelos campeões minotauros."
-            },
-            {
-                name: "Florete",
-                price: 25,
-                dano: "1d8",
-                tipo: "perfurante",
-                propriedades: ["leve", "acuidade", "espada de uma mão"],
-                usoEspecial: "Uma vez por combate, pode finta como ação de ataque para impor –1 em acertos contra si até o fim do turno (50% de chance de funcionar).",
-                description: "Lâmina fina e afiada, muito precisa, usada para manobras de engano."
-            },
-            {
-                name: "Florete-Agulha",
-                price: 40,
-                dano: "1d8",
-                tipo: "perfurante",
-                propriedades: ["leve", "acuidade", "espada de uma mão"],
-                usoEspecial: "Como o florete, + interno de veneno de contato (aplicar é ação inteira); inimigos têm –1 para se livrar do veneno.",
-                description: "Florete com êmbolo interno que injeta veneno no alvo."
-            },
-            {
-                name: "Fogo Alquímico",
-                price: 50,
-                dano: "1d6",
-                tipo: "impacto / fogo",
-                alcance: "alcance à distância",
-                propriedades: ["frágil"],
-                usoEspecial: "Acerto causa condição Queimando (1d6 no fim do próximo turno); erro causa metade do dano, sem fogo.",
-                description: "Frasco de substância que inflama ao contato com o ar."
-            },
-            {
-                name: "Foice",
-                price: 30,
-                dano: "1d8",
-                tipo: "perfurante",
-                alcance: "3 m",
-                propriedades: ["pesada", "exótica"],
-                critRange: "18–20",
-                usoEspecial: "Após um ataque, como reação pode tentar causar condição Sangrando (40% de chance; não pode repetir no mesmo turno).",
-                description: "Foice de combate bem equilibrada, capaz de infligir ferimentos profundos."
-            },
-            {
-                name: "Funda",
-                price: "1 PP",
-                dano: "1d6 (pedra) / 1 (pedra comum)",
-                tipo: "impacto",
-                alcance: "15 m",
-                propriedades: ["leve"],
-                usoEspecial: "Aplica modificador de Força ao dano; colocar munição é ação.",
-                description: "Tira de couro usada para arremessar balas de metal ou pedras."
-            },
-            {
-                name: "Katana",
-                price: 200,
-                dano: "1d8 (1 mão) / 1d10 (2 mãos)",
-                tipo: "corte",
-                propriedades: ["leve", "acuidade", "espada de duas mãos", "obra-prima"],
-                usoEspecial: "Obra-prima: +1 no rolamento de acerto.",
-                description: "Lâmina curva única, temperada e incrustada, considerada obra-prima."
-            },
-            {
-                name: "Katar",
-                price: 40,
-                dano: "1d4",
-                tipo: "perfurante / corte",
-                propriedades: ["leve", "acuidade", "exótica"],
-                critRange: "19–20",
-                usoEspecial: "Crítico triplica o dano em vez de dobrar.",
-                description: "Punho com lâminas frontais, ideal para golpes perfurantes."
-            },
-            {
-                name: "Lança",
-                price: 1,
-                dano: "1d6 (1 mão) / 1d8 (2 mãos)",
-                tipo: "perfurante",
-                propriedades: ["simples", "arremessável (9/15 m)"],
-                description: "Haste com ponta afiada; facilmente fabricada e arremessável."
-            },
-            {
-                name: "Lança de Falange",
-                price: 5,
-                dano: "1d10 (1 mão) / 1d12 (2 mãos)",
-                tipo: "perfurante",
-                alcance: "3 m / arremessável (9/15 m)",
-                propriedades: ["exótica", "pesada"],
-                description: "Versão longa da lança, balanceada para falange; pesada e arremessável."
-            },
-            {
-                name: "Lança-Foguete",
-                price: 20,
-                dano: "1d6 (1 mão / arremessada) / 1d8 (2 mãos)",
-                tipo: "perfurante",
-                alcance: "9/15 m",
-                propriedades: ["simples"],
-                usoEspecial: "Ação livre ativa foguete: próximo arremesso tem alcance dobrado, vantagem e +1d6 de dano. Depois, inútil.",
-                description: "Lança com reservatório de pólvora que boosta o próximo arremesso."
-            },
-            {
-                name: "Lança-Mola",
-                price: 5,
-                dano: "1d6 (1 mão / arremessada) / 1d8 (2 mãos)",
-                tipo: "perfurante",
-                alcance: "9/15 m",
-                propriedades: ["simples"],
-                usoEspecial: "Ação livre dispara mola (+2 no ataque, alcance = 3 m); desmontar/regenerar mola é ação.",
-                description: "Haste retrátil com mola interna para ataque de curto alcance aprimorado."
-            },
-            {
-                name: "Lança Montada",
-                price: 15,
-                dano: "2d6 (montado, 1 mão) / 1d10 (desmontado, 2 mãos)",
-                tipo: "perfurante",
-                alcance: "3 m",
-                propriedades: ["simples"],
-                usoEspecial: "Investida montada: dano dobrado; só funciona montado (1 mão).",
-                description: "Lança adaptada para uso a cavalo, permite golpe de investida poderoso."
-            },
-            {
-                name: "Maça",
-                price: 5,
-                dano: "1d6",
-                tipo: "impacto",
-                propriedades: ["espada de uma mão"],
-                usoEspecial: "Dobra o dano contra constructos e esqueletos.",
-                description: "Bastão metálico com peso protuberante, efetivo contra não mortos."
-            },
-            {
-                name: "Maça-Estrela",
-                price: 15,
-                dano: "1d8",
-                tipo: "perfurante",
-                propriedades: ["espada de uma mão"],
-                usoEspecial: "Dobra o dano contra constructos e esqueletos.",
-                description: "Maça com espinhos pontiagudos que causam ferimentos profundos."
-            },
-            {
-                name: "Maça de Guerra",
-                price: 30,
-                dano: "1d12",
-                tipo: "impacto",
-                propriedades: ["pesada"],
-                usoEspecial: "–1 no ataque; dobra dano contra constructos e esqueletos.",
-                description: "Maça pesada com cabeça metálica, poderosa mas desajeitada."
-            },
-            {
-                name: "Machadinha",
-                price: 5,
-                dano: "1d6",
-                tipo: "corte",
-                alcance: "9/18 m",
-                propriedades: ["espada de uma mão", "arremessável"],
-                description: "Ferramenta leve de corte que também funciona como arma arremessável."
-            },
-            {
-                name: "Machado Anão",
-                price: 50,
-                dano: "1d12",
-                tipo: "corte",
-                propriedades: ["exótica", "pesada"],
-                description: "Machado favorito dos anões; pesado demais sem treino."
-            },
-            {
-                name: "Machado de Batalha",
-                price: 10,
-                dano: "1d8 (1 mão) / 1d10 (2 mãos)",
-                tipo: "corte",
-                propriedades: ["versátil"],
-                usoEspecial: "Natural 20: +1d6 de dano extra.",
-                description: "Machado grande de guerra, com chance de dano bônus no crítico."
-            },
-            {
-                "name": "Maça-granada",
-                "price": 20,
-                "dano": "1d8 impacto",
-                "tipo": "impacto",
-                "propriedades": ["1 mão", "explosiva"],
-                "usoEspecial": "Acerto crítico: além de infligir dano dobrado, causa explosão (4d4 fogo no alvo e 2d4 fogo no usuário). Após explodir, fica inutilizada.",
-                "description": "Maça com carga explosiva na cabeça, que detona sob grande pressão em acerto crítico."
-            },
-            {
-                "name": "Machado Grande",
-                "price": 30,
-                "dano": "1d12 cortante",
-                "tipo": "corte",
-                "propriedades": ["duas mãos"],
-                "usoEspecial": "Natural 20: +1d6 de dano extra (após cálculo de crítico).",
-                "description": "Imenso machado de lâmina dupla, perigoso e com chance de dano bônus no crítico."
-            },
-            {
-                "name": "Machado Táurico",
-                "price": 80,
-                "dano": "4d6 cortante (alcance 3 m)",
-                "tipo": "corte",
-                "propriedades": ["duas mãos", "alcance 3 m", "exige Força 12", "–1 Defesa"],
-                "usoEspecial": "Acerto crítico: +1d12 de dano extra.",
-                "description": "Haste de 2 m com lâmina grossa, muito pesado, exige Força 12 e penaliza Defesa."
-            },
-            {
-                "name": "Mangual",
-                "price": 10,
-                "dano": "1d8 impacto",
-                "tipo": "impacto",
-                "propriedades": ["corrente", "desarmar (1×por turno)", "+1 contra escudos"],
-                "usoEspecial": "Pode enroscar e desarmar ao atacar (uma vez por turno) e recebe +1 em acertos contra oponentes com escudos.",
-                "description": "Haste metálica ligada a esfera de aço, ideal para desarmar e combater escudos."
-            },
-            {
-                "name": "Mangual Pesado",
-                "price": 20,
-                "dano": "1d10 impacto",
-                "tipo": "impacto",
-                "propriedades": ["duas mãos", "corrente", "desarmar (1×por turno)", "+1 contra escudos"],
-                "usoEspecial": "Mesmas habilidades do mangual normal, mas usada com duas mãos.",
-                "description": "Versão mais pesada do mangual, para uso a duas mãos, com desarme e bônus contra escudos."
-            },
-            {
-                "name": "Manopla-Espada",
-                "price": 25,
-                "dano": "1d6 cortante",
-                "tipo": "corte",
-                "propriedades": ["leve", "não pode ser desarmada", "bônus +1 Defesa (ou +2 se empunhar duas)"],
-                "usoEspecial": "Concede +1 no Valor de Defesa (ou +2 se usar uma em cada braço com Regalia de Combate com Duas Armas).",
-                "description": "Braçadeira com lâmina paralela ao antebraço, protege o braço e oferece bônus de defesa."
-            },
-            {
-                "name": "Marreta",
-                "price": 5,
-                "dano": "2d6 impacto",
-                "tipo": "impacto",
-                "propriedades": ["pesada", "duas mãos", "dobro de dano contra estruturas e construtos de pedra"],
-                "usoEspecial": "Causa dano dobrado a estruturas e construtos de pedra.",
-                "description": "Martelo com cabo longo e cabeça pesada, desajeitado mas poderoso contra construções."
-            },
-            {
-                "name": "Marreta-pistão",
-                "price": 15,
-                "dano": "2d6 impacto",
-                "tipo": "impacto",
-                "propriedades": ["pesada", "duas mãos", "carregar vapor", "dobro de dano contra estruturas"],
-                "usoEspecial": "Ação para carregar vapor concede dupla vantagem na jogada de acerto; dano dobrado em estruturas.",
-                "description": "Marreta de duas mãos com carga de vapor, poderosa contra estruturas e construtos."
-            },
-            {
-                "name": "Marreta Estilhaçadora",
-                "price": 10,
-                "dano": "2d6 impacto",
-                "tipo": "impacto",
-                "propriedades": ["pesada", "duas mãos", "–1 no Valor de Ataque", "dobro de dano contra estruturas"],
-                "usoEspecial": "Crítico: ao invés de multiplicar dano, reduz em 2 o bônus de armadura natural ou da armadura do alvo até o fim do próximo turno.",
-                "description": "Grande marreta de guerra que despedaça armaduras e reduz armadura em crítico."
-            },
-            {
-                "name": "Martelo",
-                "price": 2,
-                "dano": "1d4 impacto",
-                "tipo": "impacto",
-                "propriedades": ["leve", "1 mão", "dano máximo contra esqueletos e construtos de ossos"],
-                "usoEspecial": "Sempre causa dano máximo contra esqueletos e construtos de ossos.",
-                "description": "Ferramenta para pregos que vira arma eficaz contra esqueletos."
-            },
-            {
-                "name": "Martelo de Guerra",
-                "price": 15,
-                "dano": "1d8 impacto",
-                "tipo": "impacto",
-                "propriedades": ["pesada", "1 mão", "dano máximo contra esqueletos e construtos de ossos"],
-                "usoEspecial": "Sempre causa dano máximo contra esqueletos e construtos de ossos.",
-                "description": "Versão militar do martelo, preferida por anões, efetiva contra mortos-vivos."
-            },
-            {
-                "name": "Martelo-pistão",
-                "price": 40,
-                "dano": "1d10 impacto",
-                "tipo": "impacto",
-                "propriedades": ["pesada", "duas mãos", "carregar pistão", "dano máximo contra esqueletos"],
-                "usoEspecial": "Ação para carregar pistão concede dupla vantagem na jogada de acerto; dano máximo em esqueletos.",
-                "description": "Martelo avançado com mecanismo interno de vapor, letal contra esqueletos."
-            },
-            {
-                "name": "Mosquete",
-                "price": 500,
-                "dano": "2d8 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["marcial", "pesada", "distância", "recarregar ação", "alcance 60 m/180 m"],
-                "usoEspecial": "Produz enorme som ao disparar; recarregar é uma ação.",
-                "description": "Arma de uso complicado e devastadora, com longo alcance e recarga lenta."
-            },
-            {
-                "name": "Montante Cinético",
-                "price": 250,
-                "dano": "3d6 cortante",
-                "tipo": "corte",
-                "propriedades": ["pesada", "duas mãos", "exige Força 11", "retaliação em natural 1"],
-                "usoEspecial": "Natural 1 na jogada de ataque: você sofre o dano da arma (com bônus) em si mesmo.",
-                "description": "Imensa espada com esferas internas que aumentam impacto, mas pode ferir o usuário."
-            },
-            {
-                "name": "Mosquetão",
-                "price": 500,
-                "dano": "4d8 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["exótica", "pesada", "distância", "recarregar ação", "alcance 6 m", "ataques com desvantagem"],
-                "usoEspecial": "Se errar ataque proficiente, ainda causa 1d8 perfurante sem bônus de Destreza.",
-                "description": "Mosquete de cano grosso, foca em curto alcance com grande impacto, mas com desvantagem."
-            },
-            {
-                "name": "Nunchaku",
-                "price": 2,
-                "dano": "1d6 impacto",
-                "tipo": "impacto",
-                "propriedades": ["leve", "duas mãos"],
-                "usoEspecial": "Quando usado por monge, causa 1d10 de impacto e impõe desvantagem no teste para não ser atordoado.",
-                "description": "Dois bastões unidos por corrente; versátil para artes marciais com efeitos especiais para monges."
-            },
-            {
-                "name": "Pique",
-                "price": 10,
-                "dano": "1d10 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["pesada", "duas mãos", "alcance 3 m", "+1 contra montados/voadores", "desvantagem em <1,5 m"],
-                "usoEspecial": "Bônus de +1 em acertos contra alvos montados ou voadores no alcance.",
-                "description": "Lança muito longa, ideal para manter distância e punir montados."
-            },
-            {
-                "name": "Pistola",
-                "price": 180,
-                "dano": "1d8 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["leve", "recarregar ação", "+2 iniciativa", "+1 acerto se empunhada com duas mãos"],
-                "usoEspecial": "Ganha +2 na iniciativa; se usada com duas mãos, +1 na jogada de acerto.",
-                "description": "Arma de fogo leve de dois tiros, popular e beneficiada por empunhadura estável."
-            },
-            {
-                "name": "Pistola de Tambor",
-                "price": 400,
-                "dano": "1d8 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["leve", "recarregar ação", "até 4 tiros por recarga"],
-                "usoEspecial": "+2 na iniciativa quando empunhada sozinha",
-                "description": "Pistola com tambor giratório que permite até quatro disparos antes de recarregar."
-            },
-            {
-                "name": "Pó da Explosão Solar",
-                "price": 100,
-                "dano": "—",
-                "tipo": "granada",
-                "propriedades": ["consumível", "área 6 m", "atordoamento"],
-                "usoEspecial": "Ao quebrar, todas as criaturas num raio de 6 m ficam atordoadas por 1 rodada.",
-                "description": "Frasco de cerâmica com pó explosivo que ofusca e atordoa no impacto."
-            },
-            {
-                "name": "Presa da Serpente",
-                "price": 30,
-                "dano": "2d4 cortante",
-                "tipo": "corte",
-                "propriedades": ["leve", "exótica", "sangrando", "margem crítica 17"],
-                "usoEspecial": "Acertos causam sangramento; se o total do ataque ≤ 8 ou falha crítica, a arma quebra.",
-                "description": "Espada de obsidiana frágil que impõe sangramento e pode se partir em combate."
-            },
-            {
-                "name": "Rede",
-                "price": 1,
-                "dano": "—",
-                "tipo": "controle",
-                "propriedades": ["restrição", "corda 9 m", "5 PV", "rasga para soltar"],
-                "usoEspecial": "Acerto restringe e permite limitar movimento; é preciso ação completa + teste (CD 10) ou rasgar (5 PV) para liberar.",
-                "description": "Rede com dentes na trama, usada para imobilizar e controlar inimigos."
-            },
-            {
-                "name": "Sabre Serrilhado",
-                "price": 25,
-                "dano": "1d8 cortante",
-                "tipo": "corte",
-                "propriedades": ["presa na vítima", "ação para arrancar"],
-                "usoEspecial": "No crítico, fica preso: arrancar provoca 2d4 de dano; enquanto preso, causa 1d4 a cada ação da vítima.",
-                "description": "Lâmina dentada que rasga e prende na carne, causando dano contínuo até ser removida."
-            },
-            {
-                "name": "Sai",
-                "price": 10,
-                "dano": "1d4 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["leve", "uma mão", "desarmar (em vez de um ataque)", "margem crítica 19"],
-                "usoEspecial": "Pode trocar um ataque pela ação desarmar; crítico em 19–20.",
-                "description": "Adaga em forma de garfo, ideal para prender e desarmar armas adversárias."
-            },
-            {
-                "name": "Vara-Relâmpago",
-                "price": 300,
-                "dano": "3d8 raio",
-                "tipo": "raio",
-                "propriedades": ["exótica", "uma mão", "10 cargas", "recarregável"],
-                "usoEspecial": "Crítico: triplica o dano e consome 3 cargas (se não houver, descarrega tudo sem bônus).",
-                "description": "Vara arcana que dispara descargas elétricas corpo a corpo, recarregável com PMs."
-            },
-            {
-                "name": "Tacape",
-                "price": null,
-                "dano": "1d8 impacto",
-                "tipo": "impacto",
-                "propriedades": ["uma mão", "balanço pesado"],
-                "usoEspecial": "—",
-                "description": "Clava grande, às vezes cravada de pregos, simples mas brutal."
-            },
-            {
-                "name": "Tridente",
-                "price": 5,
-                "dano": "1d10 perfurante",
-                "tipo": "perfurante",
-                "propriedades": ["duas mãos", "vantagem contra aquáticos em água", "marcial"],
-                "usoEspecial": "+1 em acertos contra criaturas aquáticas quando em água.",
-                "description": "Lança com múltiplas pontas, menos penetrante sem armadura, mas letal na água."
-            },
-            {
-                "name": "Wakizashi",
-                "price": 150,
-                "dano": "1d6 cortante",
-                "tipo": "corte",
-                "propriedades": ["leve", "uma mão", "obra-prima (+1 acerto)"],
-                "usoEspecial": "Atacar com wakizashi após katana na mesma ação gera penalidade de ataque na próxima.",
-                "description": "Espada curta de samurai, usada em par com a katana para combates velozes."
-            }
-        ]
-    };
-
 
     function ShopForm() {
         const [selectedItems, setSelectedItems] = useState([]);
@@ -3407,7 +3006,7 @@ const CharCreationPage = () => {
 
 
         return (
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{ width: '100%', position: 'relative' }}>
                 <Box my={4}>
                     <Typography className="esteban" variant="h4" gutterBottom>
                         Loja de Itens
@@ -3443,6 +3042,41 @@ const CharCreationPage = () => {
                             ))
                         )}
                     </Box>
+
+                    <Box
+                        sx={{
+                            position: 'fixed',
+                            bottom: 16,
+                            right: 16,
+                            backgroundColor: 'white',
+                            padding: 2,
+                            borderRadius: 2,
+                            boxShadow: 3,
+                            zIndex: 1000,
+                            maxWidth: '300px'
+                        }}
+                    >
+                        <Typography className="esteban" variant="h6" color={totalSpent() > goldLimit ? "error" : "primary"}>
+                            Total: {totalSpent().toFixed(2)} M.O. / {inicialMoney} M.O.
+                        </Typography>
+                        <Box mt={1}>
+                            <Typography className="esteban" sx={{fontSize:'12px !important'}} variant="subtitle1">Itens Selecionados:</Typography>
+                            {selectedItems.length === 0 ? (
+                                <Typography className="esteban" sx={{fontSize:'12px !important'}} variant="body2">Nenhum item selecionado.</Typography>
+                            ) : (
+                                selectedItems.map(item => (
+                                    <Chip
+                                        key={item.key}
+                                        label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
+                                        onDelete={() => handleRemove(item)}
+                                        sx={{ m: 0.5 }}
+                                    />
+                                ))
+                            )}
+                        </Box>
+                    </Box>
+
+
                     {Object.entries(categories).map(([category, items]) => (
                         <Box key={category} my={3} >
                             <Typography className="esteban" sx={{ color: '#40150A', my: 3 }} variant="h6">{category}</Typography>
