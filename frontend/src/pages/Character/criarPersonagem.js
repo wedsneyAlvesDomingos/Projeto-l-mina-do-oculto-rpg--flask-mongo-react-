@@ -2356,6 +2356,10 @@ const regaliasDeAprendiz = [
 
 const CharCreationPage = () => {
 
+    var inicialMoney = 450;
+    var goldLimit = inicialMoney || 450;
+    const MAX_POINTS = 40;
+    const MAX_PROF_POINTS = 4;
     const [age, setAge] = React.useState(18);
     const [tabIndex, setTabIndex] = useState(0);
     const [selectedItems, setSelectedItems] = useState([]);
@@ -2365,17 +2369,15 @@ const CharCreationPage = () => {
     const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
     const [RegaliaComprada, setRegaliaComprada] = useState('');
     const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
+    const [charName, setCharName] = React.useState('');
+    const [charDiscription, setCharDiscription] = React.useState('');
+    const [gender, setGender] = React.useState('');
     const [values, setValues] = React.useState(
         proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
     );
     const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
     const remainingPoints = MAX_PROF_POINTS - totalUsed;
-    var inicialMoney = 450;
-    var goldLimit = inicialMoney || 450;
-    const MAX_POINTS = 40;
-    const MAX_PROF_POINTS = 4;
     const fileInputRef = useRef();
-
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
         setSelectedId(prev => prev === id ? '' : id);
@@ -2755,7 +2757,6 @@ const CharCreationPage = () => {
 
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
-            {/* User header */}
             <Box sx={{ width: '90%', mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
                 <NavigationButtons sx={{ width: '100%' }} />
@@ -2781,7 +2782,7 @@ const CharCreationPage = () => {
                             <Grid item xs={6}>
                                 <Grid container spacing={2} sx={{ height: '100%' }} >
                                     <Grid item xs={6}>
-                                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" />
+                                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" value={charName} onchange={(e)=>{setCharName(e.target.value)}}/>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {age == 18 ?
@@ -2815,13 +2816,13 @@ const CharCreationPage = () => {
 
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <TextField fullWidth label="genêro" name="genero" />
+                                        <TextField fullWidth label="genêro" name="genero" value={gender} onchange={(e)=>{setGender(e.target.value)}}/>
                                     </Grid>
                                     <Grid item xs={6}>
                                         <TextField fullWidth label="Nível" name="nivel" defaultValue={1} disabled />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField multiline rows={9} fullWidth label="Descrição" name="descricao" sx={{ height: '250px' }} />
+                                        <TextField multiline rows={9} fullWidth label="Descrição" name="descricao" sx={{ height: '250px' }}  value={charDiscription} onchange={(e)=>{setCharDiscription(e.target.value)}}/>
                                     </Grid>
 
                                 </Grid>
