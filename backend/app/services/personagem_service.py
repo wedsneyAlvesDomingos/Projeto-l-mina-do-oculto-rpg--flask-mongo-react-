@@ -1,99 +1,85 @@
-# services/personagem_service.py
-
 from datetime import datetime
-from bson import ObjectId
+from sqlalchemy.exc import SQLAlchemyError
+from models.models import Personagem
 
 class PersonagemService:
     def __init__(self, db):
-        self.collection = db['personagens']
+        self.db = db
 
-    def criar_personagem(self, user_id, nome_personagem, genero ,idade,descricao, classe, nivel, habilidades=None, condicoes=None,
-                         proficiencias=None, regalias_de_especie=None, regalias_de_aprendiz=None, regalias_de_classe=None, regalias_de_especialization=None,
+    def criar_personagem(self, user_id, nome_personagem, genero, idade, descricao, classe, nivel, 
+                         habilidades=None, condicoes=None,
+                         proficiencias=None, regalias_de_especie=None, regalias_de_aprendiz=None, 
+                         regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
-        
-        personagem = {
-            "_id": ObjectId(),
-            "user_id": ObjectId(user_id),
-            "nome_personagem": nome_personagem,
-            "genero": genero,
-            "idade": idade,
-            "classe": classe,
-            "descricao": descricao,
-            "nível": nivel,
-            "habilidades": habilidades if habilidades else [],
-            "condições": condicoes if condicoes else {},
-            "proficiencias": proficiencias if proficiencias else [],
-            "regalias_de_especie": regalias_de_especie if regalias_de_especie else [],
-            "regalias_de_aprendiz": regalias_de_aprendiz if regalias_de_aprendiz else {
-                "titulo": "",
-                "descricao": "", 
-                "Regalias": [
-                ]
-            },
-                "regalias_de_classe": regalias_de_classe if regalias_de_classe else {
-                "titulo": "",
-                "atributos":"",
-                "descricao": "",
-                "habilidade":"", 
-                "Regalias": [
-                ]
-            },
-            "regalias_de_especialization": regalias_de_especialization if regalias_de_especialization else {
-                "titulo": "",
-                "atributos":"",
-                "descricao": "",
-                "regaliaObrigatoria": {
-                    "descricao": "",
-                    "pontos":"",
-                    "outrasProficiencias":"",
-                    "habilidade":{
-                         "nome": "",
-                         "tipo": "" ,
-                         "descricao": "",
-                    }
-                    }, 
-                "Regalias": [
-                ]
-            },
-            "regalias_de_profissão": regalias_de_profissao if regalias_de_profissao else [],
-            "equipamentos": equipamentos if equipamentos else [],
-            "criado_em": datetime.utcnow(),
-            "atualizado_em": datetime.utcnow()
-        }
+        # Define valores padrão
+        habilidades = habilidades or []
+        condicoes = condicoes or {}
+        proficiencias = proficiencias or []
+        regalias_de_especie = regalias_de_especie or []
+        regalias_de_aprendiz = regalias_de_aprendiz or {}
+        regalias_de_classe = regalias_de_classe or {}
+        regalias_de_especialization = regalias_de_especialization or {}
+        regalias_de_profissao = regalias_de_profissao or []
+        equipamentos = equipamentos or []
+
+        personagem = Personagem(
+            user_id=user_id,
+            nome_personagem=nome_personagem,
+            genero=genero,
+            idade=idade,
+            descricao=descricao,
+            classe=classe,
+            nivel=nivel,
+            habilidades=habilidades,
+            condicoes=condicoes,
+            proficiencias=proficiencias,
+            regalias_de_especie=regalias_de_especie,
+            regalias_de_aprendiz=regalias_de_aprendiz,
+            regalias_de_classe=regalias_de_classe,
+            regalias_de_especialization=regalias_de_especialization,
+            regalias_de_profissao=regalias_de_profissao,
+            equipamentos=equipamentos,
+            criado_em=datetime.utcnow(),
+            atualizado_em=datetime.utcnow()
+        )
 
         try:
-            result = self.collection.insert_one(personagem)
-            return str(result.inserted_id)
-        except Exception as e:
-            raise Exception(f"Erro ao criar personagem: {str(e)}")
+            self.db.session.add(personagem)
+            self.db.session.commit()
+            return {'personagem_id': personagem.id}, 201
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            raise
 
     def obter_personagem_por_id(self, personagem_id):
-        try:
-            personagem = self.collection.find_one({"_id": ObjectId(personagem_id)})
-            if personagem:
-                return personagem
-            else:
-                return None
-        except Exception as e:
-            raise Exception(f"Erro ao obter personagem: {str(e)}")
+        personagem = Personagem.query.get(personagem_id)
+        if personagem:
+            return personagem.to_dict()
+        return None
 
     def atualizar_personagem(self, personagem_id, novos_dados):
+        personagem = Personagem.query.get(personagem_id)
+        if not personagem:
+            return False
+        for key, value in novos_dados.items():
+            if hasattr(personagem, key):
+                setattr(personagem, key, value)
+        personagem.atualizado_em = datetime.utcnow()
         try:
-            novos_dados["atualizado_em"] = datetime.utcnow()
-            result = self.collection.update_one({"_id": ObjectId(personagem_id)}, {"$set": novos_dados})
-            if result.matched_count == 1:
-                return True
-            else:
-                return False
-        except Exception as e:
-            raise Exception(f"Erro ao atualizar personagem: {str(e)}")
+            self.db.session.commit()
+            return True
+        except SQLAlchemyError:
+            self.db.session.rollback()
+            return False
 
     def deletar_personagem(self, personagem_id):
+        personagem = Personagem.query.get(personagem_id)
+        if not personagem:
+            return False
         try:
-            result = self.collection.delete_one({"_id": ObjectId(personagem_id)})
-            if result.deleted_count == 1:
-                return True
-            else:
-                return False
-        except Exception as e:
-            raise Exception(f"Erro ao deletar personagem: {str(e)}")
+            self.db.session.delete(personagem)
+            self.db.session.commit()
+            return True
+        except SQLAlchemyError:
+            self.db.session.rollback()
+            return False

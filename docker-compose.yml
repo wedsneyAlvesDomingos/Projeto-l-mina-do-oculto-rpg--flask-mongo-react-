@@ -1,7 +1,9 @@
----
+version: '3.8'
+
 services:
   backend:
     build: ./backend
+    container_name: backendLDO
     ports:
       - "5055:5055"
     env_file:
@@ -11,38 +13,58 @@ services:
     networks:
       - my_network
     depends_on:
-      - mongo
+      postgresLDO:
+        condition: service_healthy
     environment:
-      MONGO_URI: mongodb://mongo:27017/mongoLDO
-
+      POSTGRES_USER: ${POSTGRES_USER:-your_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_password}
+      POSTGRES_DB: ${POSTGRES_DB:-your_database}
+      POSTGRES_HOST: postgresLDO
+      POSTGRES_PORT: 5432
 
   web:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: webLDO
     ports:
       - "5003:3000"
     volumes:
       - type: bind
         source: ./frontend/src/
         target: /app/src/
+    networks:
+      - my_network
     environment:
       - REACT_APP_LISTEN_ADDRESS=${REACT_APP_LISTEN_ADDRESS}
-    networks:
-      - my_network
-
-  mongo:
-    image: mongo:latest
-    container_name: mongoLDO
+      - POSTGRES_USER=${POSTGRES_USER:-your_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-your_password}
+      - POSTGRES_DB=${POSTGRES_DB:-your_database}
+      - POSTGRES_HOST=postgresLDO
+      - POSTGRES_PORT=5432
+  postgresLDO:
+    image: postgres:latest
+    container_name: postgresLDO
     ports:
-      - "27017:27017"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - mongo-data:/data/db
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - my_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
 
 volumes:
-  mongo-data:
+  postgres-data:
 
 networks:
   my_network:

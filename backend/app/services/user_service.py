@@ -1,108 +1,86 @@
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
-from flask_mail import Message
-from itsdangerous import URLSafeTimedSerializer ,  SignatureExpired, BadSignature
+from datetime import datetime
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.security import generate_password_hash, check_password_hash
-from pymongo import MongoClient
-from flask_mail import Mail
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+# Importa o User do models.model (adaptar o import conforme seu projeto)
+from models.models import User
+from flask_mail import Message
 
-
-app = Flask(__name__)
-CORS(app)
-app.config.from_object('config.Config')
-app.config['MAIL_DEFAULT_SENDER'] = 'seu_email@gmail.com'
-mail = Mail(app)
-mail.init_app(app)
-try:
-    client = MongoClient(app.config['MONGO_URI'])
-    db = client.get_database()
-    print(f"Conectado ao banco de dados: {db.name}")
-except Exception as e:
-    print(f"Erro ao conectar ao MongoDB: {str(e)}")
-    db = None
 
 class UserService:
-    def __init__(self, db, mail, secret_key):
-        self.db = db
+    def __init__(self, db_engine, mail, secret_key, mail_sender_url):
+        self.engine = db_engine
         self.mail = mail
         self.s = URLSafeTimedSerializer(secret_key)
+        self.mail_sender_url = mail_sender_url
 
-    def create_user(self, name, email, password, mail_sender_url):
-        hashed_password = generate_password_hash(password)
+    def create_user(self, name, email, password):
         token = self.s.dumps(email, salt='email-confirm')
+        hashed = generate_password_hash(password)
 
-        user_data = {
-            'name': name,
-            'email': email,
-            'password': hashed_password,
-            'email_confirmed': False,
-            'confirmation_token': token
-        }
+        user = User(
+            name=name,
+            email=email,
+            password=hashed,
+            email_confirmed=False,
+            confirmation_token=token,
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow(),
+        )
 
-        user_id = self.db.users.insert_one(user_data).inserted_id
+        with Session(self.engine) as session:
+            session.add(user)
+            try:
+                session.commit()
+            except IntegrityError as e:
+                session.rollback()
+                # Detecção de erro de chave duplicada por constraint do banco
+                # Ajuste as mensagens de erro conforme as mensagens do seu banco
+                if 'users_name_key' in str(e.orig) or 'UNIQUE constraint failed: users.name' in str(e.orig):
+                    raise ValueError("Nome já existe")
+                if 'users_email_key' in str(e.orig) or 'UNIQUE constraint failed: users.email' in str(e.orig):
+                    raise ValueError("E-mail já existe")
+                raise
 
-        confirm_url = f"{mail_sender_url}/confirmarEmail/{token}"
+        confirm_url = f"{self.mail_sender_url}/confirmarEmail/{token}"
         msg = Message('Confirme seu e-mail', recipients=[email])
         msg.body = f"Clique no link para confirmar seu e-mail: {confirm_url}"
         self.mail.send(msg)
 
-        return {'user_id': str(user_id)}, 201
-
+        return {'user_id': user._id}, 201
 
     def confirm_email(self, token):
         try:
-            # Decodifica o token e extrai o e-mail
             email = self.s.loads(token, salt='email-confirm', max_age=3600)
+        except SignatureExpired:
+            # Token expirado: opcionalmente remover usuário não confirmado aqui
+            return False
+        except BadSignature:
+            return False
 
-            # Busca o usuário no banco de dados
-            user = self.db.users.find_one({'email': email})
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(email=email).first()
             if not user:
                 return False
+            if not user.email_confirmed:
+                user.email_confirmed = True
+                user.confirmation_token = None
+                user.updated_at = datetime.utcnow()
+                session.commit()
+            return True
 
-            # Se o e-mail já foi confirmado, retorna True
-            if user.get('email_confirmed', False):
-                return True
-
-            # Atualiza o status do e-mail para confirmado
-            self.db.users.update_one(
-                {'email': email},
-                {'$set': {'email_confirmed': True}}
-            )
-
-            # Confirma se a atualização foi bem-sucedida
-            updated_user = self.db.users.find_one({'email': email})
-            if updated_user and updated_user.get('email_confirmed', False):
-                return True
-
-            return False
-
-        except SignatureExpired:
-            # Token expirado — excluir o usuário correspondente
-            try:
-                email = self.s.loads(token, salt='email-confirm')  # sem max_age
-                self.db.users.delete_one({'email': email})
-            except Exception:
-                pass  # Evita crash mesmo se o e-mail não puder ser recuperado
-            return False
-
-        except BadSignature:
-            # Token inválido
-            return False
-
-        except Exception as e:
-            raise ValueError(str(e))
-   
-   
-    def login_user(self, name, password):
-        user = self.db.users.find_one({'name': name})
-        if user and check_password_hash(user['password'], password):
-            if not user.get('email_confirmed', False):
-                raise ValueError("Email not confirmed")
-            return {
-                'id': str(user['_id']),
-                'name': user['name'],
-                'email': user['email'],
-                'email_confirmed': True
-            }
+    def login_user(self, identifier, password):
+        with Session(self.engine) as session:
+            user = session.query(User).filter(
+                (User.email == identifier) | (User.name == identifier)
+            ).first()
+            if user and check_password_hash(user.password, password):
+                if not user.email_confirmed:
+                    raise ValueError("E-mail não confirmado")
+                return {
+                    'id': user._id,
+                    'name': user.name,
+                    'email': user.email,
+                }
         return None
-

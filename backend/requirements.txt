@@ -1,7 +1,9 @@
-Flask
+Flask>=2.0
 python-dotenv
-flask-cors
-pymongo
+Flask-Cors
 Flask-Mail
 itsdangerous
-flask_pymongo
+SQLAlchemy>=1.4
+psycopg2-binary
+flask_sqlalchemy
+bson

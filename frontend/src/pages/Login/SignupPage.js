@@ -59,60 +59,47 @@ const SignUpPage = () => {
     };
 
     const signup = async () => {
-
-        // Verifica se o nome, email e senha estão definidos
         if (!username || !email || !password) {
-            setPasswordError("Por favor, preencha todos os campos."); // Mensagem de erro se os campos estiverem vazios
+            setPasswordError("Por favor, preencha todos os campos.");
             return;
         }
-
-        // Faz a requisição para criar o usuário
-        fetch(`${baseUrl}/users`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name: username, email: email, password: password })
-
-        })
-            .then(r => r.json())
-            .then(r => {
-                if (!r.error) {
-                    setFeedbackType("success");
-                    setFeedbackMessage("Muito Bem! Cadastro concluido! Verifique seu e-mail para confirmar o cadastro! (Pode estar na caixa de spam)");
-                    setUsername("");
-                    setEmail("");
-                    setPassword("");
-                }
-                else if (r.error === 'Nome de usuário já cadastrado.') {
-                    setFeedbackType("error");
-                    setFeedbackMessage("Nome de usuário já cadastrado.");
-                    setPasswordError("Este nome já está em uso.");
-                    setLoginError(true);
-                }
-
-                else if (r.error === 'E-mail já cadastrado.') {
-                    alert('E-mail já cadastrado.');
-                    setFeedbackType("error");
-                    setFeedbackMessage('E-mail já cadastrado.');
-                    setPasswordError("Este e-mail já está em uso. Tente outro e-mail."); // Erro se o email já estiver em uso
-                    setLoginError(true);
-                }
-                else if (r.error === 'email_already_in_use') {
-                    setPasswordError("Este e-mail já está em uso. Tente outro e-mail."); // Erro se o email já estiver em uso
-                    setLoginError(true);
-                } else if (r.error === 'email_not_verified') {
-                    setPasswordError("Por favor, verifique seu e-mail antes de tentar novamente.");
-                    setLoginError(true);
-                }
-            })
-            .catch(error => {
-                console.error("Error during signup:", error);
-                setPasswordError("Ocorreu um erro ao tentar criar o usuário."); // Mensagem de erro genérica
-                setLoginError(true);
+    
+        try {
+            const response = await fetch(`${baseUrl}/users`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: username, email: email, password: password })
             });
+    
+            const result = await response.json();
+    
+            if (response.status === 201) {
+                setFeedbackType("success");
+                setFeedbackMessage("Muito bem! Cadastro concluído! Verifique seu e-mail para confirmar o cadastro. (Pode estar na caixa de spam)");
+                setUsername("");
+                setEmail("");
+                setPassword("");
+            } else {
+                // Lida com erros de cadastro vindos do backend
+                const errorMessage = result.error || result.message || "Erro desconhecido ao criar usuário.";
+    
+                setFeedbackType("error");
+                setFeedbackMessage(errorMessage);
+                setPasswordError(errorMessage);
+                setLoginError(true);
+            }
+    
+        } catch (error) {
+            console.error("Erro ao criar usuário:", error);
+            setFeedbackType("error");
+            setFeedbackMessage("Erro ao conectar com o servidor.");
+            setPasswordError("Ocorreu um erro ao tentar criar o usuário.");
+            setLoginError(true);
+        }
     };
-
+    
 
 
     const [showPassword, setShowPassword] = React.useState(false);

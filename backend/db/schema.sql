@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS "users" (
+  _id SERIAL PRIMARY KEY, -- identificador autoincremental
+  name TEXT NOT NULL UNIQUE,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  email_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+  confirmation_token TEXT,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS personagens (
+    _id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(_id) ON DELETE CASCADE,
+    nome_personagem TEXT NOT NULL,
+    genero TEXT,
+    idade INTEGER,
+    descricao TEXT,
+    classe TEXT,
+    nivel INTEGER,
+    habilidades JSONB DEFAULT '[]'::jsonb,
+    condicoes JSONB DEFAULT '{}'::jsonb,
+    proficiencias JSONB DEFAULT '[]'::jsonb,
+    regalias_de_especie JSONB DEFAULT '[]'::jsonb,
+    regalias_de_aprendiz JSONB DEFAULT '{"titulo": "", "descricao": "", "Regalias": []}'::jsonb,
+    regalias_de_classe JSONB DEFAULT '{"titulo": "", "atributos": "", "descricao": "", "habilidade": "", "Regalias": []}'::jsonb,
+    regalias_de_especialization JSONB DEFAULT '{"titulo": "", "atributos": "", "descricao": "", "regaliaObrigatoria": {"descricao": "", "pontos": "", "outrasProficiencias": "", "habilidade": {"nome": "", "tipo": "", "descricao": ""}}, "Regalias": []}'::jsonb,
+    regalias_de_profissao JSONB DEFAULT '[]'::jsonb,
+    equipamentos JSONB DEFAULT '[]'::jsonb,
+    criado_em TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

@@ -55,41 +55,43 @@ const LoginPage = () => {
     };
 
     const logIn = async () => {
-        fetch(`${baseUrl}/login`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: username, password: password })
-        })
-            .then(r => r.json())
-            .then(r => {
-                if (r.message === 'Login successful') {
-                    const { user } = r;
-                    localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id }));
-                    if (rememberMe) {
-                        localStorage.setItem("rememberedUsername", username);
-                    } else {
-                        localStorage.removeItem("rememberedUsername");
-                    }
-
-                    navigate("/home");
-                } else {
-                    if(r.error  == "Invalid data: Email not confirmed"){
-                        setPasswordError("Confirme a sua conta por email.");
-                    }else{
-                        setPasswordError(r.error || "Usuário ou senha incorretos.");
-                        setLoginError(true);
-                    }
-
-                }
-            })
-            .catch(error => {
-                console.error("Error during login:", error);
-                setPasswordError("Ocorreu um erro ao tentar fazer login.");
-                setLoginError(true);
+        try {
+            const response = await fetch(`${baseUrl}/login`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: username, password: password })
             });
+    
+            const data = await response.json();
+    
+            if (response.ok && data.message === 'Login realizado com sucesso') {
+                const { user } = data;
+                localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id }));
+                if (rememberMe) {
+                    localStorage.setItem("rememberedUsername", username);
+                } else {
+                    localStorage.removeItem("rememberedUsername");
+                }
+    
+                navigate("/home");
+            } else {
+                if (data.error === "Dados inválidos: Email não confirmado") {
+                    setPasswordError("Confirme a sua conta por email.");
+                } else {
+                    setPasswordError(data.error || "Usuário ou senha incorretos.");
+                    setLoginError(true);
+                }
+            }
+    
+        } catch (error) {
+            console.error("Erro ao tentar login:", error);
+            setPasswordError("Erro de conexão ou servidor indisponível.");
+            setLoginError(true);
+        }
     };
+    
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
