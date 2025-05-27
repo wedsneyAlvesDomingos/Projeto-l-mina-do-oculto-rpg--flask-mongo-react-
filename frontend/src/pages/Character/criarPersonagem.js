@@ -2375,6 +2375,64 @@ const CharCreationPage = () => {
     const [values, setValues] = React.useState(
         proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
     );
+    const [allValues, setAllValues] = React.useState(
+        Object.fromEntries(
+            grupos.flatMap((grupo) => grupo.data.map((item) => [item.title, 0]))
+        )
+    );
+    const [autoIncrementedValues, setAutoIncrementedValues] = React.useState(
+        Object.fromEntries(
+            grupos.flatMap((grupo) => grupo.data.map((item) => [item.title, 0]))
+        )
+    );
+    const [checkedGroups, setCheckedGroups] = React.useState({});
+    const [checkedOrder, setCheckedOrder] = React.useState([]);
+
+    const handleCriarPersonagem = async () => {
+        const payload = {
+          nome_personagem: charName,
+          classe: '',
+          nível: 1,
+          genero: gender,
+          idade: 30,
+          descricao: charDiscription,
+          habilidades: allValues,
+          condições: {},
+          proficiencias: ['espada longa', 'escudo'],
+          regalias_de_especie: ['visão no escuro'],
+          regalias_de_aprendiz: {
+            tecnica: 'Defesa Aprimorada'
+          },
+          regalias_de_classe: {
+            especial: 'Ataque Extra'
+          },
+          regalias_de_especialization: {
+            tipo: 'Mestre das Armas'
+          },
+          regalias_de_profissao: ['ferreiro'],
+          equipamentos: ['espada longa', 'escudo', 'armadura de couro']
+        };
+    
+        try {
+          const response = await fetch(`/users/${userId}/personagens`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            setMensagem(`Sucesso: ${data.message} (ID: ${data.id})`);
+          } else {
+            setMensagem(`Erro: ${data.error}`);
+          }
+        } catch (error) {
+          setMensagem(`Erro de requisição: ${error.message}`);
+        }
+      };
     const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
     const remainingPoints = MAX_PROF_POINTS - totalUsed;
     const fileInputRef = useRef();
@@ -2591,22 +2649,8 @@ const CharCreationPage = () => {
         }
         return custo;
     };
-    const AtributoContainer = ({ atributos }) => {
-        const [allValues, setAllValues] = React.useState(
-            Object.fromEntries(
-                atributos.flatMap((grupo) => grupo.data.map((item) => [item.title, 0]))
-            )
-        );
-
-        const [autoIncrementedValues, setAutoIncrementedValues] = React.useState(
-            Object.fromEntries(
-                atributos.flatMap((grupo) => grupo.data.map((item) => [item.title, 0]))
-            )
-        );
-
-        const [checkedGroups, setCheckedGroups] = React.useState({});
-        const [checkedOrder, setCheckedOrder] = React.useState([]);
-
+    const AtributoContainer = () => {
+      
         const getTotalUsed = () => {
             return Object.entries(allValues).reduce((acc, [title, val]) => {
                 const auto = autoIncrementedValues[title] || 0;
@@ -2634,6 +2678,7 @@ const CharCreationPage = () => {
 
                 return prev;
             });
+            console.log(allValues);
         };
 
         const handleCheckboxClick = (grupoData, grupoTitle, novoStatus) => {
@@ -2649,7 +2694,7 @@ const CharCreationPage = () => {
                     updatedChecked[oldest] = false;
 
                     // Limpa os atributos do grupo removido
-                    const grupoRemovido = atributos.find(g => g.title === oldest);
+                    const grupoRemovido = grupos.find(g => g.title === oldest);
                     if (grupoRemovido) {
                         grupoRemovido.data.forEach(item => {
                             setAutoIncrementedValues(prev => ({ ...prev, [item.title]: 0 }));
@@ -2689,12 +2734,14 @@ const CharCreationPage = () => {
 
             setCheckedGroups(updatedChecked);
             setCheckedOrder(newOrder);
+            
+            
         };
 
 
         return (
             <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'space-between', width: '100%' }}>
-                {atributos.map((grupo, index) => (
+                {grupos.map((grupo, index) => (
                     <AtributoBox
                         key={index}
                         title={grupo.title}
@@ -2896,7 +2943,7 @@ const CharCreationPage = () => {
 
                         </ListItem>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <AtributoContainer atributos={grupos} />
+                            <AtributoContainer />
 
                         </Box>
                     </TabPanel>
