@@ -2355,7 +2355,7 @@ const regaliasDeAprendiz = [
 ];
 
 const CharCreationPage = () => {
-
+    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     var inicialMoney = 450;
     var goldLimit = inicialMoney || 450;
     const MAX_POINTS = 40;
@@ -2367,7 +2367,7 @@ const CharCreationPage = () => {
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
     const [selectedId, setSelectedId] = React.useState('');
     const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
-    const [RegaliasDeAprendizSelecionada, setRegaliasDeAprendizSelecionada] = useState([]);
+    const [RegaliasDeAprendizSelecionada, setRegaliasDeAprendizSelecionada] = useState({});
     const [RegaliaComprada, setRegaliaComprada] = useState('');
     const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
     const [charName, setCharName] = React.useState('');
@@ -2388,57 +2388,65 @@ const CharCreationPage = () => {
     );
     const [checkedGroups, setCheckedGroups] = React.useState({});
     const [checkedOrder, setCheckedOrder] = React.useState([]);
-
+    const [professionReg, setProfessionReg] = React.useState();
+    const [mensagem, setMensagem] = React.useState('');
     const handleCriarPersonagem = async () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?.id;
+        
         const payload = {
-          nome_personagem: charName,
-          classe: '',
-          nível: 1,
-          genero: gender,
-          idade: 30,
-          descricao: charDiscription,
-          habilidades: allValues,
-          condições: {},
-          proficiencias: values,
-          especie: values,
-          regalias_de_especie: regaliaEscolhida,
-          regalias_de_aprendiz: {RegaliasDeAprendizSelecionada},
-          regalias_de_classe: {
-            especial: 'Ataque Extra'
-          },
-          regalias_de_especialization: {
-            tipo: 'Mestre das Armas'
-          },
-          regalias_de_profissao: ['ferreiro'],
-          equipamentos: ['espada longa', 'escudo', 'armadura de couro']
-        };
-    
-        try {
-          const response = await fetch(`/users/${userId}/personagens`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
+            nome_personagem: charName,
+            classe: '',
+            nível: 1,
+            genero: gender,
+            idade: 30,
+            descricao: charDiscription,
+            habilidades: allValues,
+            condições: {},
+            proficiencias: values,
+            especie: especieSelecionada,
+            regalias_de_especie: regaliaEscolhida,
+            regalias_de_aprendiz: { RegaliasDeAprendizSelecionada },
+            regalias_de_classe: {
             },
-            body: JSON.stringify(payload)
-          });
-    
-          const data = await response.json();
-    
-          if (response.ok) {
-            setMensagem(`Sucesso: ${data.message} (ID: ${data.id})`);
-          } else {
-            setMensagem(`Erro: ${data.error}`);
-          }
+            regalias_de_especialization: {
+            },
+            regalias_de_profissao: [professionReg],
+            equipamentos: selectedItems
+        };
+
+        try {
+            const response = await fetch(`${baseUrl}/users/${userId}/personagens`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log(`Sucesso: ${data.message} (ID: ${data.id})`);
+            } else {
+                console.log(`Erro: ${data.error}`);
+            }
         } catch (error) {
-          setMensagem(`Erro de requisição: ${error.message}`);
+            console.log(`Erro de requisição: ${error.message}`);
         }
-      };
+    };
     const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
     const remainingPoints = MAX_PROF_POINTS - totalUsed;
     const fileInputRef = useRef();
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
+        const profession = {};
+        if (id) {
+            profession[profissao] = habNome;
+        } 
         setSelectedId(prev => prev === id ? '' : id);
+        setProfessionReg(profession);
+
     };
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
@@ -2469,6 +2477,7 @@ const CharCreationPage = () => {
                 }]);
             }
         }
+        
     };
     const handleRemove = (item) => {
         const index = selectedItems.findIndex(i => i.key === item.key);
@@ -2517,7 +2526,14 @@ const CharCreationPage = () => {
         setEspecieSelecionada(event.target.value);
     };
     const handleRegaliasUpdate = ({ regalias, comprada }) => {
-        setRegaliasDeAprendizSelecionada(regalias)
+        const selecionadas = {};
+        regalias.forEach(reg => {
+            const item = regaliasDeAprendiz.find(regD => reg === regD.id);
+            if (item) {
+                selecionadas[reg] = item;
+            }
+        });
+        setRegaliasDeAprendizSelecionada(selecionadas);
     };
     const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoints, borderColor = '#7B3311' }) => (
         <Paper
@@ -2649,7 +2665,7 @@ const CharCreationPage = () => {
         return custo;
     };
     const AtributoContainer = () => {
-      
+
         const getTotalUsed = () => {
             return Object.entries(allValues).reduce((acc, [title, val]) => {
                 const auto = autoIncrementedValues[title] || 0;
@@ -2733,8 +2749,8 @@ const CharCreationPage = () => {
 
             setCheckedGroups(updatedChecked);
             setCheckedOrder(newOrder);
-            
-            
+
+
         };
 
 
@@ -2758,7 +2774,6 @@ const CharCreationPage = () => {
     }
     const handleRegaliaChange = (regaliaId) => {
         const alreadySelected = RegaliasDeAprendiz.includes(regaliaId);
-
         if (alreadySelected) {
             const updated = RegaliasDeAprendiz.filter((id) => id !== regaliaId);
             setRegaliasDeAprendiz(updated);
@@ -2770,7 +2785,9 @@ const CharCreationPage = () => {
                 handleRegaliasUpdate({ regalias: updated, comprada: RegaliaComprada });
             }
         }
+
     };
+
     function NavigationButtons() {
 
         const handleNext = () => {
@@ -2786,7 +2803,7 @@ const CharCreationPage = () => {
         };
 
         return (
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', py: '1', my: 4 }}>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', py: '1', my: 4 , alignItems:'center'}}>
                 {tabIndex > 0 && (
                     <Button variant="outline" className="navagationButtons" onClick={handlePrevious}>
                         Anterior
@@ -2797,6 +2814,7 @@ const CharCreationPage = () => {
                         Próximo
                     </Button>
                 )}
+                <Button variant="contained" id="criarCharButtom"  onClick={()=>{handleCriarPersonagem();}}>Finalizar</Button>
             </Stack>
         );
     }
@@ -2806,6 +2824,7 @@ const CharCreationPage = () => {
             <Box sx={{ width: '90%', mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
                 <NavigationButtons sx={{ width: '100%' }} />
+                
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
@@ -2828,7 +2847,7 @@ const CharCreationPage = () => {
                             <Grid item xs={6}>
                                 <Grid container spacing={2} sx={{ height: '100%' }} >
                                     <Grid item xs={6}>
-                                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" value={charName} onchange={(e)=>{setCharName(e.target.value)}}/>
+                                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" value={charName} onChange={(e) => { setCharName(e.target.value) }} />
                                     </Grid>
                                     <Grid item xs={6}>
                                         {age == 18 ?
@@ -2843,7 +2862,7 @@ const CharCreationPage = () => {
                                                     name="idade"
                                                     defaultValue="18"
                                                     value={age}
-                                                    onChange={handleAgeChange}
+                                                    onChange={(e) => { setAge(e.target.value) }}
                                                 />
                                             </Tooltip> :
                                             <TextField
@@ -2856,19 +2875,19 @@ const CharCreationPage = () => {
                                                 name="idade"
                                                 defaultValue="18"
                                                 value={age}
-                                                onChange={handleAgeChange}
+                                                onChange={(e) => { setAge(e.target.value) }}
                                             />
                                         }
 
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <TextField fullWidth label="genêro" name="genero" value={gender} onchange={(e)=>{setGender(e.target.value)}}/>
+                                        <TextField fullWidth label="genêro" name="genero" value={gender} onChange={(e) => { setGender(e.target.value) }} />
                                     </Grid>
                                     <Grid item xs={6}>
                                         <TextField fullWidth label="Nível" name="nivel" defaultValue={1} disabled />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField multiline rows={9} fullWidth label="Descrição" name="descricao" sx={{ height: '250px' }}  value={charDiscription} onchange={(e)=>{setCharDiscription(e.target.value)}}/>
+                                        <TextField multiline rows={9} fullWidth label="Descrição" name="descricao" sx={{ height: '250px' }} value={charDiscription} onChange={(e) => { setCharDiscription(e.target.value) }} />
                                     </Grid>
 
                                 </Grid>
@@ -3082,7 +3101,9 @@ const CharCreationPage = () => {
                                                 control={
                                                     <Checkbox
                                                         checked={checked}
-                                                        onChange={() => handleRegaliaChange(sc.id)}
+                                                        onChange={() => setTimeout(() => {
+                                                            handleRegaliaChange(sc.id)
+                                                        }, 100)}
                                                     />
                                                 }
                                                 label={
@@ -3297,6 +3318,7 @@ const CharCreationPage = () => {
                         </Box>
                     </TabPanel>
                 </Box>
+                
             </Box>
             {/* Footer */}
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>

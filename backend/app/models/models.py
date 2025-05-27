@@ -9,7 +9,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    _id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
@@ -20,11 +20,11 @@ class User(Base):
 
     personagens = relationship('Personagem', back_populates='user', cascade='all, delete-orphan')
 
+
 class Personagem(Base):
     __tablename__ = 'personagens'
-
-    _id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users._id'), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     nome_personagem = Column(String, nullable=False)
     genero = Column(String, nullable=True)
     idade = Column(Integer, nullable=True)
@@ -35,6 +35,7 @@ class Personagem(Base):
     habilidades = Column(JSON, default=[])
     condicoes = Column(JSON, default={})
     proficiencias = Column(JSON, default=[])
+    especie = Column(String, nullable=False)
     regalias_de_especie = Column(JSON, default=[])
     regalias_de_aprendiz = Column(JSON, default={})
     regalias_de_classe = Column(JSON, default={})
@@ -46,3 +47,30 @@ class Personagem(Base):
     atualizado_em = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     user = relationship('User', back_populates='personagens')
+
+    def to_dict(self):
+        """
+        Retorna um dicionário serializável para JSON com os atributos do personagem.
+        """
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "nome_personagem": self.nome_personagem,
+            "genero": self.genero,
+            "idade": self.idade,
+            "descricao": self.descricao,
+            "classe": self.classe,
+            "nivel": self.nivel,
+            "habilidades": self.habilidades,
+            "condicoes": self.condicoes,
+            "proficiencias": self.proficiencias,
+            "especie": self.especie,
+            "regalias_de_especie": self.regalias_de_especie,
+            "regalias_de_aprendiz": self.regalias_de_aprendiz,
+            "regalias_de_classe": self.regalias_de_classe,
+            "regalias_de_especialization": self.regalias_de_especialization,
+            "regalias_de_profissao": self.regalias_de_profissao,
+            "equipamentos": self.equipamentos,
+            "criado_em": self.criado_em.isoformat() if isinstance(self.criado_em, datetime) else self.criado_em,
+            "atualizado_em": self.atualizado_em.isoformat() if isinstance(self.atualizado_em, datetime) else self.atualizado_em,
+        }

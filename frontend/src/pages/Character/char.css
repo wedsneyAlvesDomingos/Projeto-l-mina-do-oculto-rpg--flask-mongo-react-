@@ -10,6 +10,12 @@
     font-family: "Esteban", serif !important;
 }
 
+#criarCharButtom{
+    border-width: 1px !important;
+    border-color: #756A34 !important;
+    border-radius: 4px  !important;
+    background: #756A34 !important;
+}
 
 #criarButtom{
     min-width: 250px !important;

@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_mail import Mail
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from services.user_service import UserService
 from services.personagem_service import PersonagemService
 import os
+import traceback
 
 app = Flask(__name__)
 CORS(app)
@@ -48,7 +49,7 @@ def create_personagem(user_id):
         regalias_de_profissao = data.get('regalias_de_profissao', [])
         equipamentos = data.get('equipamentos', [])
 
-        if not nome_personagem or not classe or not nivel:
+        if not nome_personagem or not nivel:
             return jsonify({'error': 'Campos obrigatórios ausentes'}), 400
 
         personagem_id = personagem_service.criar_personagem(
@@ -79,7 +80,22 @@ def create_personagem(user_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/personagens/<int:user_id>', methods=['GET'])
+def get_personagens_por_user(user_id):
+    try:
+        service = PersonagemService(db)
+        personagens = service.obter_personagens_por_user_id(user_id)
+        
+        
+        return jsonify(personagens), 200
 
+    except ValueError as ve:
+        return make_response(jsonify({"error": str(ve)}), 400)
+
+    except Exception as e:
+        traceback.print_exc()   # <— vai exibir linha a linha do erro
+        return make_response(jsonify({"error": "Erro interno no servidor"}), 500)
+    
 @app.route('/users', methods=['POST'])
 def create_user():
     try:

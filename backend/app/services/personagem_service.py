@@ -85,3 +85,13 @@ class PersonagemService:
         except SQLAlchemyError:
             self.db.session.rollback()
             return False
+        
+    def obter_personagens_por_user_id(self, user_id):
+        try:
+            personagens = self.db.session.query(Personagem).filter_by(user_id=user_id).all()
+            return [p.to_dict() for p in personagens]
+        except SQLAlchemyError:
+            self.db.session.rollback()
+            return []
+        
+

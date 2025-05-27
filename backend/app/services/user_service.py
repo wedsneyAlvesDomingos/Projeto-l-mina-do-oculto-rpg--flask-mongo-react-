@@ -34,7 +34,7 @@ class UserService:
             try:
                 session.commit()
                 session.refresh(user)  # Garante que o user está atualizado no contexto da sessão
-                user_id = user._id     # Pega o ID enquanto a sessão ainda está aberta
+                user_id = user.id     # Pega o ID enquanto a sessão ainda está aberta
             except IntegrityError as e:
                 session.rollback()
                 if 'users_name_key' in str(e.orig) or 'UNIQUE constraint failed: users.name' in str(e.orig):
@@ -80,7 +80,7 @@ class UserService:
                 if not user.email_confirmed:
                     raise ValueError("E-mail não confirmado")
                 return {
-                    'id': user._id,
+                    'id': user.id,
                     'name': user.name,
                     'email': user.email,
                 }

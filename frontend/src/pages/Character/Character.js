@@ -13,21 +13,87 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 const CharPage = () => {
+    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("user"));
     function irParaCriacaoDePersonagem() {
         navigate(`/criarPersonagem`);
     }
-    const [charID, setCharId] = ('')
-    const charcterTagTemplate = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+    const ListaDePersonagens = () => {
+        const [personagens, setPersonagens] = useState([]);
+        const [erro, setErro] = useState(null);
+
+        useEffect(() => {
+            if (!userId) return;
+
+            fetch(`${baseUrl}/personagens/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar personagens');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setPersonagens(data);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setErro(error.message);
+                });
+        }, [userId]);
+
+        const charcterTagTemplate = (char) => {
+            return (
+                <a
+                    key={char.id}
+                    href={`/character/fichaDoPersonagem/${char.id}`}
+                    style={{ textDecoration: 'none' }}
+                >
+                    <Paper
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: '100%',
+                            justifyContent: "center",
+                            background: '#756A34',
+                            minHeight: '80px',
+                            minWidth: '100px',
+                            borderRadius: '24px',
+                            borderBottom: '5px solid #BB8130',
+                            height: '18%',
+                            position: 'relative',
+                            marginBottom: '10px'
+                        }}
+                    >
+                        <Avatar
+                            alt={user?.name?.toUpperCase()}
+                            src={UIcon}
+                            sx={{ position: "absolute", left: '10px', width: '60px', height: '60px' }}
+                        />
+                        <Typography className="boxTextChar" sx={{ color: 'white' }}>
+                            {char.nome_personagem}
+                        </Typography>
+                    </Paper>
+                </a>
+            );
+        };
+
+        if (erro) {
+            return <div>Erro: {erro}</div>;
+        }
+
         return (
-            <a href={`/character/fichaDoPersonagem/:${charID}`}>
-                <Paper sx={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                    <Avatar alt={user.name.toUpperCase()} src={UIcon} sx={{ position: "absolute", left: '10px', width: '60px', height: '60px' }} />
-                    <Typography className="boxTextChar">Ashley Morthos</Typography>
-                </Paper>
-            </a>)
-    }
+            <div style={{ width: '100%' }}>
+                {personagens.length === 0 ? (
+                    <p>Nenhum personagem encontrado.</p>
+                ) : (
+                    personagens.map(char => charcterTagTemplate(char))
+                )}
+            </div>
+        );
+    };
+
 
     return (
 
@@ -42,15 +108,12 @@ const CharPage = () => {
                 </Box>
             </Box>
             <Grid container spacing={1} sx={{ p: 4, width: '70%', m: 'auto', minHeight: '700px' }} >
-                <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-
-                </Grid>
-                <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-
+                <Grid item xs={12} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+                    <ListaDePersonagens />
                 </Grid>
 
             </Grid>
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute',width:"100%", bottom: 0 }}>
+            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: "100%", bottom: 0 }}>
                 <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
             </Box>
         </Box>
