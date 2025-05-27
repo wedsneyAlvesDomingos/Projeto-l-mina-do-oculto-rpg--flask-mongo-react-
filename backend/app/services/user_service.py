@@ -33,10 +33,10 @@ class UserService:
             session.add(user)
             try:
                 session.commit()
+                session.refresh(user)  # Garante que o user está atualizado no contexto da sessão
+                user_id = user._id     # Pega o ID enquanto a sessão ainda está aberta
             except IntegrityError as e:
                 session.rollback()
-                # Detecção de erro de chave duplicada por constraint do banco
-                # Ajuste as mensagens de erro conforme as mensagens do seu banco
                 if 'users_name_key' in str(e.orig) or 'UNIQUE constraint failed: users.name' in str(e.orig):
                     raise ValueError("Nome já existe")
                 if 'users_email_key' in str(e.orig) or 'UNIQUE constraint failed: users.email' in str(e.orig):
@@ -48,7 +48,8 @@ class UserService:
         msg.body = f"Clique no link para confirmar seu e-mail: {confirm_url}"
         self.mail.send(msg)
 
-        return {'user_id': user._id}, 201
+        return {'user_id': user_id}, 201
+
 
     def confirm_email(self, token):
         try:

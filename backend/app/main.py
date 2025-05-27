@@ -81,26 +81,61 @@ def create_personagem(user_id):
 @app.route('/users', methods=['POST'])
 def create_user():
     try:
-        data = request.get_json() or {}
+        # Verifica se os dados foram enviados no formato JSON
+        if not request.is_json:
+            return jsonify({'error': 'Requisição deve conter um corpo JSON válido'}), 400
+
+        data = request.get_json()
+
+        if data is None:
+            return jsonify({'error': 'Corpo da requisição JSON está vazio ou mal formatado'}), 400
+
+        # Coleta os dados
         name = data.get('name')
         email = data.get('email')
         password = data.get('password')
 
-        if not all([name, email, password]):
-            return jsonify({'error': 'Todos os campos são obrigatórios'}), 400
+        # Verifica se os campos obrigatórios foram fornecidos
+        missing_fields = []
+        if not name:
+            missing_fields.append('name')
+        if not email:
+            missing_fields.append('email')
+        if not password:
+            missing_fields.append('password')
 
+        if missing_fields:
+            return jsonify({'error': f'Campos obrigatórios ausentes: {", ".join(missing_fields)}'}), 400
+
+        # Tenta criar o usuário
         result, status = user_service.create_user(name, email, password)
 
+        # Se houver erro na criação do usuário, como e-mail já existente
         if status != 201:
-            return jsonify(result), status
+            # Espera-se que o serviço retorne uma mensagem amigável em 'result'
+            return jsonify({'error': result.get('error', 'Erro ao criar usuário')}), status
 
+        # Sucesso
         return jsonify({
             'message': 'Usuário criado. Verifique seu e-mail para confirmar.',
             'user_id': result.get('user_id')
         }), 201
 
+    except ValueError as ve:
+        return jsonify({'error': 'Valor inválido fornecido', 'details': str(ve)}), 400
+    except KeyError as ke:
+        return jsonify({'error': 'Chave esperada não encontrada no JSON', 'missing_key': str(ke)}), 400
+    except ConnectionError:
+        return jsonify({'error': 'Erro de conexão com o serviço de email ou banco de dados'}), 503
+    except TypeError as te:
+        return jsonify({'error': 'Erro de tipo nos dados fornecidos', 'details': str(te)}), 400
     except Exception as e:
-        return jsonify({'error': 'Erro interno do servidor', 'details': str(e)}), 500
+        return jsonify({
+            'error': 'Erro interno do servidor',
+            'details': str(e),
+            'sugestao': 'Verifique se o e-mail já está em uso ou se há falha na comunicação com o serviço de email'
+        }), 500
+
 
 
 @app.route('/confirm_email', methods=['POST'])
@@ -145,7 +180,14 @@ def login():
     except ConnectionError:
         return jsonify({'error': 'Serviço de autenticação indisponível'}), 503
     except Exception as e:
-        return jsonify({'error': f'Erro inesperado: {e}'}), 500
+        # Log do erro para debug
+        app.logger.error(f"Erro ao criar usuário: {str(e)}")
+        return jsonify({
+            'error': 'Erro interno do servidor',
+            'details': str(e),
+            'sugestao': 'Verifique a configuração do email e duplicidade de dados'
+        }), 500
+
 
 
 @app.route('/db')
