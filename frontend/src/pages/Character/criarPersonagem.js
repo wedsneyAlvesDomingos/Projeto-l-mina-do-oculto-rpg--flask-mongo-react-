@@ -2367,6 +2367,7 @@ const CharCreationPage = () => {
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
     const [selectedId, setSelectedId] = React.useState('');
     const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
+    const [RegaliasDeAprendizSelecionada, setRegaliasDeAprendizSelecionada] = useState([]);
     const [RegaliaComprada, setRegaliaComprada] = useState('');
     const [regaliaEscolhida, setRegaliaEscolhida] = React.useState('');
     const [charName, setCharName] = React.useState('');
@@ -2398,11 +2399,10 @@ const CharCreationPage = () => {
           descricao: charDiscription,
           habilidades: allValues,
           condições: {},
-          proficiencias: ['espada longa', 'escudo'],
-          regalias_de_especie: ['visão no escuro'],
-          regalias_de_aprendiz: {
-            tecnica: 'Defesa Aprimorada'
-          },
+          proficiencias: values,
+          especie: values,
+          regalias_de_especie: regaliaEscolhida,
+          regalias_de_aprendiz: {RegaliasDeAprendizSelecionada},
           regalias_de_classe: {
             especial: 'Ataque Extra'
           },
@@ -2517,8 +2517,7 @@ const CharCreationPage = () => {
         setEspecieSelecionada(event.target.value);
     };
     const handleRegaliasUpdate = ({ regalias, comprada }) => {
-        console.log('Regalias selecionadas:', regalias);
-        console.log('Regalia comprada:', comprada);
+        setRegaliasDeAprendizSelecionada(regalias)
     };
     const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoints, borderColor = '#7B3311' }) => (
         <Paper

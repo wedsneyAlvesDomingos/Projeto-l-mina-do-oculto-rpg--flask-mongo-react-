@@ -40,6 +40,7 @@ def create_personagem(user_id):
         habilidades = data.get('habilidades', {})
         condicoes = data.get('condições', {})
         proficiencias = data.get('proficiencias', [])
+        especie= data.get('especie')
         regalias_de_especie = data.get('regalias_de_especie', [])
         regalias_de_aprendiz = data.get('regalias_de_aprendiz', {})
         regalias_de_classe = data.get('regalias_de_classe', {})
@@ -61,6 +62,7 @@ def create_personagem(user_id):
             habilidades=habilidades,
             condicoes=condicoes,
             proficiencias=proficiencias,
+            especie=especie,
             regalias_de_especie=regalias_de_especie,
             regalias_de_aprendiz=regalias_de_aprendiz,
             regalias_de_classe=regalias_de_classe,

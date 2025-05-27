@@ -8,7 +8,7 @@ class PersonagemService:
 
     def criar_personagem(self, user_id, nome_personagem, genero, idade, descricao, classe, nivel, 
                          habilidades=None, condicoes=None,
-                         proficiencias=None, regalias_de_especie=None, regalias_de_aprendiz=None, 
+                         proficiencias=None, especie = None, regalias_de_especie=None, regalias_de_aprendiz=None, 
                          regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
         # Define valores padrão
@@ -21,6 +21,7 @@ class PersonagemService:
         regalias_de_especialization = regalias_de_especialization or {}
         regalias_de_profissao = regalias_de_profissao or []
         equipamentos = equipamentos or []
+        especie = especie
 
         personagem = Personagem(
             user_id=user_id,
@@ -33,6 +34,7 @@ class PersonagemService:
             habilidades=habilidades,
             condicoes=condicoes,
             proficiencias=proficiencias,
+            especie = especie,
             regalias_de_especie=regalias_de_especie,
             regalias_de_aprendiz=regalias_de_aprendiz,
             regalias_de_classe=regalias_de_classe,

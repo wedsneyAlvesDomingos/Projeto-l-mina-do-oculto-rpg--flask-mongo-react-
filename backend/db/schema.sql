@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS personagens (
     habilidades JSONB DEFAULT '[]'::jsonb,
     condicoes JSONB DEFAULT '{}'::jsonb,
     proficiencias JSONB DEFAULT '[]'::jsonb,
+    especie TEXT,
     regalias_de_especie JSONB DEFAULT '[]'::jsonb,
     regalias_de_aprendiz JSONB DEFAULT '{"titulo": "", "descricao": "", "Regalias": []}'::jsonb,
     regalias_de_classe JSONB DEFAULT '{"titulo": "", "atributos": "", "descricao": "", "habilidade": "", "Regalias": []}'::jsonb,
