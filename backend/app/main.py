@@ -38,6 +38,7 @@ def create_personagem(user_id):
         genero = data.get('genero')
         idade = data.get('idade')
         descricao = data.get('descricao')
+        antecedente = data.get('antecedente', {})
         habilidades = data.get('habilidades', {})
         condicoes = data.get('condições', {})
         proficiencias = data.get('proficiencias', [])
@@ -60,6 +61,7 @@ def create_personagem(user_id):
             genero=genero,
             descricao=descricao,
             nivel=nivel,
+            antecedente=antecedente,
             habilidades=habilidades,
             condicoes=condicoes,
             proficiencias=proficiencias,

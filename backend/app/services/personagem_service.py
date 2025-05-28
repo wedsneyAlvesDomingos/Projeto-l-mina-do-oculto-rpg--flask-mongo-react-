@@ -6,12 +6,13 @@ class PersonagemService:
     def __init__(self, db):
         self.db = db
 
-    def criar_personagem(self, user_id, nome_personagem, genero, idade, descricao, classe, nivel, 
+    def criar_personagem(self, user_id, nome_personagem, genero, idade, descricao, classe, nivel,  antecedente=None,
                          habilidades=None, condicoes=None,
                          proficiencias=None, especie = None, regalias_de_especie=None, regalias_de_aprendiz=None, 
                          regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
         # Define valores padrão
+        antecedente = antecedente or []
         habilidades = habilidades or []
         condicoes = condicoes or {}
         proficiencias = proficiencias or []
@@ -31,6 +32,7 @@ class PersonagemService:
             descricao=descricao,
             classe=classe,
             nivel=nivel,
+            antecedente=antecedente,
             habilidades=habilidades,
             condicoes=condicoes,
             proficiencias=proficiencias,
