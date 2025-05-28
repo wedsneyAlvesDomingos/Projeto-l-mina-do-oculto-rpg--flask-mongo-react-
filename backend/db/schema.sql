@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS personagens (
     descricao TEXT,
     classe TEXT,
     nivel INTEGER,
-    antecedente JSONB DEFAULT '[]'::jsonb,
+    antecedente JSONB DEFAULT '{}'::jsonb,
     habilidades JSONB DEFAULT '[]'::jsonb,
     condicoes JSONB DEFAULT '{}'::jsonb,
     proficiencias JSONB DEFAULT '[]'::jsonb,

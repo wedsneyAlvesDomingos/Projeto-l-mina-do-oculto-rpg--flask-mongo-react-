@@ -2937,7 +2937,7 @@ const CharCreationPage = () => {
         Natureza: 0,
         Navegação: 0,
         Negociação: 0,
-        Ocultismo: 1,
+        Ocultismo: 0,
         Percepção: 0,
         Performance: 0,
         Persuasão: 0,
@@ -2955,11 +2955,564 @@ const CharCreationPage = () => {
     const [professionReg, setProfessionReg] = React.useState();
     const [mensagem, setMensagem] = React.useState('');
     const [antecedenteSelecionado, setAntecedenteSelecionado] = useState(null);
+    const [chosenAntecedentes, setChosenAntecedentes] = useState(new Set());
 
     const handleAntecedenteChange = (antecedente) => {
+        if (antecedenteSelecionado?.nome === antecedente.nome) {
+            // Remove dos antecedentes escolhidos
+            setChosenAntecedentes(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(antecedente);
+                return newSet;
+            });
+    
+            // Função para remover incrementos automáticos
+            const removeAutoIncrementedValueByName = (attributeName, increment) => {
+                setAutoIncrementedValues(prev => ({
+                    ...prev,
+                    [attributeName]: (prev[attributeName] || 0) - increment,
+                }));
+                setAllValues(prev => {
+                    const previousAuto = autoIncrementedValues[attributeName] || 0;
+                    const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
+                    // Subtrai o incremento aplicado originalmente
+                    return {
+                        ...prev,
+                        [attributeName]: currentManual + (previousAuto - increment),
+                    };
+                });
+            };
+    
+            // Remove incrementos conforme o antecedente
+            switch (antecedente.nome) {
+                case 'ABENÇOADO':
+                    removeAutoIncrementedValueByName('Teologia', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Ritualismo', -1);
+                    removeAutoIncrementedValueByName('Ocultismo', -1);
+                    break;
+                // TODO: adicionar demais casos de antecedente aqui
+            }
+    
+            // Deseleciona
+            setAntecedenteSelecionado(null);
+            return;
+        }
+    
+        // Seleção de um novo antecedente
         setAntecedenteSelecionado(antecedente);
-        
+        if (chosenAntecedentes.has(antecedente)) {
+            console.log(`${antecedente.nome} já selecionado, sem incremento`);
+            return;
+        }
+        setChosenAntecedentes(prev => new Set(prev).add(antecedente));
+    
+        // Função para adicionar incrementos automáticos
+        const setAutoIncrementedValueByName = (attributeName, increment) => {
+            setAutoIncrementedValues(prev => ({
+                ...prev,
+                [attributeName]: (prev[attributeName] || 0) + increment,
+            }));
+            setAllValues(prev => {
+                const previousAuto = autoIncrementedValues[attributeName] || 0;
+                const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
+                return {
+                    ...prev,
+                    [attributeName]: currentManual + (previousAuto + increment),
+                };
+            });
+            console.log('Incremento aplicado em', attributeName, increment);
+        };
+
+
+        switch (antecedente.nome) {
+            case 'ABENÇOADO':
+                setAutoIncrementedValueByName('Teologia', 2);
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Ritualismo', -1);
+                setAutoIncrementedValueByName('Ocultismo', -1);
+                break;
+            case 'ACADÊMICO':
+                descricao = 'Um personagem com este antecedente possui um histórico estudioso, passando muito tempo em uma academia.';
+                habilidades = [
+                    '2 pontos em História e Natureza',
+                    '1 ponto em Jurisprudência',
+                    '1 ponto na proficiência Línguas Antigas',
+                ];
+                break;
+            case 'ACÓLITO':
+                descricao = 'Um personagem com este antecedente é um devoto de um templo.';
+                habilidades = [
+                    '2 pontos em Teologia e Jurisprudência',
+                    '1 ponto em História e Intuição',
+                    'Um símbolo religioso que permite conjurar o milagre Tocha Sagrada por 10 minutos 1 vez no dia.',
+                ];
+                break;
+            case 'ACROBATA':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um ginasta ou praticante de algum tipo de apresentação artística acrobática. Um acrobata consegue ser flexível e tem um conhecimento do próprio corpo.';
+                habilidades = [
+                    '2 pontos em Acrobacia',
+                    '2 pontos em Performance',
+                    '1 ponto em Destreza',
+                    '1 ponto em Agilidade',
+                ];
+                break;
+            case 'ADESTRADOR DE ANIMAIS':
+                descricao = 'Um personagem com este antecedente possui um histórico de lidar com animais com fim de treinamento.';
+                habilidades = [
+                    '2 pontos em Intuição',
+                    '2 pontos em Lidar com animais',
+                    '1 ponto em Natureza',
+                    '1 ponto em Armadilhas',
+                ];
+                break;
+            case 'AMALDIÇOADO':
+                descricao = 'Um personagem com este antecedente possui um histórico de tormento e de azar. Um personagem pode ter sido amaldiçoado por um demônio, bruxo ou outro membro do oculto.';
+                habilidades = [
+                    '2 pontos em Percepção',
+                    '2 pontos em Ocultismo',
+                    '2 pontos em Intimidação',
+                    '2 pontos em Ritualismo',
+                    '-1 ponto em Intuição',
+                    '-1 ponto em Persuasão',
+                ];
+                break;
+            case 'AMNÉSICO':
+                descricao = 'Um personagem com este antecedente não possui um histórico.';
+                habilidades = [
+                    '2 pontos em Habilidade escolhida',
+                    '2 pontos em Habilidade escolhida',
+                    '1 ponto em Habilidade escolhida',
+                    '1 ponto em Habilidade escolhida',
+                ];
+                break;
+            case 'ARQUEOLOGISTA':
+                descricao = 'Um personagem com este antecedente possui um histórico acadêmico. Passou anos estudando história e explorando ruínas.';
+                habilidades = [
+                    '2 pontos em História',
+                    '2 pontos em Navegação',
+                    '1 ponto em Natureza',
+                    '1 ponto em Investigação',
+                    '1 ponto em Proficiência Arqueólogo',
+                ];
+                break;
+            case 'ARTESÃO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar com criações manuais de madeira, pedra, tecido ou argila.';
+                habilidades = [
+                    '2 pontos em Natureza',
+                    '2 pontos em Percepção',
+                    '1 ponto em Negociação',
+                    '1 ponto em Destreza',
+                    '1 ponto em Ferreiro, Alfaiate, Marceneiro ou Joalheiro',
+                    '1 kit de Ferramentas',
+                ];
+                break;
+            case 'ASSISTENTE DE LABORATÓRIO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ajudar em pesquisas feitas em um laboratório químico.';
+                habilidades = [
+                    '2 pontos em Natureza',
+                    '2 pontos em Alquimia',
+                    '1 ponto em História',
+                    '1 ponto em Arcanismo',
+                    '1 ponto em Mutações da espécie variante Mutante',
+                ];
+                break;
+            case 'ASTRÔNOMO':
+                descricao = 'Um personagem com este antecedente possui um histórico acadêmico do estudo das estrelas e seus padrões.';
+                habilidades = [
+                    '2 pontos em Navegação',
+                    '2 pontos em Natureza',
+                    '1 ponto em História',
+                    '1 ponto em Percepção',
+                    '1 Mapa das estrelas',
+                    '1 telescópio portátil',
+                    '1 kit de cartografia',
+                ];
+                break;
+            case 'ATOR':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um artista das artes cênicas.';
+                habilidades = [
+                    '2 pontos em Performance',
+                    '2 pontos em Persuasão',
+                    '1 ponto em Sedução',
+                    '1 ponto em Enganação',
+                    '1 ponto na Proficiência em Disfarce',
+                    '1 kit de disfarce',
+                ];
+                break;
+            case 'BANDIDO':
+                descricao = 'Um personagem com este antecedente possui um histórico de atacar viajantes na beira das estradas ou vítimas indefesas em becos.';
+                habilidades = [
+                    '2 pontos em Intimidação',
+                    '2 pontos em Furtividade',
+                    '1 ponto em Agilidade',
+                    '1 ponto em Percepção',
+                    '1 kit de Arrombamento',
+                ];
+                break;
+            case 'BARBEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um trabalhador comum em uma cidade, que trabalha cortando cabelo e fazendo a barba de clientes.';
+                habilidades = [
+                    '2 pontos em Intuição',
+                    '2 pontos em Negociação',
+                    '1 ponto em Agilidade',
+                    '1 ponto em Destreza',
+                    '1 kit de disfarce',
+                ];
+                break;
+            case 'BATEDOR':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um forma de soldado ou informante dentro de uma instituição ou contratado por uma caravana.';
+                habilidades = [
+                    '2 pontos em Sobrevivência',
+                    '2 pontos em Navegação',
+                    '1 ponto em Furtividade',
+                    '1 ponto em Percepção',
+                    '1 ponto na Proficiência em kit de arrombamento',
+                    '1 kit de explorador',
+                    '1 kit de escalada',
+                ];
+                break;
+            case 'BIBLIOTECÁRIO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um trabalhador comum em uma grande cidade, mais especificamente na biblioteca de uma academia ou particular.';
+                habilidades = [
+                    '2 pontos em História',
+                    '2 pontos em Jurisprudência',
+                    '1 ponto em Teologia',
+                    '1 ponto em Natureza',
+                    '1 ponto na Proficiência em Línguas Antigas',
+                ];
+                break;
+            case 'CAÇADOR DE RECOMPENSAS':
+                descricao = 'Um personagem com este antecedente possui um histórico de caçar criminosos procurados.';
+                habilidades = [
+                    '2 pontos em Rastreamento',
+                    '2 pontos em Investigação',
+                    '1 ponto em Persuasão',
+                    '1 ponto em Negociação',
+                    '1 kit de explorador',
+                ];
+                break;
+            case 'CAPANGA':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como músculo de cobrança ou proteção de um criminoso ou outro tipo de indivíduo excuso.';
+                habilidades = [
+                    '2 pontos em Negociação',
+                    '2 pontos em Intimidação',
+                    '1 ponto em Fortitude',
+                    '1 ponto em Força',
+                    '1 kit de arrombamento',
+                ];
+                break;
+            case 'CARTEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como entregador de correspondências.';
+                habilidades = [
+                    '2 pontos em Percepção',
+                    '2 pontos em Navegação',
+                    '1 ponto em Agilidade',
+                    '1 ponto em Intuição',
+                    '1 kit de explorador',
+                    '1 kit de cartografia',
+                    '1 ponto na proficiência condução de veículos terrestres',
+                    '1 cavalo (50 po.)',
+                ];
+                break;
+            case 'CAMPONÊS':
+                descricao = 'Um personagem com este antecedente possui um histórico simples e tranquilo. Viveu possivelmente sem muitos luxos, mas não necessariamente em grande pobreza.';
+                habilidades = [
+                    '2 pontos em Sobrevivência',
+                    '2 pontos em Lidar com animais',
+                    '1 ponto em Fortitude',
+                    '1 ponto em Destreza',
+                    '2 pontos na Proficiência Condução e Veículos Terrestres',
+                ];
+                break;
+            case 'CHARLATÃO':
+                descricao = 'Um personagem com este antecedente possui um histórico de enganar e dar golpes em desavisados pelas cidades e vilas por aí.';
+                habilidades = [
+                    '2 pontos em Performance',
+                    '2 pontos em Enganação',
+                    '1 ponto em Persuasão',
+                    '1 ponto em Agilidade',
+                    '1 ponto na Proficiência Disfarce',
+                    '1 kit de disfarce',
+                ];
+                break;
+            case 'CIRCENSE':
+                descricao = 'Um personagem com este antecedente possui um histórico de viajar com um circo pelas estradas do mundo sem um rumo e atrás de novos clientes e experiências.';
+                habilidades = [
+                    '2 pontos em Navegação',
+                    '2 pontos em Performance',
+                    '1 ponto em Agilidade',
+                    '1 ponto em Acrobacia',
+                    '1 mutação da lista de mutações da espécie variante Mutante',
+                ];
+                break;
+            case 'COMERCIANTE':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar com venda e/ou compra de produtos, serviços e imóveis.';
+                habilidades = [
+                    '2 pontos em Negociação',
+                    '2 pontos em Apurar Itens Mágicos',
+                    '1 ponto em Enganação',
+                    '1 ponto em Persuasão',
+                    '1 kit de Sobrevivência',
+                ];
+                break;
+            case 'CORTESÃO':
+                descricao = 'Um personagem com este antecedente possui um histórico social de alto status.';
+                habilidades = [
+                    '2 pontos em História',
+                    '2 pontos em Persuasão',
+                    '1 ponto em Sedução',
+                    '1 ponto em Intuição',
+                    'Vestuárias finas',
+                ];
+                break;
+            case 'CURANDEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como um farmacêutico e responsável por doentes em pequenas vilas e cidades.';
+                habilidades = [
+                    '2 pontos em Medicina',
+                    '2 pontos em Natureza',
+                    '1 ponto em Sobrevivência',
+                    '1 ponto em Alquimia',
+                    '1 kit Médico',
+                    '1 kit de Herbalismo',
+                ];
+                break;
+            case 'DETETIVE':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um detetive particular que recolhe informações para a guarda ou civis.';
+                habilidades = [
+                    '2 pontos em Investigação',
+                    '2 pontos em Rastreio',
+                    '1 ponto em Jurisprudência',
+                    '1 ponto em Intuição',
+                    '1 kit de explorador',
+                ];
+                break;
+            case 'EREMITA':
+                descricao = 'Um personagem com este antecedente possui um histórico de isolamento por penitência ou amor à natureza.';
+                habilidades = [
+                    '2 pontos em Natureza',
+                    '2 pontos em Sobrevivência',
+                    '1 ponto em Furtividade',
+                    '1 ponto em Lidar com Animais',
+                    '1 kit de sobrevivência',
+                ];
+                break;
+            case 'ESCUDEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar para um cavaleiro em uma batalha ou competição.';
+                habilidades = [
+                    '2 pontos em História',
+                    '2 pontos em Atletismo',
+                    '1 ponto em Fortitude',
+                    '1 ponto em Força ou Destreza',
+                    '1 kit de ferramentas',
+                ];
+                break;
+            case 'ESPIÃO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar infiltrado ou entrando em ambientes para roubá-las.';
+                habilidades = [
+                    '2 pontos em Furtividade',
+                    '2 pontos em Investigação',
+                    '1 ponto em Intuição',
+                    '1 ponto em Enganação',
+                    '1 ponto na Proficiência em Disfarce',
+                    '1 kit de disfarce',
+                    '1 kit de venenos',
+                ];
+                break;
+            case 'ESTUDANTE DE MAGIA':
+                descricao = 'Um personagem com este antecedente possui um histórico de estudar em uma academia de magia ou possui um tutor.';
+                habilidades = [
+                    '2 pontos em Arcanismo',
+                    '2 pontos em Alquimia',
+                    '1 ponto em Apuração de Itens Mágicos',
+                    '1 ponto em Natureza',
+                ];
+                break;
+            case 'FANÁTICO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser integrante ou ex-integrante de um grupo religioso ou culto.';
+                habilidades = [
+                    '2 pontos em Ocultismo',
+                    '2 pontos em Ritualismo',
+                    '1 ponto em Arcanismo',
+                    '1 ponto em Teologia',
+                ];
+                break;
+            case 'FORASTEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser de uma terra longínqua ou isolada.';
+                habilidades = [
+                    '2 pontos em Navegação',
+                    '2 pontos em Sobrevivência',
+                    '1 ponto em História',
+                    '1 ponto em Negociação',
+                ];
+                break;
+            case 'GLADIADOR':
+                descricao = 'Um personagem com este antecedente possui um histórico em lutar em arenas por dinheiro, honra ou obrigação.';
+                habilidades = [
+                    '2 pontos em Atletismo',
+                    '2 pontos em Acrobacia',
+                    '1 ponto em Força ou Destreza',
+                    '1 ponto em Fortitude',
+                ];
+                break;
+            case 'GUARDA':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar na guarda de uma cidade, provavelmente como soldado.';
+                habilidades = [
+                    '2 pontos em Jurisprudência',
+                    '2 pontos em Percepção',
+                    '1 ponto na Proficiência em Armaduras ou Esgrima',
+                ];
+                break;
+            case 'HERDEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de vir de uma família rica e algum parente próximo acabou de morrer e lhe deixar dinheiro, pertences ou terrenos.';
+                habilidades = [
+                    '2 pontos em Persuasão',
+                    '2 pontos em História',
+                    '200 moedas de ouro',
+                    'Vestuárias Finas',
+                ];
+                break;
+            case 'HEROICO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ter salvado uma ou mais pessoas de um pequeno perigo ou um inimigo problemático.';
+                habilidades = [
+                    '2 pontos em Acrobacia',
+                    '2 pontos em Medicina',
+                    '1 ponto em Atletismo',
+                    '1 ponto em Agilidade',
+                ];
+                break;
+            case 'JORNALEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como investigador de notícias e também como entregador.';
+                habilidades = [
+                    '2 pontos em Intuição',
+                    '2 pontos em Investigação',
+                    '1 ponto em História',
+                    '1 ponto em Navegação',
+                ];
+                break;
+            case 'MARUJO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar em barcos dentro da legalidade ou não.';
+                habilidades = [
+                    '2 pontos na Proficiência Veículos Aquáticos',
+                    '1 ponto em Intimidação',
+                    '1 ponto em Navegação',
+                    '1 ponto em Força ou Destreza',
+                ];
+                break;
+            case 'MÉDICO DE BECO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um médico ilegal que atende de maneira clandestina dentro de cidades.';
+                habilidades = [
+                    '2 pontos em Medicina',
+                    '2 pontos em Alquimia',
+                    '1 ponto em Furtividade',
+                    '1 ponto em Enganação',
+                    '1 kit de ferramentas',
+                ];
+                break;
+            case 'MENESTREL':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser um músico e poeta, viajante ou não.';
+                habilidades = [
+                    '2 pontos em Performance',
+                    '2 pontos em Sedução',
+                    '1 ponto em Persuasão',
+                    '1 ponto em Enganação',
+                    '1 kit de músico',
+                    '1 instrumento a sua escolha de até 1 M.O.',
+                ];
+                break;
+            case 'MINERADOR':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar nas minas para coletar minérios diversos.';
+                habilidades = [
+                    '2 pontos em Natureza',
+                    '2 pontos em Navegação',
+                    '1 ponto em Fortitude',
+                    '1 ponto em Força',
+                    '1 kit de escalada',
+                ];
+                break;
+            case 'NAVEGADOR':
+                descricao = 'Um personagem com este antecedente possui um histórico de ser o leitor de mapas de uma expedição, o navegador de um navio em alto mar, etc.';
+                habilidades = [
+                    '2 pontos em Navegação',
+                    '2 pontos em Percepção',
+                    '1 ponto em Investigação',
+                    '1 ponto em História',
+                ];
+                break;
+            case 'NOBRE':
+                descricao = 'Um personagem com este antecedente possui um histórico de possuir um título de nobreza em sua família.';
+                habilidades = [
+                    '2 pontos em Jurisprudência',
+                    '2 pontos em História',
+                    '150 moedas de ouro extra',
+                    'Vestuárias finas',
+                    'Cavalo (50 M.O.)',
+                ];
+                break;
+            case 'NÔMADE':
+                descricao = 'Um personagem com este antecedente possui um histórico de não ficar em um mesmo lugar durante longos períodos de tempo. Nômades normalmente andam em grupos.';
+                habilidades = [
+                    '2 pontos em Lidar com animais',
+                    '2 pontos em Navegação',
+                    '1 ponto em História',
+                    '1 ponto em Sobrevivência',
+                    '1 kit de sobrevivência',
+                ];
+                break;
+            case 'ÓRFÃO':
+                descricao = 'Um personagem com este antecedente possui um histórico de não saber quem são seus pais e família, ou dessa família ter morrido.';
+                habilidades = [
+                    '2 pontos em Sobrevivência',
+                    '2 pontos em Enganação',
+                    '1 ponto em Furtividade',
+                    '1 ponto em Agilidade',
+                ];
+                break;
+            case 'PEREGRINO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ter feito ou estar fazendo uma viagem religiosa, de penitência ou de aprendizado.';
+                habilidades = [
+                    '2 pontos em Navegação',
+                    '2 pontos em História',
+                    '1 ponto em Teologia',
+                    '1 ponto em Percepção',
+                ];
+                break;
+            case 'PRISIONEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de ter sido um prisioneiro e cumprido sua pena, ou ter fugido da cadeia.';
+                habilidades = [
+                    '2 pontos em Furtividade',
+                    '2 pontos em Intimidação',
+                    '1 ponto em Jurisprudência',
+                    '1 ponto em Agilidade',
+                ];
+                break;
+            case 'REFUGIADO':
+                descricao = 'Um personagem com este antecedente possui um histórico de estar fugindo de um desastre natural ou avanços militares.';
+                habilidades = [
+                    '2 pontos em Sobrevivência',
+                    '2 pontos em Persuasão',
+                    '1 ponto em Intuição',
+                    '1 ponto em História',
+                ];
+                break;
+            case 'TAVERNEIRO':
+                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar em uma taverna como cozinheiro, ajudante de cozinheiro, servir comida e bebida.';
+                habilidades = [
+                    '2 pontos em Negociação',
+                    '2 pontos em Intuição',
+                    '1 ponto em Intimidação',
+                    '1 ponto em Destreza',
+                ];
+                break;
+            default:
+                // opcional: lidar com casos não mapeados
+                break;
+        }
+
     };
+
     const handleCriarPersonagem = async () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id;
@@ -3165,6 +3718,8 @@ const CharCreationPage = () => {
         if (delta <= remainingPoints) {
             setValues(prev => ({ ...prev, [nome]: newVal }));
         }
+        console.log(values);
+
     };
     const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311", onCheckboxClick, isChecked }) => {
         const handleCheckboxChange = () => {
@@ -3285,7 +3840,11 @@ const CharCreationPage = () => {
                     const grupoRemovido = grupos.find(g => g.title === oldest);
                     if (grupoRemovido) {
                         grupoRemovido.data.forEach(item => {
-                            setAutoIncrementedValues(prev => ({ ...prev, [item.title]: 0 }));
+                            // Decrementa 1 ao invés de zerar
+                            setAutoIncrementedValues(prev => ({
+                                ...prev,
+                                [item.title]: Math.max(0, (prev[item.title] || 0) - 1)
+                            }));
                             setAllValues(prev => {
                                 const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
                                 return { ...prev, [item.title]: currentManual };
@@ -3297,9 +3856,12 @@ const CharCreationPage = () => {
                 updatedChecked[grupoTitle] = true;
                 newOrder.push(grupoTitle);
 
-                // Aplica autoIncremento ao grupo atual
+                // Incrementa 1 ao valor atual
                 grupoData.forEach((item) => {
-                    setAutoIncrementedValues(prev => ({ ...prev, [item.title]: 1 }));
+                    setAutoIncrementedValues(prev => ({
+                        ...prev,
+                        [item.title]: (prev[item.title] || 0) + 1
+                    }));
                     setAllValues(prev => {
                         const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
                         return { ...prev, [item.title]: currentManual + 1 };
@@ -3312,7 +3874,11 @@ const CharCreationPage = () => {
                 newOrder = newOrder.filter(title => title !== grupoTitle);
 
                 grupoData.forEach((item) => {
-                    setAutoIncrementedValues(prev => ({ ...prev, [item.title]: 0 }));
+                    // Decrementa 1 ao valor atual
+                    setAutoIncrementedValues(prev => ({
+                        ...prev,
+                        [item.title]: Math.max(0, (prev[item.title] || 0) - 1)
+                    }));
                     setAllValues(prev => {
                         const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
                         return { ...prev, [item.title]: currentManual };
@@ -3320,11 +3886,11 @@ const CharCreationPage = () => {
                 });
             }
 
+            // Atualiza os estados finais
             setCheckedGroups(updatedChecked);
             setCheckedOrder(newOrder);
-
-
         };
+
 
 
         return (
@@ -3402,7 +3968,7 @@ const CharCreationPage = () => {
                 height: '470px',
                 position: 'relative',
                 backgroundColor: selected ? '#f0f0f0' : 'white',
-                width:'23%'
+                width: '23%'
             }}
             onClick={() => onSelect(antecedente)}
         >
@@ -3712,7 +4278,7 @@ const CharCreationPage = () => {
                     <TabPanel value={tabIndex} index={4}>
                         <FormControl component="fieldset">
                             <RadioGroup>
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', width:'100%',justifyContent:'start', gap:1 }}>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'start', gap: 1 }}>
                                     {antecedentes.map((ant) => (
                                         <AntecedenteCard
                                             key={ant.nome}

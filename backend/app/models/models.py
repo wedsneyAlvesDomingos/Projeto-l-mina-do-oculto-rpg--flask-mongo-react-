@@ -31,7 +31,7 @@ class Personagem(Base):
     descricao = Column(Text, nullable=True)
     classe = Column(String, nullable=True)
     nivel = Column(Integer, nullable=True)
-    antecedente = Column(JSON, default=[])
+    antecedente = Column(JSON, default={})
     habilidades = Column(JSON, default=[])
     condicoes = Column(JSON, default={})
     proficiencias = Column(JSON, default=[])

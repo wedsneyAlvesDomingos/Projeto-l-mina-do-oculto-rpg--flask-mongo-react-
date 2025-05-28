@@ -12,7 +12,7 @@ class PersonagemService:
                          regalias_de_classe=None, regalias_de_especialization=None,
                          regalias_de_profissao=None, equipamentos=None):
         # Define valores padrão
-        antecedente = antecedente or []
+        antecedente = antecedente or {}
         habilidades = habilidades or []
         condicoes = condicoes or {}
         proficiencias = proficiencias or []
