@@ -2950,6 +2950,7 @@ const CharCreationPage = () => {
     };
     const [allValues, setAllValues] = React.useState(defaultValues);
     const [autoIncrementedValues, setAutoIncrementedValues] = React.useState(defaultValues);
+    const [autoIncrementedProfValues, setAutoIncrementedProfValues] = React.useState(proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {}))
     const [checkedGroups, setCheckedGroups] = React.useState({});
     const [checkedOrder, setCheckedOrder] = React.useState([]);
     const [professionReg, setProfessionReg] = React.useState();
@@ -2965,7 +2966,7 @@ const CharCreationPage = () => {
                 newSet.delete(antecedente);
                 return newSet;
             });
-    
+
             // Função para remover incrementos automáticos
             const removeAutoIncrementedValueByName = (attributeName, increment) => {
                 setAutoIncrementedValues(prev => ({
@@ -2975,15 +2976,29 @@ const CharCreationPage = () => {
                 setAllValues(prev => {
                     const previousAuto = autoIncrementedValues[attributeName] || 0;
                     const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
-                    // Subtrai o incremento aplicado originalmente
                     return {
                         ...prev,
                         [attributeName]: currentManual + (previousAuto - increment),
                     };
                 });
             };
-    
-            // Remove incrementos conforme o antecedente
+
+            // Função para remover incrementos automáticos de proficiências
+            const removeAutoIncrementedProfByName = (profName, increment) => {
+                setAutoIncrementedProfValues(prev => ({
+                    ...prev,
+                    [profName]: (prev[profName] || 0) - increment,
+                }));
+                setValues(prev => {
+                    const previousAuto = autoIncrementedValues[profName] || 0;
+                    const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
+                    return {
+                        ...prev,
+                        [profName]: currentManual + (previousAuto - increment),
+                    };
+                });
+            };
+
             switch (antecedente.nome) {
                 case 'ABENÇOADO':
                     removeAutoIncrementedValueByName('Teologia', 2);
@@ -2991,15 +3006,21 @@ const CharCreationPage = () => {
                     removeAutoIncrementedValueByName('Intuição', 2);
                     removeAutoIncrementedValueByName('Ritualismo', -1);
                     removeAutoIncrementedValueByName('Ocultismo', -1);
+
+                    break;
+                case 'ACADÊMICO':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
                     break;
                 // TODO: adicionar demais casos de antecedente aqui
             }
-    
-            // Deseleciona
+
             setAntecedenteSelecionado(null);
             return;
         }
-    
+
         // Seleção de um novo antecedente
         setAntecedenteSelecionado(antecedente);
         if (chosenAntecedentes.has(antecedente)) {
@@ -3007,7 +3028,7 @@ const CharCreationPage = () => {
             return;
         }
         setChosenAntecedentes(prev => new Set(prev).add(antecedente));
-    
+
         // Função para adicionar incrementos automáticos
         const setAutoIncrementedValueByName = (attributeName, increment) => {
             setAutoIncrementedValues(prev => ({
@@ -3025,6 +3046,26 @@ const CharCreationPage = () => {
             console.log('Incremento aplicado em', attributeName, increment);
         };
 
+        // Função para adicionar incrementos automáticos de proficiências
+        const setAutoIncrementedProfByName = (profName, increment) => {
+            setAutoIncrementedProfValues(prev => ({
+                ...prev,
+                [profName]: (prev[profName] || 0) + increment,
+            }));
+            setValues(prev => {
+                const previousAuto = autoIncrementedValues[profName] || 0;
+                const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
+                return {
+                    ...prev,
+                    [profName]: currentManual + (previousAuto + increment),
+                };
+            });
+            console.log('Incremento de proficiência aplicado em', profName, increment);
+            console.log(values);
+
+        };
+
+        // Exemplo para o antecedente ABENÇOADO
 
         switch (antecedente.nome) {
             case 'ABENÇOADO':
@@ -3035,12 +3076,10 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Ocultismo', -1);
                 break;
             case 'ACADÊMICO':
-                descricao = 'Um personagem com este antecedente possui um histórico estudioso, passando muito tempo em uma academia.';
-                habilidades = [
-                    '2 pontos em História e Natureza',
-                    '1 ponto em Jurisprudência',
-                    '1 ponto na proficiência Línguas Antigas',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
                 break;
             case 'ACÓLITO':
                 descricao = 'Um personagem com este antecedente é um devoto de um templo.';
@@ -3709,17 +3748,24 @@ const CharCreationPage = () => {
         </Paper>
     );
     const handleProficienciaChange = (nome, newVal) => {
-        if (newVal < 0) newVal = 0;
-        if (newVal > proficiencias.find(p => p.nome === nome).niveis.length) {
-            newVal = proficiencias.find(p => p.nome === nome).niveis.length;
-        }
+        // garante valor mínimo 0 e máximo de níveis disponíveis
+        const maxNiveis = proficiencias.find(p => p.nome === nome).niveis.length;
+        newVal = Math.max(0, Math.min(newVal, maxNiveis));
+
         const prevVal = values[nome];
-        const delta = newVal - prevVal;
-        if (delta <= remainingPoints) {
+        const extra = autoIncrementedProfValues[nome] || 0;
+
+        // custo considerando o offset “fora da conta”
+        const newCusto = calculateCustoEscalonado(newVal - extra);
+        const prevCusto = calculateCustoEscalonado(prevVal - extra);
+        const deltaCusto = newCusto - prevCusto;
+
+        // só altera se for redução de custo ou couber nos pontos restantes
+        if (deltaCusto <= 0 || (getTotalUsed() + deltaCusto <= MAX_POINTS)) {
             setValues(prev => ({ ...prev, [nome]: newVal }));
         }
-        console.log(values);
 
+        console.log(values);
     };
     const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311", onCheckboxClick, isChecked }) => {
         const handleCheckboxChange = () => {
