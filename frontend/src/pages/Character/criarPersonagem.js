@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, FormGroup, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip, Modal } from '@mui/material';
+import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, FormGroup, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip, Modal, ListItemButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import UIcon from '../../assets/images/userIcon.png';
 import './char.css';
@@ -2179,6 +2179,9 @@ const categories = {
         { name: "Corda de seda (2m)", price: 0.8 },
         { name: "Tenda", price: 0.7 },
         { name: "Ferramentas para Ladrões", price: 3 },
+        { name: "Telescópio portátil", price: 1 },
+        { name: "Mapa das estrelas", price: 2 },
+
     ],
     "Montaria": [
         { name: "Camelo", price: 50, velocidade: "9m", carga: 140 },
@@ -2919,7 +2922,6 @@ const CharCreationPage = () => {
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
     const [selectedId, setSelectedId] = React.useState('');
     const [selectedIdModal, setSelectedIdModal] = React.useState('');
-
     const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
     const [RegaliasDeAprendizSelecionada, setRegaliasDeAprendizSelecionada] = useState({});
     const [RegaliaComprada, setRegaliaComprada] = useState('');
@@ -2977,8 +2979,78 @@ const CharCreationPage = () => {
     const [mensagem, setMensagem] = React.useState('');
     const [antecedenteSelecionado, setAntecedenteSelecionado] = useState(null);
     const [chosenAntecedentes, setChosenAntecedentes] = useState(new Set());
-    const [modalAberto, setModalAberto] = React.useState(false)
-    // Função para adicionar incrementos automáticos
+    const [modalAberto, setModalAberto] = React.useState(false);
+    const [especieSelecionadaLista, setEspecieSelecionadaLista] = useState([]);
+    const [openMutatioModal, setOpenMutatioModal] = useState(false);
+    const mutacaoData = {
+        "tipo": "Mutante",
+        "custo": 2,
+        "descricao": 'Uma criatura que sofreu de alguma forma uma exposição a um efeito que mudou permanentemente sua aparência e fisionomia é considerada um mutante. O mutante tem uma penalidade de -2 em todos os testes da aba social, exceto intimidação, sempre que que tiver a mutação visível. Todos sabem que o personagem possui mutações, a não ser que o personagem a mantenha contida dentro de roupas, máscaras e afins. Ao escolher ser um mutante é necessário escolher apenas uma das opções abaixo:',
+        "penalidade": "-2 em testes da aba social (exceto Intimidação) com mutação visível.",
+        "opcoes": [
+            {
+                "nome": "Pele Escamosa",
+                "descricao": "A pele do personagem se torna grossa e escamosa, fornecendo uma defesa natural a cortes e arranhões. A base do valor de defesa para o personagem sem armadura é de 10 ao invés de 7."
+            },
+            {
+                "nome": "Olhos Multifacetados",
+                "descricao": "Os olhos do personagem se multiplicam e adquirem uma aparência insectóide, concedendo visão ampliada e a capacidade de enxergar no escuro. Visão no escuro, e meia luz, com alcance de 27 metros e bônus de +2 em testes de percepção que envolvam visão. Além disso possui visão 360°"
+            },
+            {
+                "nome": "Boca Abissal",
+                "descricao": "A boca do personagem se expande, revelando uma mandíbula cheia de dentes afiados, permitindo ataques mordedores poderosos. Recebe uma arma natural com dano perfurante  1d10 + valor de força. Recebe +2 em testes de atletismo para agarrar um alvo com os dentes."
+            },
+            {
+                "nome": "Membros Desproporcionais",
+                "descricao": "Os membros do personagem se alongam ou encurtam, concedendo versatilidade. Aumentam o alcance de ameaça em 1,5 metros ou reduz a criatura em um tamanho na escala, com um mínimo de minúsculo."
+            },
+            {
+                "nome": "Cauda Serpentina",
+                "descricao": "Uma cauda serpentina cresce na parte inferior do corpo do personagem, permitindo uma maior capacidade de equilíbrio e agilidade em movimentos.o personagem ganha um bônus de +5 em testes de acrobacia para se equilibrar e consegue usar sua cauda para se segurar em beiradas, galhos e outros que possam ser enrolados por ela, deixando assim suas mãos livres. A calda pode ser usada para segurar objetos mas não realizar ataques ou defender de ataques."
+            },
+            {
+                "nome": "Garras Retráteis",
+                "descricao": "O personagem desenvolve garras afiadas em suas mãos ou pés, fornecendo ataques mais letais e a habilidade de escalar superfícies verticais. Recebe uma arma natural com dano cortante   1d6 + valor de destreza. O personagem tem a capacidade de escalar superfícies verticais sem custo extra de movimento e sem necessidade de ferramentas extras."
+            },
+            {
+                "nome": "Chifres Torcidos",
+                "descricao": "Chifres retorcidos e sinuosos crescem na cabeça do personagem, conferindo maior resistência física e a capacidade de empurrar objetos pesados. O personagem recebe +2 em testes de atletismo para se manter em pé ou derrubar um alvo. Recebe uma arma natural com dano de impacto  1d6 + valor de força."
+            },
+            {
+                "nome": "Exoesqueleto Ósseo",
+                "descricao": "O corpo do personagem é envolvido por um exoesqueleto ósseo, tornando-o mais resistente a cortes. Se torna resistente ao dano cortante, porém se torna vulnerável ao dano de impacto. O exoesqueleto também aumenta a base do valor de defesa de 7 para 12."
+            },
+            {
+                "nome": "Pernas de Aranha",
+                "descricao": "O personagem desenvolve pernas extras semelhantes às de uma aranha, permitindo maior mobilidade e a habilidade de escalar paredes. Pode escalar sem gastar movimento extra e ganha um bônus de 1.5 metros no valor de velocidade. Ganha um bônus de +5 em testes de atletismo para agarrar e para não ser derrubado."
+            },
+            {
+                "nome": "Braços Tentaculares",
+                "descricao": "Braços adicionais em forma de tentáculos crescem no corpo do personagem, fornecendo uma vantagem de alcance em combate e a habilidade de agarrar objetos a distância. Recebe 1.5 metros a mais em seu alcance de ameaça e +2 em testes de atletismo para agarrar outra criatura."
+            }
+        ]
+    }
+    var disableMutationOpt;
+    if (regaliaEscolhida.regalias) {
+        disableMutationOpt = regaliaEscolhida.regalias[0];
+    } else {
+        disableMutationOpt = null;
+    }
+    var disableMutationOptModal;
+    if (especieSelecionadaLista.regalias) {
+        disableMutationOptModal = especieSelecionadaLista.regalias[0];
+    } else {
+        disableMutationOptModal = null;
+    }
+    const handleSelect = (nomeMutacao) => {
+        setEspecieSelecionadaLista(
+            { especie: racas[especieSelecionada].nome, regalias: [nomeMutacao] }
+        );
+
+        setOpen(false);
+        console.log(disableMutationOptModal);
+
+    };
     const setAutoIncrementedValueByName = (attributeName, increment) => {
         setAutoIncrementedValues(prev => ({
             ...prev,
@@ -3146,18 +3218,15 @@ const CharCreationPage = () => {
                     description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
                     price: 25
                 }, 1)
-                setModalAberto(true)
+                setModalAberto(true);
 
                 break;
             case 'ASSISTENTE DE LABORATÓRIO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ajudar em pesquisas feitas em um laboratório químico.';
-                habilidades = [
-                    '2 pontos em Natureza',
-                    '2 pontos em Alquimia',
-                    '1 ponto em História',
-                    '1 ponto em Arcanismo',
-                    '1 ponto em Mutações da espécie variante Mutante',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Alquimia', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Arcanismo', 1);
+                setOpenMutatioModal(true)
                 break;
             case 'ASTRÔNOMO':
                 descricao = 'Um personagem com este antecedente possui um histórico acadêmico do estudo das estrelas e seus padrões.';
@@ -3167,7 +3236,7 @@ const CharCreationPage = () => {
                     '1 ponto em História',
                     '1 ponto em Percepção',
                     '1 Mapa das estrelas',
-                    '1 telescópio portátil',
+                    '1 Telescópio portátil',
                     '1 kit de cartografia',
                 ];
                 break;
@@ -3569,7 +3638,7 @@ const CharCreationPage = () => {
             condições: {},
             proficiencias: values,
             especie: especieSelecionada,
-            regalias_de_especie: regaliaEscolhida,
+            regalias_de_especie: [especieSelecionadaLista, regaliaEscolhida],
             regalias_de_aprendiz: { RegaliasDeAprendizSelecionada },
             regalias_de_classe: {
             },
@@ -3608,13 +3677,13 @@ const CharCreationPage = () => {
         const id = `${profissao}::${habNome}`;
         let profession = {};
         if (id) {
-            profession=profissao && habNome ? {
+            profession = profissao && habNome ? {
                 nome: profissao, habilidades: habNome
             } : {};
         }
         setSelectedId(prev => prev === id ? '' : id);
         setProfessionReg(profession);
-console.log(profession);
+        console.log(profession);
 
     };
     const handleTabChange = (event, newIndex) => {
@@ -4009,6 +4078,7 @@ console.log(profession);
         }
 
     };
+
     function NavigationButtons() {
 
         const handleNext = () => {
@@ -4168,102 +4238,18 @@ console.log(profession);
     );
 
     const allowedProfissoes = ['Ferreiro', 'Alfaiate', 'Joalheiro', 'Carpinteiro'];
-    const OpenProfModal = ({ open, onClose, profissoes, onSave }) => {
 
+    const handleToggleArte = (profissao, habNome) => {
+        const id = `${profissao}::${habNome}`;
+        setSelectedIdModal(prev => prev === id ? '' : id);
+        const result = profissao && habNome ? {
+            nome: profissao, habilidades: habNome
+        } : {};
+        setProfessionRegAntecedente(result)
+    };
 
-        const handleToggle = (profissao, habNome) => {
-            const id = `${profissao}::${habNome}`;
-            setSelectedIdModal(prev => prev === id ? '' : id);
-            const result = profissao && habNome ? {
-                nome: profissao, habilidades: habNome
-            } : {};
-            setProfessionRegAntecedente(result)
-        };
-
-        const handleSave = () => {
-            onClose();
-        };
-        return (
-            <Modal open={open} onClose={onClose}>
-                <Box sx={{
-                    position: 'absolute', top: '50%', left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '90%', maxWidth: 900,
-                    bgcolor: 'background.paper',
-                    boxShadow: 24, p: 4, borderRadius: 2
-                }}>
-                    <Typography variant="h6" gutterBottom>
-                        Selecione uma habilidade da profissão
-                    </Typography>
-
-                    <Grid container spacing={2}>
-                        {profissoes
-                            .filter(prof => allowedProfissoes.includes(prof.nome))
-                            .map((prof) => (
-                                <Grid item xs={12} md={6} key={prof.nome}>
-                                    <Card
-                                        variant={selectedIdModal?.startsWith(prof.nome + '::') ? 'outlined' : 'elevation'}
-                                        sx={{
-                                            borderBottom: '6px solid #7B3311',
-                                            height: '320px',
-                                            overflowY: 'scroll',
-                                            background: '#EDEDED',
-                                            borderColor: selectedIdModal?.startsWith(prof.nome + '::') ? 'primary.main' : undefined
-                                        }}
-                                    >
-                                        <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
-                                        <CardContent>
-                                            {prof.habilidades
-                                                .filter(hab => {
-                                                    const nome = hab.nome;
-                                                    const nivelMatch = nome.match(/Nível (\d+)/i);
-                                                    if (nivelMatch && parseInt(nivelMatch[1], 10) >= 2) return false;
-                                                    const plusMatch = nome.match(/\+(\d+)/);
-                                                    if (plusMatch && parseInt(plusMatch[1], 10) >= 2) return false;
-                                                    return true;
-                                                })
-                                                .map((hab) => {
-                                                    const id = `${prof.nome}::${hab.nome}`;
-
-                                                    return (
-                                                        <Box key={id} mb={1}>
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox
-                                                                        onChange={() => handleToggle(prof.nome, hab.nome)}
-                                                                        checked={selectedIdModal === id}
-                                                                        disabled={hab.nome === professionReg.habilidades}
-                                                                    />
-                                                                }
-                                                                label={
-                                                                    <Box>
-                                                                        <Typography variant="subtitle2" component="div">
-                                                                            {hab.nome}
-                                                                        </Typography>
-                                                                        <Typography variant="body2" color="text.secondary">
-                                                                            {hab.descricao}
-                                                                        </Typography>
-                                                                    </Box>
-                                                                }
-                                                            />
-                                                        </Box>
-                                                    );
-                                                })}
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))}
-                    </Grid>
-
-                    <Box mt={3} display="flex" justifyContent="flex-end">
-
-                        <Button onClick={handleSave} variant="contained" color="primary" disabled={!selectedIdModal}>
-                            Fechar
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-        );
+    const handleSave = () => {
+        setModalAberto(false)
     };
 
 
@@ -4419,14 +4405,19 @@ console.log(profession);
                                 <FormLabel component="legend">Regalia Obrigatória</FormLabel>
                                 <RadioGroup
                                     name="regalia-escolhida"
-                                    value={regaliaEscolhida}
-                                    onChange={(e) => setRegaliaEscolhida(e.target.value)}
+                                    value={regaliaEscolhida.regalias}
+
+                                    onChange={(e) => {
+                                        setRegaliaEscolhida({ especie: racas[especieSelecionada].nome, regalias: [e.target.value] });
+
+
+                                    }}
                                 >
                                     {/* Regalias Obrigatórias */}
                                     {racas[especieSelecionada].obrigatorias.map((opcao) => (
                                         <FormControlLabel
                                             key={opcao.id}
-                                            value={opcao.id}
+                                            value={opcao.nome}
                                             control={<Radio />}
                                             label={
                                                 <div>
@@ -4469,6 +4460,7 @@ console.log(profession);
                                                 <FormControlLabel
                                                     key={opcao.nome}
                                                     value={opcao.nome}
+                                                    disabled={disableMutationOptModal === opcao.nome}
                                                     control={<Radio />}
                                                     label={
                                                         <Box>
@@ -4787,18 +4779,146 @@ console.log(profession);
                     </TabPanel>
                 </Box>
                 <ModalWithDualGroups open={open} />
-                <OpenProfModal
-                    open={modalAberto}
-                    onClose={() => setModalAberto(false)}
-                    profissoes={profissoes}
-                />
+                <Modal open={modalAberto} >
+                    <Box sx={{
+                        position: 'absolute', top: '50%', left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '90%', maxWidth: 900,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24, p: 4, borderRadius: 2
+                    }}>
+                        <Typography variant="h6" gutterBottom>
+                            Selecione uma habilidade da profissão
+                        </Typography>
 
+                        <Grid container spacing={2}>
+                            {profissoes
+                                .filter(prof => allowedProfissoes.includes(prof.nome))
+                                .map((prof) => (
+                                    <Grid item xs={12} md={6} key={prof.nome}>
+                                        <Card
+                                            variant={selectedIdModal?.startsWith(prof.nome + '::') ? 'outlined' : 'elevation'}
+                                            sx={{
+                                                borderBottom: '6px solid #7B3311',
+                                                height: '320px',
+                                                overflowY: 'scroll',
+                                                background: '#EDEDED',
+                                                borderColor: selectedIdModal?.startsWith(prof.nome + '::') ? 'primary.main' : undefined
+                                            }}
+                                        >
+                                            <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
+                                            <CardContent>
+                                                {prof.habilidades
+                                                    .filter(hab => {
+                                                        const nome = hab.nome;
+                                                        const nivelMatch = nome.match(/Nível (\d+)/i);
+                                                        if (nivelMatch && parseInt(nivelMatch[1], 10) >= 2) return false;
+                                                        const plusMatch = nome.match(/\+(\d+)/);
+                                                        if (plusMatch && parseInt(plusMatch[1], 10) >= 2) return false;
+                                                        return true;
+                                                    })
+                                                    .map((hab) => {
+                                                        const id = `${prof.nome}::${hab.nome}`;
+
+                                                        return (
+                                                            <Box key={id} mb={1}>
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            onChange={() => handleToggleArte(prof.nome, hab.nome)}
+                                                                            checked={selectedIdModal === id}
+                                                                            disabled={hab.nome === professionReg.habilidades}
+                                                                        />
+                                                                    }
+                                                                    label={
+                                                                        <Box>
+                                                                            <Typography variant="subtitle2" component="div">
+                                                                                {hab.nome}
+                                                                            </Typography>
+                                                                            <Typography variant="body2" color="text.secondary">
+                                                                                {hab.descricao}
+                                                                            </Typography>
+                                                                        </Box>
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        );
+                                                    })}
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                        </Grid>
+
+                        <Box mt={3} display="flex" justifyContent="flex-end">
+
+                            <Button onClick={handleSave} variant="contained" color="primary" >
+                                Fechar
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                <Modal open={openMutatioModal} onClose={() => setOpenMutatioModal(false)}>
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            p: 3,
+                            m: 'auto',
+                            mt: 5,
+                            borderRadius: 2,
+                            maxWidth: 600,
+                            maxHeight: '90vh',
+                            overflowY: 'auto',
+                            boxShadow: 24,
+                        }}
+                    >
+                        <Typography variant="h5" gutterBottom>
+                            {mutacaoData.tipo}
+                        </Typography>
+
+                        <Typography variant="body1" gutterBottom>
+                            <strong>Descrição:</strong> {mutacaoData.descricao}
+                        </Typography>
+
+                        <Typography variant="body2" color="error" gutterBottom>
+                            <strong>Penalidade:</strong> {mutacaoData.penalidade}
+                        </Typography>
+
+                        <Typography variant="h6" mt={2}>
+                            Escolha uma Mutação:
+                        </Typography>
+
+                        <RadioGroup>
+                            {mutacaoData.opcoes.map((opcao, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    value={opcao.nome}
+                                    disabled={disableMutationOpt === opcao.nome}
+                                    control={<Radio />}
+                                    label={
+                                        <ListItemText
+
+                                            primary={opcao.nome}
+                                            secondary={opcao.descricao}
+                                        />
+                                    }
+                                    onClick={() => {
+                                        handleSelect(opcao.nome);
+
+                                    }}
+                                />
+                            ))}
+                        </RadioGroup>
+
+                    </Box>
+                </Modal>
             </Box>
             {/* Footer */}
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                 <Typography sx={{ color: '#fff', fontSize: '10px' }}>© {dayjs().year()} Lâmina do oculto. All rights reserved.</Typography>
             </Box>
-        </Box>
+        </Box >
     );
 };
 
