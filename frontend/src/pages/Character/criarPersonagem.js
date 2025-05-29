@@ -1,11 +1,24 @@
 import React, { useState, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip } from '@mui/material';
+import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, FormGroup, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import UIcon from '../../assets/images/userIcon.png';
 import './char.css';
 import Checkbox from '@mui/material/Checkbox';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    maxHeight: '500px',
+    overflowY: 'scroll',
+    width: '50%',
+    bgcolor: 'background.paper',
+    borderRadius: 2,
+    boxShadow: 24,
+    p: 2,
+};
 const fisico = [
     {
         title: "Fortitude",
@@ -2893,11 +2906,15 @@ const CharCreationPage = () => {
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     var inicialMoney = 450;
     var goldLimit = inicialMoney || 450;
+    const [open, setOpen] = useState(false);
+    const [group1, setGroup1] = useState([]);
+    const [group2, setGroup2] = useState([]);
     const MAX_POINTS = 40;
     const MAX_PROF_POINTS = 4;
     const [age, setAge] = React.useState(18);
     const [tabIndex, setTabIndex] = useState(0);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItemsBG, setSelectedItemsBG] = useState([]);
     const [image, setImage] = useState(null);
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
     const [selectedId, setSelectedId] = React.useState('');
@@ -2958,6 +2975,22 @@ const CharCreationPage = () => {
     const [antecedenteSelecionado, setAntecedenteSelecionado] = useState(null);
     const [chosenAntecedentes, setChosenAntecedentes] = useState(new Set());
 
+    // Função para adicionar incrementos automáticos
+    const setAutoIncrementedValueByName = (attributeName, increment) => {
+        setAutoIncrementedValues(prev => ({
+            ...prev,
+            [attributeName]: (prev[attributeName] || 0) + increment,
+        }));
+        setAllValues(prev => {
+            const previousAuto = autoIncrementedValues[attributeName] || 0;
+            const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
+            return {
+                ...prev,
+                [attributeName]: currentManual + (previousAuto + increment),
+            };
+        });
+        console.log('Incremento aplicado em', attributeName, increment);
+    };
     const handleAntecedenteChange = (antecedente) => {
         if (antecedenteSelecionado?.nome === antecedente.nome) {
             // Remove dos antecedentes escolhidos
@@ -3011,10 +3044,16 @@ const CharCreationPage = () => {
                 case 'ACADÊMICO':
                     removeAutoIncrementedValueByName('Natureza', 2);
                     removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                     removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
                     break;
-                // TODO: adicionar demais casos de antecedente aqui
+                case 'ACÓLITO':
+                    removeAutoIncrementedValueByName('Teologia', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
+                    handleRemoveBG({ name: "Símbolo santo", price: 0.7 });
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    break;
             }
 
             setAntecedenteSelecionado(null);
@@ -3029,22 +3068,7 @@ const CharCreationPage = () => {
         }
         setChosenAntecedentes(prev => new Set(prev).add(antecedente));
 
-        // Função para adicionar incrementos automáticos
-        const setAutoIncrementedValueByName = (attributeName, increment) => {
-            setAutoIncrementedValues(prev => ({
-                ...prev,
-                [attributeName]: (prev[attributeName] || 0) + increment,
-            }));
-            setAllValues(prev => {
-                const previousAuto = autoIncrementedValues[attributeName] || 0;
-                const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
-                return {
-                    ...prev,
-                    [attributeName]: currentManual + (previousAuto + increment),
-                };
-            });
-            console.log('Incremento aplicado em', attributeName, increment);
-        };
+
 
         // Função para adicionar incrementos automáticos de proficiências
         const setAutoIncrementedProfByName = (profName, increment) => {
@@ -3078,54 +3102,38 @@ const CharCreationPage = () => {
             case 'ACADÊMICO':
                 setAutoIncrementedValueByName('Natureza', 2);
                 setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                 setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
                 break;
             case 'ACÓLITO':
-                descricao = 'Um personagem com este antecedente é um devoto de um templo.';
-                habilidades = [
-                    '2 pontos em Teologia e Jurisprudência',
-                    '1 ponto em História e Intuição',
-                    'Um símbolo religioso que permite conjurar o milagre Tocha Sagrada por 10 minutos 1 vez no dia.',
-                ];
+                setAutoIncrementedValueByName('Teologia', 2);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
+                handleChangeShopBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 3)
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Intuição', 1);
                 break;
             case 'ACROBATA':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um ginasta ou praticante de algum tipo de apresentação artística acrobática. Um acrobata consegue ser flexível e tem um conhecimento do próprio corpo.';
-                habilidades = [
-                    '2 pontos em Acrobacia',
-                    '2 pontos em Performance',
-                    '1 ponto em Destreza',
-                    '1 ponto em Agilidade',
-                ];
+                setAutoIncrementedValueByName('Acrobacia', 2);
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Destreza', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
                 break;
             case 'ADESTRADOR DE ANIMAIS':
-                descricao = 'Um personagem com este antecedente possui um histórico de lidar com animais com fim de treinamento.';
-                habilidades = [
-                    '2 pontos em Intuição',
-                    '2 pontos em Lidar com animais',
-                    '1 ponto em Natureza',
-                    '1 ponto em Armadilhas',
-                ];
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Lidar com animais', 2);
+                setAutoIncrementedValueByName('Natureza', 1);
+                setAutoIncrementedValueByName('Armadilhas', 1);
                 break;
             case 'AMALDIÇOADO':
-                descricao = 'Um personagem com este antecedente possui um histórico de tormento e de azar. Um personagem pode ter sido amaldiçoado por um demônio, bruxo ou outro membro do oculto.';
-                habilidades = [
-                    '2 pontos em Percepção',
-                    '2 pontos em Ocultismo',
-                    '2 pontos em Intimidação',
-                    '2 pontos em Ritualismo',
-                    '-1 ponto em Intuição',
-                    '-1 ponto em Persuasão',
-                ];
+                setAutoIncrementedValueByName('Percepção', 2);
+                setAutoIncrementedValueByName('Ocultismo', 2);
+                setAutoIncrementedValueByName('Intimidação', 2);
+                setAutoIncrementedValueByName('Ritualismo', 2);
+                setAutoIncrementedValueByName('Intuição', -1);
+                setAutoIncrementedValueByName('Persuasão', -1);
                 break;
             case 'AMNÉSICO':
-                descricao = 'Um personagem com este antecedente não possui um histórico.';
-                habilidades = [
-                    '2 pontos em Habilidade escolhida',
-                    '2 pontos em Habilidade escolhida',
-                    '1 ponto em Habilidade escolhida',
-                    '1 ponto em Habilidade escolhida',
-                ];
+                setOpen(true);
                 break;
             case 'ARQUEOLOGISTA':
                 descricao = 'Um personagem com este antecedente possui um histórico acadêmico. Passou anos estudando história e explorando ruínas.';
@@ -3630,6 +3638,8 @@ const CharCreationPage = () => {
                     quantity: existingItem.quantity + 1
                 };
                 setSelectedItems(updatedItems);
+
+
             }
         } else {
             const newTotal = totalSpent() + item.price;
@@ -3641,9 +3651,42 @@ const CharCreationPage = () => {
                     quantity: 1
                 }]);
             }
+
         }
 
     };
+    const handleChangeShopBG = (category, item, qtd) => {
+        const key = `${category}-${item.name}`;
+        const index = selectedItemsBG.findIndex(i => i.key === key);
+
+        if (index !== -1) {
+            const existingItem = selectedItemsBG[index];
+            const newTotal = totalSpent() + item.price;
+            if (newTotal <= goldLimit) {
+                const updatedItems = [...selectedItemsBG];
+                updatedItems[index] = {
+                    ...existingItem,
+                    quantity: existingItem.quantity + 1
+                };
+                setSelectedItemsBG(updatedItems);
+
+
+            }
+        } else {
+            const newTotal = totalSpent() + item.price;
+            if (newTotal <= goldLimit) {
+                setSelectedItemsBG(prev => [...prev, {
+                    key,
+                    category,
+                    ...item,
+                    quantity: qtd
+                }]);
+            }
+
+        }
+        console.log(index);
+    };
+
     const handleRemove = (item) => {
         const index = selectedItems.findIndex(i => i.key === item.key);
         if (index !== -1) {
@@ -3654,8 +3697,20 @@ const CharCreationPage = () => {
                 updatedItems.splice(index, 1);
             }
             setSelectedItems(updatedItems);
+
         }
     };
+    const handleRemoveBG = (item) => {
+        const index = selectedItemsBG.findIndex(i => i.key === item.key);
+
+        const updatedItems = [...selectedItemsBG];
+        updatedItems.splice(index, 1);
+        setSelectedItemsBG(updatedItems);
+        console.log(updatedItems);
+        console.log(index);
+
+    };
+
     const totalSpent = () => selectedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const processFile = (file) => {
         if (file && file.type.startsWith('image/')) {
@@ -3869,72 +3924,60 @@ const CharCreationPage = () => {
             });
             console.log(allValues);
         };
+        const updateCounts = (itemTitle, incrementar) => {
+            setAutoIncrementedValues(prevAuto => {
+                const current = prevAuto[itemTitle] || 0;
+                const updatedAuto = incrementar ? current + 1 :  current - 1;
 
+                // Assim que obtivermos o novo auto-incremento, recalculamos allValues
+                setAllValues(prevAll => {
+                    // extraímos o “manual” anterior: toda diferença não-vinda do auto
+                    const totalPrev = prevAll[itemTitle] || 0;
+                    const manualPrev = totalPrev - current;
+                    // mantemos o manual igual e somamos o novo auto
+                    return {
+                        ...prevAll,
+                        [itemTitle]: manualPrev + updatedAuto
+                    };
+                });
+
+                return { ...prevAuto, [itemTitle]: updatedAuto };
+            });
+        };
         const handleCheckboxClick = (grupoData, grupoTitle, novoStatus) => {
-            let updatedChecked = { ...checkedGroups };
-            let newOrder = [...checkedOrder];
+            setCheckedOrder(prevOrder => {
+                let newOrder = [...prevOrder];
+                let removedGrupo = null;
 
-            if (novoStatus) {
-                // Ativando um novo grupo
-
-                // Se já há 2 ativos, remover o mais antigo
-                if (newOrder.length >= 2) {
-                    const oldest = newOrder.shift();
-                    updatedChecked[oldest] = false;
-
-                    // Limpa os atributos do grupo removido
-                    const grupoRemovido = grupos.find(g => g.title === oldest);
-                    if (grupoRemovido) {
-                        grupoRemovido.data.forEach(item => {
-                            // Decrementa 1 ao invés de zerar
-                            setAutoIncrementedValues(prev => ({
-                                ...prev,
-                                [item.title]: Math.max(0, (prev[item.title] || 0) - 1)
-                            }));
-                            setAllValues(prev => {
-                                const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
-                                return { ...prev, [item.title]: currentManual };
-                            });
-                        });
+                if (novoStatus) {
+                    // Se já há 2 ativos, removemos o mais antigo
+                    if (newOrder.length >= 2) {
+                        removedGrupo = newOrder.shift();
                     }
+                    newOrder.push(grupoTitle);
+                } else {
+                    // Desmarcando manualmente
+                    newOrder = newOrder.filter(title => title !== grupoTitle);
                 }
 
-                updatedChecked[grupoTitle] = true;
-                newOrder.push(grupoTitle);
-
-                // Incrementa 1 ao valor atual
-                grupoData.forEach((item) => {
-                    setAutoIncrementedValues(prev => ({
-                        ...prev,
-                        [item.title]: (prev[item.title] || 0) + 1
-                    }));
-                    setAllValues(prev => {
-                        const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
-                        return { ...prev, [item.title]: currentManual + 1 };
+                // Se precisou remover um grupo por excesso, desfazemos o incremento dele
+                if (removedGrupo) {
+                    const grupoRemovido = grupos.find(g => g.title === removedGrupo);
+                    grupoRemovido?.data.forEach(item => {
+                        updateCounts(item.title, /* incrementar? */ false);
                     });
+                }
+
+                // Agora processamos o grupo que está sendo (des)marcado
+                grupoData.forEach(item => {
+                    updateCounts(item.title, /* incrementar? */ novoStatus);
                 });
 
-            } else {
-                // Desmarcando manualmente
-                updatedChecked[grupoTitle] = false;
-                newOrder = newOrder.filter(title => title !== grupoTitle);
+                // Marcamos o checkbox
+                setCheckedGroups(prev => ({ ...prev, [grupoTitle]: novoStatus }));
 
-                grupoData.forEach((item) => {
-                    // Decrementa 1 ao valor atual
-                    setAutoIncrementedValues(prev => ({
-                        ...prev,
-                        [item.title]: Math.max(0, (prev[item.title] || 0) - 1)
-                    }));
-                    setAllValues(prev => {
-                        const currentManual = Math.max(0, (prev[item.title] || 0) - (autoIncrementedValues[item.title] || 0));
-                        return { ...prev, [item.title]: currentManual };
-                    });
-                });
-            }
-
-            // Atualiza os estados finais
-            setCheckedGroups(updatedChecked);
-            setCheckedOrder(newOrder);
+                return newOrder;
+            });
         };
 
 
@@ -4003,6 +4046,81 @@ const CharCreationPage = () => {
             </Stack>
         );
     }
+    const ModalWithDualGroups = () => {
+
+        const handleGroupChange = (groupSetter, selected, name, increment) => {
+            return (event) => {
+                const { value, checked } = event.target;
+                let newSelected = [...selected];
+                if (checked) {
+                    if (selected.length < 2) {
+                        newSelected.push(value);
+                        setAutoIncrementedValueByName(value, increment);
+                    }
+                } else {
+                    newSelected = newSelected.filter(item => item !== value);
+                    // No decrement logic in this example
+                }
+                groupSetter(newSelected);
+            };
+        };
+
+        return (
+            <>
+                <Modal open={open} onClose={() => setOpen(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuição de Pontos</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Grupo 1 (+2 pontos cada, até 2)</FormLabel>
+                                <FormGroup>
+                                    {Object.keys(allValues).map(key => (
+                                        <FormControlLabel
+                                            key={key}
+                                            control={
+                                                <Checkbox
+                                                    checked={group1.includes(key)}
+                                                    onChange={handleGroupChange(setGroup1, group1, key, 2)}
+                                                    value={key}
+                                                />
+                                            }
+                                            label={`${key} (${allValues[key]})`}
+                                        />
+                                    ))}
+                                </FormGroup>
+                            </FormControl>
+
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Grupo 2 (+1 ponto cada, até 2)</FormLabel>
+                                <FormGroup>
+                                    {Object.keys(allValues).map(key => (
+                                        <FormControlLabel
+                                            key={key}
+                                            control={
+                                                <Checkbox
+                                                    checked={group2.includes(key)}
+                                                    onChange={handleGroupChange(setGroup2, group2, key, 1)}
+                                                    value={key}
+                                                />
+                                            }
+                                            label={`${key} (${allValues[key]})`}
+                                        />
+                                    ))}
+                                </FormGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => setOpen(false)}>
+                                    Fechar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+            </>
+        );
+    }
+
     const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
         <Paper
             sx={{
@@ -4466,16 +4584,16 @@ const CharCreationPage = () => {
                                     Se uma criatura que não receber capacidade de usar um tipo de armadura usá-la mesmo assim se torna incapaz de conjurar magias, milagres, feitiços, manobras e quaisquer habilidades. Além disso, todo rolamento de habilidade possui desvantagem.
 
                                 </Typography>
-                                <Box mt={4}>
-                                    <Typography className="esteban" variant="h5">Itens Selecionados:</Typography>
-                                    {selectedItems.length === 0 ? (
-                                        <Typography className="esteban">Nenhum item selecionado.</Typography>
+                                <Box mt={4} id="itensBG">
+                                    <Typography className="esteban" variant="h5">Itens de Antecedente:</Typography>
+                                    {selectedItemsBG.length === 0 ? (
+                                        <Typography className="esteban">Nenhum para este antecedente.</Typography>
                                     ) : (
-                                        selectedItems.map(item => (
+                                        selectedItemsBG.map(item => (
                                             <Chip
                                                 key={item.key}
+                                                id={item.name.split(" ")[0]}
                                                 label={`${item.name} x${item.quantity} (${(item.price * item.quantity).toFixed(2)} M.O.)`}
-                                                onDelete={() => handleRemove(item)}
                                                 sx={{ m: 0.5 }}
                                             />
                                         ))
@@ -4573,7 +4691,7 @@ const CharCreationPage = () => {
                         </Box>
                     </TabPanel>
                 </Box>
-
+                <ModalWithDualGroups />
             </Box>
             {/* Footer */}
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
