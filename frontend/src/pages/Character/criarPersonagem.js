@@ -2918,6 +2918,8 @@ const CharCreationPage = () => {
     const [image, setImage] = useState(null);
     const [especieSelecionada, setEspecieSelecionada] = useState('humano');
     const [selectedId, setSelectedId] = React.useState('');
+    const [selectedIdModal, setSelectedIdModal] = React.useState('');
+
     const [RegaliasDeAprendiz, setRegaliasDeAprendiz] = useState([]);
     const [RegaliasDeAprendizSelecionada, setRegaliasDeAprendizSelecionada] = useState({});
     const [RegaliaComprada, setRegaliaComprada] = useState('');
@@ -2970,11 +2972,12 @@ const CharCreationPage = () => {
     const [autoIncrementedProfValues, setAutoIncrementedProfValues] = React.useState(proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {}))
     const [checkedGroups, setCheckedGroups] = React.useState({});
     const [checkedOrder, setCheckedOrder] = React.useState([]);
-    const [professionReg, setProfessionReg] = React.useState();
+    const [professionReg, setProfessionReg] = React.useState([]);
+    const [professionRegAntecedente, setProfessionRegAntecedente] = React.useState([]);
     const [mensagem, setMensagem] = React.useState('');
     const [antecedenteSelecionado, setAntecedenteSelecionado] = useState(null);
     const [chosenAntecedentes, setChosenAntecedentes] = useState(new Set());
-
+    const [modalAberto, setModalAberto] = React.useState(false)
     // Função para adicionar incrementos automáticos
     const setAutoIncrementedValueByName = (attributeName, increment) => {
         setAutoIncrementedValues(prev => ({
@@ -2991,47 +2994,63 @@ const CharCreationPage = () => {
         });
         console.log('Incremento aplicado em', attributeName, increment);
     };
+
+    // Função para remover incrementos automáticos
+    const removeAutoIncrementedValueByName = (attributeName, increment) => {
+        setAutoIncrementedValues(prev => ({
+            ...prev,
+            [attributeName]: (prev[attributeName] || 0) - increment,
+        }));
+        setAllValues(prev => {
+            const previousAuto = autoIncrementedValues[attributeName] || 0;
+            const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
+            return {
+                ...prev,
+                [attributeName]: currentManual + (previousAuto - increment),
+            };
+        });
+    };
+
+    // Função para remover incrementos automáticos de proficiências
+    const removeAutoIncrementedProfByName = (profName, increment) => {
+        setAutoIncrementedProfValues(prev => ({
+            ...prev,
+            [profName]: (prev[profName] || 0) - increment,
+        }));
+        setValues(prev => {
+            const previousAuto = autoIncrementedValues[profName] || 0;
+            const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
+            return {
+                ...prev,
+                [profName]: currentManual + (previousAuto - increment),
+            };
+        });
+    };
+    // Função para adicionar incrementos automáticos de proficiências
+    const setAutoIncrementedProfByName = (profName, increment) => {
+        setAutoIncrementedProfValues(prev => ({
+            ...prev,
+            [profName]: (prev[profName] || 0) + increment,
+        }));
+        setValues(prev => {
+            const previousAuto = autoIncrementedValues[profName] || 0;
+            const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
+            return {
+                ...prev,
+                [profName]: currentManual + (previousAuto + increment),
+            };
+        });
+        console.log('Incremento de proficiência aplicado em', profName, increment);
+        console.log(values);
+
+    };
     const handleAntecedenteChange = (antecedente) => {
         if (antecedenteSelecionado?.nome === antecedente.nome) {
-            // Remove dos antecedentes escolhidos
             setChosenAntecedentes(prev => {
                 const newSet = new Set(prev);
                 newSet.delete(antecedente);
                 return newSet;
             });
-
-            // Função para remover incrementos automáticos
-            const removeAutoIncrementedValueByName = (attributeName, increment) => {
-                setAutoIncrementedValues(prev => ({
-                    ...prev,
-                    [attributeName]: (prev[attributeName] || 0) - increment,
-                }));
-                setAllValues(prev => {
-                    const previousAuto = autoIncrementedValues[attributeName] || 0;
-                    const currentManual = Math.max(0, (prev[attributeName] || 0) - previousAuto);
-                    return {
-                        ...prev,
-                        [attributeName]: currentManual + (previousAuto - increment),
-                    };
-                });
-            };
-
-            // Função para remover incrementos automáticos de proficiências
-            const removeAutoIncrementedProfByName = (profName, increment) => {
-                setAutoIncrementedProfValues(prev => ({
-                    ...prev,
-                    [profName]: (prev[profName] || 0) - increment,
-                }));
-                setValues(prev => {
-                    const previousAuto = autoIncrementedValues[profName] || 0;
-                    const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
-                    return {
-                        ...prev,
-                        [profName]: currentManual + (previousAuto - increment),
-                    };
-                });
-            };
-
             switch (antecedente.nome) {
                 case 'ABENÇOADO':
                     removeAutoIncrementedValueByName('Teologia', 2);
@@ -3059,7 +3078,6 @@ const CharCreationPage = () => {
             setAntecedenteSelecionado(null);
             return;
         }
-
         // Seleção de um novo antecedente
         setAntecedenteSelecionado(antecedente);
         if (chosenAntecedentes.has(antecedente)) {
@@ -3067,28 +3085,6 @@ const CharCreationPage = () => {
             return;
         }
         setChosenAntecedentes(prev => new Set(prev).add(antecedente));
-
-
-
-        // Função para adicionar incrementos automáticos de proficiências
-        const setAutoIncrementedProfByName = (profName, increment) => {
-            setAutoIncrementedProfValues(prev => ({
-                ...prev,
-                [profName]: (prev[profName] || 0) + increment,
-            }));
-            setValues(prev => {
-                const previousAuto = autoIncrementedValues[profName] || 0;
-                const currentManual = Math.max(0, (prev[profName] || 0) - previousAuto);
-                return {
-                    ...prev,
-                    [profName]: currentManual + (previousAuto + increment),
-                };
-            });
-            console.log('Incremento de proficiência aplicado em', profName, increment);
-            console.log(values);
-
-        };
-
         // Exemplo para o antecedente ABENÇOADO
 
         switch (antecedente.nome) {
@@ -3108,7 +3104,7 @@ const CharCreationPage = () => {
             case 'ACÓLITO':
                 setAutoIncrementedValueByName('Teologia', 2);
                 setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                handleChangeShopBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 3)
+                handleChangeShopBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 1)
                 setAutoIncrementedValueByName('História', 1);
                 setAutoIncrementedValueByName('Intuição', 1);
                 break;
@@ -3136,25 +3132,22 @@ const CharCreationPage = () => {
                 setOpen(true);
                 break;
             case 'ARQUEOLOGISTA':
-                descricao = 'Um personagem com este antecedente possui um histórico acadêmico. Passou anos estudando história e explorando ruínas.';
-                habilidades = [
-                    '2 pontos em História',
-                    '2 pontos em Navegação',
-                    '1 ponto em Natureza',
-                    '1 ponto em Investigação',
-                    '1 ponto em Proficiência Arqueólogo',
-                ];
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Investigação', 1);
+                setAutoIncrementedProfByName('Proficiência em Arqueologia', 1);
                 break;
             case 'ARTESÃO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar com criações manuais de madeira, pedra, tecido ou argila.';
-                habilidades = [
-                    '2 pontos em Natureza',
-                    '2 pontos em Percepção',
-                    '1 ponto em Negociação',
-                    '1 ponto em Destreza',
-                    '1 ponto em Ferreiro, Alfaiate, Marceneiro ou Joalheiro',
-                    '1 kit de Ferramentas',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Percepção', 2);
+                setAutoIncrementedValueByName('Negociação', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Ferramentas",
+                    description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                    price: 25
+                }, 1)
+                setModalAberto(true)
+
                 break;
             case 'ASSISTENTE DE LABORATÓRIO':
                 descricao = 'Um personagem com este antecedente possui um histórico de ajudar em pesquisas feitas em um laboratório químico.';
@@ -3613,12 +3606,15 @@ const CharCreationPage = () => {
     const fileInputRef = useRef();
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
-        const profession = {};
+        let profession = {};
         if (id) {
-            profession[profissao] = habNome;
+            profession=profissao && habNome ? {
+                nome: profissao, habilidades: habNome
+            } : {};
         }
         setSelectedId(prev => prev === id ? '' : id);
         setProfessionReg(profession);
+console.log(profession);
 
     };
     const handleTabChange = (event, newIndex) => {
@@ -3686,7 +3682,6 @@ const CharCreationPage = () => {
         }
         console.log(index);
     };
-
     const handleRemove = (item) => {
         const index = selectedItems.findIndex(i => i.key === item.key);
         if (index !== -1) {
@@ -3710,7 +3705,6 @@ const CharCreationPage = () => {
         console.log(index);
 
     };
-
     const totalSpent = () => selectedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const processFile = (file) => {
         if (file && file.type.startsWith('image/')) {
@@ -3927,7 +3921,7 @@ const CharCreationPage = () => {
         const updateCounts = (itemTitle, incrementar) => {
             setAutoIncrementedValues(prevAuto => {
                 const current = prevAuto[itemTitle] || 0;
-                const updatedAuto = incrementar ? current + 1 :  current - 1;
+                const updatedAuto = incrementar ? current + 1 : current - 1;
 
                 // Assim que obtivermos o novo auto-incremento, recalculamos allValues
                 setAllValues(prevAll => {
@@ -4015,7 +4009,6 @@ const CharCreationPage = () => {
         }
 
     };
-
     function NavigationButtons() {
 
         const handleNext = () => {
@@ -4120,7 +4113,6 @@ const CharCreationPage = () => {
             </>
         );
     }
-
     const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
         <Paper
             sx={{
@@ -4174,6 +4166,106 @@ const CharCreationPage = () => {
             </CardContent>
         </Paper>
     );
+
+    const allowedProfissoes = ['Ferreiro', 'Alfaiate', 'Joalheiro', 'Carpinteiro'];
+    const OpenProfModal = ({ open, onClose, profissoes, onSave }) => {
+
+
+        const handleToggle = (profissao, habNome) => {
+            const id = `${profissao}::${habNome}`;
+            setSelectedIdModal(prev => prev === id ? '' : id);
+            const result = profissao && habNome ? {
+                nome: profissao, habilidades: habNome
+            } : {};
+            setProfessionRegAntecedente(result)
+        };
+
+        const handleSave = () => {
+            onClose();
+        };
+        return (
+            <Modal open={open} onClose={onClose}>
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '90%', maxWidth: 900,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24, p: 4, borderRadius: 2
+                }}>
+                    <Typography variant="h6" gutterBottom>
+                        Selecione uma habilidade da profissão
+                    </Typography>
+
+                    <Grid container spacing={2}>
+                        {profissoes
+                            .filter(prof => allowedProfissoes.includes(prof.nome))
+                            .map((prof) => (
+                                <Grid item xs={12} md={6} key={prof.nome}>
+                                    <Card
+                                        variant={selectedIdModal?.startsWith(prof.nome + '::') ? 'outlined' : 'elevation'}
+                                        sx={{
+                                            borderBottom: '6px solid #7B3311',
+                                            height: '320px',
+                                            overflowY: 'scroll',
+                                            background: '#EDEDED',
+                                            borderColor: selectedIdModal?.startsWith(prof.nome + '::') ? 'primary.main' : undefined
+                                        }}
+                                    >
+                                        <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
+                                        <CardContent>
+                                            {prof.habilidades
+                                                .filter(hab => {
+                                                    const nome = hab.nome;
+                                                    const nivelMatch = nome.match(/Nível (\d+)/i);
+                                                    if (nivelMatch && parseInt(nivelMatch[1], 10) >= 2) return false;
+                                                    const plusMatch = nome.match(/\+(\d+)/);
+                                                    if (plusMatch && parseInt(plusMatch[1], 10) >= 2) return false;
+                                                    return true;
+                                                })
+                                                .map((hab) => {
+                                                    const id = `${prof.nome}::${hab.nome}`;
+
+                                                    return (
+                                                        <Box key={id} mb={1}>
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox
+                                                                        onChange={() => handleToggle(prof.nome, hab.nome)}
+                                                                        checked={selectedIdModal === id}
+                                                                        disabled={hab.nome === professionReg.habilidades}
+                                                                    />
+                                                                }
+                                                                label={
+                                                                    <Box>
+                                                                        <Typography variant="subtitle2" component="div">
+                                                                            {hab.nome}
+                                                                        </Typography>
+                                                                        <Typography variant="body2" color="text.secondary">
+                                                                            {hab.descricao}
+                                                                        </Typography>
+                                                                    </Box>
+                                                                }
+                                                            />
+                                                        </Box>
+                                                    );
+                                                })}
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                    </Grid>
+
+                    <Box mt={3} display="flex" justifyContent="flex-end">
+
+                        <Button onClick={handleSave} variant="contained" color="primary" disabled={!selectedIdModal}>
+                            Fechar
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+        );
+    };
+
 
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
@@ -4537,7 +4629,10 @@ const CharCreationPage = () => {
                                                                     control={
                                                                         <Checkbox
                                                                             checked={selectedId === id}
-                                                                            onChange={() => handleToggle(prof.nome, hab.nome)}
+                                                                            disabled={hab.nome === professionRegAntecedente.habilidades}
+                                                                            onChange={() => {
+                                                                                handleToggle(prof.nome, hab.nome);
+                                                                            }}
                                                                         />
                                                                     }
                                                                     label={
@@ -4691,7 +4786,13 @@ const CharCreationPage = () => {
                         </Box>
                     </TabPanel>
                 </Box>
-                <ModalWithDualGroups />
+                <ModalWithDualGroups open={open} />
+                <OpenProfModal
+                    open={modalAberto}
+                    onClose={() => setModalAberto(false)}
+                    profissoes={profissoes}
+                />
+
             </Box>
             {/* Footer */}
             <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
