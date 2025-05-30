@@ -2936,6 +2936,9 @@ const CharCreationPage = () => {
     const [values, setValues] = React.useState(
         proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
     );
+    const [valuesPoints, setValuesPoints] = React.useState(
+        proficiencias.reduce((acc, prof) => ({ ...acc, [prof.nome]: 0 }), {})
+    );
     const defaultValues = {
         Acrobacia: 0,
         Agilidade: 0,
@@ -3070,7 +3073,6 @@ const CharCreationPage = () => {
         });
         console.log('Incremento aplicado em', attributeName, increment);
     };
-    // Função para remover incrementos automáticos
     const removeAutoIncrementedValueByName = (attributeName, increment) => {
         setAutoIncrementedValues(prev => ({
             ...prev,
@@ -3085,7 +3087,6 @@ const CharCreationPage = () => {
             };
         });
     };
-    // Função para remover incrementos automáticos de proficiências
     const removeAutoIncrementedProfByName = (profName, increment) => {
         setAutoIncrementedProfValues(prev => ({
             ...prev,
@@ -3099,8 +3100,8 @@ const CharCreationPage = () => {
                 [profName]: currentManual + (previousAuto - increment),
             };
         });
+
     };
-    // Função para adicionar incrementos automáticos de proficiências
     const setAutoIncrementedProfByName = (profName, increment) => {
         setAutoIncrementedProfValues(prev => ({
             ...prev,
@@ -3152,14 +3153,12 @@ const CharCreationPage = () => {
             setAntecedenteSelecionado(null);
             return;
         }
-        // Seleção de um novo antecedente
         setAntecedenteSelecionado(antecedente);
         if (chosenAntecedentes.has(antecedente)) {
             console.log(`${antecedente.nome} já selecionado, sem incremento`);
             return;
         }
         setChosenAntecedentes(prev => new Set(prev).add(antecedente));
-        // Exemplo para o antecedente ABENÇOADO
 
         switch (antecedente.nome) {
             case 'ABENÇOADO':
@@ -3524,7 +3523,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Persuasão', 1);
                 setAutoIncrementedValueByName('Enganação', 1);
                 setOpenForcaOuDex(true);
-                handleChangeShopBG("Equipamento geralEquipamento Geral",  { name: "Instrumento musical", price: 1 }, 1);
+                handleChangeShopBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1);
                 handleChangeShopBG("Kits", {
                     name: "Kit de Músico",
                     description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.",
@@ -3598,7 +3597,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Intuição', 2);
                 setAutoIncrementedValueByName('Intimidação', 1);
                 setAutoIncrementedValueByName('Destreza', 1);
-              
+
                 break;
             default:
                 // opcional: lidar com casos não mapeados
@@ -3654,8 +3653,8 @@ const CharCreationPage = () => {
             console.log(`Erro de requisição: ${error.message}`);
         }
     };
-    const totalUsed = Object.values(values).reduce((sum, v) => sum + v, 0);
-    const remainingPoints = MAX_PROF_POINTS - totalUsed;
+    const totalUsed = Object.values(valuesPoints).reduce((sum, v) => sum + v, 0);
+    const remainingPoints = Math.max(0, MAX_PROF_POINTS - totalUsed);
     const fileInputRef = useRef();
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
@@ -3828,7 +3827,8 @@ const CharCreationPage = () => {
                     type="number"
                     size="small"
                     value={value}
-                    onChange={(e) => onChange(nome, parseInt(e.target.value) || 0)}
+                    onChange={(e) => {(onChange(nome, parseInt(e.target.value) || 0));console.log(e.target.value);
+                    }}
                     inputProps={{ min: 0, max: niveis.length, step: 1 }}
                     sx={{ width: '80px' }}
                 />
@@ -3850,25 +3850,73 @@ const CharCreationPage = () => {
         </Paper>
     );
     const handleProficienciaChange = (nome, newVal) => {
-        // garante valor mínimo 0 e máximo de níveis disponíveis
-        const maxNiveis = proficiencias.find(p => p.nome === nome).niveis.length;
+        const prof = proficiencias.find(p => p.nome === nome);
+        const maxNiveis = prof.niveis.length;
         newVal = Math.max(0, Math.min(newVal, maxNiveis));
-
-        const prevVal = values[nome];
+        const prevVal = values[nome] || 0;
+        const prevPoints = valuesPoints[nome] || 0;
+      
+        // Determina se é incremento ou decremento
+        const step = newVal > prevVal ? 1 : newVal < prevVal ? -1 : 0;
+        if (step === 0) return; // sem mudança
+      
+        // 1) Atualiza o valor bruto, mas nunca abaixo de 0 nem acima de maxNiveis
+        let updatedVal = prevVal + step;
+        updatedVal = Math.max(0, Math.min(updatedVal, maxNiveis));
+      
+        // 2) Calcula diferença de pontos (sempre de 1 em 1)
+        let updatedPoints = prevPoints + step;
+        updatedPoints = Math.max(0, updatedPoints);
+      
+        // 3) Se o valor bruto bateu em maxNiveis e houve "estouro", tira do points
+        if (updatedVal === maxNiveis && prevVal + step > maxNiveis) {
+          // houve tentativa de ultrapassar
+          const excedente = (prevVal + step) - maxNiveis;
+          updatedPoints = Math.max(0, updatedPoints - excedente);
+        }
         const extra = autoIncrementedProfValues[nome] || 0;
-
-        // custo considerando o offset “fora da conta”
         const newCusto = calculateCustoEscalonado(newVal - extra);
         const prevCusto = calculateCustoEscalonado(prevVal - extra);
         const deltaCusto = newCusto - prevCusto;
-
-        // só altera se for redução de custo ou couber nos pontos restantes
-        if (deltaCusto <= 0 || (getTotalUsed() + deltaCusto <= MAX_POINTS)) {
-            setValues(prev => ({ ...prev, [nome]: newVal }));
+        const getTotalUsed = () => {
+            return Object.entries(values).reduce((acc, [title, val]) => {
+                const auto = autoIncrementedProfValues[title] || 0;
+                return acc + calculateCustoEscalonado(val - auto);
+            }, 0);
+        };
+        if (deltaCusto <= 0 || (getTotalUsed() + deltaCusto <= 4)) {
+            setValues(v => ({ ...v, [nome]: updatedVal }));
+            setValuesPoints(p => ({ ...p, [nome]: updatedPoints }));
         }
-
-        console.log(values);
-    };
+      };
+      
+      const ajustarDiscrepancia = () => {
+        const novosValues = { ...values };
+        const novosPoints = { ...valuesPoints };
+      
+        proficiencias.forEach(({ nome, niveis }) => {
+          const maxNiveis = niveis.length;
+          const val = novosValues[nome] || 0;
+          const pts = novosPoints[nome] || 0;
+      
+          // Se o value for maior que maxNiveis, corrige
+          if (val > maxNiveis) {
+            const excedente = val - maxNiveis;
+            novosValues[nome] = maxNiveis;
+            // subtrai o excedente de pontos (sem ficar abaixo de zero)
+            novosPoints[nome] = Math.max(0, pts - excedente);
+          }
+      
+          // Se os pontos forem negativos, corrige para zero
+          if (novosPoints[nome] < 0) {
+            novosPoints[nome] = 0;
+          }
+        });
+      
+        setValues(novosValues);
+        setValuesPoints(novosPoints);
+      };
+      
     const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311", onCheckboxClick, isChecked }) => {
         const handleCheckboxChange = () => {
             onCheckboxClick(data, title, !isChecked);
@@ -4898,7 +4946,7 @@ const CharCreationPage = () => {
                                 <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
                                 <RadioGroup
                                     value={selectedAttribute}
-                                    onChange={(e) => {setSelectedAttribute(e.target.value); }}
+                                    onChange={(e) => { setSelectedAttribute(e.target.value); }}
                                 >
                                     <FormControlLabel
                                         value="Força"
@@ -4941,7 +4989,7 @@ const CharCreationPage = () => {
                                 <FormLabel component="legend">Escolha uma proficiência para aumentar em +1 ponto</FormLabel>
                                 <RadioGroup
                                     value={selectedProfModal}
-                                    onChange={(e) => {setSelectedProfModal(e.target.value); }}
+                                    onChange={(e) => { setSelectedProfModal(e.target.value); }}
                                 >
                                     <FormControlLabel
                                         value="Maestria em Armaduras e Escudos"
