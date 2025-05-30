@@ -2240,7 +2240,7 @@ const categories = {
         },
         {
             name: "Kit de Arrombamento",
-            description: "Contém ferramentas especializadas, como pés de cabra, ganzúas e chave de fenda para abrir fechaduras.",
+            description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
             price: 45
         },
         {
@@ -2622,7 +2622,7 @@ const antecedentes = [
         "descricao": "Um personagem com este antecedente possui um histórico de trabalhar com venda e/ou compra de produtos, serviços e imóveis.",
         "habilidades": [
             "2 pontos em Negociação",
-            "2 pontos em Apurar Itens Mágicos",
+            "2 pontos em Arcanatec",
             "1 ponto em Enganação",
             "1 ponto em Persuasão",
             "1 kit de Sobrevivência"
@@ -2906,10 +2906,14 @@ const antecedentes = [
 ];
 
 const CharCreationPage = () => {
+    const [selectedAttribute, setSelectedAttribute] = useState('');
+    const [selectedProfModal, setSelectedProfModal] = useState('');
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
-    var inicialMoney = 450;
+    const [inicialMoney, setInicialMoney] = useState(450);
     var goldLimit = inicialMoney || 450;
     const [open, setOpen] = useState(false);
+    const [openForcaOuDex, setOpenForcaOuDex] = useState(false);
+    const [openProfEsgrimaOuArmadura, setOpenProfEsgrimaOuArmadura] = useState(false);
     const [group1, setGroup1] = useState([]);
     const [group2, setGroup2] = useState([]);
     const MAX_POINTS = 40;
@@ -3066,7 +3070,6 @@ const CharCreationPage = () => {
         });
         console.log('Incremento aplicado em', attributeName, increment);
     };
-
     // Função para remover incrementos automáticos
     const removeAutoIncrementedValueByName = (attributeName, increment) => {
         setAutoIncrementedValues(prev => ({
@@ -3082,7 +3085,6 @@ const CharCreationPage = () => {
             };
         });
     };
-
     // Função para remover incrementos automáticos de proficiências
     const removeAutoIncrementedProfByName = (profName, increment) => {
         setAutoIncrementedProfValues(prev => ({
@@ -3229,391 +3231,374 @@ const CharCreationPage = () => {
                 setOpenMutatioModal(true)
                 break;
             case 'ASTRÔNOMO':
-                descricao = 'Um personagem com este antecedente possui um histórico acadêmico do estudo das estrelas e seus padrões.';
-                habilidades = [
-                    '2 pontos em Navegação',
-                    '2 pontos em Natureza',
-                    '1 ponto em História',
-                    '1 ponto em Percepção',
-                    '1 Mapa das estrelas',
-                    '1 Telescópio portátil',
-                    '1 kit de cartografia',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
+                handleChangeShopBG("Equipamento Geral", { name: "Telescópio portátil", price: 1 }, 1);
+                handleChangeShopBG("Equipamento Geral", { name: "Mapa das estrelas", price: 2 }, 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Cartografia",
+                    description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.",
+                    price: 30
+                }, 1)
                 break;
             case 'ATOR':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um artista das artes cênicas.';
-                habilidades = [
-                    '2 pontos em Performance',
-                    '2 pontos em Persuasão',
-                    '1 ponto em Sedução',
-                    '1 ponto em Enganação',
-                    '1 ponto na Proficiência em Disfarce',
-                    '1 kit de disfarce',
-                ];
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Persuasão', 2);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setAutoIncrementedValueByName('Sedução', 1);
+                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Disfarces",
+                    description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                    price: 50
+                }, 1)
                 break;
             case 'BANDIDO':
-                descricao = 'Um personagem com este antecedente possui um histórico de atacar viajantes na beira das estradas ou vítimas indefesas em becos.';
-                habilidades = [
-                    '2 pontos em Intimidação',
-                    '2 pontos em Furtividade',
-                    '1 ponto em Agilidade',
-                    '1 ponto em Percepção',
-                    '1 kit de Arrombamento',
-                ];
+                setAutoIncrementedValueByName('Intimidação', 2);
+                setAutoIncrementedValueByName('Furtividade', 2);
+                setAutoIncrementedValueByName('Percepção', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Arrombamento",
+                    description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
+                    price: 45
+                }, 1);
                 break;
             case 'BARBEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um trabalhador comum em uma cidade, que trabalha cortando cabelo e fazendo a barba de clientes.';
-                habilidades = [
-                    '2 pontos em Intuição',
-                    '2 pontos em Negociação',
-                    '1 ponto em Agilidade',
-                    '1 ponto em Destreza',
-                    '1 kit de disfarce',
-                ];
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Negociação', 2);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedValueByName('Destreza', 1);
+
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Disfarces",
+                    description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                    price: 50
+                }, 1)
                 break;
             case 'BATEDOR':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um forma de soldado ou informante dentro de uma instituição ou contratado por uma caravana.';
-                habilidades = [
-                    '2 pontos em Sobrevivência',
-                    '2 pontos em Navegação',
-                    '1 ponto em Furtividade',
-                    '1 ponto em Percepção',
-                    '1 ponto na Proficiência em kit de arrombamento',
-                    '1 kit de explorador',
-                    '1 kit de escalada',
-                ];
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
+                setAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Escalada",
+                    description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
+                    price: 40
+                }, 1)
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Explorador",
+                    description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                    price: 35
+                }, 1);
                 break;
             case 'BIBLIOTECÁRIO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um trabalhador comum em uma grande cidade, mais especificamente na biblioteca de uma academia ou particular.';
-                habilidades = [
-                    '2 pontos em História',
-                    '2 pontos em Jurisprudência',
-                    '1 ponto em Teologia',
-                    '1 ponto em Natureza',
-                    '1 ponto na Proficiência em Línguas Antigas',
-                ];
+                setAutoIncrementedValueByName('SobreviHistóriavência', 2);
+                setAutoIncrementedValueByName('Jurisprudência', 2);
+                setAutoIncrementedValueByName('Teologia', 1);
+                setAutoIncrementedValueByName('Natureza', 1);
+                setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
                 break;
             case 'CAÇADOR DE RECOMPENSAS':
-                descricao = 'Um personagem com este antecedente possui um histórico de caçar criminosos procurados.';
-                habilidades = [
-                    '2 pontos em Rastreamento',
-                    '2 pontos em Investigação',
-                    '1 ponto em Persuasão',
-                    '1 ponto em Negociação',
-                    '1 kit de explorador',
-                ];
+                setAutoIncrementedValueByName('Rastreamento', 2);
+                setAutoIncrementedValueByName('Investigação', 2);
+                setAutoIncrementedValueByName('Persuasão', 1);
+                setAutoIncrementedValueByName('Negociação', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Explorador",
+                    description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                    price: 35
+                }, 1);
                 break;
             case 'CAPANGA':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como músculo de cobrança ou proteção de um criminoso ou outro tipo de indivíduo excuso.';
-                habilidades = [
-                    '2 pontos em Negociação',
-                    '2 pontos em Intimidação',
-                    '1 ponto em Fortitude',
-                    '1 ponto em Força',
-                    '1 kit de arrombamento',
-                ];
+                setAutoIncrementedValueByName('Negociação', 2);
+                setAutoIncrementedValueByName('Intimidação', 2);
+                setAutoIncrementedValueByName('Fortitude', 1);
+                setAutoIncrementedValueByName('Força', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Arrombamento",
+                    description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
+                    price: 45
+                }, 1);
                 break;
             case 'CARTEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como entregador de correspondências.';
-                habilidades = [
-                    '2 pontos em Percepção',
-                    '2 pontos em Navegação',
-                    '1 ponto em Agilidade',
-                    '1 ponto em Intuição',
-                    '1 kit de explorador',
-                    '1 kit de cartografia',
-                    '1 ponto na proficiência condução de veículos terrestres',
-                    '1 cavalo (50 po.)',
-                ];
+                setAutoIncrementedValueByName('Percepção', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedValueByName('Intuição', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Explorador",
+                    description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                    price: 35
+                }, 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Cartografia",
+                    description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.",
+                    price: 30
+                }, 1);
+                setAutoIncrementedProfByName('Condução de Veículos Terrestres', 1);
+                handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
                 break;
             case 'CAMPONÊS':
-                descricao = 'Um personagem com este antecedente possui um histórico simples e tranquilo. Viveu possivelmente sem muitos luxos, mas não necessariamente em grande pobreza.';
-                habilidades = [
-                    '2 pontos em Sobrevivência',
-                    '2 pontos em Lidar com animais',
-                    '1 ponto em Fortitude',
-                    '1 ponto em Destreza',
-                    '2 pontos na Proficiência Condução e Veículos Terrestres',
-                ];
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName(' Lidar com animais', 2);
+                setAutoIncrementedValueByName('Fortitude', 1);
+                setAutoIncrementedValueByName('Destreza', 1);
+                setAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
                 break;
             case 'CHARLATÃO':
-                descricao = 'Um personagem com este antecedente possui um histórico de enganar e dar golpes em desavisados pelas cidades e vilas por aí.';
-                habilidades = [
-                    '2 pontos em Performance',
-                    '2 pontos em Enganação',
-                    '1 ponto em Persuasão',
-                    '1 ponto em Agilidade',
-                    '1 ponto na Proficiência Disfarce',
-                    '1 kit de disfarce',
-                ];
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Enganação', 2);
+                setAutoIncrementedValueByName('EngPersuasãoanação', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Disfarces",
+                    description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                    price: 50
+                }, 1);
                 break;
             case 'CIRCENSE':
-                descricao = 'Um personagem com este antecedente possui um histórico de viajar com um circo pelas estradas do mundo sem um rumo e atrás de novos clientes e experiências.';
-                habilidades = [
-                    '2 pontos em Navegação',
-                    '2 pontos em Performance',
-                    '1 ponto em Agilidade',
-                    '1 ponto em Acrobacia',
-                    '1 mutação da lista de mutações da espécie variante Mutante',
-                ];
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedValueByName('Acrobacia', 1);
+                setOpenMutatioModal(true)
                 break;
             case 'COMERCIANTE':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar com venda e/ou compra de produtos, serviços e imóveis.';
-                habilidades = [
-                    '2 pontos em Negociação',
-                    '2 pontos em Apurar Itens Mágicos',
-                    '1 ponto em Enganação',
-                    '1 ponto em Persuasão',
-                    '1 kit de Sobrevivência',
-                ];
+                setAutoIncrementedValueByName('Negociação', 2);
+                setAutoIncrementedValueByName('Arcanatec', 2);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setAutoIncrementedValueByName('Persuasão', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Sobrevivência",
+                    description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                    price: 30
+                }, 1);
                 break;
             case 'CORTESÃO':
-                descricao = 'Um personagem com este antecedente possui um histórico social de alto status.';
-                habilidades = [
-                    '2 pontos em História',
-                    '2 pontos em Persuasão',
-                    '1 ponto em Sedução',
-                    '1 ponto em Intuição',
-                    'Vestuárias finas',
-                ];
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Persuasão', 2);
+                setAutoIncrementedValueByName('Sedução', 1);
+                setAutoIncrementedValueByName('Intuição', 1);
+                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
                 break;
             case 'CURANDEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como um farmacêutico e responsável por doentes em pequenas vilas e cidades.';
-                habilidades = [
-                    '2 pontos em Medicina',
-                    '2 pontos em Natureza',
-                    '1 ponto em Sobrevivência',
-                    '1 ponto em Alquimia',
-                    '1 kit Médico',
-                    '1 kit de Herbalismo',
-                ];
+                setAutoIncrementedValueByName('Medicina', 2);
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Sobrevivência', 1);
+                setAutoIncrementedValueByName('Alquimia', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit Médico",
+                    description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.",
+                    price: 50
+                }, 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Herborista",
+                    description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.",
+                    price: 20
+                }, 1);
                 break;
             case 'DETETIVE':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um detetive particular que recolhe informações para a guarda ou civis.';
-                habilidades = [
-                    '2 pontos em Investigação',
-                    '2 pontos em Rastreio',
-                    '1 ponto em Jurisprudência',
-                    '1 ponto em Intuição',
-                    '1 kit de explorador',
-                ];
+                setAutoIncrementedValueByName('Investigação', 2);
+                setAutoIncrementedValueByName('Rastreamento', 2);
+                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedValueByName('Intuição', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Explorador",
+                    description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                    price: 35
+                }, 1);
                 break;
             case 'EREMITA':
-                descricao = 'Um personagem com este antecedente possui um histórico de isolamento por penitência ou amor à natureza.';
-                habilidades = [
-                    '2 pontos em Natureza',
-                    '2 pontos em Sobrevivência',
-                    '1 ponto em Furtividade',
-                    '1 ponto em Lidar com Animais',
-                    '1 kit de sobrevivência',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Lidar com Animais', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Sobrevivência",
+                    description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                    price: 30
+                }, 1);
                 break;
             case 'ESCUDEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar para um cavaleiro em uma batalha ou competição.';
-                habilidades = [
-                    '2 pontos em História',
-                    '2 pontos em Atletismo',
-                    '1 ponto em Fortitude',
-                    '1 ponto em Força ou Destreza',
-                    '1 kit de ferramentas',
-                ];
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Atletismo', 2);
+                setAutoIncrementedValueByName('Fortitude', 1);
+                setOpenForcaOuDex(true);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Ferramentas",
+                    description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                    price: 25
+                }, 1)
                 break;
             case 'ESPIÃO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar infiltrado ou entrando em ambientes para roubá-las.';
-                habilidades = [
-                    '2 pontos em Furtividade',
-                    '2 pontos em Investigação',
-                    '1 ponto em Intuição',
-                    '1 ponto em Enganação',
-                    '1 ponto na Proficiência em Disfarce',
-                    '1 kit de disfarce',
-                    '1 kit de venenos',
-                ];
+                setAutoIncrementedValueByName('Furtividade', 2);
+                setAutoIncrementedValueByName('Investigação', 2);
+                setAutoIncrementedValueByName('Intuição', 1);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Disfarces",
+                    description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                    price: 50
+                }, 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Venenos",
+                    description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.",
+                    price: 70
+                }, 1)
                 break;
             case 'ESTUDANTE DE MAGIA':
-                descricao = 'Um personagem com este antecedente possui um histórico de estudar em uma academia de magia ou possui um tutor.';
-                habilidades = [
-                    '2 pontos em Arcanismo',
-                    '2 pontos em Alquimia',
-                    '1 ponto em Apuração de Itens Mágicos',
-                    '1 ponto em Natureza',
-                ];
+                setAutoIncrementedValueByName('Arcanismo', 2);
+                setAutoIncrementedValueByName('Alquimia', 2);
+                setAutoIncrementedValueByName('Arcanatec', 1);
+                setAutoIncrementedValueByName('Natureza', 1);
                 break;
             case 'FANÁTICO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser integrante ou ex-integrante de um grupo religioso ou culto.';
-                habilidades = [
-                    '2 pontos em Ocultismo',
-                    '2 pontos em Ritualismo',
-                    '1 ponto em Arcanismo',
-                    '1 ponto em Teologia',
-                ];
+                setAutoIncrementedValueByName('Ocultismo', 2);
+                setAutoIncrementedValueByName('Ritualismo', 2);
+                setAutoIncrementedValueByName('Arcanismo', 1);
+                setAutoIncrementedValueByName('Teologia', 1);
                 break;
             case 'FORASTEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser de uma terra longínqua ou isolada.';
-                habilidades = [
-                    '2 pontos em Navegação',
-                    '2 pontos em Sobrevivência',
-                    '1 ponto em História',
-                    '1 ponto em Negociação',
-                ];
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Negociação', 1);
                 break;
             case 'GLADIADOR':
-                descricao = 'Um personagem com este antecedente possui um histórico em lutar em arenas por dinheiro, honra ou obrigação.';
-                habilidades = [
-                    '2 pontos em Atletismo',
-                    '2 pontos em Acrobacia',
-                    '1 ponto em Força ou Destreza',
-                    '1 ponto em Fortitude',
-                ];
+                setAutoIncrementedValueByName('Atletismo', 2);
+                setAutoIncrementedValueByName('Acrobacia', 2);
+                setOpenForcaOuDex(true);
+                setAutoIncrementedValueByName('Fortitude', 1);
                 break;
             case 'GUARDA':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar na guarda de uma cidade, provavelmente como soldado.';
-                habilidades = [
-                    '2 pontos em Jurisprudência',
-                    '2 pontos em Percepção',
-                    '1 ponto na Proficiência em Armaduras ou Esgrima',
-                ];
+                setAutoIncrementedValueByName('Atletismo', 2);
+                setAutoIncrementedValueByName('Acrobacia', 2);
+                setOpenProfEsgrimaOuArmadura(true);
                 break;
             case 'HERDEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de vir de uma família rica e algum parente próximo acabou de morrer e lhe deixar dinheiro, pertences ou terrenos.';
-                habilidades = [
-                    '2 pontos em Persuasão',
-                    '2 pontos em História',
-                    '200 moedas de ouro',
-                    'Vestuárias Finas',
-                ];
+                setAutoIncrementedValueByName('Persuasão', 2);
+                setAutoIncrementedValueByName('História', 2);
+                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
+                setInicialMoney(650)
                 break;
             case 'HEROICO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ter salvado uma ou mais pessoas de um pequeno perigo ou um inimigo problemático.';
-                habilidades = [
-                    '2 pontos em Acrobacia',
-                    '2 pontos em Medicina',
-                    '1 ponto em Atletismo',
-                    '1 ponto em Agilidade',
-                ];
+                setAutoIncrementedValueByName('Acrobacia', 2);
+                setAutoIncrementedValueByName('Medicina', 2);
+                setAutoIncrementedValueByName('Atletismo', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
                 break;
             case 'JORNALEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar como investigador de notícias e também como entregador.';
-                habilidades = [
-                    '2 pontos em Intuição',
-                    '2 pontos em Investigação',
-                    '1 ponto em História',
-                    '1 ponto em Navegação',
-                ];
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Investigação', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Navegação', 1);
                 break;
             case 'MARUJO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar em barcos dentro da legalidade ou não.';
-                habilidades = [
-                    '2 pontos na Proficiência Veículos Aquáticos',
-                    '1 ponto em Intimidação',
-                    '1 ponto em Navegação',
-                    '1 ponto em Força ou Destreza',
-                ];
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Investigação', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Navegação', 1);
+                setOpenForcaOuDex(true);
                 break;
             case 'MÉDICO DE BECO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um médico ilegal que atende de maneira clandestina dentro de cidades.';
-                habilidades = [
-                    '2 pontos em Medicina',
-                    '2 pontos em Alquimia',
-                    '1 ponto em Furtividade',
-                    '1 ponto em Enganação',
-                    '1 kit de ferramentas',
-                ];
+                setAutoIncrementedValueByName('Medicina', 2);
+                setAutoIncrementedValueByName('Alquimia', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setOpenForcaOuDex(true);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Ferramentas",
+                    description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                    price: 25
+                }, 1);
                 break;
             case 'MENESTREL':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser um músico e poeta, viajante ou não.';
-                habilidades = [
-                    '2 pontos em Performance',
-                    '2 pontos em Sedução',
-                    '1 ponto em Persuasão',
-                    '1 ponto em Enganação',
-                    '1 kit de músico',
-                    '1 instrumento a sua escolha de até 1 M.O.',
-                ];
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Sedução', 2);
+                setAutoIncrementedValueByName('Persuasão', 1);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setOpenForcaOuDex(true);
+                handleChangeShopBG("Equipamento geralEquipamento Geral",  { name: "Instrumento musical", price: 1 }, 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Músico",
+                    description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.",
+                    price: 55
+                }, 1);
+
                 break;
             case 'MINERADOR':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar nas minas para coletar minérios diversos.';
-                habilidades = [
-                    '2 pontos em Natureza',
-                    '2 pontos em Navegação',
-                    '1 ponto em Fortitude',
-                    '1 ponto em Força',
-                    '1 kit de escalada',
-                ];
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Força', 1);
+                setAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Escalada",
+                    description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
+                    price: 40
+                }, 1)
                 break;
             case 'NAVEGADOR':
-                descricao = 'Um personagem com este antecedente possui um histórico de ser o leitor de mapas de uma expedição, o navegador de um navio em alto mar, etc.';
-                habilidades = [
-                    '2 pontos em Navegação',
-                    '2 pontos em Percepção',
-                    '1 ponto em Investigação',
-                    '1 ponto em História',
-                ];
+                setAutoIncrementedValueByName('Percepção', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Investigação', 1);
+                setAutoIncrementedValueByName('História', 1);
+
                 break;
             case 'NOBRE':
-                descricao = 'Um personagem com este antecedente possui um histórico de possuir um título de nobreza em sua família.';
-                habilidades = [
-                    '2 pontos em Jurisprudência',
-                    '2 pontos em História',
-                    '150 moedas de ouro extra',
-                    'Vestuárias finas',
-                    'Cavalo (50 M.O.)',
-                ];
+                setAutoIncrementedValueByName('Jurisprudência', 2);
+                setAutoIncrementedValueByName('História', 2);
+                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
+                handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
+                setInicialMoney(600);
                 break;
             case 'NÔMADE':
-                descricao = 'Um personagem com este antecedente possui um histórico de não ficar em um mesmo lugar durante longos períodos de tempo. Nômades normalmente andam em grupos.';
-                habilidades = [
-                    '2 pontos em Lidar com animais',
-                    '2 pontos em Navegação',
-                    '1 ponto em História',
-                    '1 ponto em Sobrevivência',
-                    '1 kit de sobrevivência',
-                ];
+                setAutoIncrementedValueByName('Lidar com animais', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Investigação', 1);
+                setAutoIncrementedValueByName('Sobrevivência', 1);
+                handleChangeShopBG("Kits", {
+                    name: "Kit de Sobrevivência",
+                    description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                    price: 30
+                }, 1);
                 break;
             case 'ÓRFÃO':
-                descricao = 'Um personagem com este antecedente possui um histórico de não saber quem são seus pais e família, ou dessa família ter morrido.';
-                habilidades = [
-                    '2 pontos em Sobrevivência',
-                    '2 pontos em Enganação',
-                    '1 ponto em Furtividade',
-                    '1 ponto em Agilidade',
-                ];
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('Enganação', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
                 break;
             case 'PEREGRINO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ter feito ou estar fazendo uma viagem religiosa, de penitência ou de aprendizado.';
-                habilidades = [
-                    '2 pontos em Navegação',
-                    '2 pontos em História',
-                    '1 ponto em Teologia',
-                    '1 ponto em Percepção',
-                ];
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Teologia', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
                 break;
             case 'PRISIONEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de ter sido um prisioneiro e cumprido sua pena, ou ter fugido da cadeia.';
-                habilidades = [
-                    '2 pontos em Furtividade',
-                    '2 pontos em Intimidação',
-                    '1 ponto em Jurisprudência',
-                    '1 ponto em Agilidade',
-                ];
+                setAutoIncrementedValueByName('Furtividade', 2);
+                setAutoIncrementedValueByName('Intimidação', 2);
+                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedValueByName('Agilidade', 1);
                 break;
             case 'REFUGIADO':
-                descricao = 'Um personagem com este antecedente possui um histórico de estar fugindo de um desastre natural ou avanços militares.';
-                habilidades = [
-                    '2 pontos em Sobrevivência',
-                    '2 pontos em Persuasão',
-                    '1 ponto em Intuição',
-                    '1 ponto em História',
-                ];
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('Persuasão', 2);
+                setAutoIncrementedValueByName('Intuição', 1);
+                setAutoIncrementedValueByName('História', 1);
                 break;
             case 'TAVERNEIRO':
-                descricao = 'Um personagem com este antecedente possui um histórico de trabalhar em uma taverna como cozinheiro, ajudante de cozinheiro, servir comida e bebida.';
-                habilidades = [
-                    '2 pontos em Negociação',
-                    '2 pontos em Intuição',
-                    '1 ponto em Intimidação',
-                    '1 ponto em Destreza',
-                ];
+                setAutoIncrementedValueByName('Negociação', 2);
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Intimidação', 1);
+                setAutoIncrementedValueByName('Destreza', 1);
+              
                 break;
             default:
                 // opcional: lidar com casos não mapeados
@@ -3621,7 +3606,6 @@ const CharCreationPage = () => {
         }
 
     };
-
     const handleCriarPersonagem = async () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id;
@@ -4109,80 +4093,24 @@ const CharCreationPage = () => {
             </Stack>
         );
     }
-    const ModalWithDualGroups = () => {
 
-        const handleGroupChange = (groupSetter, selected, name, increment) => {
-            return (event) => {
-                const { value, checked } = event.target;
-                let newSelected = [...selected];
-                if (checked) {
-                    if (selected.length < 2) {
-                        newSelected.push(value);
-                        setAutoIncrementedValueByName(value, increment);
-                    }
-                } else {
-                    newSelected = newSelected.filter(item => item !== value);
-                    // No decrement logic in this example
+    const handleGroupChange = (groupSetter, selected, name, increment) => {
+        return (event) => {
+            const { value, checked } = event.target;
+            let newSelected = [...selected];
+            if (checked) {
+                if (selected.length < 2) {
+                    newSelected.push(value);
+                    setAutoIncrementedValueByName(value, increment);
                 }
-                groupSetter(newSelected);
-            };
+            } else {
+                newSelected = newSelected.filter(item => item !== value);
+                // No decrement logic in this example
+            }
+            groupSetter(newSelected);
+            console.log(group1, group2);
         };
-
-        return (
-            <>
-                <Modal open={open} onClose={() => setOpen(false)}>
-                    <Box sx={style}>
-                        <Typography variant="h6">Atribuição de Pontos</Typography>
-                        <Box component="form" mt={2}>
-                            <FormControl component="fieldset" margin="normal">
-                                <FormLabel component="legend">Grupo 1 (+2 pontos cada, até 2)</FormLabel>
-                                <FormGroup>
-                                    {Object.keys(allValues).map(key => (
-                                        <FormControlLabel
-                                            key={key}
-                                            control={
-                                                <Checkbox
-                                                    checked={group1.includes(key)}
-                                                    onChange={handleGroupChange(setGroup1, group1, key, 2)}
-                                                    value={key}
-                                                />
-                                            }
-                                            label={`${key} (${allValues[key]})`}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </FormControl>
-
-                            <FormControl component="fieldset" margin="normal">
-                                <FormLabel component="legend">Grupo 2 (+1 ponto cada, até 2)</FormLabel>
-                                <FormGroup>
-                                    {Object.keys(allValues).map(key => (
-                                        <FormControlLabel
-                                            key={key}
-                                            control={
-                                                <Checkbox
-                                                    checked={group2.includes(key)}
-                                                    onChange={handleGroupChange(setGroup2, group2, key, 1)}
-                                                    value={key}
-                                                />
-                                            }
-                                            label={`${key} (${allValues[key]})`}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </FormControl>
-
-                            <Box mt={3} textAlign="right">
-                                <Button variant="outlined" onClick={() => setOpen(false)}>
-                                    Fechar
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Modal>
-            </>
-        );
-    }
+    };
     const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
         <Paper
             sx={{
@@ -4778,7 +4706,56 @@ const CharCreationPage = () => {
                         </Box>
                     </TabPanel>
                 </Box>
-                <ModalWithDualGroups open={open} />
+                <Modal open={open} onClose={() => setOpen(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuição de Pontos</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Grupo 1 (+2 pontos cada, até 2)</FormLabel>
+                                <FormGroup>
+                                    {Object.keys(allValues).map(key => (
+                                        <FormControlLabel
+                                            key={key}
+                                            control={
+                                                <Checkbox
+                                                    checked={group1.includes(key)}
+                                                    onChange={handleGroupChange(setGroup1, group1, key, 2)}
+                                                    value={key}
+                                                />
+                                            }
+                                            label={`${key} (${allValues[key]})`}
+                                        />
+                                    ))}
+                                </FormGroup>
+                            </FormControl>
+
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Grupo 2 (+1 ponto cada, até 2)</FormLabel>
+                                <FormGroup>
+                                    {Object.keys(allValues).map(key => (
+                                        <FormControlLabel
+                                            key={key}
+                                            control={
+                                                <Checkbox
+                                                    checked={group2.includes(key)}
+                                                    onChange={handleGroupChange(setGroup2, group2, key, 1)}
+                                                    value={key}
+                                                />
+                                            }
+                                            label={`${key} (${allValues[key]})`}
+                                        />
+                                    ))}
+                                </FormGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => setOpen(false)}>
+                                    Fechar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
                 <Modal open={modalAberto} >
                     <Box sx={{
                         position: 'absolute', top: '50%', left: '50%',
@@ -4911,6 +4888,92 @@ const CharCreationPage = () => {
                             ))}
                         </RadioGroup>
 
+                    </Box>
+                </Modal>
+                <Modal open={openForcaOuDex} onClose={() => setOpenForcaOuDex(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttribute}
+                                    onChange={(e) => {setSelectedAttribute(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Força"
+                                        control={<Radio />}
+                                        label={`Força `}
+                                    />
+                                    <FormControlLabel
+                                        value="Destreza"
+                                        control={<Radio />}
+                                        label={`Destreza `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => setOpen(false)}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttribute) {
+                                            setAutoIncrementedValueByName(selectedAttribute, 1)
+                                            setOpenForcaOuDex(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openProfEsgrimaOuArmadura} onClose={() => setOpenProfEsgrimaOuArmadura(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal">
+                                <FormLabel component="legend">Escolha uma proficiência para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedProfModal}
+                                    onChange={(e) => {setSelectedProfModal(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Maestria em Armaduras e Escudos"
+                                        control={<Radio />}
+                                        label={`Maestria em Armaduras e Escudos `}
+                                    />
+                                    <FormControlLabel
+                                        value="Proficiência em Esgrima"
+                                        control={<Radio />}
+                                        label={`Proficiência em Esgrima `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => setOpen(false)}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedProfModal) {
+                                            setAutoIncrementedProfByName(selectedProfModal, 1)
+                                            setOpenProfEsgrimaOuArmadura(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
                     </Box>
                 </Modal>
             </Box>
