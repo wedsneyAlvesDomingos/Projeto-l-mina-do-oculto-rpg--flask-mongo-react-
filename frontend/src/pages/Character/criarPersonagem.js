@@ -4116,16 +4116,33 @@ const CharCreationPage = () => {
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
         let profession = {};
+    
+        const isSelected = selectedId === id; // estado atual da seleção
+    
         if (id) {
             profession = profissao && habNome ? {
-                nome: profissao, habilidades: habNome
+                nome: profissao,
+                habilidades: habNome
             } : {};
         }
-        setSelectedId(prev => prev === id ? '' : id);
-        setProfessionReg(profession);
-        console.log(profession);
-
+    
+        setSelectedId(isSelected ? '' : id);
+        setProfessionReg(isSelected ? {} : profession);
+    
+        if (habNome !== 'Abrir Fechaduras') {
+            removeAutoIncrementedProfByName("Ferramentas de ladrão", 2);
+        }
+        if (habNome === 'Abrir Fechaduras') {
+            if (isSelected) {
+                
+                removeAutoIncrementedProfByName("Ferramentas de ladrão", 2);
+            } else {
+                
+                setAutoIncrementedProfByName("Ferramentas de ladrão", 2);
+            }
+        }
     };
+    
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
@@ -5144,6 +5161,7 @@ const CharCreationPage = () => {
                                                                             disabled={hab.nome === professionRegAntecedente.habilidades}
                                                                             onChange={() => {
                                                                                 handleToggle(prof.nome, hab.nome);
+
                                                                             }}
                                                                         />
                                                                     }
