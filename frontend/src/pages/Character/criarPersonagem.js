@@ -282,14 +282,14 @@ const conducaoExoticaProf = {
     ]
 };
 const kitDeArrombamentoProf = {
-    nome: "Kit de Arrombamento",
+    nome: "Ferramentas de ladrão",
     descricao: "Capacidade de usar ferramentas especiais para abrir trancas e desarmar armadilhas.",
     notas: [
         "Testes de arrombamento utilizam a Destreza da criatura.",
         "Níveis mais altos permitem ações mais rápidas ou contra trancas mágicas."
     ],
     niveis: [
-        { nivel: 1, descricao: "Permite usar ferramentas de arrombamento sem desvantagem." },
+        { nivel: 1, descricao: "Permite usar Ferramentas de ladrão sem desvantagem." },
         { nivel: 2, descricao: "Permite adicionar o modificador de Destreza ao teste para abrir trancas." },
         { nivel: 3, descricao: "Permite realizar a ação de arrombamento com uma única ação em combate." },
         { nivel: 4, descricao: "Permite desativar armadilhas complexas com o kit." },
@@ -411,6 +411,7 @@ const proficiencias = [
 const profissoes = [
     {
         "nome": "Ferreiro",
+        'descricao': "Forjar um item: Para forjar um item como um ferreiro é necessário que um personagem faça um teste de força para trabalhar o metal e forjar um item e de destreza para refinar ou reforçar um item. A dificuldade vai ser decidida pelo mestre e pelo tempo gasto. Um ferreiro perde os materiais ao falhar em forjar ou refinar um mesmo item 3 vezes. No caso do refinamento, o armamento ou armadura se quebra e é perdido. O custo de produção de item é igual a metade de seu valor e para refinar é igual a ⅓ de seu valor (Arredondado para cima).Confira a wiki para mais informações",
         "ambiente": "forja média",
         "rendimento": 20,
         "habilidades": [
@@ -459,15 +460,16 @@ const profissoes = [
     {
         "nome": "Criminoso",
         "ambienteEmprego": "Pode conseguir emprego em qualquer lugar onde tenha multidões, estradas vazias ou becos.",
+        'descricao': 'Pode conseguir emprego em qualquer lugar onde tenha multidões, estradas vazias ou becos. Aprende a usar Ferramentas de ladrão. Esta profissão rende 30 moedas de ouro por dia de trabalho. O criminoso tem 10% de chance de ser pego pela guarda. ',
         "rendaPorDia": 30,
         "chanceDeRisco": "10% de ser pego",
         "beneficiosFixos": [
-            "Aprende a usar kit de arrombamento"
+            "Aprende a usar Ferramentas de ladrão em seu nível básico."
         ],
         "habilidades": [
             {
                 "nome": "Bater Carteiras",
-                "descricao": "Permite ao criminoso furtar itens em multidões ou com trombadas.",
+                "descricao": "Um criminoso consegue interagir com outra criatura em meio a multidão ou em uma trombada. Ao fazer um ou outro, o ladrão pode tentar pegar algum item dentre os pertences visíveis da criatura em questão. Um teste de agilidade determina o sucesso. A dificuldade do teste será decidida pelo mestre.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Pode tentar pegar itens visíveis de outra criatura em meio à multidão ou em uma trombada.",
@@ -476,16 +478,16 @@ const profissoes = [
             },
             {
                 "nome": "Abrir Fechaduras",
-                "descricao": "Aumenta a proficiência e eficácia ao arrombar portas e janelas.",
+                "descricao": "Ganha dois pontos na proficiência em Ferramentas de ladrão. Além disso, recebe um bônus de +2 em testes para abrir portas e janelas em uma invasão.",
                 "custoRegalia": 1,
                 "efeitos": [
-                    "Ganha dois pontos na proficiência em kit de arrombamento.",
+                    "Ganha dois pontos na proficiência em Ferramentas de ladrão.",
                     "+2 em testes para abrir portas e janelas em uma invasão."
                 ]
             },
             {
                 "nome": "Esconder Itens Ilegais",
-                "descricao": "Aprimora a capacidade de esconder objetos ilegais.",
+                "descricao": "Um ladrão pode tentar esconder um um item roubado dentro de sua roupa, ou um assassino esconder uma adaga. Criminosos tem um jeito diferente de fazer essas pequenas coisas. Ao fazer um teste de furtividade para esconder um item ilegal o criminoso tem vantagem na rolagem do dado.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Vantagem no teste de furtividade para esconder um item ilegal."
@@ -503,7 +505,7 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Melhorar Preços",
-                "descricao": "Permite negociar descontos em produtos ou serviços.",
+                "descricao": "Um mercador pode fazer um teste de negociação para tentar descontos em preços de produtos ou serviços. Ao fazer o teste o mercador consegue uma porcentagem a cada 5 pontos do rolamento. Desconto varia conforme a rolagem: 5% (0-5), 10% (6-10), 15% (11-15), 25% (16-20), 30% (21-25), 35% (26+).",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Pode fazer um teste de negociação para conseguir descontos.",
@@ -512,7 +514,7 @@ const profissoes = [
             },
             {
                 "nome": "Reunir Informações",
-                "descricao": "Coleta informações em cidades ou regiões conversando com mercadores.",
+                "descricao": "Um mercador pode gastar 1 hora conversando com mercadores em uma cidade ou região para reunir informações. Um teste de persuasão é necessário para definir se houve sucesso na tentativa. A dificuldade do teste vai ser decidida pelo mestre de acordo com a informação a ser reunida.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Gasta 1 hora conversando para obter informações.",
@@ -545,7 +547,7 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Guiar",
-                "descricao": "Ajuda o grupo a se mover furtivamente em terrenos perigosos.",
+                "descricao": "O explorador consegue guiar um grupo de pessoas por um terreno de maneira furtiva para não chamar atenção. Uma equipe com um explorador os guiando ganha +2 em teste de furtividade e navegação. Se um explorador rolar um 20 no D20 em um teste de furtividade, os aliados do grupo automaticamente passam no teste também.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "+2 em testes de furtividade e navegação para o grupo.",
@@ -554,7 +556,7 @@ const profissoes = [
             },
             {
                 "nome": "Rastrear Pistas",
-                "descricao": "Especialista em seguir rastros e pegadas.",
+                "descricao": "O explorador pode tentar rastrear outra criatura ou um grupo de maneira excepcional. Um explorador pode considerar um rolamento de 12 ou menor em um D20 como 12 em um teste para rastrear através de pistas e pegadas. ",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Rolagens de 12 ou menor são consideradas como 12 em testes de rastrear."
@@ -562,7 +564,7 @@ const profissoes = [
             },
             {
                 "nome": "Facilidade em Encontrar Recursos na Natureza",
-                "descricao": "Mais eficiente em testes de sobrevivência.",
+                "descricao": "Ao tentar fazer um teste de sobrevivência um explorador consegue o dobro de recursos que conseguiria normalmente. Sempre consegue encontrar abrigo em um ambiente para descansar.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Dobra os recursos obtidos em testes de sobrevivência.",
@@ -581,7 +583,7 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Elaborar Mapas",
-                "descricao": "Cria mapas que permitem retornar sem se perder.",
+                "descricao": "Um acadêmico que estude mapas pode criar um mapa do caminho trilhado pelo seu grupo de aliados. Ao criar esse mapa pode retornar para o ponto inicial do caminho traçado sem se perder.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Permite retornar ao ponto inicial de uma viagem com precisão total ao usar um mapa elaborado."
@@ -589,7 +591,7 @@ const profissoes = [
             },
             {
                 "nome": "Conhecimento de Civilizações Antigas",
-                "descricao": "Ajuda na exploração de ruínas e tumbas.",
+                "descricao": "Um personagem que possui conhecimento de civilizações antigas tem um bônus de navegação dentro de tumbas e ruínas igual a 2 pontos adicionais. Ganha 3 pontos de proficiência em Línguas Antigas. Testes de investigação para encontrar artefatos e outras coisas ganham um bônus de 5 pontos adicionais.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "+2 de navegação em tumbas e ruínas.",
@@ -599,7 +601,7 @@ const profissoes = [
             },
             {
                 "nome": "Acesso a Bibliotecas e Setores de Estudos Privados",
-                "descricao": "Acesso exclusivo a áreas de pesquisa.",
+                "descricao": "Tem uma autorização para entrar em bibliotecas proibidas para o público não acadêmico.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Entrada permitida em bibliotecas e setores de pesquisa proibidos ao público geral."
@@ -607,7 +609,7 @@ const profissoes = [
             },
             {
                 "nome": "Arqueólogo",
-                "descricao": "Especialista em escavações e estudo de artefatos antigos.",
+                "descricao": "Recebe 3 pontos de proficiência em Arqueologia.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "+3 em proficiência em Arqueologia."
@@ -618,6 +620,7 @@ const profissoes = [
     },
     {
         "nome": "Herbalista",
+        'descricao': 'Duração de venenos: Colocar em armas e projéteis: Dura 5 rodadas após acertar o alvo com a arma envenenada. Se atacar novamente com veneno, o mesmo alvo apenas reseta o tempo, caso seja outro veneno reseta o tempo e muda o efeito mas não acumula. Caso passe no teste de resistência, com a dificuldade exibida na tabela, o alvo não sofre o efeito extra e só toma o dano ao contato, mas o dano não persiste.Na comida ou outra forma de ingestão:Se misturar vários venenos apenas irá causar o dano e efeito do mais forte. Um teste de fortitude define se ocorrerá o efeito e se o dano será total ou metade, se o alvo passar no teste será metade do dano e nenhum efeito. A dificuldade do teste é baseada num teste de medicina feito na hora de criar o veneno. O dano dura 10 rodadas.',
         "ambienteEmprego": "Pode conseguir emprego em qualquer lugar onde tenha laboratórios, curandeiros e lojas de poções.",
         "rendaPorDia": 20,
         "beneficiosFixos": [
@@ -626,7 +629,7 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Produção de Poções",
-                "descricao": "Consegue produzir poções a partir de ervas e soluções alquímicas.",
+                "descricao": "Consegue produzir poções a partir de ervas e soluções alquímicas. Possui um custo em materiais de acordo com a tabela na página wiki. Chance para criação de poções de 30% ( acima ou igual a 15 no rolamento de um D20) ",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Custo em materiais conforme tabela.",
@@ -635,7 +638,7 @@ const profissoes = [
             },
             {
                 "nome": "Produção de Venenos Naturais",
-                "descricao": "Extrai e prepara venenos de bestas e plantas naturais para aplicar em armas ou misturar em líquidos.",
+                "descricao": "Consegue extrair e preparar venenos de bestas e plantas naturais para aplicar em armas e misturar em líquidos para consumo. Possui um custo mínimo em materiais de 10 moedas. Venenos e peçonhas de animal tem duração de acordo com seu uso e seu dano mínimo é de 1 ponto por rodada ou maior. Venenos de planta tem duração de acordo com seu uso e seu dano mínimo é de 3 pontos por rodada ou maior.Chance para criação de venenos de 30% ( acima ou igual a 15 no rolamento de um D20)  ",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Dano e efeitos conforme tabela.",
@@ -645,7 +648,7 @@ const profissoes = [
             },
             {
                 "nome": "Produção de Venenos de Monstros",
-                "descricao": "Extrai e prepara venenos de anomalias e monstros para aplicação em armas ou líquidos.",
+                "descricao": "Consegue extrair e preparar venenos de anomalias e monstros para aplicar em armas e misturar em líquidos para consumo. Venenos e peçonhas de monstros tem duração de acordo com seu uso e seu dano mínimo é de 5 pontos por rodada. Chance para criação de venenos de 30% ( acima ou igual a 15 no rolamento de um D20) ",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Dano e efeitos conforme tabela.",
@@ -654,7 +657,7 @@ const profissoes = [
             },
             {
                 "nome": "Produção de Frascos de Veneno para Arremesso",
-                "descricao": "Produz veneno de arremesso que causa dano em área.",
+                "descricao": "Consegue produzir frascos de veneno para arremesso e dano em área. Causa o dano do veneno em todas as criaturas em 10 pés do raio de explosão.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Afeta todas as criaturas em um raio de 10 pés.",
@@ -663,7 +666,7 @@ const profissoes = [
             },
             {
                 "nome": "Produção de Antídotos",
-                "descricao": "Consegue produzir antídotos para venenos de todos os tipos.",
+                "descricao": "Produção de antídotos contra venenos de todos os tipos. Necessário um teste de alquimia para criar uma poção, veneno ou antídoto. Chance de 50%( acima ou igual a 17 no rolamento de um D20) com custo de 50M.O.",
                 "custoRegalia": 1,
                 "efeitos": [
                     "Chance de sucesso: 50% (acima de 17 no D20).",
@@ -1008,17 +1011,17 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Reunir Informações",
-                "descricao": "Gasta 1h conversando para coletar informações (teste de Persuasão ou Sedução).",
+                "descricao": "Um Artista pode gastar 1 hora conversando com moradores , mendigos e outros artistas locais em uma cidade ou região para reunir informações. Um teste de persuasão ou sedução é necessário para definir se houve sucesso na tentativa. A dificuldade do teste vai ser decidida pelo mestre de acordo com a informação a ser reunida.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Espalhar Rumores",
-                "descricao": "Gasta 1h conversando para espalhar informações (teste de Enganação ou Sedução).",
+                "descricao": "Um Artista pode gastar 1 hora conversando com moradores , mendigos e outros artistas locais em uma cidade ou região para espalhar informações. Um teste de enganação ou sedução é necessário para definir se houve sucesso na tentativa. A dificuldade do teste vai ser decidida pelo mestre de acordo com a informação a ser reunida.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Causar Distrações",
-                "descricao": "Pode usar a ação ‘Distrair’ simultaneamente à performance.",
+                "descricao": "Um Artista pode tentar usar a ação distrair na mesma ação que performar.",
                 "custoRegalia": 1
             }
         ]
@@ -1030,17 +1033,17 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Confeccionar Jóias Simples",
-                "descricao": "Produz jóias (custa metade do preço de mercado).",
+                "descricao": "Pode confeccionar, a partir de metais preciosos e gemas, jóias que podem ser vendidas. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Confeccionar Jóias Encantadas",
-                "descricao": "Produz jóias encantáveis a partir de metais preciosos e gemas.",
+                "descricao": "Pode confeccionar, a partir de metais preciosos e gemas, jóias que podem ser encantadas e vendidas. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Apurar Pedras Preciosas",
-                "descricao": "Determina valor e identifica gemas (+5 em Natureza para rochas).",
+                "descricao": "Pode determinar valor e identificar a pedra preciosa. Testes de natureza para identificar rochas recebem 5 pontos de bônus. ",
                 "custoRegalia": 1
             }
         ]
@@ -1048,36 +1051,37 @@ const profissoes = [
     {
         "nome": "Inventor",
         "ambiente": "grandes cidades (projetista de pontes/estruturas)",
+        'descricao': 'Teste de tecnologia deve ser feito para criar uma esquemática. Após criada, o mestre determina o valor e o que é necessário para construir a esquemática.',
         "rendimento": 60,
         "habilidades": [
             {
                 "nome": "Elaborar Esquemáticas de Armas",
-                "descricao": "Cria ou melhora armas existentes.",
+                "descricao": "Elaborar melhorias para armas existentes ou novas armas.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Elaborar Esquemáticas de Armaduras",
-                "descricao": "Cria ou melhora armaduras existentes.",
+                "descricao": "Elaborar melhorias para armaduras existentes ou novas armaduras. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Elaborar Esquemáticas de Próteses",
-                "descricao": "Projeta próteses para membros faltantes ou inexistentes.",
+                "descricao": "Elaborar próteses para partes do corpo que faltam ou que nem existem. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Elaborar Esquemáticas de Veículos",
-                "descricao": "Cria ou melhora veículos existentes.",
+                "descricao": "Elaborar melhorias para veículos existentes ou novos veículos.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Elaborar Esquemáticas de Engenhocas",
-                "descricao": "Cria pequenos mecanismos de utilidade básica.",
+                "descricao": "Elaborar pequenos ou médios mecanismos, que podem ser constructos sem inteligência para entretenimento ou de utilidade determinada que não pode ser alterada.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Criar Constructos Semicientes",
-                "descricao": "Elabora constructos sencientes.",
+                "descricao": "Elaborar constructos sencientes. ",
                 "custoRegalia": 1
             }
         ],
@@ -1176,48 +1180,48 @@ const profissoes = [
         "rendimento": 40,
         "habilidades": [
             {
-                "nome": "Encantar Armas +1d4",
-                "descricao": "Bônus +1d4 de dano elemental (materiais de 100 M.O.).",
+                "nome": "Encantar Armas +1d4 - Nível 1",
+                "descricao": "Pode encantar armas com um bônus de dano elemental. Escolha apenas um dos elementos por arma. Bônus de dano +1d4 de dano.  Para encantar é preciso usar linguagem arcana ou runas, que possuem materiais base que custam 100 moedas de ouro. ",
                 "custoRegalia": 1
             },
             {
-                "nome": "Encantar Armas +2d4",
-                "descricao": "Bônus +2d4 de dano (pré‑req: +1; materiais 100 M.O. se reencantar ou 400 M.O. se primeiro).",
+                "nome": "Encantar Armas +2d4 - Nível 2",
+                "descricao": "Pode encantar armas com um bônus de dano elemental. Escolha apenas um dos  elementos mágicos por arma. Bônus de dano +2d4 de dano.  Para encantar é preciso usar linguagem arcana ou runas, que possuem materiais base que custam 100 moedas de ouro se a arma já estava encantada em +1. Caso seja o primeiro encantamento da arma, custam 400 moedas de ouro em materiais.",
                 "custoRegalia": 1
             },
             {
-                "nome": "Encantar Armas +3d4",
-                "descricao": "Bônus +3d4 de dano (pré‑req: +2; materiais 100 M.O. se reencantar ou 600 M.O. se primeiro).",
+                "nome": "Encantar Armas +3d4 - Nível 3",
+                "descricao": "Pode encantar armas com um bônus de dano elemental. Escolha apenas um dos 8 elementos por arma. Bônus de dano +3d4 de dano. Para encantar é preciso usar linguagem arcana ou runas, que possuem materiais base que custam 100 moedas de ouro se a arma já estava encantada em +2. Caso seja o primeiro encantamento da arma, custam 600 moedas de ouro em materiais. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Mudar Tipo de Dano",
-                "descricao": "Altera elemento da arma corpo a corpo (100 M.O.; projéteis não podem).",
+                "descricao": "ode mudar o tipo de dano da arma. Custa 100 moedas de ouro para mudar o elemento da arma corpo a corpo. Armas que causem atiram projéteis não podem sofrer essa mudança.",
                 "custoRegalia": 1
             },
             {
-                "nome": "Encantar Proteção +1",
+                "nome": "Encantar Proteção +1  - Nível 1",
                 "descricao": "+1 em defesa em armaduras leves/roupas/jóias (150 M.O.).",
                 "custoRegalia": 1
             },
             {
-                "nome": "Encantar Proteção +2",
+                "nome": "Encantar Proteção +2  - Nível 2",
                 "descricao": "+2 em defesa (pré‑req: +1; 300 M.O.).",
                 "custoRegalia": 1
             },
             {
-                "nome": "Reforço de Dano Elemental +2",
+                "nome": "Reforço de Dano Elemental +2  - Nível 3",
                 "descricao": "+2 no dano elemental de magias (100 M.O.).",
                 "custoRegalia": 1
             },
             {
-                "nome": "Reforço de Dano Elemental +4",
+                "nome": "Reforço de Dano Elemental +4 - Nível 4",
                 "descricao": "+4 no dano elemental de magias (pré‑req: +2; 300 M.O.).",
                 "custoRegalia": 1
             },
             {
                 "nome": "Produzir Pergaminhos",
-                "descricao": "Replica magias conhecidas em pergaminhos (50 M.O. em papel e tinta).",
+                "descricao": "Pode replicar o efeito de magias, milagres e feitiços que o personagem tenha conhecimento. Para criar um pergaminho é preciso gastar 50 moedas de ouro em papel e tinta mágicos. Pergaminhos podem ser utilizados por qualquer um e não consomem pontos de magia, porém são sempre conjurados na versão mais fraca da Habilidade replicada. ",
                 "custoRegalia": 1
             }
         ],
@@ -1245,17 +1249,17 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Produzir Rações Especiais",
-                "descricao": "Gasta metade do valor para fazer duas rações; cada uma confere +10 PV temporários.",
+                "descricao": "O cozinheiro gasta metade do valor de uma ração para fazer duas. Além disso, a ração gera um bônus de 10 pontos de vida temporários depois de consumida. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Aprimorar Uso de Recursos Alimentícios",
-                "descricao": "Dobra usos de comida/água encontradas e +5 em Sobrevivência.",
+                "descricao": "Ao realizar testes de sobrevivência é possível buscar comida e água. Um cozinheiro consegue  multiplicar esse recurso para o dobro de usos. Ao usar uma ração, o cozinheiro consegue transformar a comida para uma pessoa em comida para duas. Aumenta em 5 o teste de sobrevivência para encontrar comida e água.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Cozinhar Alimentos Restauradores",
-                "descricao": "Ração que em 10 min cura 10 PV e 3 de estamina (10 M.O. por ração).",
+                "descricao": "Um cozinheiro pode cozinhar rações que ao serem consumidas em um período de 10 minutos curam 10 pontos de vida perdidos e 3 de estâmina . Custa 10 moedas de ouro por ração.",
                 "custoRegalia": 1
             }
         ]
@@ -1267,22 +1271,22 @@ const profissoes = [
         "habilidades": [
             {
                 "nome": "Trabalhar como Marinheiro",
-                "descricao": "+5 em Navegação e passagem em troca de serviço.",
+                "descricao": "Um soldado de aluguel com esse traço tem capacidade de procurar emprego na área portuária em navios e afins. Esses soldados conseguem passagem em troca de serviço e também tem um bônus de navegação em +5 em alto mar.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Trabalhar como Segurança",
-                "descricao": "+3 em Percepção em turno de guarda ou vigia.",
+                "descricao": "Um soldado de aluguel com esse traço tem capacidade de procurar por empregos em cidades e vilas como protetor de um estabelecimento, carregamento ou pessoa. Um soldado que tenha essa experiência ganha um bônus de 3 em percepção enquanto estiver como em trabalho de guarda ou em turno de vigia em um acampamento. ",
                 "custoRegalia": 1
             },
             {
                 "nome": "Trabalhar como Capanga de Agiota",
-                "descricao": "+5 em Intimidação para obter informações.",
+                "descricao": "Um soldado de aluguel com esse traço tem conexões com pessoas de caráter duvidoso e consegue serviços em periferias e cidades grandes. Um soldado que tenha essa experiência ganha um bônus de 5 em intimidação para retirar informações de um inimigo.",
                 "custoRegalia": 1
             },
             {
                 "nome": "Treinamento Militar",
-                "descricao": "+5 em Jurisprudência e Negociação com nobres.",
+                "descricao": "Um soldado de aluguel com esse traço tem conexão com nobres e outros que desejam dar treinamento para seu filho ou funcionário a fim de fazer um soldado ou cavaleiro da pessoa. Um soldado que tenha essa experiência ganha um bônus de 5 em testes de Jurisprudência e negociação conversando com nobres.",
                 "custoRegalia": 1
             }
         ]
@@ -2220,7 +2224,7 @@ const categories = {
         },
         {
             name: "Kit de Ladrão",
-            description: "Contém ferramentas de arrombamento, pés de cabra, cordas e outros itens para atividades furtivas.",
+            description: "Contém Ferramentas de ladrão, pés de cabra, cordas e outros itens para atividades furtivas.",
             price: 40
         },
         {
@@ -2239,7 +2243,7 @@ const categories = {
             price: 55
         },
         {
-            name: "Kit de Arrombamento",
+            name: "Ferramentas de ladrão",
             description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
             price: 45
         },
@@ -2346,7 +2350,7 @@ const regaliasDeAprendiz = [
         descricao: `2 pontos em Rastreamento ou Investigação.
             1 ponto em Sobrevivência e Navegação.
             2 Pontos em Percepção ou Furtividade.
-            Proficiente com kit de arrombamento.
+            Proficiente com Ferramentas de ladrão.
             Aprende a Habilidade:
             Visão para abrigo:
             Um explorador aprendiz consegue procurar um abrigo natural para proteger dos elementos. Se for calor demais que possa causar exaustão ele consegue achar um lugar para refrescar ou isolar do calor, ou então se for frio demais um abrigo quente para não sofrer com  a temperatura. A chance de sucesso é de 100%. E se não houver abrigos naturais, ele pode criar um com elemenos locais, mesmo se não tiver itens de acampamento.  Além disso, um explorador aprendiz tem um bônus de + 2 em testes de sobrevivência para achar comida e água caso exista.
@@ -2509,7 +2513,7 @@ const antecedentes = [
             "2 pontos em Furtividade",
             "1 ponto em Agilidade",
             "1 ponto em Percepção",
-            "1 kit de Arrombamento"
+            "1 Ferramentas de ladrão"
         ]
     },
     {
@@ -2531,7 +2535,7 @@ const antecedentes = [
             "2 pontos em Navegação",
             "1 ponto em Furtividade",
             "1 ponto em Percepção",
-            "1 ponto na Proficiência em kit de arrombamento",
+            "1 ponto na Proficiência em Ferramentas de ladrão",
             "1 kit de explorador",
             "1 kit de escalada"
         ]
@@ -2566,7 +2570,7 @@ const antecedentes = [
             "2 pontos em Intimidação",
             "1 ponto em Fortitude",
             "1 ponto em Força",
-            "1 kit de arrombamento"
+            "1 Ferramentas de ladrão"
         ]
     },
     {
@@ -3260,7 +3264,7 @@ const CharCreationPage = () => {
                     removeAutoIncrementedValueByName('Percepção', 1);
                     removeAutoIncrementedValueByName('Agilidade', 1);
                     handleRemoveBG("Kits", {
-                        name: "Kit de Arrombamento",
+                        name: "Ferramentas de ladrão",
                         description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
                         price: 45
                     }, 1);
@@ -3282,7 +3286,7 @@ const CharCreationPage = () => {
                     removeAutoIncrementedValueByName('Navegação', 2);
                     removeAutoIncrementedValueByName('Furtividade', 1);
                     removeAutoIncrementedValueByName('Percepção', 1);
-                    removeAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                    removeAutoIncrementedProfByName('Ferramentas de ladrão', 1);
                     handleRemoveBG("Kits", {
                         name: "Kit de Escalada",
                         description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
@@ -3318,7 +3322,7 @@ const CharCreationPage = () => {
                     removeAutoIncrementedValueByName('Fortitude', 1);
                     removeAutoIncrementedValueByName('Força', 1);
                     handleRemoveBG("Kits", {
-                        name: "Kit de Arrombamento",
+                        name: "Ferramentas de ladrão",
                         description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
                         price: 45
                     }, 1);
@@ -3535,7 +3539,7 @@ const CharCreationPage = () => {
                     removeAutoIncrementedValueByName('Navegação', 2);
                     removeAutoIncrementedValueByName('Furtividade', 1);
                     removeAutoIncrementedValueByName('Força', 1);
-                    removeAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                    removeAutoIncrementedProfByName('Ferramentas de ladrão', 1);
                     handleRemoveBG("Kits", {
                         name: "Kit de Escalada",
                         description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
@@ -3713,7 +3717,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Percepção', 1);
                 setAutoIncrementedValueByName('Agilidade', 1);
                 handleChangeShopBG("Kits", {
-                    name: "Kit de Arrombamento",
+                    name: "Ferramentas de ladrão",
                     description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
                     price: 45
                 }, 1);
@@ -3735,7 +3739,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Navegação', 2);
                 setAutoIncrementedValueByName('Furtividade', 1);
                 setAutoIncrementedValueByName('Percepção', 1);
-                setAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                setAutoIncrementedProfByName('Ferramentas de ladrão', 1);
                 handleChangeShopBG("Kits", {
                     name: "Kit de Escalada",
                     description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
@@ -3771,7 +3775,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Fortitude', 1);
                 setAutoIncrementedValueByName('Força', 1);
                 handleChangeShopBG("Kits", {
-                    name: "Kit de Arrombamento",
+                    name: "Ferramentas de ladrão",
                     description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
                     price: 45
                 }, 1);
@@ -3989,7 +3993,7 @@ const CharCreationPage = () => {
                 setAutoIncrementedValueByName('Navegação', 2);
                 setAutoIncrementedValueByName('Furtividade', 1);
                 setAutoIncrementedValueByName('Força', 1);
-                setAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                setAutoIncrementedProfByName('Ferramentas de ladrão', 1);
                 handleChangeShopBG("Kits", {
                     name: "Kit de Escalada",
                     description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
@@ -5098,7 +5102,7 @@ const CharCreationPage = () => {
 
                     </TabPanel>
                     <TabPanel value={tabIndex} index={6}>
-                        <Box sx={{ mt: 4 }}>
+                        <Box className="esteban" sx={{ mt: 4 }}>
                             <Grid container spacing={3}>
                                 {profissoes.map((prof) => (
                                     <Grid item xs={12} md={6} key={prof.nome}>
@@ -5114,6 +5118,7 @@ const CharCreationPage = () => {
                                         >
                                             <CardHeader title={prof.nome} subheader={`Ambiente: ${prof.ambiente || prof.ambienteEmprego}`} />
                                             <CardContent>
+                                                <Typography sx={{ marginBottom: 4 }}>{prof.descricao}</Typography>
                                                 {prof.habilidades
                                                     .filter(hab => {
                                                         const nome = hab.nome;
@@ -5769,9 +5774,10 @@ const CharCreationPage = () => {
                             </FormControl>
 
                             <Box mt={3} textAlign="right">
-                                <Button variant="outlined" onClick={() => {setOpenFeiticeiroChoices(false)
-                                      handleRegaliaChange('feiticeiro')
-                                    }}>
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenFeiticeiroChoices(false)
+                                    handleRegaliaChange('feiticeiro')
+                                }}>
                                     Fechar
                                 </Button>
                                 <Button
@@ -5843,9 +5849,10 @@ const CharCreationPage = () => {
                             </FormControl>
 
                             <Box mt={3} textAlign="right">
-                                <Button variant="outlined" onClick={() => {setOpenDiplomataChoices(false)
-                                      handleRegaliaChange('diplomata')
-                                    }}>
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenDiplomataChoices(false)
+                                    handleRegaliaChange('diplomata')
+                                }}>
                                     Fechar
                                 </Button>
                                 <Button
@@ -5928,9 +5935,10 @@ const CharCreationPage = () => {
                             </FormControl>
 
                             <Box mt={3} textAlign="right">
-                                <Button variant="outlined" onClick={() => {setOpenExploradorChoices(false)
-                                      handleRegaliaChange('explorador')
-                                    }}>
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenExploradorChoices(false)
+                                    handleRegaliaChange('explorador')
+                                }}>
                                     Fechar
                                 </Button>
                                 <Button
@@ -6015,9 +6023,10 @@ const CharCreationPage = () => {
                             </FormControl>
 
                             <Box mt={3} textAlign="right">
-                                <Button variant="outlined" onClick={() => {setOpenAcademicoChoices(false)
-                                      handleRegaliaChange('academico')
-                                    }}>
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenAcademicoChoices(false)
+                                    handleRegaliaChange('academico')
+                                }}>
                                     Fechar
                                 </Button>
                                 <Button
