@@ -1370,7 +1370,7 @@ const racas = {
             {
                 id: "Domínio aForja",
                 nome: "Domínio da Forja",
-                descricao: `Um anão do domínio da forja se origina de uma linhagem de trabalhadores de metal e consegue reconhecer a qualidade de uma arma apenas de olhar para ela. Testes de Habilidade de história, Natureza ou apuração de itens mágicos recebe um valor igual a +1 quando se trata de itens forjados em metal.\n  
+                descricao: `Um anão do domínio da forja se origina de uma linhagem de trabalhadores de metal e consegue reconhecer a qualidade de uma arma apenas de olhar para ela. Testes de Habilidade de história, Natureza ou Arcanatec recebe um valor igual a +1 quando se trata de itens forjados em metal.\n  
                 Anões da forja também tem proficiência em machado anão. \n
                 Anões da forja tem resistência a dano de fogo.
                 `
@@ -2314,7 +2314,7 @@ const regaliasDeAprendiz = [
     {
         id: 'iniciado',
         nome: 'Iniciado(a) Aprendiz',
-        descricao: `1 ponto em Arcanismo, Ritualismo ou Apuração de Itens Mágicos.
+        descricao: `1 ponto em Arcanismo, Ritualismo ou Arcanatec.
             1 ponto em Combate Arcano.
             Magias:
             - Míssil Arcano: 1d4 por míssil (2 Magia cada, até 5).
@@ -2703,7 +2703,7 @@ const antecedentes = [
         "habilidades": [
             "2 pontos em Arcanismo",
             "2 pontos em Alquimia",
-            "1 ponto em Apuração de Itens Mágicos",
+            "1 ponto em Arcanatec",
             "1 ponto em Natureza"
         ]
     },
@@ -2907,12 +2907,32 @@ const antecedentes = [
 
 const CharCreationPage = () => {
     const [selectedAttribute, setSelectedAttribute] = useState('');
+    const [selectedAttributeCombatente, setSelectedAttributeCombatente] = useState('');
+    const [selectedAttributeCombatente2, setSelectedAttributeCombatente2] = useState('');
+    const [selectedAttributeNovico, setSelectedAttributeNovico] = useState('');
+    const [selectedAttributeNovico2, setSelectedAttributeNovico2] = useState('');
+    const [selectedAttributeIniciado, setSelectedAttributeIniciado] = useState('');
+    const [selectedAttributeIniciado2, setSelectedAttributeIniciado2] = useState('');
+    const [selectedAttributeFeiticeiro, setSelectedAttributeFeiticeiro] = useState('');
+    const [selectedAttributeFeiticeiro2, setSelectedAttributeFeiticeiro2] = useState('');
+    const [selectedAttributeDiplomata, setSelectedAttributeDiplomata] = useState('');
+    const [selectedAttributeExplorador, setSelectedAttributeExplorador] = useState('');
+    const [selectedAttributeExplorador2, setSelectedAttributeExplorador2] = useState('');
+    const [selectedAttributeAcademico, setSelectedAttributeAcademico] = useState('');
+    const [selectedAttributeAcademico2, setSelectedAttributeAcademico2] = useState('');
     const [selectedProfModal, setSelectedProfModal] = useState('');
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const [inicialMoney, setInicialMoney] = useState(450);
     var goldLimit = inicialMoney || 450;
     const [open, setOpen] = useState(false);
     const [openForcaOuDex, setOpenForcaOuDex] = useState(false);
+    const [openForcaOuDexOuFortitude, setOpenForcaOuDexOuFortitude] = useState(false);
+    const [openNovicoChoices, setOpenNovicoChoices] = useState(false);
+    const [openDiplomataChoices, setOpenDiplomataChoices] = useState(false);
+    const [openFeiticeiroChoices, setOpenFeiticeiroChoices] = useState(false);
+    const [openIniciadoChoices, setOpenIniciadoChoices] = useState(false);
+    const [openExploradorChoices, setOpenExploradorChoices] = useState(false);
+    const [openAcademicoChoices, setOpenAcademicoChoices] = useState(false);
     const [openProfEsgrimaOuArmadura, setOpenProfEsgrimaOuArmadura] = useState(false);
     const [group1, setGroup1] = useState([]);
     const [group2, setGroup2] = useState([]);
@@ -3119,6 +3139,17 @@ const CharCreationPage = () => {
         console.log(values);
 
     };
+    const clearGroups = (groups, groupSetters, increment) => {
+        groups.forEach((group, index) => {
+            group.forEach(value => {
+                removeAutoIncrementedValueByName(value, increment);
+            });
+            groupSetters[index]([]); // limpa o grupo
+        });
+        console.log(group1, group2);
+
+    };
+
     const handleAntecedenteChange = (antecedente) => {
         if (antecedenteSelecionado?.nome === antecedente.nome) {
             setChosenAntecedentes(prev => {
@@ -3147,6 +3178,428 @@ const CharCreationPage = () => {
                     handleRemoveBG({ name: "Símbolo santo", price: 0.7 });
                     removeAutoIncrementedValueByName('História', 1);
                     removeAutoIncrementedValueByName('Intuição', 1);
+                    break;
+                case 'ACROBATA':
+
+                    removeAutoIncrementedValueByName('Acrobacia', 2);
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Destreza', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    break;
+                case 'ADESTRADOR DE ANIMAIS':
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Lidar com animais', 2);
+                    removeAutoIncrementedValueByName('Natureza', 1);
+                    removeAutoIncrementedValueByName('Armadilhas', 1);
+                    break;
+                case 'AMALDIÇOADO':
+                    removeAutoIncrementedValueByName('Percepção', 2);
+                    removeAutoIncrementedValueByName('Ocultismo', 2);
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    removeAutoIncrementedValueByName('Ritualismo', 2);
+                    setAutoIncrementedValueByName('Intuição', 1);
+                    setAutoIncrementedValueByName('Persuasão', 1);
+                    break;
+                case 'AMNÉSICO':
+                    clearGroups([group2], [setGroup2], 1);
+                    clearGroups([group1], [setGroup1], 2);
+                    break;
+                case 'ARQUEOLOGISTA':
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Investigação', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Arqueologia', 1);
+                    break;
+                case 'ARTESÃO':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Percepção', 2);
+                    removeAutoIncrementedValueByName('Negociação', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Ferramentas",
+                        description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                        price: 25
+                    }, 1)
+                    setModalAberto(true);
+
+                    break;
+                case 'ASSISTENTE DE LABORATÓRIO':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Alquimia', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Arcanismo', 1);
+                    setEspecieSelecionadaLista({})
+                    break;
+                case 'ASTRÔNOMO':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    handleRemoveBG("Equipamento Geral", { name: "Telescópio portátil", price: 1 }, 1);
+                    handleRemoveBG("Equipamento Geral", { name: "Mapa das estrelas", price: 2 }, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Cartografia",
+                        description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.",
+                        price: 30
+                    }, 1)
+                    break;
+                case 'ATOR':
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 2);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    removeAutoIncrementedValueByName('Sedução', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Disfarces",
+                        description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                        price: 50
+                    }, 1)
+                    break;
+                case 'BANDIDO':
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 2);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Arrombamento",
+                        description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
+                        price: 45
+                    }, 1);
+                    break;
+                case 'BARBEIRO':
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Negociação', 2);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedValueByName('Destreza', 1);
+
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Disfarces",
+                        description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                        price: 50
+                    }, 1)
+                    break;
+                case 'BATEDOR':
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    removeAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Escalada",
+                        description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
+                        price: 40
+                    }, 1)
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Explorador",
+                        description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                        price: 35
+                    }, 1);
+                    break;
+                case 'BIBLIOTECÁRIO':
+                    removeAutoIncrementedValueByName('SobreviHistóriavência', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência', 2);
+                    removeAutoIncrementedValueByName('Teologia', 1);
+                    removeAutoIncrementedValueByName('Natureza', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
+                    break;
+                case 'CAÇADOR DE RECOMPENSAS':
+                    removeAutoIncrementedValueByName('Rastreamento', 2);
+                    removeAutoIncrementedValueByName('Investigação', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 1);
+                    removeAutoIncrementedValueByName('Negociação', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Explorador",
+                        description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                        price: 35
+                    }, 1);
+                    break;
+                case 'CAPANGA':
+                    removeAutoIncrementedValueByName('Negociação', 2);
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    removeAutoIncrementedValueByName('Fortitude', 1);
+                    removeAutoIncrementedValueByName('Força', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Arrombamento",
+                        description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.",
+                        price: 45
+                    }, 1);
+                    break;
+                case 'CARTEIRO':
+                    removeAutoIncrementedValueByName('Percepção', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Explorador",
+                        description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                        price: 35
+                    }, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Cartografia",
+                        description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.",
+                        price: 30
+                    }, 1);
+                    removeAutoIncrementedProfByName('Condução de Veículos Terrestres', 1);
+                    handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
+                    break;
+                case 'CAMPONÊS':
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName(' Lidar com animais', 2);
+                    removeAutoIncrementedValueByName('Fortitude', 1);
+                    removeAutoIncrementedValueByName('Destreza', 1);
+                    removeAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
+                    break;
+                case 'CHARLATÃO':
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Enganação', 2);
+                    removeAutoIncrementedValueByName('EngPersuasãoanação', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Disfarces",
+                        description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                        price: 50
+                    }, 1);
+                    break;
+                case 'CIRCENSE':
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedValueByName('Acrobacia', 1);
+                    setEspecieSelecionadaLista({})
+                    break;
+                case 'COMERCIANTE':
+                    removeAutoIncrementedValueByName('Negociação', 2);
+                    removeAutoIncrementedValueByName('Arcanatec', 2);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    removeAutoIncrementedValueByName('Persuasão', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Sobrevivência",
+                        description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                        price: 30
+                    }, 1);
+                    break;
+                case 'CORTESÃO':
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 2);
+                    removeAutoIncrementedValueByName('Sedução', 1);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
+                    break;
+                case 'CURANDEIRO':
+                    removeAutoIncrementedValueByName('Medicina', 2);
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Sobrevivência', 1);
+                    removeAutoIncrementedValueByName('Alquimia', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit Médico",
+                        description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.",
+                        price: 50
+                    }, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Herborista",
+                        description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.",
+                        price: 20
+                    }, 1);
+                    break;
+                case 'DETETIVE':
+                    removeAutoIncrementedValueByName('Investigação', 2);
+                    removeAutoIncrementedValueByName('Rastreamento', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Explorador",
+                        description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.",
+                        price: 35
+                    }, 1);
+                    break;
+                case 'EREMITA':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Lidar com Animais', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Sobrevivência",
+                        description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                        price: 30
+                    }, 1);
+                    break;
+                case 'ESCUDEIRO':
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Atletismo', 2);
+                    removeAutoIncrementedValueByName('Fortitude', 1);
+                    removeAutoIncrementedValueByName(selectedAttribute, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Ferramentas",
+                        description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                        price: 25
+                    }, 1)
+                    break;
+                case 'ESPIÃO':
+                    removeAutoIncrementedValueByName('Furtividade', 2);
+                    removeAutoIncrementedValueByName('Investigação', 2);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Disfarces",
+                        description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.",
+                        price: 50
+                    }, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Venenos",
+                        description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.",
+                        price: 70
+                    }, 1)
+                    break;
+                case 'ESTUDANTE DE MAGIA':
+                    removeAutoIncrementedValueByName('Arcanismo', 2);
+                    removeAutoIncrementedValueByName('Alquimia', 2);
+                    removeAutoIncrementedValueByName('Arcanatec', 1);
+                    removeAutoIncrementedValueByName('Natureza', 1);
+                    break;
+                case 'FANÁTICO':
+                    removeAutoIncrementedValueByName('Ocultismo', 2);
+                    removeAutoIncrementedValueByName('Ritualismo', 2);
+                    removeAutoIncrementedValueByName('Arcanismo', 1);
+                    removeAutoIncrementedValueByName('Teologia', 1);
+                    break;
+                case 'FORASTEIRO':
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Negociação', 1);
+                    break;
+                case 'GLADIADOR':
+                    removeAutoIncrementedValueByName('Atletismo', 2);
+                    removeAutoIncrementedValueByName('Acrobacia', 2);
+                    removeAutoIncrementedValueByName(selectedAttribute, 1);
+                    removeAutoIncrementedValueByName('Fortitude', 1);
+                    break;
+                case 'GUARDA':
+                    removeAutoIncrementedValueByName('Atletismo', 2);
+                    removeAutoIncrementedValueByName('Acrobacia', 2);
+                    removeAutoIncrementedProfByName(selectedProfModal, 1);
+                    break;
+                case 'HERDEIRO':
+                    removeAutoIncrementedValueByName('Persuasão', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
+                    setInicialMoney(450)
+                    break;
+                case 'HEROICO':
+                    removeAutoIncrementedValueByName('Acrobacia', 2);
+                    removeAutoIncrementedValueByName('Medicina', 2);
+                    removeAutoIncrementedValueByName('Atletismo', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    break;
+                case 'JORNALEIRO':
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Investigação', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Navegação', 1);
+                    break;
+                case 'MARUJO':
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Investigação', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Navegação', 1);
+                    removeAutoIncrementedValueByName(selectedAttribute, 1);
+                    break;
+                case 'MÉDICO DE BECO':
+                    removeAutoIncrementedValueByName('Medicina', 2);
+                    removeAutoIncrementedValueByName('Alquimia', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Ferramentas",
+                        description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.",
+                        price: 25
+                    }, 1);
+                    break;
+                case 'MENESTREL':
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Sedução', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 1);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    setOpenForcaOuDex(true);
+                    handleRemoveBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Músico",
+                        description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.",
+                        price: 55
+                    }, 1);
+
+                    break;
+                case 'MINERADOR':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Força', 1);
+                    removeAutoIncrementedProfByName('Kit de Arrombamento', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Escalada",
+                        description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.",
+                        price: 40
+                    }, 1)
+                    break;
+                case 'NAVEGADOR':
+                    removeAutoIncrementedValueByName('Percepção', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Investigação', 1);
+                    removeAutoIncrementedValueByName('História', 1);
+
+                    break;
+                case 'NOBRE':
+                    removeAutoIncrementedValueByName('Jurisprudência', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
+                    handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
+                    setInicialMoney(450);
+                    break;
+                case 'NÔMADE':
+                    removeAutoIncrementedValueByName('Lidar com animais', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Investigação', 1);
+                    removeAutoIncrementedValueByName('Sobrevivência', 1);
+                    handleRemoveBG("Kits", {
+                        name: "Kit de Sobrevivência",
+                        description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.",
+                        price: 30
+                    }, 1);
+                    break;
+                case 'ÓRFÃO':
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('Enganação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    break;
+                case 'PEREGRINO':
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Teologia', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    break;
+                case 'PRISIONEIRO':
+                    removeAutoIncrementedValueByName('Furtividade', 2);
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    break;
+                case 'REFUGIADO':
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 2);
+                    removeAutoIncrementedValueByName('Intuição', 1);
+                    removeAutoIncrementedValueByName('História', 1);
+                    break;
+                case 'TAVERNEIRO':
+                    removeAutoIncrementedValueByName('Negociação', 2);
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Intimidação', 1);
+                    removeAutoIncrementedValueByName('Destreza', 1);
+
+                    break;
+                default:
+                    // opcional: lidar com casos não mapeados
                     break;
             }
 
@@ -3827,7 +4280,8 @@ const CharCreationPage = () => {
                     type="number"
                     size="small"
                     value={value}
-                    onChange={(e) => {(onChange(nome, parseInt(e.target.value) || 0));console.log(e.target.value);
+                    onChange={(e) => {
+                        (onChange(nome, parseInt(e.target.value) || 0)); console.log(e.target.value);
                     }}
                     inputProps={{ min: 0, max: niveis.length, step: 1 }}
                     sx={{ width: '80px' }}
@@ -3855,24 +4309,24 @@ const CharCreationPage = () => {
         newVal = Math.max(0, Math.min(newVal, maxNiveis));
         const prevVal = values[nome] || 0;
         const prevPoints = valuesPoints[nome] || 0;
-      
+
         // Determina se é incremento ou decremento
         const step = newVal > prevVal ? 1 : newVal < prevVal ? -1 : 0;
         if (step === 0) return; // sem mudança
-      
+
         // 1) Atualiza o valor bruto, mas nunca abaixo de 0 nem acima de maxNiveis
         let updatedVal = prevVal + step;
         updatedVal = Math.max(0, Math.min(updatedVal, maxNiveis));
-      
+
         // 2) Calcula diferença de pontos (sempre de 1 em 1)
         let updatedPoints = prevPoints + step;
         updatedPoints = Math.max(0, updatedPoints);
-      
+
         // 3) Se o valor bruto bateu em maxNiveis e houve "estouro", tira do points
         if (updatedVal === maxNiveis && prevVal + step > maxNiveis) {
-          // houve tentativa de ultrapassar
-          const excedente = (prevVal + step) - maxNiveis;
-          updatedPoints = Math.max(0, updatedPoints - excedente);
+            // houve tentativa de ultrapassar
+            const excedente = (prevVal + step) - maxNiveis;
+            updatedPoints = Math.max(0, updatedPoints - excedente);
         }
         const extra = autoIncrementedProfValues[nome] || 0;
         const newCusto = calculateCustoEscalonado(newVal - extra);
@@ -3888,35 +4342,35 @@ const CharCreationPage = () => {
             setValues(v => ({ ...v, [nome]: updatedVal }));
             setValuesPoints(p => ({ ...p, [nome]: updatedPoints }));
         }
-      };
-      
-      const ajustarDiscrepancia = () => {
+    };
+
+    const ajustarDiscrepancia = () => {
         const novosValues = { ...values };
         const novosPoints = { ...valuesPoints };
-      
+
         proficiencias.forEach(({ nome, niveis }) => {
-          const maxNiveis = niveis.length;
-          const val = novosValues[nome] || 0;
-          const pts = novosPoints[nome] || 0;
-      
-          // Se o value for maior que maxNiveis, corrige
-          if (val > maxNiveis) {
-            const excedente = val - maxNiveis;
-            novosValues[nome] = maxNiveis;
-            // subtrai o excedente de pontos (sem ficar abaixo de zero)
-            novosPoints[nome] = Math.max(0, pts - excedente);
-          }
-      
-          // Se os pontos forem negativos, corrige para zero
-          if (novosPoints[nome] < 0) {
-            novosPoints[nome] = 0;
-          }
+            const maxNiveis = niveis.length;
+            const val = novosValues[nome] || 0;
+            const pts = novosPoints[nome] || 0;
+
+            // Se o value for maior que maxNiveis, corrige
+            if (val > maxNiveis) {
+                const excedente = val - maxNiveis;
+                novosValues[nome] = maxNiveis;
+                // subtrai o excedente de pontos (sem ficar abaixo de zero)
+                novosPoints[nome] = Math.max(0, pts - excedente);
+            }
+
+            // Se os pontos forem negativos, corrige para zero
+            if (novosPoints[nome] < 0) {
+                novosPoints[nome] = 0;
+            }
         });
-      
+
         setValues(novosValues);
         setValuesPoints(novosPoints);
-      };
-      
+    };
+
     const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderColor = "#7B3311", onCheckboxClick, isChecked }) => {
         const handleCheckboxChange = () => {
             onCheckboxClick(data, title, !isChecked);
@@ -4101,13 +4555,95 @@ const CharCreationPage = () => {
             const updated = RegaliasDeAprendiz.filter((id) => id !== regaliaId);
             setRegaliasDeAprendiz(updated);
             handleRegaliasUpdate({ regalias: updated, comprada: RegaliaComprada });
+            switch (regaliaId) {
+                case 'combatente':
+                    removeAutoIncrementedValueByName(selectedAttributeCombatente, 1);
+                    removeAutoIncrementedValueByName(selectedAttributeCombatente2, 1);
+                    setSelectedAttributeCombatente('')
+                    setSelectedAttributeCombatente2('')
+                    break;
+                case 'novico':
+                    removeAutoIncrementedValueByName(selectedAttributeNovico, 1);
+                    removeAutoIncrementedValueByName(selectedAttributeNovico2, 1);
+                    setSelectedAttributeNovico('')
+                    setSelectedAttributeNovico2('')
+                    break;
+                case 'iniciado':
+                    removeAutoIncrementedValueByName(selectedAttributeIniciado, 1);
+                    removeAutoIncrementedValueByName(selectedAttributeIniciado2, 1);
+                    setSelectedAttributeIniciado('')
+                    setSelectedAttributeIniciado2('')
+                    break;
+                case 'feiticeiro':
+                    removeAutoIncrementedValueByName(selectedAttributeFeiticeiro, 1);
+                    removeAutoIncrementedValueByName(selectedAttributeFeiticeiro2, 1);
+                    setSelectedAttributeFeiticeiro('')
+                    setSelectedAttributeFeiticeiro2('')
+                    break;
+                case 'diplomata':
+                    removeAutoIncrementedValueByName(selectedAttributeDiplomata, 2);
+                    removeAutoIncrementedValueByName('Negociação', 1);
+                    removeAutoIncrementedValueByName('Sedução', 2);
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    setSelectedAttributeDiplomata('')
+                    break;
+                case 'explorador':
+                    removeAutoIncrementedValueByName(selectedAttributeExplorador, 2);
+                    removeAutoIncrementedValueByName(selectedAttributeExplorador2, 2);
+                    removeAutoIncrementedValueByName('Sobrevivência', 1);
+                    removeAutoIncrementedValueByName('Negociação', 1);
+                    setSelectedAttributeExplorador('')
+                    setSelectedAttributeExplorador2('')
+                    break;
+                case 'academico':
+                    removeAutoIncrementedValueByName(selectedAttributeAcademico, 2);
+                    removeAutoIncrementedValueByName(selectedAttributeAcademico2, 2);
+                    removeAutoIncrementedValueByName('Teologia', 1);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
+                    setSelectedAttributeAcademico('')
+                    setSelectedAttributeAcademico2('')
+                    break;
+                default:
+                    break;
+            }
+
         } else {
             if (RegaliasDeAprendiz.length < 2) {
                 const updated = [...RegaliasDeAprendiz, regaliaId];
                 setRegaliasDeAprendiz(updated);
                 handleRegaliasUpdate({ regalias: updated, comprada: RegaliaComprada });
+                console.log(updated);
+            }
+            switch (regaliaId) {
+                case 'combatente':
+                    setOpenForcaOuDexOuFortitude(true);
+                    break;
+                case 'novico':
+                    setOpenNovicoChoices(true);
+                    break;
+                case 'iniciado':
+                    setOpenIniciadoChoices(true);
+                    break;
+                case 'feiticeiro':
+                    setOpenFeiticeiroChoices(true);
+                    break;
+                case 'diplomata':
+                    setOpenDiplomataChoices(true);
+
+                    break;
+                case 'explorador':
+                    setOpenExploradorChoices(true);
+
+                    break;
+                case 'academico':
+                    setOpenAcademicoChoices(true);
+
+                    break;
+                default:
+                    break;
             }
         }
+
 
     };
 
@@ -4142,10 +4678,11 @@ const CharCreationPage = () => {
         );
     }
 
-    const handleGroupChange = (groupSetter, selected, name, increment) => {
+    const handleGroupChange = (groupSetter, selected, increment) => {
         return (event) => {
             const { value, checked } = event.target;
             let newSelected = [...selected];
+
             if (checked) {
                 if (selected.length < 2) {
                     newSelected.push(value);
@@ -4153,12 +4690,14 @@ const CharCreationPage = () => {
                 }
             } else {
                 newSelected = newSelected.filter(item => item !== value);
-                // No decrement logic in this example
+                removeAutoIncrementedValueByName(value, increment);
             }
+
             groupSetter(newSelected);
-            console.log(group1, group2);
         };
     };
+
+
     const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
         <Paper
             sx={{
@@ -4767,7 +5306,8 @@ const CharCreationPage = () => {
                                             control={
                                                 <Checkbox
                                                     checked={group1.includes(key)}
-                                                    onChange={handleGroupChange(setGroup1, group1, key, 2)}
+                                                    disabled={group2.find(hab => hab === key)}
+                                                    onChange={handleGroupChange(setGroup1, group1, 2)}
                                                     value={key}
                                                 />
                                             }
@@ -4785,8 +5325,9 @@ const CharCreationPage = () => {
                                             key={key}
                                             control={
                                                 <Checkbox
+                                                    disabled={group1.find(hab => hab === key)}
                                                     checked={group2.includes(key)}
-                                                    onChange={handleGroupChange(setGroup2, group2, key, 1)}
+                                                    onChange={handleGroupChange(setGroup2, group2, 1)}
                                                     value={key}
                                                 />
                                             }
@@ -4981,6 +5522,523 @@ const CharCreationPage = () => {
                         </Box>
                     </Box>
                 </Modal>
+                <Modal open={openForcaOuDexOuFortitude} onClose={() => setOpenForcaOuDexOuFortitude(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeCombatente}
+                                    onChange={(e) => { setSelectedAttributeCombatente(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Força"
+                                        control={<Radio />}
+                                        label={`Força `}
+                                    />
+                                    <FormControlLabel
+                                        value="Destreza"
+                                        control={<Radio />}
+                                        label={`Destreza `}
+                                    />
+                                    <FormControlLabel
+                                        value="Fortitude"
+                                        control={<Radio />}
+                                        label={`Fortitude `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeCombatente2}
+                                    onChange={(e) => { setSelectedAttributeCombatente2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Combate Corpo a Corpo"
+                                        control={<Radio />}
+                                        label={`Combate Corpo a Corpo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Combate a Distância"
+                                        control={<Radio />}
+                                        label={`Combate a Distância `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenForcaOuDexOuFortitude(false)
+                                    handleRegaliaChange('combatente')
+                                }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeCombatente && selectedAttributeCombatente2) {
+                                            setAutoIncrementedValueByName(selectedAttributeCombatente, 1);
+                                            setAutoIncrementedValueByName(selectedAttributeCombatente2, 1);
+                                            setOpenForcaOuDexOuFortitude(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openNovicoChoices} onClose={() => setOpenNovicoChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeNovico}
+                                    onChange={(e) => { setSelectedAttributeNovico(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Teologia"
+                                        control={<Radio />}
+                                        label={`Teologia `}
+                                    />
+                                    <FormControlLabel
+                                        value="Arcanismo"
+                                        control={<Radio />}
+                                        label={`Arcanismo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Medicina"
+                                        control={<Radio />}
+                                        label={`Medicina `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeNovico2}
+                                    onChange={(e) => { setSelectedAttributeNovico2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Combate Corpo a Corpo"
+                                        control={<Radio />}
+                                        label={`Combate Corpo a Corpo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Combate a Distância"
+                                        control={<Radio />}
+                                        label={`Combate a Distância `}
+                                    />
+                                    <FormControlLabel
+                                        value="Combate Arcano"
+                                        control={<Radio />}
+                                        label={`Combate Arcano `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenNovicoChoices(false)
+                                    handleRegaliaChange('novico')
+                                }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeNovico && selectedAttributeNovico2) {
+                                            setAutoIncrementedValueByName(selectedAttributeNovico, 1);
+                                            setAutoIncrementedValueByName(selectedAttributeNovico2, 1);
+                                            setOpenNovicoChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openIniciadoChoices} onClose={() => setOpenIniciadoChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeIniciado}
+                                    onChange={(e) => { setSelectedAttributeIniciado(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Ritualismo"
+                                        control={<Radio />}
+                                        label={`Ritualismo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Arcanismo"
+                                        control={<Radio />}
+                                        label={`Arcanismo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Arcanatec"
+                                        control={<Radio />}
+                                        label={`Medicina `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeIniciado2}
+                                    onChange={(e) => { setSelectedAttributeIniciado2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Combate Arcano"
+                                        control={<Radio />}
+                                        label={`Combate Arcano `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {
+                                    setOpenIniciadoChoices(false)
+                                    handleRegaliaChange('iniciado')
+                                }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeIniciado && selectedAttributeIniciado2) {
+                                            setAutoIncrementedValueByName(selectedAttributeIniciado, 1);
+                                            setAutoIncrementedValueByName(selectedAttributeIniciado2, 1);
+                                            setOpenIniciadoChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openFeiticeiroChoices} onClose={() => setOpenFeiticeiroChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeFeiticeiro}
+                                    onChange={(e) => { setSelectedAttributeFeiticeiro(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Ritualismo"
+                                        control={<Radio />}
+                                        label={`Ritualismo `}
+                                    />
+                                    <FormControlLabel
+                                        value="Ocultismo"
+                                        control={<Radio />}
+                                        label={`Ocultismo`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +1 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeFeiticeiro2}
+                                    onChange={(e) => { setSelectedAttributeFeiticeiro2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Combate Arcano"
+                                        control={<Radio />}
+                                        label={`Combate Arcano `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {setOpenFeiticeiroChoices(false)
+                                      handleRegaliaChange('feiticeiro')
+                                    }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeFeiticeiro && selectedAttributeFeiticeiro2) {
+                                            setAutoIncrementedValueByName(selectedAttributeFeiticeiro, 1);
+                                            setAutoIncrementedValueByName(selectedAttributeFeiticeiro2, 1);
+                                            setOpenFeiticeiroChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openDiplomataChoices} onClose={() => setOpenDiplomataChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +2 pontos</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeDiplomata}
+                                    onChange={(e) => { setSelectedAttributeDiplomata(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Persuasão"
+                                        control={<Radio />}
+                                        label={`Persuasão `}
+                                    />
+                                    <FormControlLabel
+                                        value="Enganação"
+                                        control={<Radio />}
+                                        label={`Enganação`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">+2 pontos em:</FormLabel>
+                                <RadioGroup>
+                                    <FormControlLabel
+                                        checked
+                                        value="Sedução"
+                                        control={<Radio />}
+                                        label={`Sedução `}
+                                    />
+                                    <FormControlLabel
+                                        checked
+                                        value="Negociação"
+                                        control={<Radio />}
+                                        label={`Negociação`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend"> +1 ponto em:</FormLabel>
+                                <RadioGroup>
+                                    <FormControlLabel
+                                        checked
+                                        value="Intimidação"
+                                        control={<Radio />}
+                                        label={`Intimidação `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {setOpenDiplomataChoices(false)
+                                      handleRegaliaChange('diplomata')
+                                    }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeDiplomata) {
+                                            setAutoIncrementedValueByName(selectedAttributeDiplomata, 2);
+                                            setAutoIncrementedValueByName('Negociação', 1);
+                                            setAutoIncrementedValueByName('Sedução', 2);
+                                            setAutoIncrementedValueByName('Intimidação', 2);
+                                            setOpenDiplomataChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openExploradorChoices} onClose={() => setOpenExploradorChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +2 pontos</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeExplorador}
+                                    onChange={(e) => { setSelectedAttributeExplorador(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="Rastreamento"
+                                        control={<Radio />}
+                                        label={`Rastreamento `}
+                                    />
+                                    <FormControlLabel
+                                        value="Investigação"
+                                        control={<Radio />}
+                                        label={`Investigação`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +2 pontos :</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeExplorador2}
+                                    onChange={(e) => { setSelectedAttributeExplorador2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+
+                                        value="Percepção"
+                                        control={<Radio />}
+                                        label={`Percepção`}
+                                    />
+                                    <FormControlLabel
+
+                                        value="Furtividade"
+                                        control={<Radio />}
+                                        label={`Furtividade`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend"> +1 ponto em:</FormLabel>
+                                <RadioGroup>
+                                    <FormControlLabel
+                                        checked
+                                        value="Sobrevivência"
+                                        control={<Radio />}
+                                        label={`Sobrevivência `}
+                                    />
+                                    <FormControlLabel
+                                        checked
+                                        value="Navegação"
+                                        control={<Radio />}
+                                        label={`Navegação `}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {setOpenExploradorChoices(false)
+                                      handleRegaliaChange('explorador')
+                                    }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeExplorador) {
+                                            setAutoIncrementedValueByName(selectedAttributeExplorador, 2);
+                                            setAutoIncrementedValueByName(selectedAttributeExplorador2, 2);
+                                            setAutoIncrementedValueByName('Sobrevivência', 1);
+                                            setAutoIncrementedValueByName('Navegação', 1);
+                                            setOpenExploradorChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+                <Modal open={openAcademicoChoices} onClose={() => setOpenAcademicoChoices(false)}>
+                    <Box sx={style}>
+                        <Typography variant="h6">Atribuir Ponto</Typography>
+                        <Box component="form" mt={2}>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +2 ponto</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeAcademico}
+                                    onChange={(e) => { setSelectedAttributeAcademico(e.target.value); }}
+                                >
+                                    <FormControlLabel
+                                        value="História"
+                                        control={<Radio />}
+                                        label={`História`}
+                                    />
+                                    <FormControlLabel
+                                        value="Intuição"
+                                        control={<Radio />}
+                                        label={`Intuição`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">+1 pontos em:</FormLabel>
+                                <RadioGroup
+
+                                >
+                                    <FormControlLabel
+                                        checked
+                                        value="Jurisprudência (Política e leis)"
+                                        control={<Radio />}
+                                        label={`Jurisprudência (Política e leis)`}
+                                    />
+                                    <FormControlLabel
+                                        checked
+                                        value="Teologia"
+                                        control={<Radio />}
+                                        label={`Teologia`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" sx={{ m: 2 }}>
+                                <FormLabel component="legend">Escolha um atributo para aumentar em +2 pontos :</FormLabel>
+                                <RadioGroup
+                                    value={selectedAttributeAcademico2}
+                                    onChange={(e) => { setSelectedAttributeAcademico2(e.target.value); }}
+                                >
+                                    <FormControlLabel
+
+                                        value="Medicina"
+                                        control={<Radio />}
+                                        label={`Medicina`}
+                                    />
+                                    <FormControlLabel
+
+                                        value="Natureza"
+                                        control={<Radio />}
+                                        label={`Natureza`}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                            <Box mt={3} textAlign="right">
+                                <Button variant="outlined" onClick={() => {setOpenAcademicoChoices(false)
+                                      handleRegaliaChange('academico')
+                                    }}>
+                                    Fechar
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        if (selectedAttributeAcademico) {
+                                            setAutoIncrementedValueByName(selectedAttributeAcademico, 2);
+                                            setAutoIncrementedValueByName(selectedAttributeAcademico2, 2);
+                                            setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
+                                            setAutoIncrementedValueByName('Teologia', 1);
+                                            setOpenAcademicoChoices(false);
+                                        }
+                                    }}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Confirmar
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
                 <Modal open={openProfEsgrimaOuArmadura} onClose={() => setOpenProfEsgrimaOuArmadura(false)}>
                     <Box sx={style}>
                         <Typography variant="h6">Atribuir Ponto</Typography>
@@ -5024,11 +6082,11 @@ const CharCreationPage = () => {
                         </Box>
                     </Box>
                 </Modal>
-            </Box>
+            </Box >
             {/* Footer */}
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+            < Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                 <Typography sx={{ color: '#fff', fontSize: '10px' }}>© {dayjs().year()} Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
+            </Box >
         </Box >
     );
 };
