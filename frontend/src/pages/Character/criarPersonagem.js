@@ -4075,7 +4075,7 @@ const CharCreationPage = () => {
             nível: 1,
             pontos_de_regalia: pontosDeRegalia,
             genero: gender,
-            genero: finallMoney,
+            dinheiro: finallMoney,
             idade: 30,
             descricao: charDiscription,
             antecedente: antecedenteSelecionado,
