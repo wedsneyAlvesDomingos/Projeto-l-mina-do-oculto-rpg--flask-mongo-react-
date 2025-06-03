@@ -31,7 +31,7 @@ with app.app_context():
 def create_personagem(user_id):
     try:
         data = request.get_json() or {}
-
+        pontos_de_regalia = data.get('pontos_de_regalia')
         nome_personagem = data.get('nome_personagem')
         classe = data.get('classe')
         nivel = data.get('nível')
@@ -55,6 +55,7 @@ def create_personagem(user_id):
 
         personagem_id = personagem_service.criar_personagem(
             user_id=user_id,
+            pontos_de_regalia =pontos_de_regalia,
             nome_personagem=nome_personagem,
             classe=classe,
             idade=idade,
@@ -75,8 +76,7 @@ def create_personagem(user_id):
         )
 
         return jsonify({
-            'message': 'Personagem criado com sucesso!',
-            'id': personagem_id
+            'message': 'Personagem criado com sucesso!'
         }), 201
 
     except Exception as e:

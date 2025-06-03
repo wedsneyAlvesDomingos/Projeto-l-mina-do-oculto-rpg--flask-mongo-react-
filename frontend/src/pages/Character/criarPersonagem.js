@@ -3013,6 +3013,8 @@ const CharCreationPage = () => {
     const [modalAberto, setModalAberto] = React.useState(false);
     const [especieSelecionadaLista, setEspecieSelecionadaLista] = useState([]);
     const [openMutatioModal, setOpenMutatioModal] = useState(false);
+    const [pontosDeRegalia, setPontosDeRegalia] = useState(0);
+
     const mutacaoData = {
         "tipo": "Mutante",
         "custo": 2,
@@ -4070,6 +4072,7 @@ const CharCreationPage = () => {
             nome_personagem: charName,
             classe: '',
             nível: 1,
+            pontos_de_regalia: pontosDeRegalia,
             genero: gender,
             idade: 30,
             descricao: charDiscription,
@@ -4116,33 +4119,33 @@ const CharCreationPage = () => {
     const handleToggle = (profissao, habNome) => {
         const id = `${profissao}::${habNome}`;
         let profession = {};
-    
+
         const isSelected = selectedId === id; // estado atual da seleção
-    
+
         if (id) {
             profession = profissao && habNome ? {
                 nome: profissao,
                 habilidades: habNome
             } : {};
         }
-    
+
         setSelectedId(isSelected ? '' : id);
         setProfessionReg(isSelected ? {} : profession);
-    
+
         if (habNome !== 'Abrir Fechaduras') {
             removeAutoIncrementedProfByName("Ferramentas de ladrão", 2);
         }
         if (habNome === 'Abrir Fechaduras') {
             if (isSelected) {
-                
+
                 removeAutoIncrementedProfByName("Ferramentas de ladrão", 2);
             } else {
-                
+
                 setAutoIncrementedProfByName("Ferramentas de ladrão", 2);
             }
         }
     };
-    
+
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
@@ -4624,6 +4627,10 @@ const CharCreationPage = () => {
                     setSelectedAttributeAcademico('')
                     setSelectedAttributeAcademico2('')
                     break;
+                case 'guardarPonto':
+                    setPontosDeRegalia(0)
+                    break;
+
                 default:
                     break;
             }
@@ -4660,6 +4667,10 @@ const CharCreationPage = () => {
                     setOpenAcademicoChoices(true);
 
                     break;
+                case 'guardarPonto':
+                    setPontosDeRegalia(1)
+                    break;
+
                 default:
                     break;
             }

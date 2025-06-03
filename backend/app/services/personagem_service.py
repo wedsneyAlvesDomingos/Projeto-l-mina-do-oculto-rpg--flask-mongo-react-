@@ -6,7 +6,7 @@ class PersonagemService:
     def __init__(self, db):
         self.db = db
 
-    def criar_personagem(self, user_id, nome_personagem, genero, idade, descricao, classe, nivel,  antecedente=None,
+    def criar_personagem(self, user_id, nome_personagem,pontos_de_regalia, genero, idade, descricao, classe, nivel,  antecedente=None,
                          habilidades=None, condicoes=None,
                          proficiencias=None, especie = None, regalias_de_especie=None, regalias_de_aprendiz=None, 
                          regalias_de_classe=None, regalias_de_especialization=None,
@@ -26,6 +26,7 @@ class PersonagemService:
 
         personagem = Personagem(
             user_id=user_id,
+            pontos_de_regalia=pontos_de_regalia,
             nome_personagem=nome_personagem,
             genero=genero,
             idade=idade,

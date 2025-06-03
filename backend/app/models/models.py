@@ -25,6 +25,7 @@ class Personagem(Base):
     __tablename__ = 'personagens'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    pontos_de_regalia = Column(Integer, nullable=False)
     nome_personagem = Column(String, nullable=False)
     genero = Column(String, nullable=True)
     idade = Column(Integer, nullable=True)
@@ -54,6 +55,7 @@ class Personagem(Base):
         """
         return {
             "id": self.id,
+            "pontos_de_regalia": self.pontos_de_regalia,
             "user_id": self.user_id,
             "nome_personagem": self.nome_personagem,
             "genero": self.genero,
