@@ -28,6 +28,7 @@ class Personagem(Base):
     pontos_de_regalia = Column(Integer, nullable=False)
     nome_personagem = Column(String, nullable=False)
     genero = Column(String, nullable=True)
+    dinheiro = Column(String, nullable=True)
     idade = Column(Integer, nullable=True)
     descricao = Column(Text, nullable=True)
     classe = Column(String, nullable=True)
@@ -58,6 +59,7 @@ class Personagem(Base):
             "pontos_de_regalia": self.pontos_de_regalia,
             "user_id": self.user_id,
             "nome_personagem": self.nome_personagem,
+            "dinheiro": self.dinheiro,
             "genero": self.genero,
             "idade": self.idade,
             "descricao": self.descricao,

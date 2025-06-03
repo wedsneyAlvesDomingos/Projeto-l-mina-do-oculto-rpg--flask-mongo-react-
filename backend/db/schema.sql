@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS personagens (
     pontos_de_regalia INTEGER,
     nome_personagem TEXT NOT NULL,
     genero TEXT,
+    dinheiro TEXT,
     idade INTEGER,
     descricao TEXT,
     classe TEXT,

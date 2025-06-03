@@ -36,6 +36,7 @@ def create_personagem(user_id):
         classe = data.get('classe')
         nivel = data.get('nível')
         genero = data.get('genero')
+        dinheiro = data.get('dinheiro')
         idade = data.get('idade')
         descricao = data.get('descricao')
         antecedente = data.get('antecedente', {})
@@ -60,6 +61,7 @@ def create_personagem(user_id):
             classe=classe,
             idade=idade,
             genero=genero,
+            dinheiro=dinheiro,
             descricao=descricao,
             nivel=nivel,
             antecedente=antecedente,

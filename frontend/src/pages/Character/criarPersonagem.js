@@ -2927,6 +2927,7 @@ const CharCreationPage = () => {
     const [selectedProfModal, setSelectedProfModal] = useState('');
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const [inicialMoney, setInicialMoney] = useState(450);
+    const [finallMoney, setFinallMoney] = useState('0');
     var goldLimit = inicialMoney || 450;
     const [open, setOpen] = useState(false);
     const [openForcaOuDex, setOpenForcaOuDex] = useState(false);
@@ -4074,6 +4075,7 @@ const CharCreationPage = () => {
             nível: 1,
             pontos_de_regalia: pontosDeRegalia,
             genero: gender,
+            genero: finallMoney,
             idade: 30,
             descricao: charDiscription,
             antecedente: antecedenteSelecionado,
@@ -4163,7 +4165,7 @@ const CharCreationPage = () => {
                     quantity: existingItem.quantity + 1
                 };
                 setSelectedItems(updatedItems);
-
+                setFinallMoney(`${goldLimit - newTotal}`)
 
             }
         } else {
@@ -4175,6 +4177,7 @@ const CharCreationPage = () => {
                     ...item,
                     quantity: 1
                 }]);
+                setFinallMoney(`${goldLimit - newTotal}`)
             }
 
         }
@@ -4213,17 +4216,25 @@ const CharCreationPage = () => {
     };
     const handleRemove = (item) => {
         const index = selectedItems.findIndex(i => i.key === item.key);
+        const newTotal =  item.price;
         if (index !== -1) {
             const updatedItems = [...selectedItems];
             if (updatedItems[index].quantity > 1) {
                 updatedItems[index].quantity -= 1;
+
+                // setFinallMoney(`${goldLimit}`)
             } else {
                 updatedItems.splice(index, 1);
+               
+
             }
             setSelectedItems(updatedItems);
+            var itemReturned = parseInt(finallMoney) + newTotal;
+            setFinallMoney(`${itemReturned}`)
 
         }
     };
+
     const handleRemoveBG = (item) => {
         const index = selectedItemsBG.findIndex(i => i.key === item.key);
 
