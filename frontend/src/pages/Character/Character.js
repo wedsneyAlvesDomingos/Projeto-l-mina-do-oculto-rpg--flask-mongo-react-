@@ -45,29 +45,29 @@ const CharPage = () => {
 
         const charcterTagTemplate = (char) => {
 
-                var especie;
-                switch (char.especie) {
-                    case 'meioDemonio':
-                        especie = 'Meio Demônio';
-                        break;
-                
-                    default:
-                        break;
-                }
+            var especie;
+            switch (char.especie) {
+                case 'meioDemonio':
+                    especie = 'Meio Demônio';
+                    break;
+
+                default:
+                    break;
+            }
 
             return (
                 <a
                     key={char.id}
-                    href={`/character/fichaDoPersonagem/${char.id}`}
+                    href={`/character/fichaDoPersonagem/página?id=${char.id}`}
                     style={{ textDecoration: 'none' }}
                 >
                     <Paper
                         sx={{
                             display: "flex",
-                            flexDirection:'column',
+                            flexDirection: 'column',
                             alignItems: "center",
                             width: 'fit-content',
-                            p:1,
+                            p: 1,
                             justifyContent: "center",
                             background: '#756A34',
                             minHeight: '300px',
@@ -78,11 +78,16 @@ const CharPage = () => {
                             marginBottom: '10px'
                         }}
                     >
-                        <img src={char.image} style={{width:'150px',height:'150px',border:'2px solid #BB8130', borderRadius:'5%', marginBottom:'15%' }}/>
-                        <Typography className="boxTextChar" sx={{ color: 'white' }}>
-                            {char.nome_personagem}
-                        </Typography>
-                        <Typography className="esteban" sx={{color:'white', fontSize:'11px !important'}}> {especie} / {char.antecedente.nome}</Typography>
+                        <img src={char.image} style={{ width: '150px', height: '150px', border: '2px solid #BB8130', borderRadius: '5%', marginBottom: '10%' }} />
+                        <Box sx={{width:'100%', display: "flex",
+                            flexDirection: 'column',
+                            alignItems: "center", }}>
+                            <Typography className="boxTextChar" sx={{ color: 'white', fontSize: '20px !important' }}>
+                                {char.nome_personagem} / {char.nivel}
+                            </Typography>
+                            <Typography className="esteban" sx={{ color: 'white', fontSize: '12px !important' }}> {especie} <br /> {char.antecedente.nome}</Typography>
+                        </Box>
+
                     </Paper>
                 </a>
             );
@@ -93,7 +98,7 @@ const CharPage = () => {
         }
 
         return (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%', display:'flex', gap:'10px' }}>
                 {personagens.length === 0 ? (
                     <p>Nenhum personagem encontrado.</p>
                 ) : (

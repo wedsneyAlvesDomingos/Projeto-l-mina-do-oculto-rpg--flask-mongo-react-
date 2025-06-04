@@ -2910,6 +2910,7 @@ const antecedentes = [
 ];
 
 const CharCreationPage = () => {
+    const navigate = useNavigate();
     const [selectedAttribute, setSelectedAttribute] = useState('');
     const [selectedAttributeCombatente, setSelectedAttributeCombatente] = useState('');
     const [selectedAttributeCombatente2, setSelectedAttributeCombatente2] = useState('');
