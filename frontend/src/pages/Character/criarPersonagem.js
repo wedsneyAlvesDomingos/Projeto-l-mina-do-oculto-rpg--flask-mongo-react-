@@ -3156,7 +3156,9 @@ const CharCreationPage = () => {
         console.log(group1, group2);
 
     };
-
+    const handleNavigateToCharPage = useCallback(() => {
+        navigate("/character");
+    }, [navigate]);
     const handleAntecedenteChange = (antecedente) => {
         if (antecedenteSelecionado?.nome === antecedente.nome) {
             setChosenAntecedentes(prev => {
@@ -4072,6 +4074,7 @@ const CharCreationPage = () => {
         const payload = {
             nome_personagem: charName,
             classe: '',
+            image: image,
             nível: 1,
             pontos_de_regalia: pontosDeRegalia,
             genero: gender,
@@ -4107,7 +4110,7 @@ const CharCreationPage = () => {
             if (response.ok) {
                 console.log(`Sucesso: ${data.message} (ID: ${data.id})`);
                 alert(`Sucesso: ${data.message} (ID: ${data.id})`)
-                window.location.reload();
+                handleNavigateToCharPage();
             } else {
                 console.log(`Erro: ${data.error}`);
             }
@@ -4216,7 +4219,7 @@ const CharCreationPage = () => {
     };
     const handleRemove = (item) => {
         const index = selectedItems.findIndex(i => i.key === item.key);
-        const newTotal =  item.price;
+        const newTotal = item.price;
         if (index !== -1) {
             const updatedItems = [...selectedItems];
             if (updatedItems[index].quantity > 1) {
@@ -4225,7 +4228,7 @@ const CharCreationPage = () => {
                 // setFinallMoney(`${goldLimit}`)
             } else {
                 updatedItems.splice(index, 1);
-               
+
 
             }
             setSelectedItems(updatedItems);

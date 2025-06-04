@@ -44,6 +44,17 @@ const CharPage = () => {
         }, [userId]);
 
         const charcterTagTemplate = (char) => {
+
+                var especie;
+                switch (char.especie) {
+                    case 'meioDemonio':
+                        especie = 'Meio Demônio';
+                        break;
+                
+                    default:
+                        break;
+                }
+
             return (
                 <a
                     key={char.id}
@@ -53,27 +64,25 @@ const CharPage = () => {
                     <Paper
                         sx={{
                             display: "flex",
+                            flexDirection:'column',
                             alignItems: "center",
-                            width: '100%',
+                            width: 'fit-content',
+                            p:1,
                             justifyContent: "center",
                             background: '#756A34',
-                            minHeight: '80px',
-                            minWidth: '100px',
+                            minHeight: '300px',
+                            minWidth: '200px',
                             borderRadius: '24px',
                             borderBottom: '5px solid #BB8130',
-                            height: '18%',
                             position: 'relative',
                             marginBottom: '10px'
                         }}
                     >
-                        <Avatar
-                            alt={user?.name?.toUpperCase()}
-                            src={UIcon}
-                            sx={{ position: "absolute", left: '10px', width: '60px', height: '60px' }}
-                        />
+                        <img src={char.image} style={{width:'150px',height:'150px',border:'2px solid #BB8130', borderRadius:'5%', marginBottom:'15%' }}/>
                         <Typography className="boxTextChar" sx={{ color: 'white' }}>
                             {char.nome_personagem}
                         </Typography>
+                        <Typography className="esteban" sx={{color:'white', fontSize:'11px !important'}}> {especie} / {char.antecedente.nome}</Typography>
                     </Paper>
                 </a>
             );

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS personagens (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     pontos_de_regalia INTEGER,
     nome_personagem TEXT NOT NULL,
+    image TEXT,
     genero TEXT,
     dinheiro TEXT,
     idade INTEGER,

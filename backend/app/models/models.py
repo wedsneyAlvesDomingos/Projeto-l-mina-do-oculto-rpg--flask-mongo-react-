@@ -26,6 +26,7 @@ class Personagem(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     pontos_de_regalia = Column(Integer, nullable=False)
+    image = Column(String, nullable=False)
     nome_personagem = Column(String, nullable=False)
     genero = Column(String, nullable=True)
     dinheiro = Column(String, nullable=True)
@@ -58,6 +59,7 @@ class Personagem(Base):
             "id": self.id,
             "pontos_de_regalia": self.pontos_de_regalia,
             "user_id": self.user_id,
+            "image": self.image,
             "nome_personagem": self.nome_personagem,
             "dinheiro": self.dinheiro,
             "genero": self.genero,

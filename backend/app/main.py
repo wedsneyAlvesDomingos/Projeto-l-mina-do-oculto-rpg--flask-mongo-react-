@@ -36,6 +36,7 @@ def create_personagem(user_id):
         classe = data.get('classe')
         nivel = data.get('nível')
         genero = data.get('genero')
+        image = data.get('image')
         dinheiro = data.get('dinheiro')
         idade = data.get('idade')
         descricao = data.get('descricao')
@@ -59,6 +60,7 @@ def create_personagem(user_id):
             pontos_de_regalia =pontos_de_regalia,
             nome_personagem=nome_personagem,
             classe=classe,
+            image=image,
             idade=idade,
             genero=genero,
             dinheiro=dinheiro,
