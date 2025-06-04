@@ -22,7 +22,7 @@ const CharPage = () => {
     const userId = user?.id;
     const ListaDePersonagens = () => {
         const [personagens, setPersonagens] = useState([]);
-        const [erro, setErro] = useState(null);
+        const [erro, setErro] = useState('');
 
         useEffect(() => {
             if (!userId) return;
@@ -50,7 +50,45 @@ const CharPage = () => {
                 case 'meioDemonio':
                     especie = 'Meio Demônio';
                     break;
-
+                case 'humano':
+                    especie = 'Humano';
+                    break;
+                case 'elfo':
+                    especie = 'Elfo';
+                    break;
+                case 'anao':
+                    especie = 'Anão';
+                    break;
+                case 'feerico':
+                    especie = 'Feérico';
+                    break;
+                case 'draconiano':
+                    especie = 'Draconiano';
+                    break;
+                case 'meioElfo':
+                    especie = 'Meio Elfo';
+                    break;
+                case 'meioGenio':
+                    especie = 'Meio Gênio';
+                    break;
+                case 'meioCelestial':
+                    especie = 'Meio Celestial';
+                    break;
+                case 'meioTroll':
+                    especie = 'Meio Troll';
+                    break;
+                case 'bestial':
+                    especie = 'Bestial';
+                    break;
+                case 'troll':
+                    especie = 'Troll';
+                    break;
+                case 'contructo':
+                    especie = 'constructo';
+                    break;
+                case 'halfling':
+                    especie = 'Halfling';
+                    break;
                 default:
                     break;
             }
@@ -79,9 +117,11 @@ const CharPage = () => {
                         }}
                     >
                         <img src={char.image} style={{ width: '150px', height: '150px', border: '2px solid #BB8130', borderRadius: '5%', marginBottom: '10%' }} />
-                        <Box sx={{width:'100%', display: "flex",
+                        <Box sx={{
+                            width: '100%', display: "flex",
                             flexDirection: 'column',
-                            alignItems: "center", }}>
+                            alignItems: "center",
+                        }}>
                             <Typography className="boxTextChar" sx={{ color: 'white', fontSize: '20px !important' }}>
                                 {char.nome_personagem} / {char.nivel}
                             </Typography>
@@ -98,7 +138,7 @@ const CharPage = () => {
         }
 
         return (
-            <div style={{ width: '100%', display:'flex', gap:'10px' }}>
+            <div style={{ width: '100%', display: 'flex', gap: '10px' }}>
                 {personagens.length === 0 ? (
                     <p>Nenhum personagem encontrado.</p>
                 ) : (

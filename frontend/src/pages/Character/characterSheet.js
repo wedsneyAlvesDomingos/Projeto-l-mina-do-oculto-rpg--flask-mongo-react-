@@ -21,14 +21,15 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./char.css";
+import fundoCabecalho from "../../assets/images/creatStories.png"
 
 
 const CharacterSheet = () => {
     const params = new URLSearchParams(window.location.search);
     const valor = params.get('id');
-    const [character, setCharacter] = useState(null);
+    const [character, setCharacter] = useState({});
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
-    const [erro, setErro] = useState(null);
+    const [erro, setErro] = useState('');
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
     useEffect(() => {
@@ -48,7 +49,6 @@ const CharacterSheet = () => {
 
                 if (personagem) {
                     setCharacter(personagem);
-                    console.log(personagem);
                 } else {
                     console.warn("Personagem não encontrado para o ID:", valor);
                 }
@@ -63,7 +63,7 @@ const CharacterSheet = () => {
     if (!character) {
         return (
             <Box textAlign="center" mt={4}>
-                <Typography variant="h6">Carregando ficha do personagem...</Typography>
+                <Typography className="esteban" variant="h6">Carregando ficha do personagem...</Typography>
             </Box>
         );
     }
@@ -125,19 +125,19 @@ const CharacterSheet = () => {
                         primary={item.nome ? item.nome : `Item ${idx + 1}`}
                         secondary={
                             <>
-                                {item.category && <Typography variant="caption">{item.category}</Typography>}
+                                {item.category && <Typography className="esteban" variant="caption">{item.category}</Typography>}
                                 {item.dano && (
-                                    <Typography variant="caption" component="span" sx={{ ml: 1 }}>
+                                    <Typography className="esteban" variant="caption" component="span" sx={{ ml: 1 }}>
                                         Dano: {item.dano}
                                     </Typography>
                                 )}
                                 {item.critico !== undefined && (
-                                    <Typography variant="caption" component="span" sx={{ ml: 1 }}>
+                                    <Typography className="esteban" variant="caption" component="span" sx={{ ml: 1 }}>
                                         Crítico: {item.critico}
                                     </Typography>
                                 )}
                                 {item.bonusDefesa !== undefined && (
-                                    <Typography variant="caption" component="span" sx={{ ml: 1 }}>
+                                    <Typography className="esteban" variant="caption" component="span" sx={{ ml: 1 }}>
                                         Bônus Defesa: {item.bonusDefesa}
                                     </Typography>
                                 )}
@@ -158,7 +158,7 @@ const CharacterSheet = () => {
                 if (Array.isArray(entry)) {
                     return entry.length > 0 ? (
                         <Box key={idx} mb={1}>
-                            <Typography variant="subtitle2">Regalias de Espécie:</Typography>
+                            <Typography className="esteban" variant="subtitle2">Regalias de Espécie:</Typography>
                             <Box>
                                 {entry.regalias?.map((r, i) => (
                                     <Chip key={i} label={r} size="small" sx={{ mr: 0.5, mb: 0.5 }} />
@@ -170,9 +170,9 @@ const CharacterSheet = () => {
                     // objeto único
                     return (
                         <Box key={idx} mb={1}>
-                            <Typography variant="subtitle2">{entry.nome || `Entrada ${idx + 1}`}:</Typography>
+                            <Typography className="esteban" variant="subtitle2">{entry.nome || `Entrada ${idx + 1}`}:</Typography>
                             {entry.habilidades && (
-                                <Typography variant="body2">Habilidades: {entry.habilidades}</Typography>
+                                <Typography className="esteban" variant="body2">Habilidades: {entry.habilidades}</Typography>
                             )}
                             {entry.regalias && (
                                 <Box>
@@ -190,7 +190,7 @@ const CharacterSheet = () => {
                 <Box>
                     {Object.entries(regaliasObj).map(([key, val]) => (
                         <Box key={key} mb={1}>
-                            <Typography variant="subtitle2" textTransform="capitalize">
+                            <Typography className="esteban" variant="subtitle2" textTransform="capitalize">
                                 {key.replace(/_/g, ' ')}:
                             </Typography>
                             {Array.isArray(val)
@@ -198,7 +198,7 @@ const CharacterSheet = () => {
                                     <Chip key={i} label={r} size="small" sx={{ mr: 0.5, mb: 0.5 }} />
                                 ))
                                 : typeof val === 'string'
-                                    ? <Typography variant="body2">{val}</Typography>
+                                    ? <Typography className="esteban" variant="body2">{val}</Typography>
                                     : renderObjectTable(val)}
                         </Box>
                     ))}
@@ -209,86 +209,134 @@ const CharacterSheet = () => {
     };
 
     return (
-        <Box p={2}>
+        <Box p={4} mx={4}>
             {/* Cabeçalho com Avatar e Informações Básicas */}
-            <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                        <img src={character.image} style={{ width: '150px', height: '150px', border: '2px solid #BB8130', borderRadius: '5%', marginBottom: '10%' }} />
-                    </Grid>
-                    <Grid item xs>
-                        <Typography variant="h4" gutterBottom>
-                            {character.nome_personagem}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            Nível {character.nivel} – Classe: {character.classe || 'Nenhuma definida'}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            Espécie: {character.especie} • Gênero: {character.genero}
-                        </Typography>
-                        <Typography variant="subtitle1">Idade: {character.idade} anos</Typography>
-                        <Typography variant="subtitle1">Dinheiro: {character.dinheiro} moedas</Typography>
-                    </Grid>
-                </Grid>
+            <Paper elevation={3} sx={{
+                p: 2, mb: 3,
+                borderRight: '1px  solid #756A34',
+                borderLeft: '1px  solid #756A34',
+                borderRadius: '10px',
+                backgroundColor: '#fcfcfcaa',
+
+            }}>
+                <Box container spacing={2} alignItems="center" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'start', flexWrap: 'wrap', gap: 4, }}>
+                    <Box sx={{ width: '10%', minWidth: '100px' }}>
+                        <img src={character.image} style={{ minWidth: '10px', width: '100%', height: 'auto', border: '2px solid #BB8130', borderRadius: '5%', marginBottom: '10%' }} />
+                    </Box>
+                    <Box xs sx={{ display: 'flex', flexDirection: 'column', height: '200px', width: '85%', justifyContent: 'start', minWidth: '300px' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'left', p: 1, borderBottom: '1px dashed #7B331199', }}>
+                            <Typography sx={{ width: '100%', }} className="esteban" variant="h3" gutterBottom>
+                                <strong style={{ color: '#40150A', fontSize: '26px' }}>  {character.nome_personagem}</strong>
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'left', p: 1, borderBottom: '1px dashed #7B331199', }}>
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Nível:</strong> {character.nivel}
+                            </Typography>
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Classe:</strong>  {character.classe || 'Aprendiz'}
+                            </Typography>
+
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Espécie:</strong> {character.especie}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'left', p: 1, borderBottom: '1px dashed #7B331199', }}>
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Gênero:</strong> {character.genero}
+                            </Typography>
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Idade:</strong> {character.idade} anos</Typography>
+                            <Typography sx={{ width: '30%' }} className="esteban" variant="subtitle1">
+                                <strong style={{ color: '#40150A' }}>Dinheiro:</strong> {character.dinheiro} M.O
+                            </Typography>
+                        </Box>
+
+
+                    </Box>
+
+                </Box>
             </Paper>
+            <Box sx={{ display: 'flex', gap: 4 }}>
+                <Box sx={{
+                    width: '30%', minWidth: '300px', hight: '200px',
+                }}>
+                    {character.antecedente && (<Accordion defaultExpanded sx={{
+                        borderRight: '1px  solid #756A34',
+                        borderLeft: '1px  solid #756A34',
+                        borderRadius: '10px',
+                        backgroundColor: '#fcfcfcaa',
 
-            {/* Descrição e Antecedentes */}
-            <Accordion defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Descrição e Antecedentes</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    {character.descricao && (
-                        <Box mb={2}>
-                            <Typography variant="subtitle2" gutterBottom>
-                                Descrição:
-                            </Typography>
-                            <Typography variant="body2">{character.descricao}</Typography>
-                        </Box>
-                    )}
-                    {character.antecedentes && (
-                        <Box>
-                            <Typography variant="subtitle2" gutterBottom>
-                                Antecedente: {character.antecedentes.nome}
-                            </Typography>
-                            <Typography variant="body2">{character.antecedentes.descricao || '—'}</Typography>
-                        </Box>
-                    )}
-                </AccordionDetails>
-            </Accordion>
+                    }}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography className="esteban" variant="h6"> <strong style={{ color: '#40150A' }}>  Antecedente: </strong> {character.antecedente.nome} </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
 
-            <Divider sx={{ my: 2 }} />
+                            <Box>
+                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '100px', overflowY: 'scroll' }} variant="body2">{character.antecedente.descricao || '—'}</Typography>
+                            </Box>
+
+                        </AccordionDetails>
+                    </Accordion>)}
+
+                </Box>
+                <Box sx={{
+                    width: '30%', minWidth: '300px', hight: '200px',
+                }}>
+                    {character.descricao && (<Accordion defaultExpanded sx={{
+
+                        borderRight: '1px  solid #756A34',
+                        borderLeft: '1px  solid #756A34',
+                        borderRadius: '10px',
+                        backgroundColor: '#fcfcfcaa',
+
+                    }}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography className="esteban" variant="h6"> <strong style={{ color: '#40150A' }}>Descrição:  </strong>  </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+
+                            <Box>
+                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '100px', overflowY: 'scroll' }} variant="body2">{character.descricao}  </Typography>
+                            </Box>
+
+                        </AccordionDetails>
+                    </Accordion>)}
+                </Box>
+            </Box>
+
 
             {/* Habilidades */}
             <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Habilidades</Typography>
+                    <Typography className="esteban" variant="h6">Habilidades</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    {character.habilidades ? renderObjectTable(character.habilidades) : <Typography>—</Typography>}
+                    {character.habilidades ? renderObjectTable(character.habilidades) : <Typography className="esteban">—</Typography>}
                 </AccordionDetails>
             </Accordion>
 
             {/* Proficiências */}
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Proficiências</Typography>
+                    <Typography className="esteban" variant="h6">Proficiências</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    {character.proficiencias ? renderObjectTable(character.proficiencias) : <Typography>—</Typography>}
+                    {character.proficiencias ? renderObjectTable(character.proficiencias) : <Typography className="esteban">—</Typography>}
                 </AccordionDetails>
             </Accordion>
 
             {/* Condições */}
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Condições</Typography>
+                    <Typography className="esteban" variant="h6">Condições</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     {character.condicoes && Object.keys(character.condicoes).length > 0 ? (
                         renderObjectTable(character.condicoes)
                     ) : (
-                        <Typography variant="body2">Nenhuma condição ativa.</Typography>
+                        <Typography className="esteban" variant="body2">Nenhuma condição ativa.</Typography>
                     )}
                 </AccordionDetails>
             </Accordion>
@@ -296,16 +344,16 @@ const CharacterSheet = () => {
             {/* Regalias */}
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Regalias</Typography>
+                    <Typography className="esteban" variant="h6">Regalias</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Box mb={2}>
-                        <Typography variant="subtitle2">Pontos de Regalia: {character.pontos_de_regalia}</Typography>
+                        <Typography className="esteban" variant="subtitle2">Pontos de Regalia: {character.pontos_de_regalia}</Typography>
                     </Box>
                     {/* Regalias de Aprendiz */}
                     {character.regalias_de_aprendiz && (
                         <Box mb={2}>
-                            <Typography variant="subtitle2">Regalias de Aprendiz:</Typography>
+                            <Typography className="esteban" variant="subtitle2">Regalias de Aprendiz:</Typography>
                             {renderRegalias(character.regalias_de_aprendiz)}
                         </Box>
                     )}
@@ -313,7 +361,7 @@ const CharacterSheet = () => {
                     {/* Regalias de Classe */}
                     {character.regalias_de_classe && (
                         <Box mb={2}>
-                            <Typography variant="subtitle2">Regalias de Classe:</Typography>
+                            <Typography className="esteban" variant="subtitle2">Regalias de Classe:</Typography>
                             {renderRegalias(character.regalias_de_classe)}
                         </Box>
                     )}
@@ -321,7 +369,7 @@ const CharacterSheet = () => {
                     {/* Regalias de Specialization */}
                     {character.regalias_de_especialization && (
                         <Box mb={2}>
-                            <Typography variant="subtitle2">
+                            <Typography className="esteban" variant="subtitle2">
                                 Regalias de Especialização:
                             </Typography>
                             {renderRegalias(character.regalias_de_especialization)}
@@ -331,7 +379,7 @@ const CharacterSheet = () => {
                     {/* Regalias de Espécie */}
                     {character.regalias_de_especie && (
                         <Box mb={2}>
-                            <Typography variant="subtitle2">Regalias de Espécie:</Typography>
+                            <Typography className="esteban" variant="subtitle2">Regalias de Espécie:</Typography>
                             {renderRegalias(character.regalias_de_especie)}
                         </Box>
                     )}
@@ -339,7 +387,7 @@ const CharacterSheet = () => {
                     {/* Regalias de Profissão */}
                     {character.regalias_de_profissao && (
                         <Box mb={2}>
-                            <Typography variant="subtitle2">Regalias de Profissão:</Typography>
+                            <Typography className="esteban" variant="subtitle2">Regalias de Profissão:</Typography>
                             {renderRegalias(character.regalias_de_profissao)}
                         </Box>
                     )}
@@ -351,13 +399,13 @@ const CharacterSheet = () => {
             {/* Equipamentos */}
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Equipamentos</Typography>
+                    <Typography className="esteban" variant="h6">Equipamentos</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     {character.equipamentos && character.equipamentos.length > 0 ? (
                         renderEquipmentList(character.equipamentos)
                     ) : (
-                        <Typography variant="body2">Sem equipamentos cadastrados.</Typography>
+                        <Typography className="esteban" variant="body2">Sem equipamentos cadastrados.</Typography>
                     )}
                 </AccordionDetails>
             </Accordion>
@@ -365,12 +413,9 @@ const CharacterSheet = () => {
             <Divider sx={{ my: 2 }} />
 
             {/* Datas de Criação/Atualização */}
-            <Box textAlign="right" mt={2}>
-                <Typography variant="caption" display="block">
-                    Criado em: {new Date(character.criou_em).toLocaleString('pt-BR')}
-                </Typography>
-                <Typography variant="caption" display="block">
-                    Atualizado em: {new Date(character.atualizou_em).toLocaleString('pt-BR')}
+            <Box textAlign="right" mt={2} sx={{ background: '#162A22', borderRadius: '10px', p: 1, color: 'white', }}>
+                <Typography className="esteban" variant="caption" display="block" sx={{ fontSize: '12px !important' }}>
+                    <strong>Criado em:</strong> {new Date(character.criado_em).toLocaleString('pt-BR')} / <strong>Atualizado em:</strong> {new Date(character.atualizado_em).toLocaleString('pt-BR')}
                 </Typography>
             </Box>
         </Box>
