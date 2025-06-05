@@ -259,7 +259,7 @@ const CharacterSheet = () => {
             </Paper>
             <Box sx={{ display: 'flex', gap: 4 }}>
                 <Box sx={{
-                    width: '30%', minWidth: '300px', hight: '200px',
+                    width: '30%', minWidth: '300px', hight: '300px',
                 }}>
                     {character.antecedente && (<Accordion defaultExpanded sx={{
                         borderRight: '1px  solid #756A34',
@@ -274,7 +274,7 @@ const CharacterSheet = () => {
                         <AccordionDetails>
 
                             <Box>
-                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '100px', overflowY: 'scroll' }} variant="body2">{character.antecedente.descricao || '—'}</Typography>
+                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '200px', overflowY: 'scroll' }} variant="body2">{character.antecedente.descricao || '—'}</Typography>
                             </Box>
 
                         </AccordionDetails>
@@ -282,7 +282,7 @@ const CharacterSheet = () => {
 
                 </Box>
                 <Box sx={{
-                    width: '30%', minWidth: '300px', hight: '200px',
+                    width: '30%', minWidth: '300px', hight: '300px',
                 }}>
                     {character.descricao && (<Accordion defaultExpanded sx={{
 
@@ -298,7 +298,7 @@ const CharacterSheet = () => {
                         <AccordionDetails>
 
                             <Box>
-                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '100px', overflowY: 'scroll' }} variant="body2">{character.descricao}  </Typography>
+                                <Typography className='descriptionBox esteban' sx={{ wordBreak: 'break-word', height: '200px', overflowY: 'scroll' }} variant="body2">{character.descricao}  </Typography>
                             </Box>
 
                         </AccordionDetails>
@@ -306,29 +306,56 @@ const CharacterSheet = () => {
                 </Box>
             </Box>
 
+            <Divider sx={{ my: 2 }} />
+            <Box sx={{ display: 'flex', gap: 4 }}>
 
-            {/* Habilidades */}
-            <Accordion defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className="esteban" variant="h6">Habilidades</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    {character.habilidades ? renderObjectTable(character.habilidades) : <Typography className="esteban">—</Typography>}
-                </AccordionDetails>
-            </Accordion>
+                {/* Proficiências */}
+                <Accordion sx={{
 
-            {/* Proficiências */}
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className="esteban" variant="h6">Proficiências</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    {character.proficiencias ? renderObjectTable(character.proficiencias) : <Typography className="esteban">—</Typography>}
-                </AccordionDetails>
-            </Accordion>
+                    borderRight: '1px  solid #756A34',
+                    borderLeft: '1px  solid #756A34',
+                    borderRadius: '10px',
+                    backgroundColor: '#fcfcfcaa',
 
+                }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography className="esteban" variant="h6">Proficiências</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {character.proficiencias ? renderObjectTable(character.proficiencias) : <Typography className="esteban">—</Typography>}
+                    </AccordionDetails>
+                </Accordion>
+                {/* Habilidades */}
+                <Accordion defaultExpanded sx={{
+
+                    borderRight: '1px  solid #756A34',
+                    borderLeft: '1px  solid #756A34',
+                    borderRadius: '10px',
+                    backgroundColor: '#fcfcfcaa',
+
+                }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography className="esteban" variant="h6">Habilidades</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {character.habilidades ? renderObjectTable(character.habilidades) : <Typography className="esteban">—</Typography>}
+                    </AccordionDetails>
+                </Accordion>
+            </Box>
+
+
+
+            <Divider sx={{ my: 2 }} />
             {/* Condições */}
-            <Accordion>
+            <Accordion sx={{
+
+                borderRight: '1px  solid #756A34',
+                borderLeft: '1px  solid #756A34',
+                borderRadius: '10px',
+                backgroundColor: '#fcfcfcaa',
+
+            }}>
+
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className="esteban" variant="h6">Condições</Typography>
                 </AccordionSummary>
@@ -340,9 +367,16 @@ const CharacterSheet = () => {
                     )}
                 </AccordionDetails>
             </Accordion>
-
+            <Divider sx={{ my: 2 }} />
             {/* Regalias */}
-            <Accordion>
+            <Accordion sx={{
+
+                borderRight: '1px  solid #756A34',
+                borderLeft: '1px  solid #756A34',
+                borderRadius: '10px',
+                backgroundColor: '#fcfcfcaa',
+
+            }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className="esteban" variant="h6">Regalias</Typography>
                 </AccordionSummary>
@@ -397,7 +431,14 @@ const CharacterSheet = () => {
             <Divider sx={{ my: 2 }} />
 
             {/* Equipamentos */}
-            <Accordion>
+            <Accordion sx={{
+
+                borderRight: '1px  solid #756A34',
+                borderLeft: '1px  solid #756A34',
+                borderRadius: '10px',
+                backgroundColor: '#fcfcfcaa',
+
+            }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className="esteban" variant="h6">Equipamentos</Typography>
                 </AccordionSummary>
