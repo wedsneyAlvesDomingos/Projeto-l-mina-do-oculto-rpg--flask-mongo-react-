@@ -325,25 +325,25 @@ const CharacterSheet = () => {
                         {character.proficiencias ? renderObjectTable(character.proficiencias) : <Typography className="esteban">—</Typography>}
                     </AccordionDetails>
                 </Accordion>
-                {/* Habilidades */}
-                <Accordion defaultExpanded sx={{
 
-                    borderRight: '1px  solid #756A34',
-                    borderLeft: '1px  solid #756A34',
-                    borderRadius: '10px',
-                    backgroundColor: '#fcfcfcaa',
-
-                }}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className="esteban" variant="h6">Habilidades</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        {character.habilidades ? renderObjectTable(character.habilidades) : <Typography className="esteban">—</Typography>}
-                    </AccordionDetails>
-                </Accordion>
             </Box>
+            <Divider sx={{ my: 2 }} />
+            {/* Habilidades */}
+            <Accordion defaultExpanded sx={{
 
+                borderRight: '1px  solid #756A34',
+                borderLeft: '1px  solid #756A34',
+                borderRadius: '10px',
+                backgroundColor: '#fcfcfcaa',
 
+            }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography className="esteban" variant="h6">Habilidades</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {character.habilidades ? renderObjectTable(character.habilidades) : <Typography className="esteban">—</Typography>}
+                </AccordionDetails>
+            </Accordion>
 
             <Divider sx={{ my: 2 }} />
             {/* Condições */}
