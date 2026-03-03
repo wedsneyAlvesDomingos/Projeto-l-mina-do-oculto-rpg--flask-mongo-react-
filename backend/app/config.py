@@ -12,7 +12,7 @@ class Config:
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'your_password')
     POSTGRES_DB = os.getenv('POSTGRES_DB', 'your_database')
     POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'localhost')
-    POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
+    POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5433')
 
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://"

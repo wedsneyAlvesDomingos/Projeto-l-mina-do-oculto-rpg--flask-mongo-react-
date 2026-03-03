@@ -19,7 +19,7 @@ mail = Mail(app)
 mail.init_app(app)
 
 url = os.getenv('REACT_APP_LISTEN_ADDRESS', 'http://localhost')
-mail_sender_url = f"{url}:5003"
+mail_sender_url = f"{url}:5009"
 
 with app.app_context():
     db.create_all()
@@ -101,6 +101,33 @@ def get_personagens_por_user(user_id):
     except Exception as e:
         traceback.print_exc()   # <— vai exibir linha a linha do erro
         return make_response(jsonify({"error": "Erro interno no servidor"}), 500)
+
+@app.route('/personagens/<int:personagem_id>', methods=['PUT'])
+def update_personagem(personagem_id):
+    try:
+        data = request.get_json() or {}
+        
+        if not data:
+            return jsonify({'error': 'Nenhum dado fornecido para atualização'}), 400
+
+        service = PersonagemService(db)
+        success = service.atualizar_personagem(personagem_id, data)
+        
+        if success:
+            personagem_atualizado = service.obter_personagem_por_id(personagem_id)
+            return jsonify({
+                'message': 'Personagem atualizado com sucesso!',
+                'personagem': personagem_atualizado
+            }), 200
+        else:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+
+    except ValueError as ve:
+        return make_response(jsonify({"error": str(ve)}), 400)
+
+    except Exception as e:
+        traceback.print_exc()
+        return make_response(jsonify({"error": "Erro interno no servidor", "details": str(e)}), 500)
     
 @app.route('/users', methods=['POST'])
 def create_user():

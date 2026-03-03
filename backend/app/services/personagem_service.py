@@ -59,13 +59,13 @@ class PersonagemService:
             raise
 
     def obter_personagem_por_id(self, personagem_id):
-        personagem = Personagem.query.get(personagem_id)
+        personagem = self.db.session.query(Personagem).get(personagem_id)
         if personagem:
             return personagem.to_dict()
         return None
 
     def atualizar_personagem(self, personagem_id, novos_dados):
-        personagem = Personagem.query.get(personagem_id)
+        personagem = self.db.session.query(Personagem).get(personagem_id)
         if not personagem:
             return False
         for key, value in novos_dados.items():
@@ -80,7 +80,7 @@ class PersonagemService:
             return False
 
     def deletar_personagem(self, personagem_id):
-        personagem = Personagem.query.get(personagem_id)
+        personagem = self.db.session.query(Personagem).get(personagem_id)
         if not personagem:
             return False
         try:

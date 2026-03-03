@@ -5,7 +5,7 @@ POSTGRES_USER=ldoBanco
 POSTGRES_PASSWORD=bancoLDO2025
 POSTGRES_DB=LDO_DataBase
 POSTGRES_HOST=postgresLDO
-POSTGRES_PORT=5432
+POSTGRES_PORT=5433
 
 export PGPASSWORD=bancoLDO2025
-psql -h localhost -p 5432 -U ldoBanco -d LDO_DataBase
+psql -h localhost -p 5433 -U ldoBanco -d LDO_DataBase
