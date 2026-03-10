@@ -88,6 +88,9 @@ export {
     getCondicao,
     getCondicoesPorCategoria,
     getCondicaoResumo,
+    getCondicoesComFlag,
+    getCondicoesComDanoRecorrente,
+    isCondicaoIncapacitante,
 } from './condicoes';
 
 // ============================================================================
@@ -156,6 +159,7 @@ export {
     getSubracas,
     getTotalSubracas,
     getEspeciesParaSelect,
+    getEstatisticasEspecie,
 } from './especies';
 
 // ============================================================================
@@ -169,6 +173,7 @@ export {
     getAntecedente,
     getAntecedentesComHabilidade,
     getAntecedentesParaSelect,
+    calcularBonusAntecedente,
 } from './antecedentes';
 
 // ============================================================================
@@ -179,14 +184,32 @@ export {
     regaliasDeAprendiz,
     // Regalias Opcionais (variantes de espécie)
     regaliasOpcionais,
-    // Funções auxiliares
+    // Classes Primárias e Especializações
+    classesPrimarias,
+    especializacoes,
+    // Tabela de pontos por nível
+    pontosRegaliaPorNivel,
+    // Funções auxiliares — Aprendiz
     getRegaliaAprendiz,
     getRegaliaAprendizPorNome,
     getRegaliasAprendizParaSelect,
+    // Funções auxiliares — Opcionais
     getRegaliaOpcional,
     getOpcaoRegalia,
     getMutacoes,
     getTiposRegaliasOpcionais,
+    // Funções auxiliares — Classes Primárias e Especializações
+    getClassePrimaria,
+    getEspecializacao,
+    getClassesPrimariasParaSelect,
+    getEspecializacoesParaSelect,
+    getEspecializacoesDisponiveis,
+    getArvoreRegalia,
+    getRegaliaAvulsa,
+    // Funções de resolução de regalias
+    aplicarRegaliaAprendiz,
+    aplicarRegaliaOpcional,
+    validarPreRequisitosRegalia,
 } from './regalias';
 
 // ============================================================================
@@ -225,7 +248,35 @@ export {
     getArmadurasPorDefesa,
     getPesoItem,
     enriquecerComPeso,
+    getArmasPorCategoriaProf,
+    getArmasComPropriedade,
+    getArmasComEfeitosEspeciais,
+    getArmadurasPorCategoriaProf,
 } from './equipamentos';
+
+// ============================================================================
+// CLASSES AVANÇADAS (catálogo de progressão)
+// ============================================================================
+export {
+    // Tabela de classes aprendiz
+    classesAprendiz,
+    // Mapeamento classe → especializações
+    classeEspecializacaoMap,
+    // Resumos descritivos
+    resumoClassesPrimarias,
+    resumoEspecializacoes,
+    // Mecânica de Pontos de Feitiçaria
+    pontosFeiticaria,
+    // Funções de consulta
+    getEspecializacoesParaClasse,
+    verificarRequisitoEspecializacao,
+    getProgressaoCompleta,
+    calcularBonusClassePrimaria,
+    calcularBonusEspecializacao,
+    getEspecializacoesMistas,
+    getEspecializacoesPuras,
+    getOpcoesProgressaoParaSelect,
+} from './classesAvancadas';
 
 // ============================================================================
 // REGRAS DO SISTEMA

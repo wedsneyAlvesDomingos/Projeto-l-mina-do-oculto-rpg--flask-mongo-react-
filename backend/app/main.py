@@ -18,8 +18,7 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 mail.init_app(app)
 
-url = os.getenv('REACT_APP_LISTEN_ADDRESS', 'http://localhost')
-mail_sender_url = f"{url}:5009"
+mail_sender_url = f"http://192.168.1.155:5009"
 
 with app.app_context():
     db.create_all()
@@ -31,53 +30,13 @@ with app.app_context():
 def create_personagem(user_id):
     try:
         data = request.get_json() or {}
-        pontos_de_regalia = data.get('pontos_de_regalia')
-        nome_personagem = data.get('nome_personagem')
-        classe = data.get('classe')
-        nivel = data.get('nível')
-        genero = data.get('genero')
-        image = data.get('image')
-        dinheiro = data.get('dinheiro')
-        idade = data.get('idade')
-        descricao = data.get('descricao')
-        antecedente = data.get('antecedente', {})
-        habilidades = data.get('habilidades', {})
-        condicoes = data.get('condições', {})
-        proficiencias = data.get('proficiencias', [])
-        especie= data.get('especie')
-        regalias_de_especie = data.get('regalias_de_especie', [])
-        regalias_de_aprendiz = data.get('regalias_de_aprendiz', {})
-        regalias_de_classe = data.get('regalias_de_classe', {})
-        regalias_de_especialization = data.get('regalias_de_especialization', {})
-        regalias_de_profissao = data.get('regalias_de_profissao', [])
-        equipamentos = data.get('equipamentos', [])
+        nome_personagem = data.get('nome_personagem') or data.get('name')
+        nivel = data.get('nivel') or data.get('nível') or data.get('level')
 
         if not nome_personagem or not nivel:
             return jsonify({'error': 'Campos obrigatórios ausentes'}), 400
 
-        personagem_id = personagem_service.criar_personagem(
-            user_id=user_id,
-            pontos_de_regalia =pontos_de_regalia,
-            nome_personagem=nome_personagem,
-            classe=classe,
-            image=image,
-            idade=idade,
-            genero=genero,
-            dinheiro=dinheiro,
-            descricao=descricao,
-            nivel=nivel,
-            antecedente=antecedente,
-            habilidades=habilidades,
-            condicoes=condicoes,
-            proficiencias=proficiencias,
-            especie=especie,
-            regalias_de_especie=regalias_de_especie,
-            regalias_de_aprendiz=regalias_de_aprendiz,
-            regalias_de_classe=regalias_de_classe,
-            regalias_de_especialization=regalias_de_especialization,
-            regalias_de_profissao=regalias_de_profissao,
-            equipamentos=equipamentos
-        )
+        personagem_id = personagem_service.criar_personagem(user_id=user_id, data=data)
 
         return jsonify({
             'message': 'Personagem criado com sucesso!'

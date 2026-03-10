@@ -36,7 +36,7 @@ services:
     networks:
       - my_network
     environment:
-      - REACT_APP_LISTEN_ADDRESS=${REACT_APP_LISTEN_ADDRESS}
+      - REACT_APP_LISTEN_ADDRESS=http://192.168.1.159:5055
       - POSTGRES_USER=${POSTGRES_USER:-your_user}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-your_password}
       - POSTGRES_DB=${POSTGRES_DB:-your_database}
@@ -57,7 +57,7 @@ services:
     networks:
       - my_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -p 5433 -h localhost"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5433 -h localhost"]
       interval: 5s
       timeout: 5s
       retries: 5

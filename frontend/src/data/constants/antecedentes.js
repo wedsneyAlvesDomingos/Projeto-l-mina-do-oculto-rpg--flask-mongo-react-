@@ -1,6 +1,19 @@
 /**
  * Dados centralizados de Antecedentes (Backgrounds) do sistema Lâmina do Oculto
  * Este arquivo contém todos os antecedentes disponíveis para personagens.
+ *
+ * === SCHEMA POR ANTECEDENTE (TODO-ANT-001) ===
+ * nome               — string display name (UPPER CASE)
+ * descricao          — texto para exibição
+ * habilidades        — string[] texto original para exibição
+ * bonusEstruturado   — [{ habilidade: string, pontos: int }] bônus fixos parseáveis
+ * escolhasHabilidades — [{ grupo: string[], pontos: int }] bônus com escolha restrita
+ * proficienciasGanhas — [{ proficiencia: string, pontos: int }] proficiências fixas
+ * escolhasProficiencias — [{ grupo: string[], pontos: int }] proficiências com escolha
+ * itensIniciais       — string[] itens/equipamento narrativo
+ * moedasExtra         — int (moedas de ouro extras, 0 se nenhuma)
+ * escolhasLivres      — int (slots de escolha livre, para AMNÉSICO etc.)
+ *
  * Usado em: criarPersonagem.js, Wiki/backgrounds
  */
 
@@ -16,7 +29,20 @@ export const antecedentes = [
             "2 pontos em Teologia e História",
             "2 pontos em Intuição",
             "-1 em Ritualismo e Ocultismo"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'teologia', pontos: 2 },
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'intuicao', pontos: 2 },
+            { habilidade: 'ritualismo', pontos: -1 },
+            { habilidade: 'ocultismo', pontos: -1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ACADÊMICO",
@@ -25,7 +51,20 @@ export const antecedentes = [
             "2 pontos em História e Natureza",
             "1 ponto em Jurisprudência",
             "1 ponto na proficiência Línguas Antigas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'jurisprudencia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'linguas_antigas', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ACÓLITO",
@@ -34,7 +73,19 @@ export const antecedentes = [
             "2 pontos em Teologia e Jurisprudência",
             "1 ponto em História e Intuição",
             "Um símbolo religioso que permite conjurar o milagre Tocha Sagrada por 10 minutos 1 vez no dia."
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'teologia', pontos: 2 },
+            { habilidade: 'jurisprudencia', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'intuicao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Símbolo religioso (Tocha Sagrada 1x/dia)'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ACROBATA",
@@ -44,7 +95,19 @@ export const antecedentes = [
             "2 pontos em Performance",
             "1 ponto em Destreza",
             "1 ponto em Agilidade"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'acrobacia', pontos: 2 },
+            { habilidade: 'performance', pontos: 2 },
+            { habilidade: 'destreza', pontos: 1 },
+            { habilidade: 'agilidade', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ADESTRADOR DE ANIMAIS",
@@ -54,7 +117,19 @@ export const antecedentes = [
             "2 pontos em Lidar com animais",
             "1 ponto em Natureza",
             "1 ponto em Armadilhas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'intuicao', pontos: 2 },
+            { habilidade: 'lidar_com_animais', pontos: 2 },
+            { habilidade: 'natureza', pontos: 1 },
+            { habilidade: 'armadilhas', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "AMALDIÇOADO",
@@ -66,7 +141,21 @@ export const antecedentes = [
             "2 pontos em Ritualismo",
             "-1 ponto em Intuição",
             "-1 ponto em Persuasão"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'percepcao', pontos: 2 },
+            { habilidade: 'ocultismo', pontos: 2 },
+            { habilidade: 'intimidacao', pontos: 2 },
+            { habilidade: 'ritualismo', pontos: 2 },
+            { habilidade: 'intuicao', pontos: -1 },
+            { habilidade: 'persuasao', pontos: -1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "AMNÉSICO",
@@ -76,7 +165,14 @@ export const antecedentes = [
             "2 pontos em Habilidade escolhida",
             "1 ponto em Habilidade escolhida",
             "1 ponto em Habilidade escolhida"
-        ]
+        ],
+        bonusEstruturado: [],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 4
     },
     {
         nome: "ARQUEOLOGISTA",
@@ -87,7 +183,21 @@ export const antecedentes = [
             "1 ponto em Natureza",
             "1 ponto em Investigação",
             "1 ponto em Proficiência Arqueólogo"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'natureza', pontos: 1 },
+            { habilidade: 'investigacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'arqueologo', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ARTESÃO",
@@ -99,7 +209,21 @@ export const antecedentes = [
             "1 ponto em Destreza",
             "1 ponto em Ferreiro, Alfaiate, Marceneiro ou Joalheiro",
             "1 kit de Ferramentas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'percepcao', pontos: 2 },
+            { habilidade: 'negociacao', pontos: 1 },
+            { habilidade: 'destreza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [
+            { grupo: ['ferreiro', 'alfaiate', 'marceneiro', 'joalheiro'], pontos: 1 }
+        ],
+        itensIniciais: ['Kit de Ferramentas'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ASSISTENTE DE LABORATÓRIO",
@@ -110,7 +234,19 @@ export const antecedentes = [
             "1 ponto em História",
             "1 ponto em Arcanismo",
             "1 ponto em Mutações da espécie variante Mutante"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'alquimia', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'arcanismo', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['1 mutação (espécie variante Mutante)'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ASTRÔNOMO",
@@ -123,7 +259,19 @@ export const antecedentes = [
             "1 Mapa das estrelas",
             "1 telescópio portátil",
             "1 kit de cartografia"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'percepcao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Mapa das estrelas', 'Telescópio portátil', 'Kit de cartografia'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ATOR",
@@ -135,7 +283,21 @@ export const antecedentes = [
             "1 ponto em Enganação",
             "1 ponto na Proficiência em Disfarce",
             "1 kit de disfarce"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'performance', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 2 },
+            { habilidade: 'seducao', pontos: 1 },
+            { habilidade: 'enganacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'disfarce', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de disfarce'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "BANDIDO",
@@ -146,7 +308,19 @@ export const antecedentes = [
             "1 ponto em Agilidade",
             "1 ponto em Percepção",
             "1 Ferramentas de ladrão"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'intimidacao', pontos: 2 },
+            { habilidade: 'furtividade', pontos: 2 },
+            { habilidade: 'agilidade', pontos: 1 },
+            { habilidade: 'percepcao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Ferramentas de ladrão'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "BARBEIRO",
@@ -157,7 +331,19 @@ export const antecedentes = [
             "1 ponto em Agilidade",
             "1 ponto em Destreza",
             "1 kit de disfarce"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'intuicao', pontos: 2 },
+            { habilidade: 'negociacao', pontos: 2 },
+            { habilidade: 'agilidade', pontos: 1 },
+            { habilidade: 'destreza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de disfarce'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "BATEDOR",
@@ -170,7 +356,21 @@ export const antecedentes = [
             "1 ponto na Proficiência em Ferramentas de ladrão",
             "1 kit de explorador",
             "1 kit de escalada"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'furtividade', pontos: 1 },
+            { habilidade: 'percepcao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'ferramentas_de_ladrao', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de explorador', 'Kit de escalada'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "BIBLIOTECÁRIO",
@@ -181,7 +381,21 @@ export const antecedentes = [
             "1 ponto em Teologia",
             "1 ponto em Natureza",
             "1 ponto na Proficiência em Línguas Antigas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'jurisprudencia', pontos: 2 },
+            { habilidade: 'teologia', pontos: 1 },
+            { habilidade: 'natureza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'linguas_antigas', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CAÇADOR DE RECOMPENSAS",
@@ -192,7 +406,19 @@ export const antecedentes = [
             "1 ponto em Persuasão",
             "1 ponto em Negociação",
             "1 kit de explorador"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'rastreamento', pontos: 2 },
+            { habilidade: 'investigacao', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 1 },
+            { habilidade: 'negociacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de explorador'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CAPANGA",
@@ -203,7 +429,19 @@ export const antecedentes = [
             "1 ponto em Fortitude",
             "1 ponto em Força",
             "1 Ferramentas de ladrão"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'negociacao', pontos: 2 },
+            { habilidade: 'intimidacao', pontos: 2 },
+            { habilidade: 'fortitude', pontos: 1 },
+            { habilidade: 'forca', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Ferramentas de ladrão'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CARTEIRO",
@@ -217,7 +455,21 @@ export const antecedentes = [
             "1 kit de cartografia",
             "1 ponto na proficiência condução de veículos terrestres",
             "1 cavalo (50 po.)"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'percepcao', pontos: 2 },
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'agilidade', pontos: 1 },
+            { habilidade: 'intuicao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'conducao_veiculos_terrestres', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de explorador', 'Kit de cartografia', 'Cavalo (50 M.O.)'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CAMPONÊS",
@@ -228,7 +480,21 @@ export const antecedentes = [
             "1 ponto em Fortitude",
             "1 ponto em Destreza",
             "2 pontos na Proficiência Condução e Veículos Terrestres"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'lidar_com_animais', pontos: 2 },
+            { habilidade: 'fortitude', pontos: 1 },
+            { habilidade: 'destreza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'conducao_veiculos_terrestres', pontos: 2 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CHARLATÃO",
@@ -240,7 +506,21 @@ export const antecedentes = [
             "1 ponto em Agilidade",
             "1 ponto na Proficiência Disfarce",
             "1 kit de disfarce"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'performance', pontos: 2 },
+            { habilidade: 'enganacao', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 1 },
+            { habilidade: 'agilidade', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'disfarce', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de disfarce'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CIRCENSE",
@@ -251,7 +531,19 @@ export const antecedentes = [
             "1 ponto em Agilidade",
             "1 ponto em Acrobacia",
             "1 mutação da lista de mutações da espécie variante Mutante"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'performance', pontos: 2 },
+            { habilidade: 'agilidade', pontos: 1 },
+            { habilidade: 'acrobacia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['1 mutação (espécie variante Mutante)'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "COMERCIANTE",
@@ -262,7 +554,19 @@ export const antecedentes = [
             "1 ponto em Enganação",
             "1 ponto em Persuasão",
             "1 kit de Sobrevivência"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'negociacao', pontos: 2 },
+            { habilidade: 'arcanatec', pontos: 2 },
+            { habilidade: 'enganacao', pontos: 1 },
+            { habilidade: 'persuasao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de Sobrevivência'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CORTESÃO",
@@ -273,7 +577,19 @@ export const antecedentes = [
             "1 ponto em Sedução",
             "1 ponto em Intuição",
             "Vestuárias finas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 2 },
+            { habilidade: 'seducao', pontos: 1 },
+            { habilidade: 'intuicao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Vestuárias finas'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "CURANDEIRO",
@@ -285,7 +601,19 @@ export const antecedentes = [
             "1 ponto em Alquimia",
             "1 kit Médico",
             "1 kit de Herbalismo"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'medicina', pontos: 2 },
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'sobrevivencia', pontos: 1 },
+            { habilidade: 'alquimia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit Médico', 'Kit de Herbalismo'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "DETETIVE",
@@ -296,7 +624,19 @@ export const antecedentes = [
             "1 ponto em Jurisprudência",
             "1 ponto em Intuição",
             "1 kit de explorador"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'investigacao', pontos: 2 },
+            { habilidade: 'rastreamento', pontos: 2 },
+            { habilidade: 'jurisprudencia', pontos: 1 },
+            { habilidade: 'intuicao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de explorador'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "EREMITA",
@@ -307,7 +647,19 @@ export const antecedentes = [
             "1 ponto em Furtividade",
             "1 ponto em Lidar com Animais",
             "1 kit de sobrevivência"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'furtividade', pontos: 1 },
+            { habilidade: 'lidar_com_animais', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de sobrevivência'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ESCUDEIRO",
@@ -318,7 +670,20 @@ export const antecedentes = [
             "1 ponto em Fortitude",
             "1 ponto em Força ou Destreza",
             "1 kit de ferramentas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'atletismo', pontos: 2 },
+            { habilidade: 'fortitude', pontos: 1 }
+        ],
+        escolhasHabilidades: [
+            { grupo: ['forca', 'destreza'], pontos: 1 }
+        ],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de ferramentas'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ESPIÃO",
@@ -331,7 +696,21 @@ export const antecedentes = [
             "1 ponto na Proficiência em Disfarce",
             "1 kit de disfarce",
             "1 kit de venenos"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'furtividade', pontos: 2 },
+            { habilidade: 'investigacao', pontos: 2 },
+            { habilidade: 'intuicao', pontos: 1 },
+            { habilidade: 'enganacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [
+            { proficiencia: 'disfarce', pontos: 1 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de disfarce', 'Kit de venenos'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ESTUDANTE DE MAGIA",
@@ -341,7 +720,19 @@ export const antecedentes = [
             "2 pontos em Alquimia",
             "1 ponto em Arcanatec",
             "1 ponto em Natureza"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'arcanismo', pontos: 2 },
+            { habilidade: 'alquimia', pontos: 2 },
+            { habilidade: 'arcanatec', pontos: 1 },
+            { habilidade: 'natureza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "FANÁTICO",
@@ -351,7 +742,19 @@ export const antecedentes = [
             "2 pontos em Ritualismo",
             "1 ponto em Arcanismo",
             "1 ponto em Teologia"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'ocultismo', pontos: 2 },
+            { habilidade: 'ritualismo', pontos: 2 },
+            { habilidade: 'arcanismo', pontos: 1 },
+            { habilidade: 'teologia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "FORASTEIRO",
@@ -361,7 +764,19 @@ export const antecedentes = [
             "2 pontos em Sobrevivência",
             "1 ponto em História",
             "1 ponto em Negociação"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'negociacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "GLADIADOR",
@@ -371,7 +786,20 @@ export const antecedentes = [
             "2 pontos em Acrobacia",
             "1 ponto em Força ou Destreza",
             "1 ponto em Fortitude"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'atletismo', pontos: 2 },
+            { habilidade: 'acrobacia', pontos: 2 },
+            { habilidade: 'fortitude', pontos: 1 }
+        ],
+        escolhasHabilidades: [
+            { grupo: ['forca', 'destreza'], pontos: 1 }
+        ],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "GUARDA",
@@ -380,7 +808,19 @@ export const antecedentes = [
             "2 pontos em Jurisprudência",
             "2 pontos em Percepção",
             "1 ponto na Proficiência em Armaduras ou Esgrima"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'jurisprudencia', pontos: 2 },
+            { habilidade: 'percepcao', pontos: 2 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [
+            { grupo: ['armaduras', 'esgrima'], pontos: 1 }
+        ],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "HERDEIRO",
@@ -390,7 +830,17 @@ export const antecedentes = [
             "2 pontos em História",
             "200 moedas de ouro",
             "Vestuárias Finas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'persuasao', pontos: 2 },
+            { habilidade: 'historia', pontos: 2 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Vestuárias Finas'],
+        moedasExtra: 200,
+        escolhasLivres: 0
     },
     {
         nome: "HEROICO",
@@ -400,7 +850,19 @@ export const antecedentes = [
             "2 pontos em Medicina",
             "1 ponto em Atletismo",
             "1 ponto em Agilidade"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'acrobacia', pontos: 2 },
+            { habilidade: 'medicina', pontos: 2 },
+            { habilidade: 'atletismo', pontos: 1 },
+            { habilidade: 'agilidade', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "JORNALEIRO",
@@ -410,7 +872,19 @@ export const antecedentes = [
             "2 pontos em Investigação",
             "1 ponto em História",
             "1 ponto em Navegação"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'intuicao', pontos: 2 },
+            { habilidade: 'investigacao', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'navegacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "MARUJO",
@@ -420,7 +894,21 @@ export const antecedentes = [
             "1 ponto em Intimidação",
             "1 ponto em Navegação",
             "1 ponto em Força ou Destreza"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'intimidacao', pontos: 1 },
+            { habilidade: 'navegacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [
+            { grupo: ['forca', 'destreza'], pontos: 1 }
+        ],
+        proficienciasGanhas: [
+            { proficiencia: 'veiculos_aquaticos', pontos: 2 }
+        ],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "MÉDICO DE BECO",
@@ -431,7 +919,19 @@ export const antecedentes = [
             "1 ponto em Furtividade",
             "1 ponto em Enganação",
             "1 kit de ferramentas"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'medicina', pontos: 2 },
+            { habilidade: 'alquimia', pontos: 2 },
+            { habilidade: 'furtividade', pontos: 1 },
+            { habilidade: 'enganacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de ferramentas'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "MENESTREL",
@@ -443,7 +943,19 @@ export const antecedentes = [
             "1 ponto em Enganação",
             "1 kit de músico",
             "1 instrumento a sua escolha de até 1 M.O."
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'performance', pontos: 2 },
+            { habilidade: 'seducao', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 1 },
+            { habilidade: 'enganacao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de músico', 'Instrumento musical (até 1 M.O.)'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "MINERADOR",
@@ -454,7 +966,19 @@ export const antecedentes = [
             "1 ponto em Fortitude",
             "1 ponto em Força",
             "1 kit de escalada"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'natureza', pontos: 2 },
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'fortitude', pontos: 1 },
+            { habilidade: 'forca', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de escalada'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "NAVEGADOR",
@@ -464,7 +988,19 @@ export const antecedentes = [
             "2 pontos em Percepção",
             "1 ponto em Investigação",
             "1 ponto em História"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'percepcao', pontos: 2 },
+            { habilidade: 'investigacao', pontos: 1 },
+            { habilidade: 'historia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "NOBRE",
@@ -475,7 +1011,17 @@ export const antecedentes = [
             "150 moedas de ouro extra",
             "Vestuárias finas",
             "Cavalo (50 M.O.)"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'jurisprudencia', pontos: 2 },
+            { habilidade: 'historia', pontos: 2 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Vestuárias finas', 'Cavalo (50 M.O.)'],
+        moedasExtra: 150,
+        escolhasLivres: 0
     },
     {
         nome: "NÔMADE",
@@ -486,7 +1032,19 @@ export const antecedentes = [
             "1 ponto em História",
             "1 ponto em Sobrevivência",
             "1 kit de sobrevivência"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'lidar_com_animais', pontos: 2 },
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'historia', pontos: 1 },
+            { habilidade: 'sobrevivencia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: ['Kit de sobrevivência'],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "ÓRFÃO",
@@ -496,7 +1054,19 @@ export const antecedentes = [
             "2 pontos em Enganação",
             "1 ponto em Furtividade",
             "1 ponto em Agilidade"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'enganacao', pontos: 2 },
+            { habilidade: 'furtividade', pontos: 1 },
+            { habilidade: 'agilidade', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "PEREGRINO",
@@ -506,7 +1076,19 @@ export const antecedentes = [
             "2 pontos em História",
             "1 ponto em Teologia",
             "1 ponto em Percepção"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'navegacao', pontos: 2 },
+            { habilidade: 'historia', pontos: 2 },
+            { habilidade: 'teologia', pontos: 1 },
+            { habilidade: 'percepcao', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "PRISIONEIRO",
@@ -516,7 +1098,19 @@ export const antecedentes = [
             "2 pontos em Intimidação",
             "1 ponto em Jurisprudência",
             "1 ponto em Agilidade"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'furtividade', pontos: 2 },
+            { habilidade: 'intimidacao', pontos: 2 },
+            { habilidade: 'jurisprudencia', pontos: 1 },
+            { habilidade: 'agilidade', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "REFUGIADO",
@@ -526,7 +1120,19 @@ export const antecedentes = [
             "2 pontos em Persuasão",
             "1 ponto em Intuição",
             "1 ponto em História"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'sobrevivencia', pontos: 2 },
+            { habilidade: 'persuasao', pontos: 2 },
+            { habilidade: 'intuicao', pontos: 1 },
+            { habilidade: 'historia', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     },
     {
         nome: "TAVERNEIRO",
@@ -536,7 +1142,19 @@ export const antecedentes = [
             "2 pontos em Intuição",
             "1 ponto em Intimidação",
             "1 ponto em Destreza"
-        ]
+        ],
+        bonusEstruturado: [
+            { habilidade: 'negociacao', pontos: 2 },
+            { habilidade: 'intuicao', pontos: 2 },
+            { habilidade: 'intimidacao', pontos: 1 },
+            { habilidade: 'destreza', pontos: 1 }
+        ],
+        escolhasHabilidades: [],
+        proficienciasGanhas: [],
+        escolhasProficiencias: [],
+        itensIniciais: [],
+        moedasExtra: 0,
+        escolhasLivres: 0
     }
 ];
 
@@ -557,7 +1175,7 @@ export const getTodosAntecedentes = () => antecedentes;
  */
 export const getAntecedente = (nome) => {
     const search = nome.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return antecedentes.find(a => 
+    return antecedentes.find(a =>
         a.nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === search
     ) || null;
 };
@@ -568,9 +1186,15 @@ export const getAntecedente = (nome) => {
  * @returns {Array} Antecedentes que concedem bônus na habilidade
  */
 export const getAntecedentesComHabilidade = (habilidade) => {
-    const search = habilidade.toLowerCase();
-    return antecedentes.filter(a => 
-        a.habilidades.some(h => h.toLowerCase().includes(search))
+    const search = habilidade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return antecedentes.filter(a =>
+        a.bonusEstruturado.some(b =>
+            b.habilidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === search
+        ) ||
+        a.escolhasHabilidades.some(e =>
+            e.grupo.some(g => g.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === search)
+        ) ||
+        a.habilidades.some(h => h.toLowerCase().includes(habilidade.toLowerCase()))
     );
 };
 
@@ -583,6 +1207,31 @@ export const getAntecedentesParaSelect = () => {
         value: a.nome,
         label: a.nome
     }));
+};
+
+/**
+ * Retorna os bônus numéricos totais de um antecedente (fixos + escolhidos)
+ * @param {string} nome - Nome do antecedente
+ * @param {Object} escolhas - { habilidade1: pontos, habilidade2: pontos } para escolhas livres
+ * @returns {Object} Mapa { habilidade: pontosTotal }
+ */
+export const calcularBonusAntecedente = (nome, escolhas = {}) => {
+    const ant = getAntecedente(nome);
+    if (!ant) return {};
+
+    const bonus = {};
+
+    // Bônus fixos
+    for (const b of ant.bonusEstruturado) {
+        bonus[b.habilidade] = (bonus[b.habilidade] || 0) + b.pontos;
+    }
+
+    // Escolhas livres
+    for (const [hab, pts] of Object.entries(escolhas)) {
+        bonus[hab] = (bonus[hab] || 0) + pts;
+    }
+
+    return bonus;
 };
 
 export default antecedentes;

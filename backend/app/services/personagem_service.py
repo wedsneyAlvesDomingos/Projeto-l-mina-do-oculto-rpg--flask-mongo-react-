@@ -1,60 +1,56 @@
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-from models.models import Personagem
+from models.models import Personagem, CharacterSection
+
+BASE_FIELD_MAP = {
+    'nome_personagem': 'name',
+    'name': 'name',
+    'classe': 'character_class',
+    'class': 'character_class',
+    'especie': 'race',
+    'race': 'race',
+    'nivel': 'level',
+    'nível': 'level',
+    'level': 'level',
+    'pontos_de_regalia': 'regalia_points',
+    'regalia_points': 'regalia_points',
+    'image': 'image',
+    'genero': 'gender',
+    'gender': 'gender',
+    'idade': 'age',
+    'age': 'age',
+    'descricao': 'description',
+    'description': 'description',
+    'experience': 'experience',
+    'xp': 'experience',
+}
+
+IGNORE_SECTION_KEYS = {
+    'id', 'user_id', 'criado_em', 'atualizado_em', 'created_at', 'updated_at'
+}
 
 class PersonagemService:
     def __init__(self, db):
         self.db = db
 
-    def criar_personagem(self, user_id, nome_personagem,dinheiro,image,pontos_de_regalia, genero, idade, descricao, classe, nivel,  antecedente=None,
-                         habilidades=None, condicoes=None,
-                         proficiencias=None, especie = None, regalias_de_especie=None, regalias_de_aprendiz=None, 
-                         regalias_de_classe=None, regalias_de_especialization=None,
-                         regalias_de_profissao=None, equipamentos=None):
-        # Define valores padrão
-        antecedente = antecedente or {}
-        habilidades = habilidades or []
-        condicoes = condicoes or {}
-        proficiencias = proficiencias or []
-        regalias_de_especie = regalias_de_especie or []
-        regalias_de_aprendiz = regalias_de_aprendiz or {}
-        regalias_de_classe = regalias_de_classe or {}
-        regalias_de_especialization = regalias_de_especialization or {}
-        regalias_de_profissao = regalias_de_profissao or []
-        equipamentos = equipamentos or []
-        especie = especie
+    def criar_personagem(self, user_id, data):
+        data = data or {}
 
+        base_fields = self._extract_base_fields(data)
         personagem = Personagem(
             user_id=user_id,
-            pontos_de_regalia=pontos_de_regalia,
-            nome_personagem=nome_personagem,
-            dinheiro=dinheiro,
-            image=image,
-            genero=genero,
-            idade=idade,
-            descricao=descricao,
-            classe=classe,
-            nivel=nivel,
-            antecedente=antecedente,
-            habilidades=habilidades,
-            condicoes=condicoes,
-            proficiencias=proficiencias,
-            especie = especie,
-            regalias_de_especie=regalias_de_especie,
-            regalias_de_aprendiz=regalias_de_aprendiz,
-            regalias_de_classe=regalias_de_classe,
-            regalias_de_especialization=regalias_de_especialization,
-            regalias_de_profissao=regalias_de_profissao,
-            equipamentos=equipamentos,
-            criado_em=datetime.utcnow(),
-            atualizado_em=datetime.utcnow()
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow(),
+            **base_fields
         )
 
         try:
             self.db.session.add(personagem)
+            self.db.session.flush()
+            self._upsert_sections(personagem, data)
             self.db.session.commit()
             return {'personagem_id': personagem.id}, 201
-        except SQLAlchemyError as e:
+        except SQLAlchemyError:
             self.db.session.rollback()
             raise
 
@@ -68,10 +64,13 @@ class PersonagemService:
         personagem = self.db.session.query(Personagem).get(personagem_id)
         if not personagem:
             return False
-        for key, value in novos_dados.items():
-            if hasattr(personagem, key):
-                setattr(personagem, key, value)
-        personagem.atualizado_em = datetime.utcnow()
+
+        base_fields = self._extract_base_fields(novos_dados)
+        for attr, value in base_fields.items():
+            setattr(personagem, attr, value)
+
+        self._upsert_sections(personagem, novos_dados)
+        personagem.updated_at = datetime.utcnow()
         try:
             self.db.session.commit()
             return True
@@ -98,5 +97,31 @@ class PersonagemService:
         except SQLAlchemyError:
             self.db.session.rollback()
             return []
+
+    def _extract_base_fields(self, data):
+        base_fields = {}
+        for key, value in (data or {}).items():
+            if key in BASE_FIELD_MAP:
+                base_fields[BASE_FIELD_MAP[key]] = value
+
+        if 'name' not in base_fields and 'nome_personagem' in data:
+            base_fields['name'] = data.get('nome_personagem')
+
+        return base_fields
+
+    def _upsert_sections(self, personagem, data):
+        if not data:
+            return
+
+        existing = {s.section_key: s for s in personagem.sections}
+        for key, value in data.items():
+            if key in BASE_FIELD_MAP or key in IGNORE_SECTION_KEYS:
+                continue
+
+            section = existing.get(key)
+            if section:
+                section.data = value
+            else:
+                personagem.sections.append(CharacterSection(section_key=key, data=value))
         
 

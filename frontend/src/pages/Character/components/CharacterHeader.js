@@ -308,7 +308,7 @@ const CharacterHeader = () => {
                                     >
                                         <Box sx={{ cursor: 'help' }}>
                                             <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Altura</Typography>
-                                            <Typography className="esteban" sx={{ fontWeight: 'bold' }}>
+                                            <Typography component="div" className="esteban" sx={{ fontWeight: 'bold' }}>
                                                 {character.altura || 170} cm
                                                 <Chip 
                                                     label={determinarTamanho(character.altura || 170).nome} 
