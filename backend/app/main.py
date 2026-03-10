@@ -4,6 +4,8 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from services.user_service import UserService
 from services.personagem_service import PersonagemService
+from services.rule_engine import calcular_ficha_completa, validar_regalias
+from catalogs import HABILIDADES, PROFICIENCIAS, CONDICOES, ESPECIES as ESPECIES_CATALOGO
 import os
 import traceback
 
@@ -36,10 +38,14 @@ def create_personagem(user_id):
         if not nome_personagem or not nivel:
             return jsonify({'error': 'Campos obrigatórios ausentes'}), 400
 
-        personagem_id = personagem_service.criar_personagem(user_id=user_id, data=data)
+        resultado, status = personagem_service.criar_personagem(user_id=user_id, data=data)
+
+        if status == 400:
+            return jsonify(resultado), 400
 
         return jsonify({
-            'message': 'Personagem criado com sucesso!'
+            'message': 'Personagem criado com sucesso!',
+            'personagem_id': resultado.get('personagem_id')
         }), 201
 
     except Exception as e:
@@ -72,6 +78,10 @@ def update_personagem(personagem_id):
         service = PersonagemService(db)
         success = service.atualizar_personagem(personagem_id, data)
         
+        # Verificar se retornou erros de validação (dict com 'erros')
+        if isinstance(success, dict) and 'erros' in success:
+            return jsonify({'error': 'Validação falhou', 'erros': success['erros']}), 400
+
         if success:
             personagem_atualizado = service.obter_personagem_por_id(personagem_id)
             return jsonify({
@@ -198,6 +208,53 @@ def login():
             'sugestao': 'Verifique a configuração do email e duplicidade de dados'
         }), 500
 
+
+
+@app.route('/personagens/<int:personagem_id>/calcular', methods=['GET'])
+def calcular_personagem(personagem_id):
+    """Endpoint que retorna a ficha com todos os stats derivados calculados."""
+    try:
+        service = PersonagemService(db)
+        personagem = service.obter_personagem_por_id(personagem_id)
+        if not personagem:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+
+        ficha_completa = calcular_ficha_completa(personagem)
+        return jsonify(ficha_completa), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'Erro ao calcular ficha', 'details': str(e)}), 500
+
+
+@app.route('/personagens/<int:personagem_id>/validar-regalias', methods=['GET'])
+def validar_regalias_personagem(personagem_id):
+    """Endpoint que valida as regalias do personagem."""
+    try:
+        service = PersonagemService(db)
+        personagem = service.obter_personagem_por_id(personagem_id)
+        if not personagem:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+
+        erros = validar_regalias(personagem)
+        if erros:
+            return jsonify({'valid': False, 'erros': erros}), 200
+        return jsonify({'valid': True, 'erros': []}), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'Erro ao validar regalias', 'details': str(e)}), 500
+
+
+@app.route('/api/catalogos', methods=['GET'])
+def get_catalogos():
+    """Endpoint que retorna todos os catálogos do sistema para sincronização."""
+    return jsonify({
+        'habilidades': HABILIDADES,
+        'proficiencias': PROFICIENCIAS,
+        'condicoes': CONDICOES,
+        'especies': ESPECIES_CATALOGO,
+    }), 200
 
 
 @app.route('/db')

@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from models.models import Personagem, CharacterSection
+from services.rule_engine import validar_criacao, validar_evolucao, calcular_ficha_completa
 
 BASE_FIELD_MAP = {
     'nome_personagem': 'name',
@@ -36,6 +37,11 @@ class PersonagemService:
     def criar_personagem(self, user_id, data):
         data = data or {}
 
+        # --- Validação via rule_engine (TODO-BE-001) ---
+        erros = validar_criacao(data)
+        if erros:
+            return {'erros': erros}, 400
+
         base_fields = self._extract_base_fields(data)
         personagem = Personagem(
             user_id=user_id,
@@ -64,6 +70,12 @@ class PersonagemService:
         personagem = self.db.session.query(Personagem).get(personagem_id)
         if not personagem:
             return False
+
+        # --- Validação via rule_engine (TODO-BE-001) ---
+        personagem_atual = personagem.to_dict()
+        erros = validar_evolucao(personagem_atual, novos_dados)
+        if erros:
+            return {'erros': erros}
 
         base_fields = self._extract_base_fields(novos_dados)
         for attr, value in base_fields.items():

@@ -1,0 +1,571 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://laminadooculto.com/schemas/ficha-personagem-v0.5.json",
+  "title": "Ficha de Personagem — Lâmina do Oculto v0.5",
+  "description": "Schema JSON canônico que define o formato de troca entre frontend e backend para fichas de personagem do sistema Lâmina do Oculto RPG v0.5. Ambos os lados produzem e consomem este formato.",
+  "type": "object",
+  "required": [
+    "nome_personagem",
+    "especie",
+    "nivel",
+    "habilidades"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "ID do personagem no banco (gerado pelo backend, read-only no frontend)"
+    },
+    "user_id": {
+      "type": "integer",
+      "description": "ID do usuário dono do personagem (gerado pelo backend)"
+    },
+
+    "nome_personagem": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Nome do personagem"
+    },
+    "image": {
+      "type": ["string", "null"],
+      "description": "Imagem do personagem em base64 ou URL"
+    },
+    "genero": {
+      "type": "string",
+      "description": "Gênero do personagem"
+    },
+    "idade": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Idade do personagem"
+    },
+    "altura": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Altura do personagem em centímetros"
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Descrição livre do personagem"
+    },
+
+    "especie": {
+      "type": "string",
+      "description": "Slug da espécie selecionada (ex: 'humano', 'elfo', 'anao')",
+      "enum": [
+        "humano", "elfo", "anao", "feerico", "draconiano",
+        "meio_elfo", "meio_demonio", "meio_celestial", "meio_genio",
+        "meio_troll", "bestial", "halfling", "troll", "constructo"
+      ]
+    },
+    "subespecie": {
+      "type": ["string", "null"],
+      "description": "Slug da sub-raça selecionada, se aplicável"
+    },
+    "antecedente": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Objeto completo do antecedente selecionado (conforme antecedentes.js)",
+          "properties": {
+            "id": { "type": "string" },
+            "nome": { "type": "string" },
+            "descricao": { "type": "string" },
+            "bonus": { "type": "object" },
+            "proficiencias": { "type": "object" },
+            "equipamentos": { "type": "array" },
+            "moedas": { "type": "object" }
+          }
+        },
+        { "type": "null" }
+      ],
+      "description": "Antecedente selecionado (objeto completo ou null)"
+    },
+
+    "classe": {
+      "type": "string",
+      "description": "Nome da classe de aprendiz (ex: 'combatente', 'conjurador', 'especialista')"
+    },
+    "classe_primaria": {
+      "type": ["string", "null"],
+      "description": "Slug da classe primária (nível 3+). Ex: 'guerreiro', 'mago'"
+    },
+    "especializacao": {
+      "type": ["string", "null"],
+      "description": "Slug da especialização (nível 5+). Ex: 'campiao', 'elementalista'"
+    },
+
+    "nivel": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "description": "Nível atual do personagem"
+    },
+    "experience": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Pontos de experiência acumulados"
+    },
+    "pontos_de_regalia": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Pontos de regalia já gastos pelo personagem"
+    },
+
+    "habilidades": {
+      "type": "object",
+      "description": "Valores das 35 habilidades do personagem. Chaves = title display name (ex: 'Fortitude', 'Combate Corpo a Corpo'). Valores = integer >= 0. Compatível com o formato atual do frontend.",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "propertyNames": {
+        "description": "Display name da habilidade conforme habilidades.js"
+      }
+    },
+    "habilidades_auto": {
+      "type": "object",
+      "description": "Valores de habilidades auto-incrementados (via antecedente, espécie, regalias). Mesma estrutura de 'habilidades'.",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+
+    "recursos": {
+      "type": "object",
+      "description": "Recursos vitais atuais e máximos do personagem",
+      "properties": {
+        "pv_atual": {
+          "type": "integer",
+          "description": "Pontos de vida atuais"
+        },
+        "pv_max": {
+          "type": "integer",
+          "description": "Pontos de vida máximos (derivado: baseEspecie + fortitude×2)"
+        },
+        "pm_atual": {
+          "type": "integer",
+          "description": "Pontos de magia atuais"
+        },
+        "pm_max": {
+          "type": "integer",
+          "description": "Pontos de magia máximos (derivado: arcanismo×2, +5 se arcanismo≥10)"
+        },
+        "estamina_atual": {
+          "type": "integer",
+          "description": "Estamina atual"
+        },
+        "estamina_max": {
+          "type": "integer",
+          "description": "Estamina máxima (derivado: 10+atletismo, +5 se atletismo≥10)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "defesa": {
+      "type": "object",
+      "description": "Componentes de defesa do personagem",
+      "properties": {
+        "base": {
+          "type": "integer",
+          "default": 7,
+          "description": "Defesa base (sempre 7, exceto armadura pesada que inclui base)"
+        },
+        "armadura": {
+          "type": "integer",
+          "default": 0,
+          "description": "Bônus de defesa da armadura equipada"
+        },
+        "escudo": {
+          "type": "integer",
+          "default": 0,
+          "description": "Bônus de defesa do escudo equipado"
+        },
+        "agilidade": {
+          "type": "integer",
+          "default": 0,
+          "description": "Bônus de defesa pela agilidade (thresholds: 0→3, 3→4, 6→5, 9→6, 12→7)"
+        },
+        "outros": {
+          "type": "integer",
+          "default": 0,
+          "description": "Outros bônus/penalidades de defesa (condições, regalias, etc.)"
+        },
+        "total": {
+          "type": "integer",
+          "description": "Defesa total calculada. Sem armadura pesada: 7+bonusAgilidade+armadura+escudo. Com armadura pesada: armadura.defesa+escudo (armadura.defesa já inclui base 7)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "velocidade": {
+      "type": "object",
+      "description": "Velocidade de movimento do personagem",
+      "properties": {
+        "base_especie": {
+          "type": "number",
+          "description": "Velocidade base da espécie em metros"
+        },
+        "bonus_agilidade": {
+          "type": "number",
+          "description": "Bônus pela agilidade (thresholds: 3→+1.5, 6→+3, 9→+4.5, 12→+6)"
+        },
+        "penalidade_armadura": {
+          "type": "number",
+          "default": 0,
+          "description": "Penalidade por armadura pesada (-1.5m)"
+        },
+        "outros": {
+          "type": "number",
+          "default": 0,
+          "description": "Outros bônus/penalidades de velocidade"
+        },
+        "total": {
+          "type": "number",
+          "description": "Velocidade total em metros"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "iniciativa": {
+      "type": "object",
+      "description": "Componentes de iniciativa",
+      "properties": {
+        "agilidade": {
+          "type": "integer",
+          "description": "Valor da habilidade Agilidade"
+        },
+        "percepcao": {
+          "type": "integer",
+          "description": "Valor da habilidade Percepção"
+        },
+        "outros": {
+          "type": "integer",
+          "default": 0,
+          "description": "Outros bônus/penalidades de iniciativa"
+        },
+        "total": {
+          "type": "integer",
+          "description": "Iniciativa total = agilidade + percepção + outros"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "proficiencias": {
+      "type": "object",
+      "description": "Níveis das proficiências do personagem. Chaves = display name da proficiência (compatível com frontend atual). Valores = nível (0-5).",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 5
+      }
+    },
+    "proficiencias_gastas": {
+      "type": "object",
+      "description": "Pontos de proficiência gastos manualmente (separado dos auto-aplicados).",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "proficiencias_auto": {
+      "type": "object",
+      "description": "Pontos de proficiência auto-incrementados (via antecedente, espécie, regalias).",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+
+    "regalias_de_especie": {
+      "type": "array",
+      "description": "Regalias de espécie selecionadas. Formato: [objetoEspecieLista, regaliaEscolhida]",
+      "items": {
+        "type": ["object", "string", "null"]
+      }
+    },
+    "regalias_de_aprendiz": {
+      "type": "object",
+      "description": "Regalia de classe de aprendiz selecionada",
+      "additionalProperties": true
+    },
+    "regalias_de_classe": {
+      "type": "object",
+      "description": "Regalias de classe primária selecionadas",
+      "additionalProperties": true
+    },
+    "regalias_de_especialization": {
+      "type": "object",
+      "description": "Regalias de especialização selecionadas",
+      "additionalProperties": true
+    },
+    "regalias_de_profissao": {
+      "type": "array",
+      "description": "Regalias de profissão selecionadas",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+
+    "equipamentos": {
+      "type": "array",
+      "description": "Lista de equipamentos adquiridos pelo personagem",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do item (slug do equipamentos.js)"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do item para exibição"
+          },
+          "categoria": {
+            "type": "string",
+            "description": "Categoria do equipamento"
+          },
+          "quantidade": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "equipado": {
+            "type": "boolean",
+            "default": false,
+            "description": "Se o item está equipado (para armaduras, escudos, armas)"
+          },
+          "slot": {
+            "type": ["string", "null"],
+            "description": "Slot de equipamento (ex: 'armadura', 'escudo', 'mao_principal', 'mao_secundaria')"
+          },
+          "preco": {
+            "type": "number",
+            "description": "Preço unitário em ouro"
+          },
+          "peso": {
+            "type": "number",
+            "description": "Peso unitário em kg"
+          }
+        }
+      }
+    },
+    "equipamentos_antecedente": {
+      "type": "array",
+      "description": "Equipamentos ganhos pelo antecedente (separado dos comprados)",
+      "items": {
+        "type": "object"
+      }
+    },
+
+    "condicoes": {
+      "type": "object",
+      "description": "Condições ativas no personagem (legacy: objeto vazio na criação). Mapeamento de condicaoId → dados.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "nome": { "type": "string" },
+          "nivel": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Nível da condição (para condições empilháveis como cansaço)"
+          },
+          "fonte": {
+            "type": "string",
+            "description": "Origem da condição (ex: 'armadilha_veneno', 'magia_bola_de_fogo')"
+          },
+          "duracao_restante": {
+            "type": ["integer", "null"],
+            "description": "Rodadas restantes (null = permanente até remoção)"
+          },
+          "expira_em_descanso": {
+            "type": ["string", "null"],
+            "enum": ["curto", "longo", null],
+            "description": "Se expira ao descansar"
+          }
+        }
+      }
+    },
+
+    "dinheiro": {
+      "type": ["string", "number", "object"],
+      "description": "Dinheiro do personagem. Formato legado: string (ouro restante). Formato canônico: objeto { ouro, prata, cobre }."
+    },
+    "moedas": {
+      "type": "object",
+      "description": "Formato canônico de moedas (preferir este ao campo 'dinheiro')",
+      "properties": {
+        "ouro": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "prata": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "cobre": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "carga": {
+      "type": "object",
+      "description": "Status de carga do personagem (derivado)",
+      "properties": {
+        "capacidade_max": {
+          "type": "number",
+          "description": "Capacidade de carga máxima em kg (derivado: força×5×multTamanho, +força×3 se força≥10)"
+        },
+        "carga_atual": {
+          "type": "number",
+          "description": "Peso total dos itens carregados"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["leve", "normal", "pesado", "sobrecarregado"],
+          "description": "Status derivado: leve (<50%), normal (50-75%), pesado (75-100%), sobrecarregado (>100%)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "notas": {
+      "type": "string",
+      "description": "Notas livres do jogador sobre o personagem"
+    },
+
+    "rule_version": {
+      "type": "string",
+      "default": "0.5",
+      "description": "Versão do livro de regras usada para este personagem"
+    },
+
+    "criado_em": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp de criação (ISO 8601, gerado pelo backend)"
+    },
+    "atualizado_em": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp de última atualização (ISO 8601, gerado pelo backend)"
+    }
+  },
+
+  "definitions": {
+    "habilidades_keys": {
+      "description": "Chaves canônicas das 35 habilidades (slug keys do habilidades.js)",
+      "type": "string",
+      "enum": [
+        "fortitude", "forca", "agilidade", "combate_corpo_a_corpo",
+        "combate_a_distancia", "atletismo", "acrobacia", "destreza",
+        "furtividade", "investigacao", "rastreamento", "percepcao",
+        "sobrevivencia", "lidar_com_animais", "navegacao", "armadilhas",
+        "historia", "intuicao", "natureza", "medicina",
+        "jurisprudencia", "teologia", "tecnologia",
+        "arcanismo", "alquimia", "ritualismo", "ocultismo",
+        "arcanatec", "combate_arcano",
+        "enganacao", "persuasao", "performance", "intimidacao",
+        "seducao", "negociacao"
+      ]
+    },
+    "proficiencias_keys": {
+      "description": "IDs canônicos das 15 proficiências",
+      "type": "string",
+      "enum": [
+        "armas_armaduras",
+        "conducao_veiculos_terrestres",
+        "conducao_veiculos_aquaticos",
+        "conducao_exotica",
+        "kit_arrombamento",
+        "armas_de_fogo",
+        "linguas_antigas",
+        "arqueologia",
+        "lideranca",
+        "armas_exoticas",
+        "esgrima",
+        "arco_besta",
+        "disfarce",
+        "ataques_em_area",
+        "combate_anti_conjuradores"
+      ]
+    },
+    "categorias_habilidades": {
+      "description": "Categorias das habilidades",
+      "type": "string",
+      "enum": ["fisico", "exploracao", "conhecimento", "arcana", "social"]
+    },
+    "especies_validas": {
+      "description": "Espécies válidas no sistema",
+      "type": "string",
+      "enum": [
+        "humano", "elfo", "anao", "feerico", "draconiano",
+        "meio_elfo", "meio_demonio", "meio_celestial", "meio_genio",
+        "meio_troll", "bestial", "halfling", "troll", "constructo"
+      ]
+    },
+    "campos_derivados": {
+      "description": "Lista de campos calculados automaticamente pelo engine — NÃO devem ser enviados na criação, são recalculados pelo backend/frontend",
+      "type": "object",
+      "properties": {
+        "recursos.pv_max": { "description": "baseEspecie + fortitude × 2" },
+        "recursos.pm_max": { "description": "arcanismo × 2 (+5 se arcanismo ≥ 10)" },
+        "recursos.estamina_max": { "description": "10 + atletismo (+5 se atletismo ≥ 10)" },
+        "defesa.agilidade": { "description": "Threshold: 0→3, 3→4, 6→5, 9→6, 12→7" },
+        "defesa.total": { "description": "Sem pesada: 7 + bonusAgil + armadura + escudo. Com pesada: armadura.defesa + escudo" },
+        "velocidade.bonus_agilidade": { "description": "Threshold: 3→+1.5, 6→+3, 9→+4.5, 12→+6" },
+        "velocidade.total": { "description": "base_especie + bonus_agilidade - penalidade_armadura + outros" },
+        "iniciativa.total": { "description": "agilidade + percepcao + outros" },
+        "carga.capacidade_max": { "description": "forca × 5 × multTamanho (+forca×3 se forca ≥ 10)" },
+        "carga.carga_atual": { "description": "Soma dos pesos dos itens no inventário" },
+        "carga.status": { "description": "Derivado de carga_atual / capacidade_max" }
+      }
+    },
+    "tabela_xp_por_nivel": {
+      "description": "XP necessário para cada nível (1-20)",
+      "type": "object",
+      "properties": {
+        "1": { "const": 0 },
+        "2": { "const": 150 },
+        "3": { "const": 450 },
+        "4": { "const": 1000 },
+        "5": { "const": 1800 },
+        "6": { "const": 2800 },
+        "7": { "const": 4000 },
+        "8": { "const": 5500 },
+        "9": { "const": 7500 },
+        "10": { "const": 10000 },
+        "11": { "const": 13000 },
+        "12": { "const": 16500 },
+        "13": { "const": 20500 },
+        "14": { "const": 25000 },
+        "15": { "const": 30000 },
+        "16": { "const": 33000 },
+        "17": { "const": 36000 },
+        "18": { "const": 39500 },
+        "19": { "const": 43000 },
+        "20": { "const": 46000 }
+      }
+    },
+    "pontos_regalia_por_nivel": {
+      "description": "Pontos de regalia cumulativos por nível: Lv1=4, Lv2=8, Lv3+=8+(nivel-2)×2",
+      "type": "object",
+      "examples": [
+        { "1": 4, "2": 8, "3": 10, "4": 12, "5": 14, "10": 24, "15": 34, "20": 44 }
+      ]
+    }
+  }
+}

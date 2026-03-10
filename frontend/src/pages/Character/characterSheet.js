@@ -74,6 +74,12 @@ import {
     getRegaliaAprendizPorNome,
     getRegaliaOpcional,
     getOpcaoRegalia,
+    // Funções de cálculo de stats derivados
+    calcularPontosDeVida,
+    calcularEstamina,
+    calcularPontosDeMagia,
+    calcularCuraKitMedico,
+    calcularTempoRespiracao,
     // Regras do sistema
     calcularVantagemDesvantagem,
     rolarComVantagemDesvantagem,
@@ -416,15 +422,15 @@ const CharacterSheet = () => {
 
     // Função para aplicar descanso curto
     const aplicarDescansoCurto = useCallback(() => {
-        if (!character) return;
+        if (!character || !statsDerivados) return;
         
         const stats = {
-            vidaMax: character.pv_max || character.pv || 10,
-            vidaAtual: character.pv_atual || character.pv || 10,
-            estaminaMax: character.estamina_max || character.estamina || 10,
-            estaminaAtual: character.estamina_atual || character.estamina || 10,
-            magiaMax: character.magia_max || character.magia || 0,
-            magiaAtual: character.magia_atual || character.magia || 0
+            vidaMax: statsDerivados.pvMax,
+            vidaAtual: statsDerivados.pvAtual,
+            estaminaMax: statsDerivados.peMax,
+            estaminaAtual: statsDerivados.peAtual,
+            magiaMax: statsDerivados.pmMax,
+            magiaAtual: statsDerivados.pmAtual
         };
         
         const recuperacao = calcularDescansosCurto(stats);
@@ -432,8 +438,8 @@ const CharacterSheet = () => {
         setCharacter(prev => ({
             ...prev,
             pv_atual: recuperacao.novaVida,
-            estamina_atual: recuperacao.novaEstamina,
-            magia_atual: recuperacao.novaMagia
+            pe_atual: recuperacao.novaEstamina,
+            pm_atual: recuperacao.novaMagia
         }));
         
         setSnackbar({ 
@@ -442,16 +448,16 @@ const CharacterSheet = () => {
             severity: 'success' 
         });
         setDescansoModalOpen(false);
-    }, [character]);
+    }, [character, statsDerivados]);
 
     // Função para aplicar descanso longo
     const aplicarDescansoLongo = useCallback(() => {
-        if (!character) return;
+        if (!character || !statsDerivados) return;
         
         const stats = {
-            vidaMax: character.pv_max || character.pv || 10,
-            estaminaMax: character.estamina_max || character.estamina || 10,
-            magiaMax: character.magia_max || character.magia || 0,
+            vidaMax: statsDerivados.pvMax,
+            estaminaMax: statsDerivados.peMax,
+            magiaMax: statsDerivados.pmMax,
             nivelCansaco: character.nivel_cansaco || 0
         };
         
@@ -460,8 +466,8 @@ const CharacterSheet = () => {
         setCharacter(prev => ({
             ...prev,
             pv_atual: recuperacao.novaVida,
-            estamina_atual: recuperacao.novaEstamina,
-            magia_atual: recuperacao.novaMagia,
+            pe_atual: recuperacao.novaEstamina,
+            pm_atual: recuperacao.novaMagia,
             nivel_cansaco: recuperacao.novoNivelCansaco
         }));
         
@@ -898,6 +904,111 @@ const CharacterSheet = () => {
         borderRadius: '12px 12px 0 0',
         py: 1,
     }), []);
+
+    // ============================================================================
+    // PIPELINE CENTRALIZADO DE STATS DERIVADOS
+    // Recalcula automaticamente quando character, armadura ou escudo mudam
+    // ============================================================================
+    const statsDerivados = useMemo(() => {
+        if (!character) return null;
+
+        const habs = character.habilidades || {};
+        const fortitude   = habs['Fortitude'] || 0;
+        const agilidade   = habs['Agilidade'] || 0;
+        const percepcao   = habs['Percepção'] || 0;
+        const arcanismo   = habs['Arcanismo'] || 0;
+        const atletismo   = habs['Atletismo'] || 0;
+        const forca       = habs['Força'] || 0;
+        const medicina    = habs['Medicina'] || 0;
+
+        // Valores base da espécie
+        const especieBaseVida = character.pv_base_especie || 10;
+        const especieBaseVelocidade = character.velocidade_base_especie || 9;
+
+        // Bônus de regalia de classe
+        const regaliaClasseVida     = character.pv_regalia_classe || 0;
+        const regaliaClasseMagia    = character.pm_regalia_classe || 0;
+        const regaliaClasseEstamina = character.pe_regalia_classe || 0;
+
+        // --- Recursos ---
+        const pvMax = calcularPontosDeVida(especieBaseVida, fortitude) + regaliaClasseVida;
+        const peMax = calcularEstamina(atletismo) + regaliaClasseEstamina;
+        const pmMax = calcularPontosDeMagia(arcanismo) + regaliaClasseMagia;
+
+        // --- Defesa ---
+        const armaduraPesada = armaduraEquipada?.tipo?.toLowerCase() === 'pesada' ||
+                               armaduraEquipada?.category?.toLowerCase().includes('pesada') ||
+                               (armaduraEquipada?.defesa >= 10 && !armaduraEquipada?.bonusDefesa) ||
+                               false;
+
+        let defesaArmadura = 0;
+        if (armaduraPesada) {
+            defesaArmadura = armaduraEquipada?.defesa || 0;
+        } else {
+            defesaArmadura = armaduraEquipada?.bonusDefesa || armaduraEquipada?.defesa || 0;
+        }
+        const defesaEscudo = escudoEquipado?.bonusDefesa || escudoEquipado?.defesa || 0;
+
+        const proficiencias = character.proficiencias;
+        const temProficienciaEscudo = Array.isArray(proficiencias)
+            ? proficiencias.includes('Escudos')
+            : (typeof proficiencias === 'object' && proficiencias !== null)
+                ? Object.keys(proficiencias).some(k => k.toLowerCase().includes('escudo'))
+                : true;
+
+        const defesaInfo = calcularDefesaTotal({
+            agilidade,
+            defesaArmadura,
+            defesaEscudo,
+            armaduraPesada,
+            temProficienciaEscudo
+        });
+        const defesaTotal = defesaInfo.defesaTotal;
+        const bonusDefAgi = calcularBonusDefesaAgilidade(agilidade);
+
+        // --- Velocidade ---
+        const velocidadeInfo = calcularVelocidadeMovimento(
+            especieBaseVelocidade,
+            agilidade,
+            armaduraPesada
+        );
+        const velocidadeTotal = velocidadeInfo.velocidadeTotal;
+
+        // --- Iniciativa ---
+        const iniciativa = calcularBonusIniciativa(agilidade, percepcao);
+
+        // --- Carga ---
+        const tamanho = character.tamanho || 'medio';
+        const cargaMax = calcularCapacidadeCarga(forca, tamanho);
+        const cargaAtual = calcularCargaAtual(character.equipamentos || []);
+        const statusCarga = verificarStatusCarga(cargaAtual, cargaMax);
+
+        // --- Utilitários ---
+        const curaKit = calcularCuraKitMedico(medicina);
+        const respiracao = calcularTempoRespiracao(fortitude);
+
+        return {
+            // Recursos
+            pvMax, peMax, pmMax,
+            pvAtual: character.pv_atual !== undefined ? character.pv_atual : pvMax,
+            peAtual: character.pe_atual !== undefined ? character.pe_atual : peMax,
+            pmAtual: character.pm_atual !== undefined ? character.pm_atual : pmMax,
+            // Defesa
+            defesaTotal, bonusDefAgi, defesaArmadura, defesaEscudo, armaduraPesada,
+            defesaComponentes: defesaInfo.componentes,
+            defesaFormula: defesaInfo.formula,
+            // Velocidade
+            velocidadeTotal, velocidadeInfo,
+            // Iniciativa
+            iniciativa,
+            // Carga
+            cargaMax, cargaAtual, statusCarga,
+            // Utilitários
+            curaKit, respiracao,
+            // Habilidades diretas (para referência rápida)
+            fortitude, agilidade, percepcao, arcanismo, atletismo, forca, medicina
+        };
+    }, [character, armaduraEquipada, escudoEquipado]);
 
     // Componente de exibição do resultado da rolagem de dados
     const DiceResultDisplay = () => {
@@ -2392,97 +2503,21 @@ const CharacterSheet = () => {
 
     // Componente de Atributos Vitais e Combate
     const VitalStatsSection = () => {
-        // Cálculos baseados nas regras do RPG
+        if (!statsDerivados) return null;
+
+        // Usar pipeline centralizado — recalculado automaticamente via useMemo
+        const {
+            pvMax: pvCalculado, peMax: peCalculado, pmMax: pmCalculado,
+            pvAtual, peAtual, pmAtual,
+            defesaTotal: defesa, velocidadeTotal: velocidade, iniciativa,
+            agilidade, percepcao
+        } = statsDerivados;
+
+        // Habilidades de combate (ainda lidas diretamente para os chips de acerto)
         const habilidades = character.habilidades || {};
-        const fortitude = habilidades['Fortitude'] || 0;
-        const agilidade = habilidades['Agilidade'] || 0;
-        const percepcao = habilidades['Percepção'] || 0;
-        const arcanismo = habilidades['Arcanismo'] || 0;
-        const atletismo = habilidades['Atletismo'] || 0;
         const corpoACorpo = habilidades['Combate Corpo a Corpo'] || 0;
         const distancia = habilidades['Combate a Distância'] || 0;
         const arcano = habilidades['Combate Arcano'] || 0;
-
-        // Buscar valores base da espécie (valores padrão se não definidos)
-        const especieBaseVida = character.pv_base_especie || 10;
-        const especieBaseVelocidade = character.velocidade_base_especie || 9;
-        
-        // Buscar bônus de regalia de classe
-        const regaliaClasseVida = character.pv_regalia_classe || 0;
-        const regaliaClasseMagia = character.pm_regalia_classe || 0;
-        const regaliaClasseEstamina = character.pe_regalia_classe || 0;
-
-        // Cálculo de PV: Base Espécie + Regalia de Classe + (2 * Fortitude)
-        const pvCalculado = especieBaseVida + regaliaClasseVida + (2 * fortitude);
-        const pvAtual = character.pv_atual !== undefined ? character.pv_atual : pvCalculado;
-
-        // Cálculo de PM: Regalia de Classe + Arcanismo
-        const pmCalculado = regaliaClasseMagia + arcanismo;
-        const pmAtual = character.pm_atual !== undefined ? character.pm_atual : pmCalculado;
-
-        // Cálculo de PE: Regalia de Classe + Atletismo
-        const peCalculado = regaliaClasseEstamina + atletismo;
-        const peAtual = character.pe_atual !== undefined ? character.pe_atual : peCalculado;
-
-        // Cálculo de Velocidade usando função centralizada
-        // Detectar armadura pesada pelo campo tipo, pela categoria, ou pela presença do campo 'defesa' sem 'bonusDefesa'
-        // Armaduras pesadas: têm campo 'defesa' (16-20) e 'tipo: pesada'
-        // Armaduras leves/médias: têm campo 'bonusDefesa' (1-6) e 'tipo: leve/media'
-        const armaduraPesada = armaduraEquipada?.tipo?.toLowerCase() === 'pesada' || 
-                              armaduraEquipada?.category?.toLowerCase().includes('pesada') ||
-                              // Fallback: se tem 'defesa' >= 10 e não tem 'bonusDefesa', provavelmente é pesada
-                              (armaduraEquipada?.defesa >= 10 && !armaduraEquipada?.bonusDefesa) || 
-                              false;
-        
-        const velocidadeInfo = calcularVelocidadeMovimento(
-            especieBaseVelocidade, 
-            agilidade, 
-            armaduraPesada
-        );
-        // Sempre usar o cálculo baseado nos itens equipados
-        const velocidade = velocidadeInfo.velocidadeTotal;
-
-        // DEBUG: Verificar dados da armadura equipada
-        console.log('=== DEBUG DEFESA ===');
-        console.log('Armadura Equipada:', armaduraEquipada);
-        console.log('Escudo Equipado:', escudoEquipado);
-        console.log('armaduraPesada:', armaduraPesada);
-
-        // Cálculo de Defesa usando itens equipados
-        // Armaduras pesadas têm 'defesa' como valor total, médias/leves têm 'bonusDefesa' como bônus
-        let defesaArmadura = 0;
-        if (armaduraPesada) {
-            // Armadura pesada: usar valor 'defesa' diretamente como defesa total
-            defesaArmadura = armaduraEquipada?.defesa || 0;
-        } else {
-            // Armadura média/leve: usar 'bonusDefesa' ou 'defesa' como bônus
-            defesaArmadura = armaduraEquipada?.bonusDefesa || armaduraEquipada?.defesa || 0;
-        }
-        console.log('defesaArmadura calculado:', defesaArmadura);
-        
-        const defesaEscudo = escudoEquipado?.bonusDefesa || escudoEquipado?.defesa || 0;
-        console.log('defesaEscudo calculado:', defesaEscudo);
-        // Verificar proficiência em escudo (pode ser array ou objeto)
-        const proficiencias = character.proficiencias;
-        const temProficienciaEscudo = Array.isArray(proficiencias) 
-            ? proficiencias.includes('Escudos') 
-            : (typeof proficiencias === 'object' && proficiencias !== null)
-                ? Object.keys(proficiencias).some(k => k.toLowerCase().includes('escudo'))
-                : true; // Assume proficiência se não definido
-        
-        const defesaInfo = calcularDefesaTotal({
-            agilidade,
-            defesaArmadura,
-            defesaEscudo,
-            armaduraPesada,
-            temProficienciaEscudo
-        });
-        // Sempre usar o cálculo baseado nos itens equipados
-        const defesa = defesaInfo.defesaTotal;
-
-        // Cálculo de Iniciativa: Agilidade + Percepção (regra oficial)
-        const bonusIniciativa = calcularBonusIniciativa(agilidade, percepcao);
-        const iniciativa = character.iniciativa || bonusIniciativa;
 
         const StatBox = ({ icon, label, atual, max, color, bgColor, fieldAtual, fieldMax }) => {
             const [localAtual, setLocalAtual] = React.useState(atual);
@@ -2824,9 +2859,10 @@ const CharacterSheet = () => {
 
     // Componente de Acesso Rápido de Combate (Armas e Habilidades)
     const QuickCombatPanel = () => {
+        if (!statsDerivados) return null;
+
         const habilidades = character.habilidades || {};
         const equipamentos = character.equipamentos || [];
-        const agilidade = habilidades['Agilidade'] || 0;
         
         // Filtrar armas, armaduras e escudos dos equipamentos
         const armasDisponiveis = equipamentos.filter(e => 
@@ -2849,40 +2885,14 @@ const CharacterSheet = () => {
             e.category?.toLowerCase().includes('shield')
         );
         
-        // Detectar se é armadura pesada (pelo campo 'tipo', 'category', ou heurística)
-        // Armaduras pesadas: têm campo 'defesa' (16-20) e 'tipo: pesada'
-        // Armaduras leves/médias: têm campo 'bonusDefesa' (1-6) e 'tipo: leve/media'
-        const armaduraPesada = armaduraEquipada?.tipo?.toLowerCase() === 'pesada' || 
-                              armaduraEquipada?.category?.toLowerCase().includes('pesada') ||
-                              // Fallback: se tem 'defesa' >= 10 e não tem 'bonusDefesa', provavelmente é pesada
-                              (armaduraEquipada?.defesa >= 10 && !armaduraEquipada?.bonusDefesa) || 
-                              false;
-        
-        // Calcular defesa com itens equipados
-        // Armaduras pesadas: usam 'defesa' como valor total (substitui a defesa)
-        // Armaduras leves/médias: usam 'bonusDefesa' como bônus (soma na defesa base)
-        let defesaArmadura = 0;
-        if (armaduraPesada) {
-            defesaArmadura = armaduraEquipada?.defesa || 0;
-        } else {
-            defesaArmadura = armaduraEquipada?.bonusDefesa || armaduraEquipada?.defesa || 0;
-        }
-        const defesaEscudo = escudoEquipado?.bonusDefesa || escudoEquipado?.defesa || 0;
-        
-        const proficiencias = character.proficiencias;
-        const temProficienciaEscudo = Array.isArray(proficiencias) 
-            ? proficiencias.includes('Escudos') 
-            : (typeof proficiencias === 'object' && proficiencias !== null)
-                ? Object.keys(proficiencias).some(k => k.toLowerCase().includes('escudo'))
-                : true;
-        
-        const defesaInfo = calcularDefesaTotal({
-            agilidade,
-            defesaArmadura,
-            defesaEscudo,
-            armaduraPesada,
-            temProficienciaEscudo
-        });
+        // Usar pipeline centralizado em vez de recalcular
+        const { armaduraPesada, defesaArmadura, defesaEscudo } = statsDerivados;
+        const defesaInfo = {
+            defesaTotal: statsDerivados.defesaTotal,
+            componentes: statsDerivados.defesaComponentes,
+            formula: statsDerivados.defesaFormula,
+            bonusAgilidade: statsDerivados.bonusDefAgi
+        };
         
         // Habilidades de combate relevantes
         const habilidadesCombate = [

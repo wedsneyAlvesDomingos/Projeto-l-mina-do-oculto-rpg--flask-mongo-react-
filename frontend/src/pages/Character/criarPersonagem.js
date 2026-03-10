@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { Avatar, List, ListItem, ListItemText, Box, Container, Card, CardHeader, CardContent, Tabs, Tab, Typography, Paper, Tooltip, Grid, TextField, Button, FormControl, FormLabel, FormGroup, RadioGroup, FormControlLabel, Radio, InputLabel, Select, MenuItem, Stack, Divider, Chip, Modal, ListItemButton, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +20,21 @@ import {
     regaliasDeAprendiz,
     regaliasOpcionais,
     categories,
-    antecedentes
+    antecedentes,
+    // Funções de cálculo — Fase 3 (UI-001)
+    calcularPontosDeVida,
+    calcularEstamina,
+    calcularBonusVelocidade,
+    calcularPontosDeMagia,
+    calcularIniciativa,
+    calcularCapacidadeDeCarga,
+    calcularCuraKitMedico,
+    calcularTempoRespiracao,
 } from '../../data/constants';
+import {
+    calcularBonusDefesaAgilidade,
+    calcularDefesaTotal,
+} from '../../data/constants/regras';
 
 const style = {
     position: 'absolute',
@@ -175,6 +188,44 @@ const CharCreationPage = () => {
         idade: /^(1[0-9]|[2-9][0-9]|[1-9][0-9]{2}|1000)$/,
         dinheiro: /^\d+(\.\d{1,2})?$/
     };
+
+    // ============================================================
+    // STATS DERIVADOS — Recalculados automaticamente (UI-001)
+    // ============================================================
+    const statsDerivados = useMemo(() => {
+        const especieData = racas[especieSelecionada] || racas.humano;
+        const pvBase = especieData?.pvBase ?? 10;
+        const velBase = especieData?.velocidadeBase ?? 6;
+
+        // Habilidades — allValues usa display names
+        const fortitude  = allValues['Fortitude'] || 0;
+        const forca      = allValues['Força'] || 0;
+        const agilidade  = allValues['Agilidade'] || 0;
+        const atletismo  = allValues['Atletismo'] || 0;
+        const arcanismo  = allValues['Arcanismo'] || 0;
+        const percepcao  = allValues['Percepção'] || 0;
+        const medicina   = allValues['Medicina'] || 0;
+
+        const pvMax       = calcularPontosDeVida(pvBase, fortitude);
+        const estaminaMax = calcularEstamina(atletismo);
+        const pmMax       = calcularPontosDeMagia(arcanismo);
+        const bonusVel    = calcularBonusVelocidade(agilidade);
+        const bonusDefAgi = calcularBonusDefesaAgilidade(agilidade);
+        const defesaResult = calcularDefesaTotal({ agilidade, defesaArmadura: 0, defesaEscudo: 0, armaduraPesada: false });
+        const defesaTotal = defesaResult.defesaTotal || (7 + bonusDefAgi);
+        const iniciativa  = calcularIniciativa(agilidade, percepcao);
+        const cargaMax    = calcularCapacidadeDeCarga(forca);
+        const velTotal    = velBase + bonusVel;
+
+        return {
+            pvMax, estaminaMax, pmMax,
+            bonusVel, velBase, velTotal,
+            bonusDefAgi, defesaTotal,
+            iniciativa, cargaMax,
+            curaKit: calcularCuraKitMedico(medicina),
+            respiracao: calcularTempoRespiracao(fortitude),
+        };
+    }, [especieSelecionada, allValues]);
 
     const mutacaoData = {
         "tipo": "Mutante",
@@ -1316,7 +1367,30 @@ const CharCreationPage = () => {
             regalias_de_especialization: {
             },
             regalias_de_profissao: [professionReg],
-            equipamentos: selectedItems
+            equipamentos: selectedItems,
+            // Stats derivados calculados — Fase 3 (UI-001)
+            recursos: {
+                pv_atual: statsDerivados.pvMax,
+                pv_max: statsDerivados.pvMax,
+                pm_atual: statsDerivados.pmMax,
+                pm_max: statsDerivados.pmMax,
+                estamina_atual: statsDerivados.estaminaMax,
+                estamina_max: statsDerivados.estaminaMax,
+            },
+            defesa: {
+                base: 7,
+                agilidade: statsDerivados.bonusDefAgi,
+                armadura: 0,
+                escudo: 0,
+                total: statsDerivados.defesaTotal,
+            },
+            velocidade: {
+                base_especie: statsDerivados.velBase,
+                bonus_agilidade: statsDerivados.bonusVel,
+                total: statsDerivados.velTotal,
+            },
+            iniciativa: { total: statsDerivados.iniciativa },
+            carga: { capacidade_max: statsDerivados.cargaMax },
         };
 
         try {
@@ -2104,6 +2178,22 @@ const CharCreationPage = () => {
             <Box sx={{ width: '90%', mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>Criação de personagem</Typography>
                 <NavigationButtons sx={{ width: '100%' }} />
+
+                {/* Painel de Stats Derivados — atualiza em tempo real (UI-001) */}
+                <Paper sx={{ p: 2, mb: 2, borderTop: '3px solid #162A22' }}>
+                    <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold', color: '#162A22' }}>
+                        📊 Stats Calculados (tempo real)
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                        <Chip label={`❤️ PV: ${statsDerivados.pvMax}`} color="error" variant="outlined" size="small" />
+                        <Chip label={`⚡ Estamina: ${statsDerivados.estaminaMax}`} color="warning" variant="outlined" size="small" />
+                        <Chip label={`🔮 PM: ${statsDerivados.pmMax}`} color="primary" variant="outlined" size="small" />
+                        <Chip label={`🛡️ Defesa: ${statsDerivados.defesaTotal}`} color="info" variant="outlined" size="small" />
+                        <Chip label={`🏃 Vel: ${statsDerivados.velTotal}m`} color="success" variant="outlined" size="small" />
+                        <Chip label={`⚔️ Iniciativa: ${statsDerivados.iniciativa}`} variant="outlined" size="small" />
+                        <Chip label={`🎒 Carga: ${statsDerivados.cargaMax}kg`} variant="outlined" size="small" />
+                    </Stack>
+                </Paper>
 
                 <Tabs
                     value={tabIndex}

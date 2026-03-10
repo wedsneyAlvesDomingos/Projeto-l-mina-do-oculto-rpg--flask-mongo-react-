@@ -545,7 +545,7 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-BE-001** · Criar módulo `backend/app/services/rule_engine.py`  
+- [x] ✅ **TODO-BE-001** · Criar módulo `backend/app/services/rule_engine.py`  *(validar_criacao, validar_evolucao, calcular_ficha_completa + rotas)*  
   **Comportamento:** Motor de regras server-side que espelha a lógica do frontend. Valida toda mutação de personagem antes de persistir.  
   **Funções mínimas:**  
   - `validar_criacao(data)` → erros ou OK  
@@ -553,7 +553,7 @@
   - `calcular_ficha_completa(personagem)` → stats derivados  
   **Aceite:** `criar_personagem` chama `validar_criacao` antes de persistir; dados inválidos retornam 400.
 
-- [ ] 🟠 **TODO-BE-002** · Adicionar validação de regalia no backend  
+- [x] ✅ **TODO-BE-002** · Adicionar validação de regalia no backend  *(validar_regalias + /validar-regalias endpoint)*  
   **Arquivos:** `backend/app/services/rule_engine.py`  
   **Regras:**  
   - Nível 1: 4 pontos (1 espécie + 1 classe + 1 profissão + 1 livre)  
@@ -562,7 +562,7 @@
   - Verificar pré-requisitos, custo, incompatibilidades  
   **Aceite:** Backend rejeita compra de regalia sem pontos suficientes ou sem pré-requisitos.
 
-- [ ] 🟠 **TODO-BE-003** · Sincronizar catálogos do frontend com tabelas do banco  
+- [x] ✅ **TODO-BE-003** · Sincronizar catálogos do frontend com tabelas do banco  *(catalogs.py + seed_catalogs.py + /api/catalogos)*  
   **Arquivos:** `backend/db/schema.sql`, novo script de seed  
   **Contexto:** Tabelas `items`, `skills`, `conditions`, `proficiencies`, `regalias` existem mas estão **vazias**. Os dados vivem apenas no frontend JS.  
   **Opções:**  
@@ -629,12 +629,12 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-UI-001** · Conectar `criarPersonagem.js` ao pipeline de cálculo  
+- [x] ✅ **TODO-UI-001** · Conectar `criarPersonagem.js` ao pipeline de cálculo  *(useMemo + painel Chip + payload derivados)*  
   **Arquivos:** `frontend/src/pages/Character/criarPersonagem.js`  
   **Comportamento:** Ao selecionar espécie + sub-raça → auto-calcular PV base, velocidade, resistências. Ao selecionar antecedente → auto-aplicar bônus de habilidades. Ao selecionar regalia → auto-aplicar bônus.  
   **Aceite:** Campos PV, velocidade, defesa atualizam em tempo real conforme seleções.
 
-- [ ] 🟠 **TODO-UI-002** · Conectar `characterSheet.js` ao pipeline de cálculo  
+- [x] ✅ **TODO-UI-002** · Conectar `characterSheet.js` ao pipeline de cálculo  *(useMemo centralizado + VitalStats/QuickCombat refatorados + descanso integrado)*  
   **Arquivos:** `frontend/src/pages/Character/characterSheet.js`  
   **Comportamento:** Stats derivados são recalculados a cada mutação (equip item, subir nível, aplicar condição).  
   **Aceite:** Equipar armadura pesada recalcula defesa; aplicar condição Atordoado mostra -2 defesa.
@@ -747,7 +747,7 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-DAT-001** · Definir formato JSON canônico de ficha completa  
+- [x] ✅ **TODO-DAT-001** · Definir formato JSON canônico de ficha completa  *(docs/schema-ficha.json)*  
   **Arquivo:** Novo `docs/schema-ficha.json` (JSON Schema)  
   **Campos mínimos:**  
   ```json
@@ -814,12 +814,12 @@
 
 | Ordem | TODO | Módulo | Prioridade |
 |-------|------|--------|------------|
-| 20 | TODO-DAT-001 | Schema JSON canônico | 🟠 P1 |
-| 21 | TODO-BE-001 | rule_engine.py | 🟠 P1 |
-| 22 | TODO-BE-002 | Validação regalia backend | 🟠 P1 |
-| 23 | TODO-BE-003 | Sync catálogos | 🟠 P1 |
-| 24 | TODO-UI-001 | Pipeline na criação | 🟠 P1 |
-| 25 | TODO-UI-002 | Pipeline na ficha | 🟠 P1 |
+| 20 | TODO-DAT-001 | Schema JSON canônico | ✅ Done |
+| 21 | TODO-BE-001 | rule_engine.py | ✅ Done |
+| 22 | TODO-BE-002 | Validação regalia backend | ✅ Done |
+| 23 | TODO-BE-003 | Sync catálogos | ✅ Done |
+| 24 | TODO-UI-001 | Pipeline na criação | ✅ Done |
+| 25 | TODO-UI-002 | Pipeline na ficha | ✅ Done |
 
 ### Fase 4 — Enriquecimento e Qualidade
 > Completude e robustez.
