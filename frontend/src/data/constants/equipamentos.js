@@ -1797,4 +1797,127 @@ export const getArmadurasPorCategoriaProf = (catProf) => {
     return [...armadurasPesadas, ...armadurasMedidas, ...armadurasLeves].filter(a => a.categoriaProf === catProf);
 };
 
+// ============================================================================
+// FUNÇÃO DE ENGINE — CÁLCULO DE DEFESA COM EQUIPAMENTO (TODO-EQP-003)
+// ============================================================================
+
+/**
+ * Tabela escalonada de Agilidade → Bônus de Defesa
+ * Ref: LDO 0.5, seção Defesa
+ * @private
+ */
+const _BONUS_DEFESA_AGILIDADE = [
+    { min: 12, bonus: 7 },
+    { min: 9,  bonus: 6 },
+    { min: 6,  bonus: 5 },
+    { min: 3,  bonus: 4 },
+    { min: 0,  bonus: 3 }
+];
+
+/**
+ * Calcula defesa total de um personagem baseado em seu equipamento.
+ *
+ * Fórmulas (Ref: LDO 0.5, seção Defesa):
+ *   Sem armadura:      7 + bônusAgilidade
+ *   Armadura leve/média: 7 + bônusAgilidade + armadura.bonusDefesa + escudo.bonusDefesa
+ *   Armadura pesada:     armadura.defesa + escudo.bonusDefesa  (valor já inclui base 7)
+ *
+ * @param {number} agilidade — valor total de Agilidade do personagem
+ * @param {Object|null} armaduraEquipada — objeto de armadura (do array armadurasPesadas/Medidas/Leves), null se sem armadura
+ * @param {Object|null} escudoEquipado — objeto de escudo (do array escudos), null se sem escudo
+ * @param {Object} [opcoes={}] — { temProficienciaEscudo?: boolean, bonusAdicional?: number }
+ * @returns {{
+ *   defesaTotal: number,
+ *   componentes: { base: number, agilidade: number, armadura: number, escudo: number, bonus: number },
+ *   formula: string,
+ *   penalidades: { velocidade: number, furtividade: number },
+ *   armaduraPesada: boolean
+ * }}
+ */
+export const calcularDefesaComEquipamento = (agilidade, armaduraEquipada, escudoEquipado, opcoes = {}) => {
+    const { temProficienciaEscudo = true, bonusAdicional = 0 } = opcoes;
+
+    // Calcular bônus de agilidade
+    let bonusAgilidade = 3; // padrão para agilidade 0-2
+    for (const entrada of _BONUS_DEFESA_AGILIDADE) {
+        if (agilidade >= entrada.min) { bonusAgilidade = entrada.bonus; break; }
+    }
+
+    // Escudo efetivo (0 se não tem proficiência)
+    const escudoBonus = (escudoEquipado && temProficienciaEscudo) ? (escudoEquipado.bonusDefesa || 0) : 0;
+
+    // Penalidades acumuladas
+    const penalidades = { velocidade: 0, furtividade: 0 };
+    if (armaduraEquipada?.penalidade) {
+        penalidades.velocidade += armaduraEquipada.penalidade.velocidade || 0;
+        penalidades.furtividade += armaduraEquipada.penalidade.furtividade || 0;
+    }
+    if (escudoEquipado?.penalidade) {
+        penalidades.velocidade += escudoEquipado.penalidade.velocidade || 0;
+        penalidades.furtividade += escudoEquipado.penalidade.furtividade || 0;
+    }
+
+    let defesaTotal, formula, componentes;
+    const isPesada = armaduraEquipada?.categoriaProf === 'pesada' || armaduraEquipada?.tipo === 'pesada';
+
+    if (!armaduraEquipada) {
+        // Sem armadura: 7 + bônus agilidade + escudo
+        defesaTotal = 7 + bonusAgilidade + escudoBonus + bonusAdicional;
+        formula = `7 (base) + ${bonusAgilidade} (agilidade) + ${escudoBonus} (escudo)${bonusAdicional > 0 ? ` + ${bonusAdicional} (bônus)` : ''}`;
+        componentes = { base: 7, agilidade: bonusAgilidade, armadura: 0, escudo: escudoBonus, bonus: bonusAdicional };
+    } else if (isPesada) {
+        // Armadura pesada: defesa absoluta + escudo (base 7 já inclusa em armor.defesa)
+        const defArmadura = armaduraEquipada.defesa || 0;
+        defesaTotal = defArmadura + escudoBonus + bonusAdicional;
+        formula = `${defArmadura} (armadura pesada) + ${escudoBonus} (escudo)${bonusAdicional > 0 ? ` + ${bonusAdicional} (bônus)` : ''}`;
+        componentes = { base: 0, agilidade: 0, armadura: defArmadura, escudo: escudoBonus, bonus: bonusAdicional };
+    } else {
+        // Armadura leve/média: 7 + agilidade + bonusDefesa + escudo
+        const defArmadura = armaduraEquipada.bonusDefesa || 0;
+        defesaTotal = 7 + bonusAgilidade + defArmadura + escudoBonus + bonusAdicional;
+        formula = `7 (base) + ${bonusAgilidade} (agilidade) + ${defArmadura} (armadura) + ${escudoBonus} (escudo)${bonusAdicional > 0 ? ` + ${bonusAdicional} (bônus)` : ''}`;
+        componentes = { base: 7, agilidade: bonusAgilidade, armadura: defArmadura, escudo: escudoBonus, bonus: bonusAdicional };
+    }
+
+    return { defesaTotal, componentes, formula, penalidades, armaduraPesada: isPesada };
+};
+
+/**
+ * Calcula o dano total de uma arma com modificadores de habilidade.
+ *
+ * Ref: LDO 0.5, seção Dano
+ *   Corpo-a-corpo: arma.dano + Força
+ *   À distância:   arma.dano + Destreza (ou Força para armas de arremesso)
+ *
+ * @param {Object} arma — objeto de arma do equipamento
+ * @param {Object} habilidades — { forca: number, destreza: number }
+ * @param {Object} [opcoes={}] — { arremesso?: boolean, bonusDano?: number }
+ * @returns {{ dadoDano: string, bonusAtributo: number, bonusExtra: number, formula: string }}
+ */
+export const calcularDanoArma = (arma, habilidades = {}, opcoes = {}) => {
+    if (!arma) return { dadoDano: '0', bonusAtributo: 0, bonusExtra: 0, formula: '0' };
+
+    const { arremesso = false, bonusDano = 0 } = opcoes;
+    const dadoDano = arma.dano || '0';
+    const isDistancia = arma.alcance && arma.alcance !== 'corpo-a-corpo';
+
+    let bonusAtributo = 0;
+    if (isDistancia && !arremesso) {
+        bonusAtributo = habilidades.destreza || 0;
+    } else {
+        bonusAtributo = habilidades.forca || 0;
+    }
+
+    const partes = [dadoDano];
+    if (bonusAtributo !== 0) partes.push(`${bonusAtributo > 0 ? '+' : ''}${bonusAtributo}`);
+    if (bonusDano !== 0) partes.push(`${bonusDano > 0 ? '+' : ''}${bonusDano}`);
+
+    return {
+        dadoDano,
+        bonusAtributo,
+        bonusExtra: bonusDano,
+        formula: partes.join(' ')
+    };
+};
+
 export default equipamentos;

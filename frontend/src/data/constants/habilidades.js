@@ -80,17 +80,17 @@ export const calcularIniciativa = (agilidade, percepcao) => {
 
 /**
  * Calcula o bônus de velocidade baseado na agilidade
+ * Ref: LDO 0.5, Tabela de Agilidade → Velocidade
+ * Thresholds escalonados: 3→+1.5m, 6→+3m, 9→+4.5m, 12→+6m (máximo)
  * @param {number} agilidade - Valor da habilidade Agilidade
  * @returns {number} Bônus de velocidade em metros
  */
 export const calcularBonusVelocidade = (agilidade) => {
-    if (agilidade <= 0) return 0;
-    if (agilidade <= 2) return 1.5;
-    if (agilidade <= 4) return 3;
-    if (agilidade <= 6) return 4.5;
-    if (agilidade <= 8) return 6;
-    if (agilidade <= 10) return 7.5;
-    return 7.5 + Math.floor((agilidade - 10) / 2) * 1.5;
+    if (agilidade >= 12) return 6;
+    if (agilidade >= 9) return 4.5;
+    if (agilidade >= 6) return 3;
+    if (agilidade >= 3) return 1.5;
+    return 0;
 };
 
 /**
@@ -769,4 +769,105 @@ export const calcularAtributosDerivados = (habilidades, dadosBase = {}) => {
         pontosDeMagia: calcularPontosDeMagia(arcanismo, magiaBase),
         tempoRespiracao: calcularTempoRespiracao(fortitude)
     };
+};
+
+/**
+ * Retorna o bônus que uma habilidade fornece nas mecânicas do sistema.
+ *
+ * No Lâmina do Oculto a maioria das habilidades usa seu VALOR BRUTO como
+ * bônus direto (Força → dano corpo a corpo, CCC → acerto, etc.).
+ * Agilidade é a única exceção: possui tabelas escalonadas para Defesa e
+ * Velocidade que convertem o valor em faixas discretas.
+ *
+ * Ref: LDO 0.5, seções "Habilidades" e "Combate"
+ *
+ * @param {number} valor - Valor total da habilidade (pontos distribuídos + bônus)
+ * @param {'direto'|'defesa'|'velocidade'} contexto
+ *   - 'direto'     → valor bruto (padrão; serve para dano, acerto, testes)
+ *   - 'defesa'     → tabela Agilidade → bônus de Defesa (3/4/5/6/7)
+ *   - 'velocidade' → tabela Agilidade → bônus de Velocidade em m (0/1.5/3/4.5/6)
+ * @returns {number} Bônus aplicável
+ */
+export const calcularBonusHabilidade = (valor, contexto = 'direto') => {
+    if (contexto === 'defesa') {
+        // Tabela: 0→3, 3→4, 6→5, 9→6, 12→7  (Ref: LDO 0.5, seção Defesa)
+        if (valor >= 12) return 7;
+        if (valor >= 9) return 6;
+        if (valor >= 6) return 5;
+        if (valor >= 3) return 4;
+        return 3;
+    }
+    if (contexto === 'velocidade') {
+        // Tabela: 0→0, 3→1.5, 6→3, 9→4.5, 12→6  (Ref: LDO 0.5, seção Velocidade)
+        if (valor >= 12) return 6;
+        if (valor >= 9) return 4.5;
+        if (valor >= 6) return 3;
+        if (valor >= 3) return 1.5;
+        return 0;
+    }
+    // 'direto' — o valor bruto É o bônus (dano, acerto, testes, etc.)
+    return valor;
+};
+
+/**
+ * Tabela de XP cumulativo por nível (Ref: LDO 0.5, seção Experiência)
+ * Índice 0 = nível 1 (150 XP), índice 19 = nível 20 (46.000 XP)
+ */
+export const TABELA_XP_POR_NIVEL = [
+    150,    // Nível 1
+    600,    // Nível 2
+    1200,   // Nível 3
+    2000,   // Nível 4
+    3000,   // Nível 5
+    4200,   // Nível 6
+    5500,   // Nível 7
+    6900,   // Nível 8
+    8400,   // Nível 9
+    10000,  // Nível 10
+    11700,  // Nível 11
+    14000,  // Nível 12
+    16400,  // Nível 13
+    19000,  // Nível 14
+    21000,  // Nível 15
+    24100,  // Nível 16
+    28600,  // Nível 17
+    33000,  // Nível 18
+    38100,  // Nível 19
+    46000   // Nível 20
+];
+
+/**
+ * Calcula o nível atual baseado no XP cumulativo
+ * Ref: LDO 0.5, seção "Experiência"
+ * @param {number} xp - Pontos de experiência acumulados
+ * @returns {{ nivel: number, xpAtual: number, xpProximoNivel: number|null, xpNoNivel: number, xpFaltando: number }}
+ */
+export const calcularNivel = (xp) => {
+    let nivel = 1;
+    for (let i = 0; i < TABELA_XP_POR_NIVEL.length; i++) {
+        if (xp >= TABELA_XP_POR_NIVEL[i]) {
+            nivel = i + 2; // array 0-indexed, nível 1 = 0 XP
+        } else break;
+    }
+    nivel = Math.min(nivel, 20);
+
+    const xpInicioNivel = nivel <= 1 ? 0 : TABELA_XP_POR_NIVEL[nivel - 2];
+    const xpProximoNivel = nivel >= 20 ? null : TABELA_XP_POR_NIVEL[nivel - 1];
+    const xpNoNivel = xp - xpInicioNivel;
+    const xpFaltando = xpProximoNivel !== null ? Math.max(0, xpProximoNivel - xp) : 0;
+
+    return { nivel, xpAtual: xp, xpProximoNivel, xpNoNivel, xpFaltando };
+};
+
+/**
+ * Calcula total de pontos de regalia disponíveis para o nível
+ * Ref: LDO 0.5 — Nível 1: 4pts, Nível 2: +4pts, Nível 3-20: +2pts/nível
+ * @param {number} nivel
+ * @returns {number}
+ */
+export const calcularPontosRegaliaTotal = (nivel) => {
+    if (nivel <= 0) return 0;
+    if (nivel === 1) return 4;
+    if (nivel === 2) return 8;
+    return 8 + (nivel - 2) * 2; // nível 20 = 44
 };

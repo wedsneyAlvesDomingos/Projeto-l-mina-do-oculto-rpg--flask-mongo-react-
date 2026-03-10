@@ -41,6 +41,11 @@ export {
     calcularTempoRespiracao,
     calcularCuraKitMedico,
     calcularAtributosDerivados,
+    // Funções de cálculo — Fase 2 (HAB-001)
+    calcularBonusHabilidade,
+    TABELA_XP_POR_NIVEL,
+    calcularNivel,
+    calcularPontosRegaliaTotal,
 } from './habilidades';
 
 // ============================================================================
@@ -70,6 +75,10 @@ export {
     // Funções auxiliares
     getProficiencia,
     getProficienciaNivel,
+    // Funções de engine — Fase 2 (PRO-001)
+    getEfeitosProficiencia,
+    possuiProficiencia,
+    getDesbloqueiosCumulativos,
 } from './proficiencias';
 
 // ============================================================================
@@ -91,6 +100,11 @@ export {
     getCondicoesComFlag,
     getCondicoesComDanoRecorrente,
     isCondicaoIncapacitante,
+    // Funções de engine — Fase 2 (CON-002/003)
+    aplicarCondicao,
+    removerCondicao,
+    processarEfeitosDeRodada,
+    processarTesteDeMorte,
 } from './condicoes';
 
 // ============================================================================
@@ -174,6 +188,8 @@ export {
     getAntecedentesComHabilidade,
     getAntecedentesParaSelect,
     calcularBonusAntecedente,
+    // Funções de engine — Fase 2 (ANT-002)
+    aplicarAntecedente,
 } from './antecedentes';
 
 // ============================================================================
@@ -252,6 +268,9 @@ export {
     getArmasComPropriedade,
     getArmasComEfeitosEspeciais,
     getArmadurasPorCategoriaProf,
+    // Funções de engine — Fase 2 (EQP-003)
+    calcularDefesaComEquipamento,
+    calcularDanoArma,
 } from './equipamentos';
 
 // ============================================================================
@@ -380,4 +399,7 @@ export {
     calcularDanoArmaPorTamanho,
     calcularCustoArmaAdaptada,
     getInformacoesCarga,
+    // Motor de resolução — Fase 2 (RUL-002)
+    resolverAcaoCompleta,
+    resolverTesteHabilidade,
 } from './regras';

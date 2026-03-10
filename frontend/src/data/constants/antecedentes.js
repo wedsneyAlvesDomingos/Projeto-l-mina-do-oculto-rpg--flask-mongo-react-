@@ -1234,4 +1234,127 @@ export const calcularBonusAntecedente = (nome, escolhas = {}) => {
     return bonus;
 };
 
+// ============================================================================
+// FUNÇÕES DE ENGINE — APLICAR ANTECEDENTE (TODO-ANT-002)
+// ============================================================================
+
+/**
+ * Aplica um antecedente a um fichaState imutável, distribuindo:
+ *   1. bonusEstruturado   → pontos fixos em habilidades
+ *   2. escolhasHabilidades → pontos em habilidades escolhidas (de um grupo restrito)
+ *   3. escolhasLivres      → pontos em habilidades livremente escolhidas
+ *   4. proficienciasGanhas → proficiências fixas
+ *   5. escolhasProficiencias → proficiências escolhidas (de um grupo restrito)
+ *   6. itensIniciais       → adicionados ao inventário
+ *   7. moedasExtra         → adicionadas ao ouro
+ *
+ * Ref: LDO 0.5, seção Antecedentes
+ *
+ * @param {Object} fichaState — estado atual da ficha
+ *   Esperado: { habilidades: { nome: valor }, proficiencias: { id: nivel }, inventario: [], ouro: 0, ... }
+ * @param {string} antecedenteNome — nome do antecedente (case-insensitive, accent-insensitive)
+ * @param {Object} [escolhas={}] — escolhas do jogador:
+ *   {
+ *     habilidadesEscolhidas: [{ habilidade: string, pontos: int }],  — para escolhasHabilidades
+ *     habilidadesLivres:     [{ habilidade: string, pontos: int }],  — para escolhasLivres
+ *     proficienciasEscolhidas: [{ proficiencia: string, pontos: int }] — para escolhasProficiencias
+ *   }
+ * @returns {{ novoState: Object, resumo: Object }} — state atualizado + resumo dos bônus aplicados
+ */
+export const aplicarAntecedente = (fichaState, antecedenteNome, escolhas = {}) => {
+    const ant = getAntecedente(antecedenteNome);
+    if (!ant) return { novoState: fichaState, resumo: { erro: 'Antecedente não encontrado' } };
+
+    const novoState = {
+        ...fichaState,
+        habilidades: { ...(fichaState.habilidades || {}) },
+        proficiencias: { ...(fichaState.proficiencias || {}) },
+        inventario: [...(fichaState.inventario || [])],
+        ouro: fichaState.ouro || 0,
+        antecedente: antecedenteNome
+    };
+
+    const resumo = {
+        antecedente: ant.nome,
+        habilidadesAlteradas: {},
+        proficienciasGanhas: [],
+        itensAdicionados: [],
+        moedasAdicionadas: 0,
+        erros: []
+    };
+
+    // 1) Bônus estruturados (fixos)
+    for (const b of ant.bonusEstruturado) {
+        novoState.habilidades[b.habilidade] = (novoState.habilidades[b.habilidade] || 0) + b.pontos;
+        resumo.habilidadesAlteradas[b.habilidade] = (resumo.habilidadesAlteradas[b.habilidade] || 0) + b.pontos;
+    }
+
+    // 2) Escolhas de habilidades (grupo restrito)
+    if (ant.escolhasHabilidades.length > 0 && escolhas.habilidadesEscolhidas) {
+        for (const esc of escolhas.habilidadesEscolhidas) {
+            // Verificar se a habilidade está no grupo permitido de alguma escolha
+            const slotDisponivel = ant.escolhasHabilidades.find(e =>
+                e.grupo.includes(esc.habilidade) && esc.pontos <= e.pontos
+            );
+            if (slotDisponivel) {
+                novoState.habilidades[esc.habilidade] = (novoState.habilidades[esc.habilidade] || 0) + esc.pontos;
+                resumo.habilidadesAlteradas[esc.habilidade] = (resumo.habilidadesAlteradas[esc.habilidade] || 0) + esc.pontos;
+            } else {
+                resumo.erros.push(`Habilidade "${esc.habilidade}" não permitida nas escolhas do antecedente`);
+            }
+        }
+    }
+
+    // 3) Escolhas livres (AMNÉSICO etc.)
+    if (ant.escolhasLivres > 0 && escolhas.habilidadesLivres) {
+        let slotsUsados = 0;
+        for (const esc of escolhas.habilidadesLivres) {
+            if (slotsUsados >= ant.escolhasLivres) {
+                resumo.erros.push(`Limite de escolhas livres (${ant.escolhasLivres}) excedido`);
+                break;
+            }
+            novoState.habilidades[esc.habilidade] = (novoState.habilidades[esc.habilidade] || 0) + esc.pontos;
+            resumo.habilidadesAlteradas[esc.habilidade] = (resumo.habilidadesAlteradas[esc.habilidade] || 0) + esc.pontos;
+            slotsUsados++;
+        }
+    }
+
+    // 4) Proficiências fixas
+    for (const p of ant.proficienciasGanhas) {
+        const nivelAtual = novoState.proficiencias[p.proficiencia] || 0;
+        novoState.proficiencias[p.proficiencia] = Math.max(nivelAtual, p.pontos);
+        resumo.proficienciasGanhas.push({ proficiencia: p.proficiencia, nivel: p.pontos });
+    }
+
+    // 5) Proficiências escolhidas
+    if (ant.escolhasProficiencias.length > 0 && escolhas.proficienciasEscolhidas) {
+        for (const esc of escolhas.proficienciasEscolhidas) {
+            const slotDisponivel = ant.escolhasProficiencias.find(e =>
+                e.grupo.includes(esc.proficiencia) && esc.pontos <= e.pontos
+            );
+            if (slotDisponivel) {
+                const nivelAtual = novoState.proficiencias[esc.proficiencia] || 0;
+                novoState.proficiencias[esc.proficiencia] = Math.max(nivelAtual, esc.pontos);
+                resumo.proficienciasGanhas.push({ proficiencia: esc.proficiencia, nivel: esc.pontos });
+            } else {
+                resumo.erros.push(`Proficiência "${esc.proficiencia}" não permitida nas escolhas do antecedente`);
+            }
+        }
+    }
+
+    // 6) Itens iniciais
+    for (const item of ant.itensIniciais) {
+        novoState.inventario.push({ nome: item, fonte: 'antecedente', equipado: false });
+        resumo.itensAdicionados.push(item);
+    }
+
+    // 7) Moedas extras
+    if (ant.moedasExtra > 0) {
+        novoState.ouro += ant.moedasExtra;
+        resumo.moedasAdicionadas = ant.moedasExtra;
+    }
+
+    return { novoState, resumo };
+};
+
 export default antecedentes;

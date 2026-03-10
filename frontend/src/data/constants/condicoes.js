@@ -744,3 +744,292 @@ export const categoriasCondicoes = [
     { id: 'ambiente', nome: 'Ambiente', cor: CORES_CONDICOES.ambiente },
     { id: 'progressiva', nome: 'Progressiva', cor: CORES_CONDICOES.progressiva },
 ];
+
+// ============================================================================
+// FUNÇÕES DE ENGINE — APLICAR/REMOVER CONDIÇÕES (TODO-CON-002)
+// ============================================================================
+
+/**
+ * Aplica uma condição a um fichaState imutável e retorna novo state.
+ *
+ * O fichaState esperado segue o schema:
+ *   { habilidades: {}, recursos: {}, defesa: {}, condicoesAtivas: [],
+ *     modificadores: { defesa: 0, ataques: 0, testes: 0, velocidade: 0, percepcao: 0 },
+ *     flags: {} }
+ *
+ * Ref: LDO 0.5, seção Condições
+ *
+ * @param {Object} fichaState  — estado atual da ficha
+ * @param {string} condicaoId  — id da condição (ex: 'atordoado')
+ * @param {Object} [opcoes={}] — { fonte?: string, duracao?: number (rodadas), intensidade?: number }
+ * @returns {Object} novo fichaState com condição aplicada e modificadores recalculados
+ */
+export const aplicarCondicao = (fichaState, condicaoId, opcoes = {}) => {
+    const cond = getCondicao(condicaoId);
+    if (!cond) return fichaState;
+
+    const { fonte = 'desconhecida', duracao = null, intensidade = 1 } = opcoes;
+
+    // Copiar state de forma imutável
+    const novoState = {
+        ...fichaState,
+        condicoesAtivas: [...(fichaState.condicoesAtivas || [])],
+        modificadores: { ...(fichaState.modificadores || { defesa: 0, ataques: 0, testes: 0, velocidade: 0, percepcao: 0 }) },
+        flags: { ...(fichaState.flags || {}) }
+    };
+
+    // Verificar stack rule
+    const idx = novoState.condicoesAtivas.findIndex(c => c.condicaoId === cond.id);
+    if (idx !== -1) {
+        const existente = novoState.condicoesAtivas[idx];
+        switch (cond.stackRegra) {
+            case 'substitui':
+                // Remove a anterior (vamos recalcular tudo)
+                novoState.condicoesAtivas.splice(idx, 1);
+                break;
+            case 'acumula':
+                // Incrementa intensidade
+                novoState.condicoesAtivas[idx] = {
+                    ...existente,
+                    intensidade: (existente.intensidade || 1) + intensidade
+                };
+                return _recalcularModificadores(novoState);
+            case 'maiorValor':
+                if (intensidade <= (existente.intensidade || 1)) return fichaState;
+                novoState.condicoesAtivas.splice(idx, 1);
+                break;
+            case 'maiorDuracao':
+                if (duracao !== null && duracao <= (existente.duracaoRestante || 0)) return fichaState;
+                novoState.condicoesAtivas.splice(idx, 1);
+                break;
+            default:
+                // null → não stackeia, reaplica
+                novoState.condicoesAtivas.splice(idx, 1);
+        }
+    }
+
+    // Adicionar condição
+    novoState.condicoesAtivas.push({
+        condicaoId: cond.id,
+        nome: cond.descricao ? (Object.keys(condicoesDisponiveis).find(k => condicoesDisponiveis[k].id === cond.id) || cond.id) : cond.id,
+        fonte,
+        duracaoRestante: duracao,
+        intensidade,
+        rodadaAplicada: Date.now() // timestamp para ordenação
+    });
+
+    return _recalcularModificadores(novoState);
+};
+
+/**
+ * Remove uma condição do fichaState e recalcula modificadores.
+ *
+ * @param {Object} fichaState  — estado atual
+ * @param {string} condicaoId  — id da condição a remover
+ * @returns {Object} novo fichaState sem a condição
+ */
+export const removerCondicao = (fichaState, condicaoId) => {
+    const novoState = {
+        ...fichaState,
+        condicoesAtivas: (fichaState.condicoesAtivas || []).filter(c => c.condicaoId !== condicaoId),
+        modificadores: { ...(fichaState.modificadores || { defesa: 0, ataques: 0, testes: 0, velocidade: 0, percepcao: 0 }) },
+        flags: { ...(fichaState.flags || {}) }
+    };
+    return _recalcularModificadores(novoState);
+};
+
+/**
+ * Recalcula todos os modificadores e flags baseado nas condições ativas.
+ * Regra LDO: "uma criatura recebe sempre o maior bônus ou penalidade, e somente ele."
+ * @private
+ */
+const _recalcularModificadores = (state) => {
+    // Resetar
+    const mods = { defesa: 0, ataques: 0, testes: 0, velocidade: 0, percepcao: 0 };
+    const flags = {};
+
+    for (const ativa of state.condicoesAtivas) {
+        const cond = getCondicao(ativa.condicaoId);
+        if (!cond) continue;
+
+        // Penalidades — acumula MENOR (mais negativo) conforme regra do maior efeito
+        if (cond.penalidades) {
+            for (const [key, val] of Object.entries(cond.penalidades)) {
+                if (val === null) continue;
+                if (val === 'metade') {
+                    mods[key] = 'metade'; // flag especial para velocidade
+                } else if (typeof val === 'number' && typeof mods[key] === 'number') {
+                    mods[key] = Math.min(mods[key], val);
+                }
+            }
+        }
+
+        // Flags — OR lógico (qualquer condição seta, fica setada)
+        if (cond.flags) {
+            for (const [key, val] of Object.entries(cond.flags)) {
+                if (val === true) flags[key] = true;
+                // criticoReduzido: menor valor = melhor pro atacante
+                if (key === 'criticoReduzido' && typeof val === 'number') {
+                    flags.criticoReduzido = flags.criticoReduzido
+                        ? Math.min(flags.criticoReduzido, val)
+                        : val;
+                }
+            }
+        }
+    }
+
+    return { ...state, modificadores: mods, flags };
+};
+
+// ============================================================================
+// FUNÇÕES DE ENGINE — PROCESSAR EFEITOS DE RODADA (TODO-CON-003)
+// ============================================================================
+
+/**
+ * Processa efeitos de início ou fim de turno para todas as condições ativas.
+ * - Aplica dano recorrente no momento indicado
+ * - Decrementa duração das condições com rodadas restantes
+ * - Remove condições expiradas
+ *
+ * Ref: LDO 0.5, seção Condições e efeitos por turno
+ *
+ * @param {Object} fichaState — estado da ficha
+ * @param {'inicioTurno'|'fimTurno'} momento — quando no turno estamos
+ * @returns {{ novoState: Object, log: Array<string> }} — state atualizado + log de eventos
+ */
+export const processarEfeitosDeRodada = (fichaState, momento) => {
+    const log = [];
+    let novoState = {
+        ...fichaState,
+        condicoesAtivas: [...(fichaState.condicoesAtivas || [])],
+        recursos: { ...(fichaState.recursos || {}) },
+        modificadores: { ...(fichaState.modificadores || {}) },
+        flags: { ...(fichaState.flags || {}) }
+    };
+
+    const condicoesParaManter = [];
+
+    for (const ativa of novoState.condicoesAtivas) {
+        const cond = getCondicao(ativa.condicaoId);
+        if (!cond) { condicoesParaManter.push(ativa); continue; }
+
+        // 1) Aplicar dano recorrente
+        if (cond.danoRecorrente && cond.danoRecorrente.valor !== null && cond.danoRecorrente.momento === momento) {
+            const dano = _resolverValorDano(cond.danoRecorrente.valor, ativa.intensidade);
+            if (novoState.recursos.pvAtual !== undefined) {
+                novoState.recursos = {
+                    ...novoState.recursos,
+                    pvAtual: Math.max(0, novoState.recursos.pvAtual - dano)
+                };
+            }
+            log.push(`${ativa.condicaoId}: ${dano} dano de ${cond.danoRecorrente.tipo || 'efeito'} (${momento})`);
+        }
+
+        // 2) Decrementar duração
+        let condAtualizada = { ...ativa };
+        if (condAtualizada.duracaoRestante !== null && condAtualizada.duracaoRestante !== undefined) {
+            condAtualizada.duracaoRestante -= 1;
+            if (condAtualizada.duracaoRestante <= 0) {
+                log.push(`${ativa.condicaoId}: expirou!`);
+                continue; // Não adiciona — condição removida
+            }
+        }
+
+        condicoesParaManter.push(condAtualizada);
+    }
+
+    novoState.condicoesAtivas = condicoesParaManter;
+
+    // Recalcular modificadores após remoções
+    novoState = _recalcularModificadores(novoState);
+
+    return { novoState, log };
+};
+
+/**
+ * Processa teste de morte (Beira da Morte).
+ * Ref: LDO 0.5, seção "À Beira da Morte"
+ *   - 10+ no d20 = 1 sucesso
+ *   - 9 ou menos  = 1 falha
+ *   - Nat 1       = 2 falhas
+ *   - Nat 20      = estabiliza + cura = Fortitude PV
+ *   - 5 sucessos  = estabilizado
+ *   - 3 falhas    = morte
+ *   - Dano enquanto à beira = +1 falha por 5 de dano
+ *
+ * @param {Object} fichaState — deve conter { testeMorte: { sucessos, falhas }, habilidades: { fortitude } }
+ * @returns {{ novoState: Object, resultado: 'continua'|'estabilizado'|'morte'|'critico_estabilizado', rolagemD20: number, log: string }}
+ */
+export const processarTesteDeMorte = (fichaState) => {
+    const rolagem = Math.floor(Math.random() * 20) + 1;
+    const tm = { ...(fichaState.testeMorte || { sucessos: 0, falhas: 0 }) };
+    let resultado = 'continua';
+    let log = '';
+
+    if (rolagem === 20) {
+        // Crítico: estabiliza imediatamente + recupera Fortitude em PV
+        const fortitude = fichaState.habilidades?.fortitude || 0;
+        resultado = 'critico_estabilizado';
+        log = `Nat 20! Estabilizado e recupera ${fortitude} PV`;
+        const novoState = {
+            ...fichaState,
+            testeMorte: { sucessos: 0, falhas: 0 },
+            recursos: {
+                ...(fichaState.recursos || {}),
+                pvAtual: Math.min(
+                    (fichaState.recursos?.pvAtual || 0) + fortitude,
+                    fichaState.recursos?.pvMax || fortitude
+                )
+            }
+        };
+        // Remover condição à beira da morte
+        return { novoState: removerCondicao(novoState, 'a_beira_da_morte'), resultado, rolagemD20: rolagem, log };
+    }
+
+    if (rolagem === 1) {
+        tm.falhas += 2;
+        log = `Nat 1! Falha crítica (2 falhas). Total: ${tm.sucessos}S / ${tm.falhas}F`;
+    } else if (rolagem >= 10) {
+        tm.sucessos += 1;
+        log = `${rolagem} → Sucesso! Total: ${tm.sucessos}S / ${tm.falhas}F`;
+    } else {
+        tm.falhas += 1;
+        log = `${rolagem} → Falha. Total: ${tm.sucessos}S / ${tm.falhas}F`;
+    }
+
+    if (tm.falhas >= 3) {
+        resultado = 'morte';
+        log += ' → MORTE';
+    } else if (tm.sucessos >= 5) {
+        resultado = 'estabilizado';
+        log += ' → Estabilizado!';
+    }
+
+    const novoState = { ...fichaState, testeMorte: tm };
+    return { novoState, resultado, rolagemD20: rolagem, log };
+};
+
+/**
+ * Resolve valor de dano que pode ser string ('2', '1d4', '2d4') ou number
+ * @private
+ */
+const _resolverValorDano = (valor, intensidade = 1) => {
+    if (typeof valor === 'number') return valor * intensidade;
+    if (typeof valor === 'string') {
+        // Dano fixo
+        const fixo = parseInt(valor, 10);
+        if (!isNaN(fixo) && !valor.includes('d')) return fixo * intensidade;
+        // Dado: NdX
+        const match = valor.match(/^(\d+)?d(\d+)$/);
+        if (match) {
+            const qtd = (parseInt(match[1], 10) || 1) * intensidade;
+            const lados = parseInt(match[2], 10);
+            let total = 0;
+            for (let i = 0; i < qtd; i++) {
+                total += Math.floor(Math.random() * lados) + 1;
+            }
+            return total;
+        }
+    }
+    return 0;
+};

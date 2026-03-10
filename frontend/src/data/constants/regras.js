@@ -1,9 +1,13 @@
 /**
  * Regras do Sistema Lâmina do Oculto
+ * Ref: Livro LDO 0.5 (docs/Lâmina do Oculto 0.5.txt)
+ * 
  * Este arquivo contém funções e constantes para as mecânicas do jogo.
  * Inclui: Vantagem/Desvantagem, Dinheiro, Bônus/Penalidades, Itens Mágicos,
  * Vulnerabilidade/Resistência, Armadilhas, Rituais, Luz/Visão, Descanso,
  * Iniciativa, Defesa, Velocidade, Acerto, Dano, Ações, Combate
+ * 
+ * Auditado em TODO-RUL-001 contra o livro v0.5
  */
 
 // Import para lookup de peso em equipamentos
@@ -55,6 +59,7 @@ export const ALCANCE_AMEACA_MAXIMO = 4.5;
 
 /**
  * Bônus de Iniciativa = Agilidade + Percepção
+ * Ref: LDO 0.5, seção Iniciativa
  * @param {number} agilidade - Valor de Agilidade
  * @param {number} percepcao - Valor de Percepção
  * @returns {number} Bônus de iniciativa
@@ -107,8 +112,11 @@ export const ordenarPorIniciativa = (participantes) => {
 
 /**
  * Tabela de bônus de defesa por pontos de Agilidade
- * Defesa = 7 + Bônus de Agilidade + Armadura + Escudo (leve/média)
- * ou Armadura + Escudo (pesada, sem base 7 nem agilidade)
+ * Ref: LDO 0.5, seção Defesa
+ * Fórmulas:
+ *   Sem armadura:       7 + bônusAgilidade
+ *   Leve/Média:         7 + bônusAgilidade + armadura.bonusDefesa + escudo
+ *   Pesada:             armadura.defesa + escudo  (armadura.defesa JÁ inclui base 7)
  */
 export const BONUS_DEFESA_AGILIDADE = {
     0: 3,   // 0 pontos em Agilidade = +3 de defesa
@@ -158,7 +166,8 @@ export const calcularDefesaTotal = ({
     let componentes;
     
     if (armaduraPesada) {
-        // Armaduras pesadas: Armadura + Escudo (sem base 7, sem agilidade)
+        // Armaduras pesadas: defesa absoluta + escudo (base 7 já inclusa em defesaArmadura)
+        // Ref: LDO 0.5 — "Valor de Defesa = armadura pesada + escudo"
         defesaTotal = defesaArmadura + escudoEfetivo + bonusAdicional;
         formula = `${defesaArmadura} (armadura) + ${escudoEfetivo} (escudo)${bonusAdicional > 0 ? ` + ${bonusAdicional} (bônus)` : ''}`;
         componentes = {
@@ -170,6 +179,7 @@ export const calcularDefesaTotal = ({
         };
     } else {
         // Armaduras leves/médias: 7 + Bônus Agilidade + Armadura + Escudo
+        // Ref: LDO 0.5 — "Valor de Defesa = 7 + bônus de Agilidade + armadura + escudo"
         defesaTotal = 7 + bonusAgilidadeValor + defesaArmadura + escudoEfetivo + bonusAdicional;
         formula = `7 (base) + ${bonusAgilidadeValor} (agilidade) + ${defesaArmadura} (armadura) + ${escudoEfetivo} (escudo)${bonusAdicional > 0 ? ` + ${bonusAdicional} (bônus)` : ''}`;
         componentes = {
@@ -213,6 +223,7 @@ export const PENALIDADE_VELOCIDADE_ARMADURA_PESADA = 1.5;
  */
 export const calcularVelocidadeMovimento = (velocidadeBaseEspecie = 9, agilidade = 0, armaduraPesada = false, bonusAdicional = 0) => {
     // Calcular bônus de agilidade
+    // Ref: LDO 0.5 — Agilidade 3→+1.5m, 6→+3m, 9→+4.5m, 12→+6m
     let bonusAgilidade = 0;
     if (agilidade >= 12) bonusAgilidade = 6;
     else if (agilidade >= 9) bonusAgilidade = 4.5;
@@ -242,6 +253,11 @@ export const calcularVelocidadeMovimento = (velocidadeBaseEspecie = 9, agilidade
 
 /**
  * Calcula resultado de um ataque
+ * Ref: LDO 0.5, seção Combate — Acerto, Crítico e Overshoot
+ * Pipeline: d20 + habilidade de combate → compara com Defesa do alvo
+ *   > Defesa = acerto, = Defesa = acerto parcial (dano ÷ 2), < Defesa = erro
+ *   Nat 1 = falha crítica, Nat 20 (ou >= margemCritico) = crítico (dano × 2)
+ *   Superar por +10: +1d4 | +15: +2 | +20: +3
  * @param {number} rolagemD20 - Valor rolado no d20
  * @param {number} bonusAcerto - Bônus total de acerto
  * @param {number} defesaAlvo - Valor de defesa do alvo
@@ -268,13 +284,14 @@ export const calcularResultadoAtaque = (rolagemD20, bonusAcerto, defesaAlvo, mar
         multiplicadorDano = 2; // Dano dobrado
     } else if (totalAcerto > defesaAlvo) {
         resultado = 'acerto';
-        // Bônus por superar defesa em muito
+        // Bônus por superar defesa (overshoot)
+        // Ref: LDO 0.5 — "+10: +1d4 dano | +15: +2 dano | +20: +3 dano"
         if (diferenca >= 20) {
             bonusDano = 3;
         } else if (diferenca >= 15) {
             bonusDano = 2;
         } else if (diferenca >= 10) {
-            bonusDano = 4; // 1d4 representado como 4 pontos médios ou rolar separado
+            bonusDano = Math.floor(Math.random() * 4) + 1; // 1d4
         }
     } else if (totalAcerto === defesaAlvo) {
         resultado = 'acerto_parcial'; // Dano reduzido pela metade
@@ -365,6 +382,7 @@ export const calcularDanoFinal = (danoBase, resultadoAtaque, bonusAtributo = 0, 
 
 /**
  * Matriz de interações elementais
+ * Ref: LDO 0.5, seção Elementos
  * forte = dano dobrado, fraco = metade do dano
  */
 export const INTERACOES_ELEMENTAIS = {
@@ -491,6 +509,7 @@ export const calcularDanoElemental = (danoBase, tipoAtaque, elementoAlvo = null)
 
 /**
  * Tabela de dano por queda
+ * Ref: LDO 0.5, seção Queda
  * Cada 3m = incremento de dano progressivo
  */
 export const TABELA_DANO_QUEDA = [
@@ -1096,6 +1115,9 @@ export const calcularDCMontariaNaoTreinada = (tentativas = 0) => {
 
 /**
  * Calcula quantos d20 devem ser rolados e se pega o maior ou menor resultado
+ * Ref: LDO 0.5, seção Vantagem/Desvantagem
+ *   Vantagens acumulam (cada vantagem = +1 dado extra, pega maior)
+ *   Desvantagem NÃO acumula (sempre 2d20, pega menor)
  * @param {number} vantagens - Número de vantagens
  * @param {number} desvantagens - Número de desvantagens
  * @returns {object} { dados: número de d20s, tipo: 'vantagem'|'desvantagem'|'normal' }
@@ -1628,6 +1650,7 @@ export const DURACAO_DESCANSO_LONGO = 6; // horas
 
 /**
  * Calcula recuperação de descanso curto
+ * Ref: LDO 0.5, seção Descanso — Curto: 1/3 PV, 1/2 Estamina, 1/2 Magia
  * @param {object} stats - { vidaMax, vidaAtual, estaminaMax, estaminaAtual, magiaMax, magiaAtual }
  * @returns {object} Valores recuperados
  */
@@ -1651,6 +1674,7 @@ export const calcularDescansosCurto = (stats) => {
 
 /**
  * Calcula recuperação de descanso longo
+ * Ref: LDO 0.5, seção Descanso — Longo: Recuperação total + -1 nível cansaço
  * @param {object} stats - { vidaMax, estaminaMax, magiaMax, nivelCansaco }
  * @returns {object} Valores recuperados
  */
@@ -1769,6 +1793,7 @@ export const verificarRequisitosDescansoLongo = (recursos) => {
 
 /**
  * Categorias de tamanho baseadas em altura (em centímetros)
+ * Ref: LDO 0.5, seção Tamanho de Criaturas
  */
 export const TAMANHOS = {
     MINUSCULO: {
@@ -1824,6 +1849,7 @@ export const TAMANHOS = {
 
 /**
  * Configuração de capacidade de carga por tamanho
+ * Ref: LDO 0.5, seção Capacidade de Carga
  */
 export const CAPACIDADE_CARGA = {
     minusculo: { multiplicador: 1, minimo: 1, descricao: 'Igual o valor de força em quilos (mínimo de 1)' },
@@ -2119,4 +2145,276 @@ export const getInformacoesCarga = (alturaCm, forca, itens = []) => {
             penalidade: status.penalidade
         }
     };
+};
+
+// ============================================================================
+// MOTOR DE RESOLUÇÃO DE AÇÃO COMPLETA (TODO-RUL-002)
+// ============================================================================
+
+/**
+ * Resolve o pipeline completo de uma ação de ataque corpo-a-corpo ou à distância.
+ *
+ * Pipeline:
+ *   1. Validar custo de ação (verificar ações restantes)
+ *   2. Aplicar penalidade de ataque múltiplo (2ª ação "atacar" no turno = desvantagem)
+ *   3. Rolar d20 com vantagem/desvantagem
+ *   4. Somar habilidade de combate + bônus
+ *   5. Comparar com Defesa do alvo → acerto/parcial/erro/crítico/falha crítica
+ *   6. Calcular dano base (arma + atributo)
+ *   7. Aplicar multiplicador (crítico ×2, parcial ×0.5)
+ *   8. Calcular bônus overshoot (+10: 1d4, +15: +2, +20: +3)
+ *   9. Aplicar interação elemental
+ *   10. Aplicar resistência/vulnerabilidade/imunidade do alvo
+ *   11. Compilar resultado final com log narrativo
+ *
+ * Ref: LDO 0.5, seções Combate, Acerto, Dano, Elementos
+ *
+ * @param {Object} ator — atacante
+ *   { nome, habilidadeCombate: number, forca: number, destreza: number,
+ *     acoesRestantes: number, ataquesFeitosNoTurno: number,
+ *     vantagensExtras: number, desvantagensExtras: number,
+ *     bonusAcertoAdicional: number, bonusDanoAdicional: number }
+ * @param {Object} alvo — defensor
+ *   { nome, defesa: number, elementoAlvo?: string,
+ *     vulnerabilidades?: string[], resistencias?: string[], imunidades?: string[] }
+ * @param {Object} arma — arma utilizada
+ *   { nome, dano: string, tipoDano: string, critico?: number, alcance?: string }
+ * @param {Object} [contexto={}] — modificadores contextuais
+ *   { coberturaAlvo?: string, nivelLuz?: string, arremesso?: boolean }
+ * @returns {Object} resultado completo do ataque
+ */
+export const resolverAcaoCompleta = (ator, alvo, arma, contexto = {}) => {
+    const log = [];
+    const erros = [];
+
+    // --- 1. Validar custo ---
+    const custoAcao = 1;
+    if ((ator.acoesRestantes || 3) < custoAcao) {
+        return { sucesso: false, erros: ['Sem ações restantes para atacar'], log: [] };
+    }
+
+    // --- 2. Penalidade de ataque múltiplo ---
+    // Ref: LDO 0.5 — "A partir da segunda ação atacar no mesmo turno, desvantagem"
+    const ataquesFeitosNoTurno = ator.ataquesFeitosNoTurno || 0;
+    let desvantagensPorMultiplo = 0;
+    if (ataquesFeitosNoTurno >= 1) {
+        desvantagensPorMultiplo = 1;
+        log.push(`⚠️ ${ataquesFeitosNoTurno + 1}º ataque no turno — desvantagem aplicada`);
+    }
+
+    // --- 3. Calcular vantagens/desvantagens totais ---
+    const vantagensTotal = ator.vantagensExtras || 0;
+    let desvantagensTotal = (ator.desvantagensExtras || 0) + desvantagensPorMultiplo;
+
+    // Cobertura do alvo
+    if (contexto.coberturaAlvo) {
+        const cob = calcularBonusCobertura(contexto.coberturaAlvo);
+        if (cob.bloqueiaAtaques) {
+            return { sucesso: false, erros: ['Alvo em cobertura total — não pode ser alvejado'], log };
+        }
+    }
+
+    // Iluminação
+    if (contexto.nivelLuz) {
+        const luz = calcularPenalidadeLuz(
+            contexto.nivelLuz,
+            contexto.temVisaoNoEscuro || false,
+            contexto.alcanceVisaoNoEscuro || 0,
+            contexto.distanciaAlvo || 0
+        );
+        if (luz.condicaoCego) {
+            desvantagensTotal += 1;
+            log.push(`🌑 Cego por escuridão — desvantagem aplicada`);
+        } else if (luz.penalidade > 0) {
+            log.push(`🌗 Meia-luz — ${luz.penalidade > 0 ? '-' + luz.penalidade + ' em testes afetados' : ''}`);
+        }
+    }
+
+    // --- 4. Rolar acerto ---
+    const rolagemInfo = rolarComVantagemDesvantagem(vantagensTotal, desvantagensTotal, 0);
+    const rolagemD20 = rolagemInfo.resultadoBase;
+
+    // Bônus de acerto = habilidade de combate + extras
+    const bonusAcerto = (ator.habilidadeCombate || 0) + (ator.bonusAcertoAdicional || 0);
+
+    // Cobertura extra na defesa
+    let defesaEfetiva = alvo.defesa || 10;
+    if (contexto.coberturaAlvo) {
+        const cob = calcularBonusCobertura(contexto.coberturaAlvo);
+        defesaEfetiva += cob.bonusDefesa;
+        if (cob.bonusDefesa > 0) log.push(`🛡️ Alvo com ${cob.nome}: +${cob.bonusDefesa} defesa`);
+    }
+
+    // Margem de crítico (base 20, pode ser reduzida por regalias/proficiências)
+    const margemCritico = arma.critico || 20;
+
+    // --- 5. Resolver acerto vs defesa ---
+    const resultadoAcerto = calcularResultadoAtaque(rolagemD20, bonusAcerto, defesaEfetiva, margemCritico);
+
+    log.push(`🎲 Rolagem: ${rolagemInfo.descricao}`);
+    log.push(`⚔️ Acerto: ${rolagemD20} + ${bonusAcerto} = ${resultadoAcerto.totalAcerto} vs Defesa ${defesaEfetiva}`);
+    log.push(`📋 Resultado: ${resultadoAcerto.descricao}`);
+
+    // Se errou, retornar
+    if (resultadoAcerto.multiplicadorDano === 0) {
+        return {
+            sucesso: true,
+            acertou: false,
+            resultado: resultadoAcerto.resultado,
+            rolagem: rolagemInfo,
+            acerto: resultadoAcerto,
+            dano: null,
+            log,
+            erros,
+            acoesGastas: custoAcao
+        };
+    }
+
+    // --- 6. Calcular dano base ---
+    const danoArmaBase = _rolarDadoDano(arma.dano || '0');
+    const isDistancia = arma.alcance && arma.alcance !== 'corpo-a-corpo';
+    const bonusAtributo = (isDistancia && !contexto.arremesso)
+        ? (ator.destreza || 0)
+        : (ator.forca || 0);
+    const bonusDanoExtra = ator.bonusDanoAdicional || 0;
+
+    // --- 7. Aplicar multiplicador (crítico/parcial) ---
+    const subTotalDano = danoArmaBase + bonusAtributo + bonusDanoExtra;
+    const danoAposMultiplicador = Math.floor(subTotalDano * resultadoAcerto.multiplicadorDano);
+
+    // --- 8. Overshoot bonus (já calculado em resultadoAcerto)
+    const danoComOvershoot = danoAposMultiplicador + resultadoAcerto.bonusDanoPorDiferenca;
+
+    log.push(`💥 Dano: ${danoArmaBase} (arma) + ${bonusAtributo} (atributo)${bonusDanoExtra > 0 ? ` + ${bonusDanoExtra} (extra)` : ''}`);
+    if (resultadoAcerto.multiplicadorDano !== 1) {
+        log.push(`   × ${resultadoAcerto.multiplicadorDano} (${resultadoAcerto.isCriticoNatural ? 'CRÍTICO' : 'parcial'})`);
+    }
+    if (resultadoAcerto.bonusDanoPorDiferenca > 0) {
+        log.push(`   + ${resultadoAcerto.bonusDanoPorDiferenca} (overshoot +${resultadoAcerto.diferenca})`);
+    }
+
+    // --- 9. Interação elemental ---
+    let danoFinal = danoComOvershoot;
+    let modificadorElemental = null;
+    if (arma.tipoDano && alvo.elementoAlvo) {
+        const elemResult = calcularDanoElemental(danoFinal, arma.tipoDano, alvo.elementoAlvo);
+        if (elemResult.modificador !== 'normal') {
+            danoFinal = elemResult.danoFinal;
+            modificadorElemental = elemResult;
+            log.push(`🔥 Elemental: ${elemResult.descricao}`);
+        }
+    }
+
+    // --- 10. Resistência/vulnerabilidade/imunidade ---
+    let modificadorResistencia = null;
+    if (arma.tipoDano) {
+        const resResult = calcularDanoComModificadores(
+            danoFinal,
+            arma.tipoDano,
+            alvo.vulnerabilidades || [],
+            alvo.resistencias || [],
+            alvo.imunidades || []
+        );
+        if (resResult.modificador !== 'normal') {
+            danoFinal = resResult.danoFinal;
+            modificadorResistencia = resResult;
+            log.push(`🛡️ Modificador: ${resResult.descricao}`);
+        }
+    }
+
+    // Dano mínimo = 1 (exceto imunidade)
+    if (danoFinal > 0) danoFinal = Math.max(1, danoFinal);
+
+    log.push(`💀 Dano final: ${danoFinal}`);
+
+    // --- 11. Retornar resultado completo ---
+    return {
+        sucesso: true,
+        acertou: true,
+        resultado: resultadoAcerto.resultado,
+        rolagem: rolagemInfo,
+        acerto: resultadoAcerto,
+        dano: {
+            base: danoArmaBase,
+            bonusAtributo,
+            bonusDanoExtra,
+            multiplicador: resultadoAcerto.multiplicadorDano,
+            overshoot: resultadoAcerto.bonusDanoPorDiferenca,
+            elemental: modificadorElemental,
+            resistencia: modificadorResistencia,
+            final: danoFinal
+        },
+        log,
+        erros,
+        acoesGastas: custoAcao,
+        novoAtaquesFeitosNoTurno: ataquesFeitosNoTurno + 1
+    };
+};
+
+/**
+ * Resolve um teste de habilidade simples (não-combate).
+ * Ref: LDO 0.5, seção Testes de Habilidade
+ *   Teste = d20 + valor da habilidade + bônus vs DC
+ *
+ * @param {number} valorHabilidade — valor total na habilidade testada
+ * @param {number} dificuldade — DC do teste
+ * @param {Object} [opcoes={}] — { vantagens, desvantagens, bonus }
+ * @returns {Object} resultado do teste
+ */
+export const resolverTesteHabilidade = (valorHabilidade, dificuldade, opcoes = {}) => {
+    const { vantagens = 0, desvantagens = 0, bonus = 0 } = opcoes;
+
+    const rolagemInfo = rolarComVantagemDesvantagem(vantagens, desvantagens, 0);
+    const rolagemD20 = rolagemInfo.resultadoBase;
+    const total = rolagemD20 + valorHabilidade + bonus;
+    const sucesso = total >= dificuldade;
+    const diferenca = total - dificuldade;
+
+    // Gradação do resultado
+    let grau;
+    if (rolagemD20 === 20) grau = 'sucesso_critico';
+    else if (rolagemD20 === 1) grau = 'falha_critica';
+    else if (diferenca >= 10) grau = 'sucesso_excepcional';
+    else if (sucesso) grau = 'sucesso';
+    else if (diferenca >= -5) grau = 'falha_parcial';
+    else grau = 'falha';
+
+    return {
+        rolagemD20,
+        valorHabilidade,
+        bonus,
+        total,
+        dificuldade,
+        sucesso,
+        diferenca,
+        grau,
+        rolagem: rolagemInfo,
+        descricao: `${rolagemD20} + ${valorHabilidade}${bonus ? ` + ${bonus}` : ''} = ${total} vs DC ${dificuldade} → ${sucesso ? 'Sucesso' : 'Falha'}${grau.includes('critico') || grau.includes('excepcional') ? ` (${grau.replace('_', ' ')})` : ''}`
+    };
+};
+
+/**
+ * Rola dano a partir de notação de dados (ex: "2d6", "1d8+2")
+ * @private
+ */
+const _rolarDadoDano = (notacao) => {
+    if (typeof notacao === 'number') return notacao;
+    if (!notacao || notacao === '0') return 0;
+
+    // Parse: NdX ou NdX+Y
+    const match = notacao.match(/^(\d+)?d(\d+)(?:\s*\+\s*(\d+))?$/);
+    if (!match) {
+        const num = parseInt(notacao, 10);
+        return isNaN(num) ? 0 : num;
+    }
+
+    const qtd = parseInt(match[1], 10) || 1;
+    const lados = parseInt(match[2], 10);
+    const fixo = parseInt(match[3], 10) || 0;
+
+    let total = fixo;
+    for (let i = 0; i < qtd; i++) {
+        total += Math.floor(Math.random() * lados) + 1;
+    }
+    return total;
 };

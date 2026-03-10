@@ -100,7 +100,7 @@
   ```
   **Aceite:** Função exportada e testável; usada no pipeline de cálculo.
 
-- [ ] 🟡 **TODO-ESP-004** · Exportar `getEstatisticasEspecie` via `index.js`  
+- [x] 🟡 **TODO-ESP-004** · Exportar `getEstatisticasEspecie` via `index.js`  
   **Arquivos:** `frontend/src/data/constants/index.js`
 
 ---
@@ -240,7 +240,7 @@
   | À Beira da Morte | flags: semAcoes, semMovimento, regra especial de testes |
   **Aceite:** Todas as 32 condições têm `penalidades`, `flags` e `danoRecorrente` preenchidos; nenhum campo mecânico é `undefined`.
 
-- [ ] 🟠 **TODO-CON-002** · Criar funções `aplicarCondicao` e `removerCondicao`  
+- [x] 🟠 **TODO-CON-002** · Criar funções `aplicarCondicao` e `removerCondicao`  
   **Arquivos:** `frontend/src/data/constants/condicoes.js`  
   ```js
   /**
@@ -260,17 +260,17 @@
   ```
   **Aceite:** Funções exportadas; aplicar Atordoado reduz defesa em 2, seta semAcoes=true; remover restaura.
 
-- [ ] 🟠 **TODO-CON-003** · Criar função `processarEfeitosDeRodada(fichaState, momento)`  
+- [x] 🟠 **TODO-CON-003** · Criar função `processarEfeitosDeRodada(fichaState, momento)`  
   **Arquivos:** `frontend/src/data/constants/condicoes.js`  
   **Comportamento:** Para cada condição ativa com `danoRecorrente` no `momento` indicado, aplica o dano; decrementa duração; remove se expirou.  
   **Aceite:** Sangrando causa 2 de dano por turno; Queimando 2 causa 2d4; condições com duração em rodadas decrementam.
 
-- [ ] 🟡 **TODO-CON-004** · Implementar lógica de `À Beira da Morte`  
+- [x] 🟡 **TODO-CON-004** · Implementar lógica de `À Beira da Morte`  
   **Arquivos:** `frontend/src/data/constants/condicoes.js`  
   **Regras:** 3 testes por rodada; 3 sucessos = estabiliza; 3 falhas = morte; dano enquanto à beira = falha automática; cura tira do estado.  
   **Aceite:** Função `processarTesteDeMorte(fichaState)` retorna novo estado com contadores atualizados.
 
-- [ ] 🟢 **TODO-CON-005** · Exportar novas funções via `index.js`  
+- [x] 🟢 **TODO-CON-005** · Exportar novas funções via `index.js`  
   **Arquivos:** `frontend/src/data/constants/index.js`
 
 ---
@@ -318,7 +318,7 @@
   ```
   **Aceite:** Todos os itens de defesa têm `categoriaProf` preenchida.
 
-- [ ] 🟠 **TODO-EQP-003** · Criar função `calcularDefesaComEquipamento(baseDefesa, agilidadeBonus, equipamento)`  
+- [x] 🟠 **TODO-EQP-003** · Criar função `calcularDefesaComEquipamento(baseDefesa, agilidadeBonus, equipamento)`  
   **Arquivos:** `frontend/src/data/constants/equipamentos.js` ou `regras.js`  
   **Regras:**  
   - Leve/Média: `7 + bonusAgilidade + bonusArmadura + bonusEscudo`  
@@ -336,7 +336,7 @@
   **Contexto:** O livro contém listas de itens não-combate (kit médico, kit de acampamento, ferramentas, tochas, etc.) que não estão no catálogo.  
   **Aceite:** Pelo menos os itens referenciados em regalias e profissões estão catalogados.
 
-- [ ] 🟢 **TODO-EQP-006** · Exportar novas funções via `index.js`  
+- [x] 🟢 **TODO-EQP-006** · Exportar novas funções via `index.js`  
   **Arquivos:** `frontend/src/data/constants/index.js`
 
 ---
@@ -370,12 +370,12 @@
   **Antecedentes com escolhas livres:** AMNÉSICO (4 escolhas), e outros que dizem "habilidade à escolha".  
   **Aceite:** `getAntecedente('ABENÇOADO').bonusEstruturado` retorna array parseável; nenhum bônus mecânico está somente em string.
 
-- [ ] 🟠 **TODO-ANT-002** · Criar função `aplicarAntecedente(fichaState, antecedenteNome, escolhas)`  
+- [x] 🟠 **TODO-ANT-002** · Criar função `aplicarAntecedente(fichaState, antecedenteNome, escolhas)`  
   **Arquivos:** `frontend/src/data/constants/antecedentes.js`  
   **Comportamento:** Distribui os pontos do `bonusEstruturado` + resolve `escolhasLivres` com base em parâmetro `escolhas`.  
   **Aceite:** Função exportada, testável, retorna delta de habilidades.
 
-- [ ] 🟢 **TODO-ANT-003** · Exportar novas funções via `index.js`  
+- [x] 🟢 **TODO-ANT-003** · Exportar novas funções via `index.js`  
   **Arquivos:** `frontend/src/data/constants/index.js`
 
 ---
@@ -390,7 +390,7 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-HAB-001** · Criar tabela/função `calcularBonusHabilidade(valor)`  
+- [x] 🟠 **TODO-HAB-001** · Criar tabela/função `calcularBonusHabilidade(valor)`  
   **Arquivos:** `frontend/src/data/constants/habilidades.js`  
   **Regra do sistema:** O livro define faixas de bônus baseadas no valor total da habilidade (ex: 0-2 → +0, 3-5 → +1, 6-8 → +2, etc.).  
   **Aceite:** Função exportada; `calcularBonusHabilidade(7)` retorna valor correto conforme livro.
@@ -409,7 +409,7 @@
   - Iniciativa = agilidade + percepcao → ✅  
   **Aceite:** Toda fórmula testada contra exemplos do livro.
 
-- [ ] 🟢 **TODO-HAB-004** · Exportar novas funções via `index.js`  
+- [x] 🟢 **TODO-HAB-004** · Exportar novas funções via `index.js`  
   **Arquivos:** `frontend/src/data/constants/index.js`
 
 ---
@@ -423,7 +423,7 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-PRO-001** · Adicionar efeitos mecânicos por nível de proficiência  
+- [x] 🟠 **TODO-PRO-001** · Adicionar efeitos mecânicos por nível de proficiência  
   **Arquivos:** `frontend/src/data/constants/proficiencias.js`  
   **Formato alvo em cada `niveis[]`:**  
   ```js
@@ -441,7 +441,7 @@
   **Proficiências críticas:** `armas_armaduras` (3 níveis), `ferramentas_ladrao` (5 níveis), `armas_fogo` (2 níveis), `anti_conjuradores` (3 níveis).  
   **Aceite:** `getProficiencia('armas_armaduras').niveis[0].efeitos` retorna objeto parseável.
 
-- [ ] 🟡 **TODO-PRO-002** · Criar função `possuiProficiencia(fichaState, profId, nivelMinimo)`  
+- [x] 🟡 **TODO-PRO-002** · Criar função `possuiProficiencia(fichaState, profId, nivelMinimo)`  
   **Arquivos:** `frontend/src/data/constants/proficiencias.js`  
   **Aceite:** Função usada em validação de equipamento e regalias.
 
@@ -501,7 +501,7 @@
 
 ### TODOs
 
-- [ ] 🟠 **TODO-RUL-001** · Auditar e cruzar TODAS as fórmulas de `regras.js` com o livro  
+- [x] 🟠 **TODO-RUL-001** · Auditar e cruzar TODAS as fórmulas de `regras.js` com o livro  
   **Arquivos:** `frontend/src/data/constants/regras.js` vs `docs/Lâmina do Oculto 0.5.txt`  
   **Fórmulas a verificar:**  
   | Fórmula | Função no código | Seção do livro |
@@ -516,12 +516,12 @@
   | Carga por tamanho | `CAPACIDADE_CARGA` | Seção carga |
   **Aceite:** Cada fórmula tem comentário com número de página/seção do livro que a fundamenta.
 
-- [ ] 🟠 **TODO-RUL-002** · Adicionar função `resolverAcaoCompleta(ator, alvo, acao, contexto)`  
+- [x] 🟠 **TODO-RUL-002** · Adicionar função `resolverAcaoCompleta(ator, alvo, acao, contexto)`  
   **Arquivos:** `frontend/src/data/constants/regras.js`  
   **Comportamento:** Pipeline completo de resolução de ação: valida custo → rola acerto → aplica vantagem/desvantagem → verifica crítico → calcula dano → aplica resistências/vulnerabilidades → aplica efeitos secundários → retorna resultado.  
   **Aceite:** Função encapsula todo o fluxo de combate em uma chamada.
 
-- [ ] 🟡 **TODO-RUL-003** · Adicionar tabela de XP por nível e função `calcularNivel(xp)`  
+- [x] 🟡 **TODO-RUL-003** · Adicionar tabela de XP por nível e função `calcularNivel(xp)`  
   **Arquivos:** `frontend/src/data/constants/regras.js`  
   **Aceite:** `calcularNivel(300)` retorna nível correto conforme tabela do livro.
 
