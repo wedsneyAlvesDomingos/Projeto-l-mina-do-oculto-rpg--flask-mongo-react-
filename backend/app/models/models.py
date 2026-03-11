@@ -49,6 +49,8 @@ class Personagem(Base):
     conditions = relationship('CharacterCondition', back_populates='character', cascade='all, delete-orphan')
     proficiencies = relationship('CharacterProficiency', back_populates='character', cascade='all, delete-orphan')
     regalias = relationship('CharacterRegalia', back_populates='character', cascade='all, delete-orphan')
+    effects = relationship('CharacterEffect', back_populates='character', cascade='all, delete-orphan')
+    audit_logs = relationship('CharacterAuditLog', back_populates='character', cascade='all, delete-orphan')
 
     def to_dict(self):
         """
@@ -238,3 +240,75 @@ class CharacterSection(Base):
     data = Column(JSONB, default={})
 
     character = relationship('Personagem', back_populates='sections')
+
+
+class CharacterEffect(Base):
+    """
+    Efeitos ativos sobre o personagem (poções, venenos, regalias, condições, kits, materiais).
+    Cada efeito rastreia sua origem, dados mecânicos (JSONB), duração por rodadas/usos,
+    e se expira em descanso curto/longo.
+
+    Ref: schema-ficha.json → efeitos_ativos, LDO 0.5 seções "Poções", "Venenos", "Condições"
+    """
+    __tablename__ = 'character_effects'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    character_id = Column(Integer, ForeignKey('characters.id'), nullable=False)
+    effect_type = Column(String, nullable=False)       # 'pocao', 'veneno', 'regalia', 'condicao', 'kit', 'material', 'outro'
+    source = Column(String, nullable=True)              # nome/id da origem
+    data = Column(JSONB, default={})                    # dados mecânicos livres
+    remaining_rounds = Column(Integer, nullable=True)   # rodadas restantes (NULL = sem duração)
+    remaining_uses = Column(Integer, nullable=True)     # usos restantes (NULL = sem limite)
+    expires_on_rest = Column(String, nullable=True)     # 'curto', 'longo', 'ambos', NULL
+    is_active = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    character = relationship('Personagem', back_populates='effects')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'character_id': self.character_id,
+            'effect_type': self.effect_type,
+            'source': self.source,
+            'data': self.data or {},
+            'remaining_rounds': self.remaining_rounds,
+            'remaining_uses': self.remaining_uses,
+            'expires_on_rest': self.expires_on_rest,
+            'is_active': self.is_active,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
+class CharacterAuditLog(Base):
+    """
+    Trilha de auditoria para toda mutação de personagem.
+    Registra quem fez o quê, quando, e o estado antes/depois.
+
+    Ref: TODO-BE-006 — Toda mutação de personagem gera registro no log.
+    """
+    __tablename__ = 'character_audit_log'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    character_id = Column(Integer, ForeignKey('characters.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
+    action = Column(Text, nullable=False)       # 'create', 'update', 'delete', 'rest', 'condition_add', etc.
+    before_state = Column(JSONB, nullable=True)
+    after_state = Column(JSONB, nullable=True)
+    metadata_ = Column('metadata', JSONB, default={})  # 'metadata' é nome reservado em SQLAlchemy
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    character = relationship('Personagem', back_populates='audit_logs')
+    user = relationship('User')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'character_id': self.character_id,
+            'user_id': self.user_id,
+            'action': self.action,
+            'before_state': self.before_state,
+            'after_state': self.after_state,
+            'metadata': self.metadata_ or {},
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }

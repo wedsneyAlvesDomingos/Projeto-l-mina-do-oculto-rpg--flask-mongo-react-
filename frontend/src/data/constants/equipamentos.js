@@ -1646,22 +1646,53 @@ export const montarias = [
 // KITS
 // ============================================================================
 export const kits = [
-    { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50, peso: 2 },
-    { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20, peso: 2 },
-    { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30, peso: 3 },
-    { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25, peso: 4 },
-    { name: "Kit de Alquimista", description: "Inclui frascos vazios, substâncias químicas básicas, tubos de ensaio e outros itens para alquimia.", price: 60, peso: 3 },
-    { name: "Kit de Ladrão", description: "Contém Ferramentas de ladrão, pés de cabra, cordas e outros itens para atividades furtivas.", price: 40, peso: 2 },
-    { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35, peso: 2 },
-    { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50, peso: 3 },
-    { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55, peso: 3 },
-    { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45, peso: 1 },
-    { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30, peso: 1.5 },
-    { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70, peso: 1.5 },
-    { name: "Kit de Engenhocas", description: "Inclui engrenagens, molas, fios e outros itens para criar dispositivos e armadilhas improvisadas.", price: 60, peso: 3 },
-    { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40, peso: 4 },
-    { name: "Kit de Caça", description: "Inclui armadilhas, armas de caça, iscas e outros itens para caçar e rastrear animais.", price: 45, peso: 4 },
-    { name: "Kit de Sobrevivência Aquática", description: "Contém nadadeiras, redes de pesca, arpão e outros itens para sobreviver em ambientes aquáticos.", price: 50, peso: 5 }
+    { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50, peso: 2, usos: 10, efeitoMecanico: { tipo: 'cura', habilidadeUsada: 'medicina', formulaCura: 'medicina + 1d6', condicaoRemovida: 'Sangrando' } },
+    { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20, peso: 2, usos: 8, efeitoMecanico: { tipo: 'crafting', habilidadeUsada: 'herbalismo', resultados: ['pocao', 'antidoto', 'unguento'] } },
+    { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30, peso: 3, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'sobrevivencia', contexto: 'acampar, forragear, orientar-se' } },
+    { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25, peso: 4, usos: null, efeitoMecanico: { tipo: 'reparo', habilidadeUsada: 'destreza', podeReparar: ['arma', 'armadura', 'objeto'] } },
+    { name: "Kit de Alquimista", description: "Inclui frascos vazios, substâncias químicas básicas, tubos de ensaio e outros itens para alquimia.", price: 60, peso: 3, usos: 5, efeitoMecanico: { tipo: 'crafting', habilidadeUsada: 'arcanismo', resultados: ['pocao', 'bomba', 'acido'] } },
+    { name: "Kit de Ladrão", description: "Contém Ferramentas de ladrão, pés de cabra, cordas e outros itens para atividades furtivas.", price: 40, peso: 2, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'furtividade', contexto: 'abrir fechaduras, desarmar armadilhas' } },
+    { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35, peso: 2, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'percepcao', contexto: 'navegação, orientação' } },
+    { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50, peso: 3, usos: 5, efeitoMecanico: { tipo: 'bonus', bonusTeste: 3, habilidadeAfetada: 'enganacao', contexto: 'disfarce, impostura' } },
+    { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55, peso: 3, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'artes', contexto: 'performance musical' } },
+    { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45, peso: 1, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'destreza', contexto: 'abrir fechaduras, desarmar mecanismos' } },
+    { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30, peso: 1.5, usos: 10, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'historia', contexto: 'mapear, documentar' } },
+    { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70, peso: 1.5, usos: 5, efeitoMecanico: { tipo: 'crafting', habilidadeUsada: 'herbalismo', resultados: ['veneno_contato', 'veneno_ingerido', 'veneno_inalado'] } },
+    { name: "Kit de Engenhocas", description: "Inclui engrenagens, molas, fios e outros itens para criar dispositivos e armadilhas improvisadas.", price: 60, peso: 3, usos: 5, efeitoMecanico: { tipo: 'crafting', habilidadeUsada: 'destreza', resultados: ['armadilha', 'mecanismo', 'dispositivo'] } },
+    { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40, peso: 4, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 3, habilidadeAfetada: 'atletismo', contexto: 'escalada, rapel' } },
+    { name: "Kit de Caça", description: "Inclui armadilhas, armas de caça, iscas e outros itens para caçar e rastrear animais.", price: 45, peso: 4, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 2, habilidadeAfetada: 'sobrevivencia', contexto: 'caça, rastreamento' } },
+    { name: "Kit de Sobrevivência Aquática", description: "Contém nadadeiras, redes de pesca, arpão e outros itens para sobreviver em ambientes aquáticos.", price: 50, peso: 5, usos: null, efeitoMecanico: { tipo: 'bonus', bonusTeste: 3, habilidadeAfetada: 'atletismo', contexto: 'natação, mergulho, pesca' } }
+];
+
+// ============================================================================
+// DURABILIDADE E ARMAS IMPROVISADAS (declaradas antes de equipamentos)
+// ============================================================================
+
+/**
+ * Tiers de durabilidade para armas improvisadas.
+ * Cada tier define um intervalo de ataques antes da quebra.
+ */
+export const DURABILIDADE_TIERS = {
+    baixa:  { id: 'baixa',  nome: 'Baixa',  min: 2,  max: 5  },
+    media:  { id: 'media',  nome: 'Média',  min: 6,  max: 10 },
+    alta:   { id: 'alta',   nome: 'Alta',   min: 11, max: 20 }
+};
+
+/**
+ * Tabela de armas improvisadas com durabilidade.
+ * Ref: LDO 0.5, seção "Armas Improvisadas"
+ */
+export const armasImprovisadas = [
+    { name: 'Cadeira',             dano: '1d8',  tipoDano: 'contusão',  durabilidade: 'media', propriedadesEspeciais: null,                                      descricao: 'Arma pesada improvisada.' },
+    { name: 'Pedaço de cano',      dano: '1d12', tipoDano: 'contusão',  durabilidade: 'alta',  propriedadesEspeciais: null,                                      descricao: 'Cano de metal resistente.' },
+    { name: 'Guarda-chuva',        dano: '1d8',  tipoDano: 'perfurante', durabilidade: 'baixa', propriedadesEspeciais: [{ tipo: 'alcance', valor: '3m' }],        descricao: 'Alcance estendido, frágil.' },
+    { name: 'Mesa',                dano: '1d4',  tipoDano: 'contusão',  durabilidade: 'alta',  propriedadesEspeciais: [{ tipo: 'escudoTemporario', valor: true }], descricao: 'Pode ser usada como escudo pesado temporário.' },
+    { name: 'Lustre',              dano: '3d4',  tipoDano: 'contusão',  durabilidade: 'baixa', propriedadesEspeciais: [{ tipo: 'areaImpacto', valor: '3m' }],     descricao: 'Impacto em área de 3m.' },
+    { name: 'Garrafa de vidro',    dano: '1d6',  tipoDano: 'cortante',  durabilidade: 'media', propriedadesEspeciais: [{ tipo: 'quebraCortante', chance: 0.3, condicao: 'Sangrando' }], descricao: 'Chance de 30% de causar Sangrando.' },
+    { name: 'Candelabro',          dano: '1d6',  tipoDano: 'contusão',  durabilidade: 'media', propriedadesEspeciais: [{ tipo: 'atordoamento', valor: true }],    descricao: 'Pode atordoar o alvo.' },
+    { name: 'Espelho quebrado',    dano: '1d6',  tipoDano: 'cortante',  durabilidade: 'baixa', propriedadesEspeciais: [{ tipo: 'quebraCortante', chance: 0.3, condicao: 'Sangrando' }], descricao: 'Chance de 30% de causar Sangrando.' },
+    { name: 'Caldeirão',           dano: '1d8',  tipoDano: 'contusão',  durabilidade: 'alta',  propriedadesEspeciais: [{ tipo: 'danoContinuo', valor: true }],    descricao: 'Causa dano contínuo.' },
+    { name: 'Barril de pólvora',   dano: '4d6',  tipoDano: 'fogo',      durabilidade: 'baixa', propriedadesEspeciais: [{ tipo: 'explosivo', area: '3m', condicoes: ['Atordoado', 'Queimando'] }], descricao: 'Explosão em área: Atordoado + Queimando.' }
 ];
 
 // ============================================================================
@@ -1675,6 +1706,7 @@ export const equipamentos = {
     "Armas Simples": armasSimples,
     "Armas Marciais": armasMarciais,
     "Armas Exóticas": armasExoticas,
+    "Armas Improvisadas": armasImprovisadas,
     "Equipamentos de Viagem": equipamentosViagem,
     "Munições": municoes,
     "Equipamento Geral": equipamentoGeral,
@@ -1918,6 +1950,197 @@ export const calcularDanoArma = (arma, habilidades = {}, opcoes = {}) => {
         bonusExtra: bonusDano,
         formula: partes.join(' ')
     };
+};
+
+// ============================================================================
+// SISTEMA DE MATERIAIS & DURABILIDADE (REGRA OPCIONAL)
+// Ref: LDO 0.5, seção "Materiais" e "Armas Improvisadas"
+// ============================================================================
+
+/**
+ * Materiais metálicos — afetam armas e armaduras.
+ * Cada material tem um multiplicador de preço e efeitos especiais.
+ */
+export const MATERIAIS_METAL = {
+    aco: {
+        id: 'aco', nome: 'Aço',
+        multiplicadorPreco: 1,
+        efeitos: [],
+        descricao: 'Material padrão, sem propriedades especiais.'
+    },
+    acoNegro: {
+        id: 'aco_negro', nome: 'Aço Negro',
+        multiplicadorPreco: 3,
+        efeitos: [{ tipo: 'tipoDanoExtra', valor: 'sombrio' }],
+        descricao: 'Armas e armaduras ganham a propriedade de dano Sombrio.'
+    },
+    mitralino: {
+        id: 'mitralino', nome: 'Mitralino',
+        multiplicadorPreco: 10,
+        efeitos: [
+            { tipo: 'pesoReduzido', valor: 0.5 },
+            { tipo: 'inquebravel', valor: true },
+            { tipo: 'ignoraRequisitoForca', valor: true }
+        ],
+        descricao: 'Peso = metade, item não pode ser quebrado, ignora requisitos de Força.'
+    },
+    adamante: {
+        id: 'adamante', nome: 'Adamante',
+        multiplicadorPreco: 5,
+        efeitos: [{ tipo: 'bonusBase', valor: 2 }],
+        descricao: '+2 ao dano base (arma) ou valor de defesa (armadura).'
+    }
+};
+
+/**
+ * Materiais de madeira — afetam armas com componente de madeira.
+ */
+export const MATERIAIS_MADEIRA = {
+    simples: {
+        id: 'madeira_simples', nome: 'Madeira Simples',
+        multiplicadorPreco: 1,
+        efeitos: [],
+        descricao: 'Material padrão, sem propriedades especiais.'
+    },
+    elfica: {
+        id: 'madeira_elfica', nome: 'Madeira Élfica',
+        multiplicadorPreco: 5,
+        efeitos: [{ tipo: 'inquebravel', valor: true }],
+        descricao: 'Não pode ser quebrada em combate (falha crítica não danifica).'
+    },
+    ebanoAnciao: {
+        id: 'madeira_ebano', nome: 'Madeira de Ébano Ancião',
+        multiplicadorPreco: 5,
+        efeitos: [{ tipo: 'tipoDanoExtra', valor: 'sombrio' }],
+        descricao: 'Causa dano do tipo Sombrio.'
+    },
+    sangue: {
+        id: 'madeira_sangue', nome: 'Madeira de Sangue',
+        multiplicadorPreco: 5,
+        efeitos: [{ tipo: 'tipoDanoExtra', valor: 'fogo' }],
+        descricao: 'Causa dano do tipo Fogo.'
+    }
+};
+
+/**
+ * Limiares de degradação de armas convencionais (REGRA OPCIONAL).
+ * Ref: LDO 0.5 — Falhas críticas consecutivas acumulam desgaste.
+ * - 5 falhas críticas → arma danificada (-1 dano)
+ * - 10 falhas críticas → arma muito danificada (-2 dano)
+ * - 20 falhas críticas → arma quebrada (inutilizável)
+ * Armaduras: cada acerto crítico recebido = -1 defesa; 5 sem reparo = precisa artesão.
+ * Mitralino e Madeira Élfica são imunes a desgaste.
+ */
+export const LIMIARES_DESGASTE_ARMA = [
+    { falhasCriticas: 5,  penalidade: -1, estado: 'danificada',        descricao: '-1 ao dano. Pode ser reparada por ferreiro.' },
+    { falhasCriticas: 10, penalidade: -2, estado: 'muito_danificada',  descricao: '-2 ao dano. Reparo mais caro.' },
+    { falhasCriticas: 20, penalidade: null, estado: 'quebrada',        descricao: 'Arma inutilizável.' }
+];
+
+export const LIMIARES_DESGASTE_ARMADURA = {
+    penalidade_por_critico: -1, // -1 defesa por acerto crítico recebido
+    max_sem_reparo: 5,          // após 5 acertos críticos sem reparo → artesão necessário
+    descricao: 'Cada acerto crítico recebido reduz defesa em 1. Após 5 sem reparo, precisa de artesão.'
+};
+
+/**
+ * Calcula o preço de um item com material especial.
+ * @param {number} precoBase - Preço base do item
+ * @param {string} materialId - ID do material (ex: 'mitralino', 'adamante')
+ * @returns {{ preco: number, material: Object }}
+ */
+export const calcularPrecoMaterial = (precoBase, materialId) => {
+    const material =
+        Object.values(MATERIAIS_METAL).find(m => m.id === materialId) ||
+        Object.values(MATERIAIS_MADEIRA).find(m => m.id === materialId);
+    if (!material) return { preco: precoBase, material: null };
+    return {
+        preco: precoBase * material.multiplicadorPreco,
+        material
+    };
+};
+
+/**
+ * Verifica se um item é indestrutível (mitralino ou madeira élfica).
+ * @param {Object} item - Item com campo `material` ou `materialId`
+ * @returns {boolean}
+ */
+export const itemInquebravel = (item) => {
+    const matId = item.materialId || item.material?.id || '';
+    const matInquebraveis = ['mitralino', 'madeira_elfica'];
+    return matInquebraveis.includes(matId);
+};
+
+/**
+ * Calcula o estado de desgaste de uma arma com base em falhas críticas acumuladas.
+ * @param {number} falhasCriticas - Total de falhas críticas acumuladas
+ * @param {boolean} [inquebravel=false] - Se o item é indestrutível
+ * @returns {{ estado: string, penalidade: number, descricao: string }}
+ */
+export const calcularDesgasteArma = (falhasCriticas, inquebravel = false) => {
+    if (inquebravel) {
+        return { estado: 'intacta', penalidade: 0, descricao: 'Item indestrutível.' };
+    }
+    // Percorrer do maior limiar para o menor
+    for (let i = LIMIARES_DESGASTE_ARMA.length - 1; i >= 0; i--) {
+        const limiar = LIMIARES_DESGASTE_ARMA[i];
+        if (falhasCriticas >= limiar.falhasCriticas) {
+            return {
+                estado: limiar.estado,
+                penalidade: limiar.penalidade ?? 0,
+                descricao: limiar.descricao
+            };
+        }
+    }
+    return { estado: 'intacta', penalidade: 0, descricao: 'Em boas condições.' };
+};
+
+/**
+ * Calcula a penalidade de defesa de uma armadura por desgaste.
+ * @param {number} criticosRecebidos - Total de acertos críticos recebidos sem reparo
+ * @param {boolean} [inquebravel=false] - Se o item é indestrutível
+ * @returns {{ penalidade: number, precisaArtesao: boolean, descricao: string }}
+ */
+export const calcularDesgasteArmadura = (criticosRecebidos, inquebravel = false) => {
+    if (inquebravel) {
+        return { penalidade: 0, precisaArtesao: false, descricao: 'Armadura indestrutível.' };
+    }
+    const penalidade = criticosRecebidos * LIMIARES_DESGASTE_ARMADURA.penalidade_por_critico;
+    const precisaArtesao = criticosRecebidos >= LIMIARES_DESGASTE_ARMADURA.max_sem_reparo;
+
+    return {
+        penalidade,
+        precisaArtesao,
+        descricao: criticosRecebidos === 0
+            ? 'Em boas condições.'
+            : `${penalidade} defesa (${criticosRecebidos} críticos recebidos)${precisaArtesao ? '. Necessita artesão para reparo.' : '.'}`
+    };
+};
+
+/**
+ * Calcula durabilidade restante de arma improvisada.
+ * @param {string} tier - 'baixa', 'media' ou 'alta'
+ * @param {number} ataquesFeitos - Quantos ataques já foram realizados com a arma
+ * @returns {{ durabilidadeMax: number, usosRestantes: number, quebrada: boolean }}
+ */
+export const calcularDurabilidadeImprovisada = (tier, ataquesFeitos = 0) => {
+    const t = DURABILIDADE_TIERS[tier] || DURABILIDADE_TIERS.media;
+    const durabilidadeMax = t.max;
+    const usosRestantes = Math.max(0, durabilidadeMax - ataquesFeitos);
+    return {
+        durabilidadeMax,
+        usosRestantes,
+        quebrada: usosRestantes <= 0
+    };
+};
+
+/**
+ * Retorna arma improvisada por nome.
+ * @param {string} nome
+ * @returns {Object|null}
+ */
+export const getArmaImprovisada = (nome) => {
+    return armasImprovisadas.find(a => a.name.toLowerCase() === nome.toLowerCase()) || null;
 };
 
 export default equipamentos;

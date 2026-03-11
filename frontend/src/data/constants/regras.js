@@ -1788,6 +1788,294 @@ export const verificarRequisitosDescansoLongo = (recursos) => {
 };
 
 // ============================================================================
+// NÍVEIS DE CANSAÇO (7 tiers cumulativos)
+// ============================================================================
+
+/**
+ * Tabela de penalidades cumulativas por nível de cansaço
+ * Ref: LDO 0.5, seção "Cansaço"
+ *
+ * Cada nível adiciona (cumulativamente) penalidades em ataques, testes de
+ * habilidade e velocidade. A partir do nível 5 o personagem desmaia, e
+ * no nível 7 morre.
+ */
+export const NIVEIS_CANSACO = [
+    {
+        nivel: 0,
+        nome: 'Descansado',
+        penalidades: { ataques: 0, testes: 0, velocidade: 0 },
+        flags: { desmaiado: false, morte: false },
+        descricao: 'Sem penalidades.'
+    },
+    {
+        nivel: 1,
+        nome: 'Cansado (Leve)',
+        penalidades: { ataques: -1, testes: -1, velocidade: 0 },
+        flags: { desmaiado: false, morte: false },
+        descricao: '-1 em ataques e testes de habilidade.'
+    },
+    {
+        nivel: 2,
+        nome: 'Cansado (Moderado)',
+        penalidades: { ataques: -2, testes: -2, velocidade: -1.5 },
+        flags: { desmaiado: false, morte: false },
+        descricao: '-2 em ataques e testes, -1.5m velocidade.'
+    },
+    {
+        nivel: 3,
+        nome: 'Cansado (Severo)',
+        penalidades: { ataques: -3, testes: -3, velocidade: -3 },
+        flags: { desmaiado: false, morte: false },
+        descricao: '-3 em ataques e testes, -3m velocidade.'
+    },
+    {
+        nivel: 4,
+        nome: 'Cansado (Crítico)',
+        penalidades: { ataques: -4, testes: -4, velocidade: -4.5 },
+        flags: { desmaiado: false, morte: false },
+        descricao: '-4 em ataques e testes, -4.5m velocidade. Vida máxima reduzida pela metade.'
+    },
+    {
+        nivel: 5,
+        nome: 'Exausto',
+        penalidades: { ataques: -5, testes: -5, velocidade: -6 },
+        flags: { desmaiado: true, morte: false },
+        descricao: '-5 em ataques e testes, -6m velocidade. O personagem desmaia.'
+    },
+    {
+        nivel: 6,
+        nome: 'Exausto (Crítico)',
+        penalidades: { ataques: -6, testes: -6, velocidade: -7.5 },
+        flags: { desmaiado: true, morte: false },
+        descricao: '-6 em ataques e testes, -7.5m velocidade. Permanece desmaiado.'
+    },
+    {
+        nivel: 7,
+        nome: 'Morte por Exaustão',
+        penalidades: { ataques: -7, testes: -7, velocidade: -9 },
+        flags: { desmaiado: true, morte: true },
+        descricao: 'O personagem morre de exaustão.'
+    }
+];
+
+/**
+ * Retorna as penalidades cumulativas para um dado nível de cansaço.
+ * @param {number} nivel - Nível de cansaço (0-7)
+ * @returns {Object} Objeto do NIVEIS_CANSACO ou nível 0 se inválido
+ */
+export const getPenalidadesCansaco = (nivel) => {
+    const n = Math.max(0, Math.min(7, nivel));
+    return NIVEIS_CANSACO[n];
+};
+
+// ============================================================================
+// PROCESSAMENTO COMPLETO DE DESCANSO
+// ============================================================================
+
+/**
+ * Processa um descanso completo, aplicando todas as mecânicas:
+ * - Verifica cooldown (intervalo entre descansos)
+ * - Verifica requisitos materiais (descanso longo: ração + água + saco de dormir/abrigo)
+ * - Calcula e aplica recuperação de PV, estamina e magia
+ * - Remove condições que expiram neste tipo de descanso
+ * - Reduz nível de cansaço (descanso longo: -1 nível)
+ * - Consome recursos (ração, água)
+ * - Atualiza timestamps
+ *
+ * Ref: LDO 0.5, seções "Descanso Curto" e "Descanso Longo"
+ *
+ * @param {Object} fichaState - Estado atual da ficha, com pelo menos:
+ *   {
+ *     vidaAtual, vidaMax, estaminaAtual, estaminaMax, magiaAtual, magiaMax,
+ *     nivelCansaco, condicoesAtivas: [{nome, cura, ...}],
+ *     recursos: { racoes, aguaLitros, temEquipamentoAcampamento },
+ *     timestamps: { ultimoDescansoCurto, ultimoDescansoLongo },
+ *     emAmbienteSeguro
+ *   }
+ * @param {'curto'|'longo'} tipo - Tipo de descanso
+ * @param {Object} [opcoes] - Opções extras
+ * @param {boolean} [opcoes.ignorarCooldown=false] - Ignora intervalo (para mestre)
+ * @param {boolean} [opcoes.ignorarRequisitos=false] - Ignora req. materiais (para mestre)
+ * @param {number} [opcoes.horaAtualMs=Date.now()] - Timestamp atual em ms
+ * @returns {{
+ *   sucesso: boolean,
+ *   motivo?: string,
+ *   novoState: Object,
+ *   resumo: {
+ *     tipo: string,
+ *     vidaRecuperada: number,
+ *     estaminaRecuperada: number,
+ *     magiaRecuperada: number,
+ *     cansacoReduzido: number,
+ *     condicoesRemovidas: string[],
+ *     recursosConsumidos: Object,
+ *     descricao: string
+ *   }
+ * }}
+ */
+export const processarDescanso = (fichaState, tipo, opcoes = {}) => {
+    const {
+        ignorarCooldown = false,
+        ignorarRequisitos = false,
+        horaAtualMs = Date.now()
+    } = opcoes;
+
+    const state = JSON.parse(JSON.stringify(fichaState)); // deep clone
+    const log = [];
+    const condicoesRemovidas = [];
+    const recursosConsumidos = {};
+
+    // --- 1. Verificar cooldown ---
+    if (!ignorarCooldown) {
+        const tsKey = tipo === 'longo' ? 'ultimoDescansoLongo' : 'ultimoDescansoCurto';
+        const ultimoDescanso = state.timestamps?.[tsKey] || 0;
+        const horasDesde = (horaAtualMs - ultimoDescanso) / (1000 * 60 * 60);
+        const check = verificarPodeDescansar(horasDesde, tipo);
+
+        if (!check.podeDescansar) {
+            return {
+                sucesso: false,
+                motivo: `Faltam ${check.horasRestantes.toFixed(1)}h para poder fazer descanso ${tipo}. Intervalo: ${check.intervaloNecessario}h.`,
+                novoState: fichaState,
+                resumo: null
+            };
+        }
+    }
+
+    // --- 2. Verificar requisitos materiais (apenas descanso longo) ---
+    if (tipo === 'longo' && !ignorarRequisitos) {
+        const recursos = state.recursos || {};
+        const check = verificarRequisitosDescansoLongo({
+            temEquipamentoAcampamento: recursos.temEquipamentoAcampamento || false,
+            racoes: recursos.racoes || 0,
+            aguaLitros: recursos.aguaLitros || 0,
+            emAmbienteSeguro: state.emAmbienteSeguro || false
+        });
+
+        if (!check.podeDescansar) {
+            return {
+                sucesso: false,
+                motivo: `Requisitos não atendidos: ${check.requisitosNaoAtendidos.join(', ')}.`,
+                novoState: fichaState,
+                resumo: null
+            };
+        }
+    }
+
+    // --- 3. Calcular recuperação ---
+    let vidaRecuperada = 0;
+    let estaminaRecuperada = 0;
+    let magiaRecuperada = 0;
+    let cansacoReduzido = 0;
+
+    if (tipo === 'curto') {
+        const rec = calcularDescansosCurto({
+            vidaMax: state.vidaMax || 0,
+            vidaAtual: state.vidaAtual || 0,
+            estaminaMax: state.estaminaMax || 0,
+            estaminaAtual: state.estaminaAtual || 0,
+            magiaMax: state.magiaMax || 0,
+            magiaAtual: state.magiaAtual || 0
+        });
+        vidaRecuperada = rec.vidaRecuperada;
+        estaminaRecuperada = rec.estaminaRecuperada;
+        magiaRecuperada = rec.magiaRecuperada;
+        state.vidaAtual = rec.novaVida;
+        state.estaminaAtual = rec.novaEstamina;
+        state.magiaAtual = rec.novaMagia;
+    } else {
+        // Descanso longo: recuperação total
+        const rec = calcularDescansoLongo({
+            vidaMax: state.vidaMax || 0,
+            estaminaMax: state.estaminaMax || 0,
+            magiaMax: state.magiaMax || 0,
+            nivelCansaco: state.nivelCansaco || 0
+        });
+        vidaRecuperada = rec.novaVida - (state.vidaAtual || 0);
+        estaminaRecuperada = rec.novaEstamina - (state.estaminaAtual || 0);
+        magiaRecuperada = rec.novaMagia - (state.magiaAtual || 0);
+        cansacoReduzido = rec.cansacoRemovido;
+        state.vidaAtual = rec.novaVida;
+        state.estaminaAtual = rec.novaEstamina;
+        state.magiaAtual = rec.novaMagia;
+        state.nivelCansaco = rec.novoNivelCansaco;
+    }
+
+    // --- 4. Remover condições que expiram neste descanso ---
+    if (Array.isArray(state.condicoesAtivas)) {
+        const before = state.condicoesAtivas.length;
+        state.condicoesAtivas = state.condicoesAtivas.filter(cond => {
+            const cura = cond.cura || '';
+            const expira =
+                (tipo === 'curto' && (cura === 'descanso_curto' || cura === 'descanso_ambos')) ||
+                (tipo === 'longo' && (cura === 'descanso_longo' || cura === 'descanso_curto' || cura === 'descanso_ambos'));
+            if (expira) {
+                condicoesRemovidas.push(cond.nome || cond.id || 'Condição');
+            }
+            return !expira;
+        });
+        if (condicoesRemovidas.length > 0) {
+            log.push(`Condições removidas: ${condicoesRemovidas.join(', ')}`);
+        }
+    }
+
+    // --- 5. Remover vida temporária (descanso longo esvazia) ---
+    if (tipo === 'longo') {
+        state.vidaTemporaria = 0;
+    }
+
+    // --- 6. Consumir recursos (descanso longo) ---
+    if (tipo === 'longo' && !ignorarRequisitos) {
+        if (state.recursos) {
+            if (state.recursos.racoes > 0) {
+                state.recursos.racoes = Math.max(0, (state.recursos.racoes || 0) - 1);
+                recursosConsumidos.racoes = 1;
+            }
+            if (state.recursos.aguaLitros > 0) {
+                state.recursos.aguaLitros = Math.max(0, (state.recursos.aguaLitros || 0) - 1);
+                recursosConsumidos.aguaLitros = 1;
+            }
+        }
+    }
+
+    // --- 7. Atualizar timestamps ---
+    if (!state.timestamps) state.timestamps = {};
+    if (tipo === 'curto') {
+        state.timestamps.ultimoDescansoCurto = horaAtualMs;
+    } else {
+        state.timestamps.ultimoDescansoLongo = horaAtualMs;
+        // Descanso longo também reseta cooldown de curto
+        state.timestamps.ultimoDescansoCurto = horaAtualMs;
+    }
+
+    // --- 8. Montar resumo ---
+    const partes = [];
+    if (vidaRecuperada > 0)     partes.push(`+${vidaRecuperada} PV`);
+    if (estaminaRecuperada > 0) partes.push(`+${estaminaRecuperada} Estamina`);
+    if (magiaRecuperada > 0)    partes.push(`+${magiaRecuperada} Magia`);
+    if (cansacoReduzido > 0)    partes.push(`-1 nível de cansaço`);
+    if (condicoesRemovidas.length > 0)
+        partes.push(`${condicoesRemovidas.length} condição(ões) removida(s)`);
+
+    const descricao = `Descanso ${tipo}: ${partes.length > 0 ? partes.join(', ') : 'Nenhuma mudança.'}`;
+
+    return {
+        sucesso: true,
+        novoState: state,
+        resumo: {
+            tipo,
+            vidaRecuperada,
+            estaminaRecuperada,
+            magiaRecuperada,
+            cansacoReduzido,
+            condicoesRemovidas,
+            recursosConsumidos,
+            descricao
+        }
+    };
+};
+
+// ============================================================================
 // SISTEMA DE TAMANHO
 // ============================================================================
 

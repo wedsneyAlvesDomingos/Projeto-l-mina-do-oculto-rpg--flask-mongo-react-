@@ -756,17 +756,46 @@ export const getMarcosAtingidos = (habilidadeKey, valor) => {
     return marcos.filter(marco => valor >= marco.nivel);
 };
 
-export const calcularAtributosDerivados = (habilidades, dadosBase = {}) => {
-    const { fortitude = 0, forca = 0, agilidade = 0, atletismo = 0, percepcao = 0, arcanismo = 0 } = habilidades;
+/**
+ * Calcula todos os atributos derivados de um personagem, incluindo bônus
+ * de regalias de classe primária e especialização.
+ *
+ * TODO-CLS-002 — Pipeline aceita classePrimaria no cálculo e aplica
+ * regalias corretamente.
+ *
+ * @param {Object} habilidades - Habilidades do personagem
+ * @param {Object} dadosBase - Dados base da espécie { vidaBase, magiaBase, tamanho }
+ * @param {Object} [regaliasClasse] - Bônus de regalias de classe
+ * @param {number} [regaliasClasse.bonusPV=0] - PV extras de regalias (aprendiz + primária + especialização)
+ * @param {number} [regaliasClasse.bonusEstamina=0] - Estamina extra de regalias
+ * @param {number} [regaliasClasse.bonusMagia=0] - Magia extra de regalias
+ * @param {Object} [regaliasClasse.bonusHabilidades={}] - Bônus de habilidades de regalias (ex: { combateCorpoACorpo: 2 })
+ * @returns {Object} Atributos derivados calculados
+ */
+export const calcularAtributosDerivados = (habilidades, dadosBase = {}, regaliasClasse = {}) => {
+    const {
+        bonusPV = 0,
+        bonusEstamina = 0,
+        bonusMagia = 0,
+        bonusHabilidades = {}
+    } = regaliasClasse;
+
+    // Mesclar habilidades base com bônus de regalias
+    const hab = { ...habilidades };
+    for (const [key, bonus] of Object.entries(bonusHabilidades)) {
+        hab[key] = (hab[key] || 0) + bonus;
+    }
+
+    const { fortitude = 0, forca = 0, agilidade = 0, atletismo = 0, percepcao = 0, arcanismo = 0 } = hab;
     const { vidaBase = 10, magiaBase = 0, tamanho = 'medio' } = dadosBase;
     
     return {
-        pontosDeVida: calcularPontosDeVida(vidaBase, fortitude),
-        estamina: calcularEstamina(atletismo),
+        pontosDeVida: calcularPontosDeVida(vidaBase, fortitude) + bonusPV,
+        estamina: calcularEstamina(atletismo) + bonusEstamina,
         iniciativa: calcularIniciativa(agilidade, percepcao),
         bonusVelocidade: calcularBonusVelocidade(agilidade),
         capacidadeCarga: calcularCapacidadeDeCarga(forca, tamanho),
-        pontosDeMagia: calcularPontosDeMagia(arcanismo, magiaBase),
+        pontosDeMagia: calcularPontosDeMagia(arcanismo, magiaBase) + bonusMagia,
         tempoRespiracao: calcularTempoRespiracao(fortitude)
     };
 };
@@ -870,4 +899,194 @@ export const calcularPontosRegaliaTotal = (nivel) => {
     if (nivel === 1) return 4;
     if (nivel === 2) return 8;
     return 8 + (nivel - 2) * 2; // nível 20 = 44
+};
+
+// ============================================================================
+// VALIDAÇÃO DE DISTRIBUIÇÃO DE HABILIDADES
+// ============================================================================
+
+/**
+ * Constantes de distribuição de pontos
+ * Ref: LDO 0.5, seção "Distribuição de Habilidades"
+ */
+export const PONTOS_HABILIDADE_NIVEL_1 = 40;
+export const PONTOS_PROFICIENCIA_EXTRA = 4;  // Só podem ser gastos em proficiências
+export const MAX_PONTOS_POR_HABILIDADE = 15;
+export const GRUPOS_NIVEL_1 = 2;             // 2 grupos escolhidos na criação
+export const GRUPO_EXTRA_NIVEL = 7;          // 3º grupo desbloqueado no nível 7
+
+/**
+ * Calcula o custo total em pontos para atribuir um dado valor a uma habilidade.
+ * Incrementos 1-4 custam 1pt cada; o 5º custa 2pts; o 6º custa 3pts;
+ * do 7º em diante cada incremento custa 4pts.
+ *
+ * Ref: LDO 0.5, seção "Distribuição de Habilidades"
+ *
+ * @param {number} valor - Valor que se deseja alcançar na habilidade (0-15)
+ * @returns {number} Custo total em pontos de habilidade
+ */
+export const calcularCustoHabilidade = (valor) => {
+    if (valor <= 0) return 0;
+    let custo = 0;
+    for (let i = 1; i <= valor; i++) {
+        if (i <= 4)      custo += 1;  // incrementos 1-4: 1pt cada
+        else if (i === 5) custo += 2;  // 5º incremento: 2pts
+        else if (i === 6) custo += 3;  // 6º incremento: 3pts
+        else              custo += 4;  // 7º+: 4pts cada
+    }
+    return custo;
+};
+
+/**
+ * Calcula o custo total de uma distribuição completa de habilidades.
+ *
+ * @param {Object} distribuicao - Objeto { chaveHabilidade: valor, ... }
+ * @returns {number} Custo total em pontos
+ */
+export const calcularCustoDistribuicaoTotal = (distribuicao) => {
+    return Object.values(distribuicao).reduce(
+        (total, valor) => total + calcularCustoHabilidade(valor), 0
+    );
+};
+
+/**
+ * Valida a distribuição de pontos de habilidades na criação / evolução.
+ *
+ * Regras (Ref: LDO 0.5, seção "Distribuição de Habilidades"):
+ * - 40 pontos disponíveis no nível 1 (custo escalonado)
+ * - Máximo 15 pontos por habilidade
+ * - Escolher 2 dos 5 grupos na criação → +1 em cada habilidade do grupo
+ * - Nível 7: escolher 3º grupo → +1 em cada habilidade do grupo
+ * - 4 pontos extras exclusivos para proficiências (2 pts = 1 nível proficiência)
+ * - Pós-criação: apenas Regalias concedem pontos de habilidade adicionais
+ *
+ * @param {number} nivel - Nível atual do personagem
+ * @param {Object} distribuicao - Objeto { chaveHabilidade: valorDistribuido, ... }
+ *   (valores SEM bônus de grupo; apenas os pontos que o jogador alocou)
+ * @param {string[]} gruposEscolhidos - Array de keys dos grupos escolhidos (ex: ["fisico", "social"])
+ * @param {Object} [opcoes] - Opções extras
+ * @param {number} [opcoes.pontosExtraRegalias=0] - Pontos de habilidade obtidos via regalias
+ * @param {number} [opcoes.pontosProficienciaGastos=0] - Dos 4 pts extras, quantos foram gastos
+ * @returns {{ valido: boolean, erros: string[], avisos: string[], detalhes: Object }}
+ */
+export const validarDistribuicaoHabilidades = (
+    nivel,
+    distribuicao,
+    gruposEscolhidos = [],
+    opcoes = {}
+) => {
+    const {
+        pontosExtraRegalias = 0,
+        pontosProficienciaGastos = 0
+    } = opcoes;
+
+    const erros = [];
+    const avisos = [];
+
+    // --- 1. Validar grupos escolhidos ---
+    const keysGruposValidos = gruposHabilidades.map(g => g.key);
+    const gruposValidos = gruposEscolhidos.filter(g => keysGruposValidos.includes(g));
+    const gruposInvalidos = gruposEscolhidos.filter(g => !keysGruposValidos.includes(g));
+
+    if (gruposInvalidos.length > 0) {
+        erros.push(`Grupos inválidos: ${gruposInvalidos.join(', ')}. Válidos: ${keysGruposValidos.join(', ')}`);
+    }
+
+    const maxGrupos = nivel >= GRUPO_EXTRA_NIVEL ? GRUPOS_NIVEL_1 + 1 : GRUPOS_NIVEL_1;
+    if (gruposValidos.length > maxGrupos) {
+        erros.push(`Máximo de ${maxGrupos} grupos permitidos no nível ${nivel}. Selecionados: ${gruposValidos.length}`);
+    }
+    if (gruposValidos.length < GRUPOS_NIVEL_1) {
+        avisos.push(`Recomendado escolher ${GRUPOS_NIVEL_1} grupos na criação. Selecionados: ${gruposValidos.length}`);
+    }
+
+    // Set de habilidades que recebem +1 dos grupos escolhidos
+    const habilidadesComBonusGrupo = new Set();
+    gruposValidos.forEach(gKey => {
+        const grupo = gruposHabilidades.find(g => g.key === gKey);
+        if (grupo) {
+            grupo.data.forEach(hab => habilidadesComBonusGrupo.add(hab.key));
+        }
+    });
+
+    // --- 2. Validar cada habilidade individualmente ---
+    const keysHabilidadesValidas = new Set(todasHabilidades.map(h => h.key));
+    const detalhePorHabilidade = {};
+
+    for (const [key, valorDistribuido] of Object.entries(distribuicao)) {
+        if (!keysHabilidadesValidas.has(key)) {
+            erros.push(`Habilidade desconhecida: "${key}"`);
+            continue;
+        }
+
+        const bonusGrupo = habilidadesComBonusGrupo.has(key) ? 1 : 0;
+        const valorTotal = valorDistribuido + bonusGrupo;
+
+        if (valorDistribuido < 0) {
+            erros.push(`"${key}": valor distribuído não pode ser negativo (${valorDistribuido})`);
+        }
+        if (valorTotal > MAX_PONTOS_POR_HABILIDADE) {
+            erros.push(`"${key}": valor total ${valorTotal} excede o máximo de ${MAX_PONTOS_POR_HABILIDADE} (distribuído: ${valorDistribuido}, bônus grupo: ${bonusGrupo})`);
+        }
+
+        detalhePorHabilidade[key] = {
+            distribuido: valorDistribuido,
+            bonusGrupo,
+            total: valorTotal,
+            custo: calcularCustoHabilidade(valorDistribuido)
+        };
+    }
+
+    // --- 3. Validar custo total ---
+    const custoTotal = calcularCustoDistribuicaoTotal(distribuicao);
+    const pontosDisponiveis = PONTOS_HABILIDADE_NIVEL_1 + pontosExtraRegalias;
+
+    if (custoTotal > pontosDisponiveis) {
+        erros.push(
+            `Custo total (${custoTotal}) excede os pontos disponíveis (${pontosDisponiveis}). ` +
+            `Base: ${PONTOS_HABILIDADE_NIVEL_1}` +
+            (pontosExtraRegalias > 0 ? ` + ${pontosExtraRegalias} de regalias` : '')
+        );
+    }
+
+    const pontosRestantes = pontosDisponiveis - custoTotal;
+    if (pontosRestantes > 0 && erros.length === 0) {
+        avisos.push(`Ainda há ${pontosRestantes} pontos de habilidade não distribuídos.`);
+    }
+
+    // --- 4. Validar pontos de proficiência extras ---
+    if (pontosProficienciaGastos < 0) {
+        erros.push(`Pontos de proficiência gastos não podem ser negativos.`);
+    }
+    if (pontosProficienciaGastos > PONTOS_PROFICIENCIA_EXTRA) {
+        erros.push(
+            `Pontos de proficiência gastos (${pontosProficienciaGastos}) excedem o máximo de ${PONTOS_PROFICIENCIA_EXTRA}.`
+        );
+    }
+    const proficienciasObtidas = Math.floor(pontosProficienciaGastos / 2);
+    const pontosProficienciaRestantes = PONTOS_PROFICIENCIA_EXTRA - pontosProficienciaGastos;
+    if (pontosProficienciaGastos % 2 !== 0) {
+        avisos.push(`Pontos de proficiência ímpares (${pontosProficienciaGastos}): 1 ponto não convertido em proficiência.`);
+    }
+
+    return {
+        valido: erros.length === 0,
+        erros,
+        avisos,
+        detalhes: {
+            custoTotal,
+            pontosDisponiveis,
+            pontosRestantes: Math.max(0, pontosRestantes),
+            gruposEscolhidos: gruposValidos,
+            maxGrupos,
+            habilidadesComBonusGrupo: Array.from(habilidadesComBonusGrupo),
+            pontosProficiencia: {
+                total: PONTOS_PROFICIENCIA_EXTRA,
+                gastos: pontosProficienciaGastos,
+                restantes: Math.max(0, pontosProficienciaRestantes),
+                proficienciasObtidas
+            },
+            porHabilidade: detalhePorHabilidade
+        }
+    };
 };

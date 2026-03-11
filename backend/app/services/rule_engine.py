@@ -661,3 +661,194 @@ def merge_personagem(personagem_atual: dict, mudancas: dict) -> dict:
             resultado[key] = valor
 
     return resultado
+
+# ============================================================================
+# SIMULAÇÃO DE AÇÃO (BE-005)
+# ============================================================================
+
+import random
+
+def _rolar_d20() -> int:
+    return random.randint(1, 20)
+
+def _rolar_dado(expressao: str) -> int:
+    """
+    Rola dados de expressão simples: '2d6', '1d20', '3d4', etc.
+    Retorna a soma dos resultados.
+    """
+    expressao = expressao.strip().lower()
+    if 'd' not in expressao:
+        try:
+            return int(expressao)
+        except ValueError:
+            return 0
+    partes = expressao.split('d')
+    try:
+        qtd = int(partes[0]) if partes[0] else 1
+        lados = int(partes[1])
+    except (ValueError, IndexError):
+        return 0
+    return sum(random.randint(1, lados) for _ in range(qtd))
+
+
+def simular_acao(personagem: dict, acao: dict) -> dict:
+    """
+    Simula uma ação no server-side e retorna o resultado.
+    
+    Tipos de ação suportados:
+    - 'ataque': rola d20 + bônus acerto, calcula dano
+    - 'teste': rola d20 + valor da habilidade
+    - 'descanso_curto' / 'descanso_longo': calcula recuperação
+    
+    @param personagem: dict com dados da ficha (habilidades, nivel, especie, etc.)
+    @param acao: dict com {tipo, habilidade?, alvo_defesa?, arma_dano?, ...}
+    @returns: dict com resultado da simulação
+    """
+    tipo = acao.get('tipo', '')
+    habilidades = _normalizar_habilidades(personagem.get('habilidades', {}))
+
+    if tipo == 'teste':
+        hab_slug = acao.get('habilidade', '')
+        if hab_slug in DISPLAY_TO_SLUG:
+            hab_slug = DISPLAY_TO_SLUG[hab_slug]
+        valor_hab = _get_hab(habilidades, hab_slug)
+        bonus_extra = acao.get('bonus', 0)
+        
+        d20 = _rolar_d20()
+        total = d20 + valor_hab + bonus_extra
+        critico = d20 == 20
+        falha_critica = d20 == 1
+        
+        cd = acao.get('cd', None)
+        sucesso = None
+        if cd is not None:
+            sucesso = total >= cd or critico
+            if falha_critica:
+                sucesso = False
+        
+        return {
+            'tipo': 'teste',
+            'habilidade': hab_slug,
+            'd20': d20,
+            'valorHabilidade': valor_hab,
+            'bonus': bonus_extra,
+            'total': total,
+            'critico': critico,
+            'falhaCritica': falha_critica,
+            'cd': cd,
+            'sucesso': sucesso,
+            'descricao': f"Teste de {SLUG_TO_DISPLAY.get(hab_slug, hab_slug)}: d20({d20}) + {valor_hab} = {total}" +
+                         (f" vs CD {cd} → {'Sucesso!' if sucesso else 'Falha.'}" if cd is not None else '')
+        }
+
+    elif tipo == 'ataque':
+        hab_acerto_slug = acao.get('habilidade_acerto', 'combate_corpo_a_corpo')
+        if hab_acerto_slug in DISPLAY_TO_SLUG:
+            hab_acerto_slug = DISPLAY_TO_SLUG[hab_acerto_slug]
+        valor_acerto = _get_hab(habilidades, hab_acerto_slug)
+        
+        hab_dano_slug = acao.get('habilidade_dano', 'forca')
+        if hab_dano_slug in DISPLAY_TO_SLUG:
+            hab_dano_slug = DISPLAY_TO_SLUG[hab_dano_slug]
+        valor_dano_hab = _get_hab(habilidades, hab_dano_slug)
+        
+        # Rolar acerto
+        d20 = _rolar_d20()
+        total_acerto = d20 + valor_acerto
+        critico = d20 == 20
+        falha_critica = d20 == 1
+        
+        alvo_defesa = acao.get('alvo_defesa', 10)
+        acertou = (total_acerto >= alvo_defesa or critico) and not falha_critica
+        
+        # Rolar dano
+        dano_base_expr = acao.get('arma_dano', '1d6')
+        dano_base = _rolar_dado(dano_base_expr)
+        dano_total = dano_base + valor_dano_hab
+        if critico:
+            dano_critico_extra = _rolar_dado(dano_base_expr)
+            dano_total += dano_critico_extra
+        dano_total = max(0, dano_total)
+        
+        return {
+            'tipo': 'ataque',
+            'acerto': {
+                'd20': d20,
+                'bonus': valor_acerto,
+                'total': total_acerto,
+                'alvoDefesa': alvo_defesa,
+                'acertou': acertou,
+                'critico': critico,
+                'falhaCritica': falha_critica
+            },
+            'dano': {
+                'base': dano_base_expr,
+                'rolado': dano_base,
+                'bonusHabilidade': valor_dano_hab,
+                'total': dano_total if acertou else 0,
+                'critico': critico
+            },
+            'descricao': (
+                f"Ataque: d20({d20}) + {valor_acerto} = {total_acerto} vs Defesa {alvo_defesa} → " +
+                ("Acerto Crítico!" if critico else "Acertou!" if acertou else "Errou!" if not falha_critica else "Falha Crítica!") +
+                (f" Dano: {dano_total}" if acertou else "")
+            )
+        }
+
+    elif tipo in ('descanso_curto', 'descanso_longo'):
+        especie_key = personagem.get('especie', personagem.get('race', 'humano'))
+        especie_data = ESPECIES.get(especie_key, ESPECIES['humano'])
+        pv_base = especie_data['pvBase']
+        
+        fortitude = _get_hab(habilidades, 'fortitude')
+        atletismo = _get_hab(habilidades, 'atletismo')
+        arcanismo = _get_hab(habilidades, 'arcanismo')
+        
+        pv_max = calcular_pontos_de_vida(pv_base, fortitude)
+        est_max = calcular_estamina(atletismo)
+        mag_max = calcular_pontos_de_magia(arcanismo)
+        
+        pv_atual = personagem.get('vidaAtual', pv_max)
+        est_atual = personagem.get('estaminaAtual', est_max)
+        mag_atual = personagem.get('magiaAtual', mag_max)
+        nivel_cansaco = personagem.get('nivelCansaco', 0)
+        
+        if tipo == 'descanso_curto':
+            vida_rec = min(math.floor(pv_max / 3), pv_max - pv_atual)
+            est_rec = min(math.floor(est_max / 2), est_max - est_atual)
+            mag_rec = min(math.floor(mag_max / 2), mag_max - mag_atual)
+            return {
+                'tipo': 'descanso_curto',
+                'recuperacao': {
+                    'vida': vida_rec,
+                    'estamina': est_rec,
+                    'magia': mag_rec,
+                    'novaVida': pv_atual + vida_rec,
+                    'novaEstamina': est_atual + est_rec,
+                    'novaMagia': mag_atual + mag_rec
+                },
+                'descricao': f"Descanso curto: +{vida_rec} PV, +{est_rec} Estamina, +{mag_rec} Magia"
+            }
+        else:
+            cansaco_reduzido = 1 if nivel_cansaco > 0 else 0
+            return {
+                'tipo': 'descanso_longo',
+                'recuperacao': {
+                    'vida': pv_max - pv_atual,
+                    'estamina': est_max - est_atual,
+                    'magia': mag_max - mag_atual,
+                    'novaVida': pv_max,
+                    'novaEstamina': est_max,
+                    'novaMagia': mag_max,
+                    'novoNivelCansaco': max(0, nivel_cansaco - 1),
+                    'cansacoReduzido': cansaco_reduzido
+                },
+                'descricao': f"Descanso longo: recuperação total!" +
+                             (f" Cansaço reduzido de {nivel_cansaco} para {nivel_cansaco - 1}." if cansaco_reduzido else "")
+            }
+
+    else:
+        return {
+            'tipo': tipo,
+            'erro': f"Tipo de ação desconhecido: '{tipo}'. Tipos válidos: teste, ataque, descanso_curto, descanso_longo"
+        }

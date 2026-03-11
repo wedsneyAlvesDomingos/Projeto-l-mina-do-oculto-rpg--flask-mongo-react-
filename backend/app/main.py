@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from services.user_service import UserService
 from services.personagem_service import PersonagemService
-from services.rule_engine import calcular_ficha_completa, validar_regalias
+from services.rule_engine import calcular_ficha_completa, validar_regalias, simular_acao
 from catalogs import HABILIDADES, PROFICIENCIAS, CONDICOES, ESPECIES as ESPECIES_CATALOGO
 import os
 import traceback
@@ -255,6 +255,37 @@ def get_catalogos():
         'condicoes': CONDICOES,
         'especies': ESPECIES_CATALOGO,
     }), 200
+
+
+@app.route('/api/personagem/<int:personagem_id>/simular-acao', methods=['POST'])
+def simular_acao_personagem(personagem_id):
+    """
+    Endpoint de simulação de ações (teste, ataque, descanso).
+    Recebe o tipo de ação e parâmetros, retorna o resultado da resolução.
+    
+    Body JSON:
+    - { "tipo": "teste", "habilidade": "forca", "cd": 15, "bonus": 0 }
+    - { "tipo": "ataque", "habilidade_acerto": "combate_corpo_a_corpo",
+        "habilidade_dano": "forca", "arma_dano": "1d8", "alvo_defesa": 14 }
+    - { "tipo": "descanso_curto" }
+    - { "tipo": "descanso_longo" }
+    """
+    try:
+        acao = request.get_json() or {}
+        if not acao.get('tipo'):
+            return jsonify({'error': 'Campo "tipo" é obrigatório.'}), 400
+
+        service = PersonagemService(db)
+        personagem = service.obter_personagem_por_id(personagem_id)
+        if not personagem:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+
+        resultado = simular_acao(personagem, acao)
+        return jsonify(resultado), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'Erro ao simular ação', 'details': str(e)}), 500
 
 
 @app.route('/db')

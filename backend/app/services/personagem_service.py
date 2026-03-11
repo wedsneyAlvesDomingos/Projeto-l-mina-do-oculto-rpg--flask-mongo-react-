@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-from models.models import Personagem, CharacterSection
+from models.models import Personagem, CharacterSection, CharacterAuditLog
 from services.rule_engine import validar_criacao, validar_evolucao, calcular_ficha_completa
 
 BASE_FIELD_MAP = {
@@ -34,6 +34,22 @@ class PersonagemService:
     def __init__(self, db):
         self.db = db
 
+    def _registrar_auditoria(self, character_id, user_id, action, before_state=None, after_state=None, metadata=None):
+        """Registra uma entrada na trilha de auditoria do personagem."""
+        try:
+            log = CharacterAuditLog(
+                character_id=character_id,
+                user_id=user_id,
+                action=action,
+                before_state=before_state,
+                after_state=after_state,
+                metadata_=metadata or {},
+                created_at=datetime.utcnow(),
+            )
+            self.db.session.add(log)
+        except Exception:
+            pass  # Auditoria não deve quebrar a operação principal
+
     def criar_personagem(self, user_id, data):
         data = data or {}
 
@@ -54,6 +70,12 @@ class PersonagemService:
             self.db.session.add(personagem)
             self.db.session.flush()
             self._upsert_sections(personagem, data)
+            self._registrar_auditoria(
+                character_id=personagem.id,
+                user_id=user_id,
+                action='create',
+                after_state=personagem.to_dict(),
+            )
             self.db.session.commit()
             return {'personagem_id': personagem.id}, 201
         except SQLAlchemyError:
@@ -77,6 +99,8 @@ class PersonagemService:
         if erros:
             return {'erros': erros}
 
+        before_state = personagem.to_dict()
+
         base_fields = self._extract_base_fields(novos_dados)
         for attr, value in base_fields.items():
             setattr(personagem, attr, value)
@@ -84,6 +108,13 @@ class PersonagemService:
         self._upsert_sections(personagem, novos_dados)
         personagem.updated_at = datetime.utcnow()
         try:
+            self._registrar_auditoria(
+                character_id=personagem_id,
+                user_id=personagem.user_id,
+                action='update',
+                before_state=before_state,
+                after_state=personagem.to_dict(),
+            )
             self.db.session.commit()
             return True
         except SQLAlchemyError:
@@ -95,6 +126,13 @@ class PersonagemService:
         if not personagem:
             return False
         try:
+            before_state = personagem.to_dict()
+            self._registrar_auditoria(
+                character_id=personagem_id,
+                user_id=personagem.user_id,
+                action='delete',
+                before_state=before_state,
+            )
             self.db.session.delete(personagem)
             self.db.session.commit()
             return True

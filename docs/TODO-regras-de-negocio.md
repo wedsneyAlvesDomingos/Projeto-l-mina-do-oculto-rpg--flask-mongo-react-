@@ -598,7 +598,7 @@
   ```
   **Aceite:** Frontend pode resolver ações via API sem lógica local duplicada.
 
-- [ ] 🟡 **TODO-BE-006** · Adicionar trilha de auditoria  
+- [x] ✅ **TODO-BE-006** · Adicionar trilha de auditoria  
   **Arquivos:** `backend/db/schema.sql`, `backend/app/models/models.py`  
   ```sql
   CREATE TABLE character_audit_log (
@@ -639,12 +639,12 @@
   **Comportamento:** Stats derivados são recalculados a cada mutação (equip item, subir nível, aplicar condição).  
   **Aceite:** Equipar armadura pesada recalcula defesa; aplicar condição Atordoado mostra -2 defesa.
 
-- [ ] 🟡 **TODO-UI-003** · Criar UI de gerenciamento de condições ativas  
+- [x] ✅ **TODO-UI-003** · Criar UI de gerenciamento de condições ativas  
   **Arquivos:** `frontend/src/pages/Character/components/`  
   **Comportamento:** Lista condições ativas com duração restante; botão para aplicar/remover; indicadores visuais de penalidades.  
   **Aceite:** Player pode aplicar "Atordoado" e ver penalidades refletidas na ficha.
 
-- [ ] 🟡 **TODO-UI-004** · Criar UI de compra de regalias com validação  
+- [x] ✅ **TODO-UI-004** · Criar UI de compra de regalias com validação  
   **Arquivos:** `frontend/src/pages/Character/components/`  
   **Comportamento:** Mostrar regalias disponíveis, custo, pré-requisitos; bloquear compra inválida; mostrrar árvore de progressão.  
   **Aceite:** Botão "comprar" desabilitado se sem pontos ou sem pré-requisitos.
@@ -695,7 +695,7 @@
   ```
   **Aceite:** Cada classe do livro tem entrada catalogada com pré-requisitos, regalias e especializações.
 
-- [ ] 🟠 **TODO-CLS-002** · Integrar classes primárias no pipeline de cálculo  
+- [x] ✅ **TODO-CLS-002** · Integrar classes primárias no pipeline de cálculo  
   **Aceite:** Pipeline aceita `classePrimaria` no cálculo e aplica regalias corretamente.
 
 - [x] 🟡 **TODO-CLS-003** · Adicionar exports ao `index.js`  
@@ -711,21 +711,21 @@
 
 ### TODOs
 
-- [ ] 🟡 **TODO-TST-001** · Criar testes unitários para funções de cálculo (`habilidades.js`)  
+- [x] ✅ **TODO-TST-001** · Criar testes unitários para funções de cálculo (`habilidades.js`)  
   **Arquivo:** `frontend/src/__tests__/habilidades.test.js`  
   **Cobertura:** `calcularPontosDeVida`, `calcularEstamina`, `calcularIniciativa`, `calcularPontosDeMagia`, `calcularBonusVelocidade`  
   **Aceite:** 100% de cobertura nas funções de cálculo.
 
-- [ ] 🟡 **TODO-TST-002** · Criar testes unitários para `regras.js`  
+- [x] ✅ **TODO-TST-002** · Criar testes unitários para `regras.js`  
   **Arquivo:** `frontend/src/__tests__/regras.test.js`  
   **Cobertura:** `calcularDefesaTotal`, `calcularResultadoAtaque`, `calcularDanoFinal`, `calcularDanoElemental`, `calcularVantagemDesvantagem`  
   **Aceite:** Cada fórmula testada com pelo menos 3 cenários (normal, edge case, crítico).
 
-- [ ] 🟡 **TODO-TST-003** · Criar testes unitários para condições (`condicoes.js`)  
+- [x] ✅ **TODO-TST-003** · Criar testes unitários para condições (`condicoes.js`)  
   **Arquivo:** `frontend/src/__tests__/condicoes.test.js`  
   **Cobertura:** `aplicarCondicao`, `removerCondicao`, `processarEfeitosDeRodada`
 
-- [ ] 🟡 **TODO-TST-004** · Criar testes de integração do pipeline completo  
+- [x] ✅ **TODO-TST-004** · Criar testes de integração do pipeline completo  
   **Arquivo:** `frontend/src/__tests__/pipeline.test.js`  
   **Cenários:**  
   1. Criar humano Prodígio + antecedente Abençoado + combatente → validar PV, PM, defesa, velocidade  
@@ -765,7 +765,7 @@
   ```
   **Aceite:** Documento JSON Schema publicado; frontend e backend produzem/consomem o mesmo formato.
 
-- [ ] 🟡 **TODO-DAT-002** · Criar script de seed para popular tabelas de catálogo do banco  
+- [x] ✅ **TODO-DAT-002** · Criar script de seed para popular tabelas de catálogo do banco  
   **Arquivos:** `backend/scripts/seed_catalogs.py`  
   **Comportamento:** Lê os arquivos JS de constants (ou versão JSON exportada), insere nas tabelas `items`, `skills`, `conditions`, `proficiencies`, `regalias`.  
   **Aceite:** Após rodar seed, backend pode consultar catálogo diretamente do banco.
@@ -824,37 +824,38 @@
 ### Fase 4 — Enriquecimento e Qualidade
 > Completude e robustez.
 
-| Ordem | TODO | Módulo | Prioridade |
-|-------|------|--------|------------|
-| 26 | TODO-JOB-001 | Efeitos profissões | 🟠 P1 |
-| 27 | TODO-JOB-002 | Padronizar campos | 🟡 P2 |
-| 28 | TODO-JOB-003 | Poções mecânicas | 🟡 P2 |
-| 29 | TODO-HAB-002 | Validar distribuição | 🟠 P1 |
-| 30 | TODO-CON-004 | Beira da morte | 🟡 P2 |
-| 31 | TODO-RUL-003 | Tabela XP | 🟡 P2 |
-| 32 | TODO-RUL-004 | Descanso completo | 🟡 P2 |
-| 33 | TODO-EQP-004 | Desgaste | 🟡 P2 |
-| 34 | TODO-EQP-005 | Itens gerais | 🟡 P2 |
-| 35 | TODO-PRO-002 | possuiProficiencia | 🟡 P2 |
-| 36 | TODO-BE-004 | character_effects | 🟡 P2 |
-| 37 | TODO-BE-005 | Endpoint simulação | 🟡 P2 |
-| 38 | TODO-REG-004 | Classes primárias regalias | 🟡 P2 |
+| Ordem | TODO | Módulo | Prioridade | Status |
+|-------|------|--------|------------|--------|
+| 26 | TODO-JOB-001 | Efeitos profissões | 🟠 P1 | ✅ Done |
+| 27 | TODO-JOB-002 | Padronizar campos | 🟡 P2 | ✅ Done |
+| 28 | TODO-JOB-003 | Poções mecânicas | 🟡 P2 | ✅ Done |
+| 29 | TODO-HAB-002 | Validar distribuição | 🟠 P1 | ✅ Done |
+| 30 | TODO-CON-004 | Beira da morte | 🟡 P2 | ✅ Done (Fase 2) |
+| 31 | TODO-RUL-003 | Tabela XP | 🟡 P2 | ✅ Done (Fase 2) |
+| 32 | TODO-RUL-004 | Descanso completo | 🟡 P2 | ✅ Done |
+| 33 | TODO-EQP-004 | Desgaste | 🟡 P2 | ✅ Done |
+| 34 | TODO-EQP-005 | Itens gerais | 🟡 P2 | ✅ Done |
+| 35 | TODO-PRO-002 | possuiProficiencia | 🟡 P2 | ✅ Done (Fase 2) |
+| 36 | TODO-BE-004 | character_effects | 🟡 P2 | ✅ Done |
+| 37 | TODO-BE-005 | Endpoint simulação | 🟡 P2 | ✅ Done |
+| 38 | TODO-REG-004 | Classes primárias regalias | 🟡 P2 | ✅ Done (Fase 2) |
 
 ### Fase 5 — Testes e Polish
-| Ordem | TODO | Módulo | Prioridade |
-|-------|------|--------|------------|
-| 39 | TODO-TST-001 | Testes habilidades | 🟡 P2 |
-| 40 | TODO-TST-002 | Testes regras | 🟡 P2 |
-| 41 | TODO-TST-003 | Testes condições | 🟡 P2 |
-| 42 | TODO-TST-004 | Testes integração | 🟡 P2 |
-| 43 | TODO-UI-003 | UI condições | 🟡 P2 |
-| 44 | TODO-UI-004 | UI regalias | 🟡 P2 |
-| 45 | TODO-BE-006 | Auditoria | 🟡 P2 |
-| 46 | TODO-UI-005 | Refatorar criação | ⚪ P4 |
-| 47 | TODO-UI-006 | Refatorar ficha | ⚪ P4 |
-| 48 | TODO-BE-007 | Versionar regras | ⚪ P4 |
-| 49 | TODO-DAT-002 | Seed catálogos | 🟡 P2 |
-| 50 | TODO-DAT-003 | JSON compartilhado | ⚪ P4 |
+| Ordem | TODO | Módulo | Prioridade | Status |
+|-------|------|--------|------------|--------|
+| 39 | TODO-TST-001 | Testes habilidades | 🟡 P2 | ✅ Done |
+| 40 | TODO-TST-002 | Testes regras | 🟡 P2 | ✅ Done |
+| 41 | TODO-TST-003 | Testes condições | 🟡 P2 | ✅ Done |
+| 42 | TODO-TST-004 | Testes integração | 🟡 P2 | ✅ Done |
+| 43 | TODO-UI-003 | UI condições | 🟡 P2 | ✅ Done |
+| 44 | TODO-UI-004 | UI regalias | 🟡 P2 | ✅ Done |
+| 45 | TODO-BE-006 | Auditoria | 🟡 P2 | ✅ Done |
+| 46 | TODO-UI-005 | Refatorar criação | ⚪ P4 |  |
+| 47 | TODO-UI-006 | Refatorar ficha | ⚪ P4 |  |
+| 48 | TODO-BE-007 | Versionar regras | ⚪ P4 |  |
+| 49 | TODO-DAT-002 | Seed catálogos | 🟡 P2 | ✅ Done |
+| 50 | TODO-DAT-003 | JSON compartilhado | ⚪ P4 |  |
+| 51 | TODO-CLS-002 | Classes no pipeline | 🟠 P1 | ✅ Done |
 
 ### Exports (executar após cada módulo)
 | TODO | Depende de |

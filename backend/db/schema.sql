@@ -130,3 +130,34 @@ CREATE TABLE IF NOT EXISTS character_sections (
   data JSONB DEFAULT '{}'::jsonb,
   CONSTRAINT uq_character_section UNIQUE (character_id, section_key)
 );
+
+CREATE TABLE IF NOT EXISTS character_effects (
+  id SERIAL PRIMARY KEY,
+  character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+  effect_type TEXT NOT NULL,          -- 'pocao', 'veneno', 'regalia', 'condicao', 'kit', 'material', 'outro'
+  source TEXT,                         -- nome/id da origem (ex: 'Poção de Vida', 'Veneno de Aranha')
+  data JSONB DEFAULT '{}'::jsonb,      -- dados mecânicos (curaHP, bonusDefesa, condicaoAplicada, etc.)
+  remaining_rounds INTEGER,            -- rodadas restantes (NULL = sem duração por rodada)
+  remaining_uses INTEGER,              -- usos restantes (NULL = sem limite de uso)
+  expires_on_rest TEXT,                -- 'curto', 'longo', 'ambos', NULL = não expira em descanso
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trilha de auditoria para mutações de personagem (TODO-BE-006)
+CREATE TABLE IF NOT EXISTS character_audit_log (
+  id SERIAL PRIMARY KEY,
+  character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  action TEXT NOT NULL,                 -- 'create', 'update', 'delete', 'rest', 'condition_add', 'condition_remove', 'regalia_buy', etc.
+  before_state JSONB,                   -- snapshot parcial ou total antes da ação
+  after_state JSONB,                    -- snapshot parcial ou total depois da ação
+  metadata JSONB DEFAULT '{}'::jsonb,   -- dados extras (IP, campo alterado, etc.)
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices para consultas comuns no audit log
+CREATE INDEX IF NOT EXISTS idx_audit_character_id ON character_audit_log(character_id);
+CREATE INDEX IF NOT EXISTS idx_audit_user_id ON character_audit_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_action ON character_audit_log(action);
+CREATE INDEX IF NOT EXISTS idx_audit_created_at ON character_audit_log(created_at);

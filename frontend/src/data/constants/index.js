@@ -46,6 +46,15 @@ export {
     TABELA_XP_POR_NIVEL,
     calcularNivel,
     calcularPontosRegaliaTotal,
+    // Validação de distribuição — Fase 4 (HAB-002)
+    PONTOS_HABILIDADE_NIVEL_1,
+    PONTOS_PROFICIENCIA_EXTRA,
+    MAX_PONTOS_POR_HABILIDADE,
+    GRUPOS_NIVEL_1,
+    GRUPO_EXTRA_NIVEL,
+    calcularCustoHabilidade,
+    calcularCustoDistribuicaoTotal,
+    validarDistribuicaoHabilidades,
 } from './habilidades';
 
 // ============================================================================
@@ -271,6 +280,19 @@ export {
     // Funções de engine — Fase 2 (EQP-003)
     calcularDefesaComEquipamento,
     calcularDanoArma,
+    // Materiais & Durabilidade — Fase 4 (EQP-004)
+    MATERIAIS_METAL,
+    MATERIAIS_MADEIRA,
+    DURABILIDADE_TIERS,
+    armasImprovisadas,
+    LIMIARES_DESGASTE_ARMA,
+    LIMIARES_DESGASTE_ARMADURA,
+    calcularPrecoMaterial,
+    itemInquebravel,
+    calcularDesgasteArma,
+    calcularDesgasteArmadura,
+    calcularDurabilidadeImprovisada,
+    getArmaImprovisada,
 } from './equipamentos';
 
 // ============================================================================
@@ -388,6 +410,10 @@ export {
     calcularCansacoPorFaltaDeDescanso,
     REQUISITOS_DESCANSO,
     verificarRequisitosDescansoLongo,
+    // Cansaço & Descanso completo — Fase 4 (RUL-004)
+    NIVEIS_CANSACO,
+    getPenalidadesCansaco,
+    processarDescanso,
     // Sistema de Tamanho
     TAMANHOS,
     CAPACIDADE_CARGA,

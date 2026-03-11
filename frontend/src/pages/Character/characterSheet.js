@@ -127,6 +127,9 @@ import {
     calcularDanoQueda,
 } from '../../data/constants';
 
+// Componente de condições extraído
+import ConditionsPanel from './components/ConditionsPanel';
+
 // Componentes modularizados (para uso futuro na refatoração completa)
 // import {
 //     CharacterHeader as ModularHeader,
@@ -4074,255 +4077,8 @@ const CharacterSheet = () => {
         );
     };
 
-    // condicoesDisponiveis agora importado de ../../data/constants
-
-    // Componente de Condições
-    const CondicoesSection = () => {
-        const condicoesBase = character.condicoes || {};
-        const [showConditionPicker, setShowConditionPicker] = useState(false);
-        const [selectedConditionInfo, setSelectedConditionInfo] = useState(null);
-        
-        // Adiciona condição "Cego" automaticamente se estiver em escuridão
-        const condicoesAutomaticas = {};
-        if (nivelLuz === 'escuridao' && !character?.visao_no_escuro) {
-            condicoesAutomaticas['Cego'] = 'escuridão';
-        }
-        
-        // Combina condições do personagem com condições automáticas
-        const condicoes = { ...condicoesBase, ...condicoesAutomaticas };
-        const hasCondicoes = Object.keys(condicoes).length > 0;
-
-        const toggleCondition = (conditionName) => {
-            // Não permite remover condições automáticas pelo toggle
-            if (condicoesAutomaticas[conditionName]) return;
-            
-            const newCondicoes = { ...condicoesBase };
-            if (newCondicoes[conditionName]) {
-                delete newCondicoes[conditionName];
-            } else {
-                newCondicoes[conditionName] = true;
-            }
-            saveConditions(newCondicoes);
-        };
-
-        const setConditionLevel = (conditionName, level) => {
-            // Não permite alterar condições automáticas
-            if (condicoesAutomaticas[conditionName]) return;
-            
-            const newCondicoes = { ...condicoesBase };
-            if (level === 0 || level === '') {
-                delete newCondicoes[conditionName];
-            } else {
-                newCondicoes[conditionName] = level;
-            }
-            saveConditions(newCondicoes);
-        };
-        
-        // Verifica se uma condição é automática (não pode ser removida manualmente)
-        const isCondicaoAutomatica = (conditionName) => {
-            return condicoesAutomaticas.hasOwnProperty(conditionName);
-        };
-
-        return (
-            <Card sx={{ ...sectionStyle, mt: 2 }}>
-                <CardHeader
-                    sx={{ ...cardHeaderStyle, background: hasCondicoes ? 'linear-gradient(135deg, #931C4A 0%, #5B1F0F 100%)' : cardHeaderStyle.background }}
-                    title={
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                            <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                ⚠️ Condições Ativas ({Object.keys(condicoes).length})
-                                {Object.keys(condicoesAutomaticas).length > 0 && (
-                                    <Chip 
-                                        label={`${Object.keys(condicoesAutomaticas).length} auto`} 
-                                        size="small" 
-                                        sx={{ backgroundColor: 'rgba(255,255,255,0.3)', color: 'white', fontSize: '10px', height: '18px' }} 
-                                    />
-                                )}
-                            </Typography>
-                            <IconButton 
-                                onClick={() => setShowConditionPicker(!showConditionPicker)}
-                                sx={{ color: 'white' }}
-                                title={showConditionPicker ? "Fechar lista" : "Gerenciar condições"}
-                            >
-                                {showConditionPicker ? <CancelIcon /> : <EditIcon />}
-                            </IconButton>
-                        </Box>
-                    }
-                />
-                <CardContent>
-                    {/* Condições Ativas */}
-                    {hasCondicoes ? (
-                        <Box sx={{ mb: showConditionPicker ? 3 : 0 }}>
-                            <Typography className="esteban" variant="subtitle2" sx={{ fontWeight: 'bold', color: '#931C4A', mb: 1 }}>
-                                Condições Atuais:
-                            </Typography>
-                            <Grid container spacing={1}>
-                                {Object.entries(condicoes).map(([key, value]) => {
-                                    const condInfo = condicoesDisponiveis[key] || {};
-                                    const isAuto = isCondicaoAutomatica(key);
-                                    const fonteAuto = isAuto ? condicoesAutomaticas[key] : null;
-                                    
-                                    return (
-                                        <Grid item xs={12} sm={6} md={4} key={key}>
-                                            <Tooltip 
-                                                title={isAuto ? `Condição automática: ${fonteAuto}` : 'Clique para detalhes'} 
-                                                arrow
-                                            >
-                                                <Paper 
-                                                    sx={{ 
-                                                        p: 1.5, 
-                                                        backgroundColor: condInfo.cor || '#931C4A',
-                                                        color: 'white',
-                                                        borderRadius: 2,
-                                                        cursor: 'pointer',
-                                                        transition: 'all 0.2s',
-                                                        '&:hover': { transform: 'scale(1.02)', boxShadow: 3 },
-                                                        border: isAuto ? '2px dashed rgba(255,255,255,0.5)' : 'none',
-                                                        position: 'relative'
-                                                    }}
-                                                    onClick={() => setSelectedConditionInfo(selectedConditionInfo === key ? null : key)}
-                                                >
-                                                    {/* Indicador de condição automática */}
-                                                    {isAuto && (
-                                                        <Chip 
-                                                            label="AUTO" 
-                                                            size="small" 
-                                                            sx={{ 
-                                                                position: 'absolute', 
-                                                                top: -8, 
-                                                                right: -8, 
-                                                                backgroundColor: '#40150A', 
-                                                                color: 'white', 
-                                                                fontSize: '9px', 
-                                                                height: '16px',
-                                                                fontWeight: 'bold'
-                                                            }} 
-                                                        />
-                                                    )}
-                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px' }}>
-                                                            {isAuto && '🔒 '}{key} {typeof value === 'number' && value > 1 ? `(${value})` : ''}
-                                                        </Typography>
-                                                        {!isAuto && (
-                                                            <IconButton 
-                                                                size="small" 
-                                                                onClick={(e) => { e.stopPropagation(); toggleCondition(key); }}
-                                                                sx={{ color: 'white', p: 0.5 }}
-                                                            >
-                                                                <CancelIcon fontSize="small" />
-                                                            </IconButton>
-                                                        )}
-                                                    </Box>
-                                                    {selectedConditionInfo === key && (
-                                                        <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid rgba(255,255,255,0.3)' }}>
-                                                            <Typography variant="body2" sx={{ fontSize: '12px', opacity: 0.9 }}>
-                                                                {condInfo.descricao}
-                                                            </Typography>
-                                                            {isAuto && (
-                                                                <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.7, fontStyle: 'italic' }}>
-                                                                    ⚡ Aplicada automaticamente por: {fonteAuto}
-                                                                </Typography>
-                                                            )}
-                                                            {condInfo.duracao && !isAuto && (
-                                                                <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.7 }}>
-                                                                    Duração padrão: {condInfo.duracao}
-                                                                </Typography>
-                                                            )}
-                                                        </Box>
-                                                    )}
-                                                </Paper>
-                                            </Tooltip>
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                        </Box>
-                    ) : (
-                        <Typography className="esteban" sx={{ textAlign: 'center', color: '#454E30', mb: showConditionPicker ? 2 : 0 }}>
-                            ✓ Nenhuma condição ativa
-                        </Typography>
-                    )}
-
-                    {/* Seletor de Condições */}
-                    {showConditionPicker && (
-                        <Box sx={{ mt: 2 }}>
-                            <Divider sx={{ mb: 2 }} />
-                            <Typography className="esteban" variant="subtitle1" sx={{ fontWeight: 'bold', color: '#40150A', mb: 2 }}>
-                                📋 Adicionar/Remover Condições
-                            </Typography>
-                            <Typography className="esteban" variant="body2" sx={{ color: '#5B1F0F', mb: 2, fontStyle: 'italic' }}>
-                                💡 Lembrete: Apenas a maior penalidade ou bônus de acerto/defesa é aplicada. Outros efeitos são cumulativos.
-                            </Typography>
-                            <Grid container spacing={1}>
-                                {Object.entries(condicoesDisponiveis).map(([name, info]) => {
-                                    const isActive = condicoes[name] !== undefined;
-                                    const hasLevels = name.includes('Congelando');
-                                    
-                                    return (
-                                        <Grid item xs={12} sm={6} md={4} lg={3} key={name}>
-                                            <Paper 
-                                                sx={{ 
-                                                    p: 1.5,
-                                                    backgroundColor: isActive ? info.cor : '#f5f3eb',
-                                                    color: isActive ? 'white' : '#40150A',
-                                                    borderRadius: 2,
-                                                    border: `2px solid ${isActive ? info.cor : '#756A3466'}`,
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s',
-                                                    '&:hover': { 
-                                                        borderColor: info.cor,
-                                                        transform: 'scale(1.02)',
-                                                        boxShadow: 2
-                                                    }
-                                                }}
-                                                onClick={() => !hasLevels && toggleCondition(name)}
-                                            >
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                                    <Box sx={{ flex: 1 }}>
-                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px' }}>
-                                                            {isActive ? '✓ ' : ''}{name}
-                                                        </Typography>
-                                                        <Typography variant="body2" sx={{ fontSize: '11px', opacity: 0.8, mt: 0.5 }}>
-                                                            {info.descricao}
-                                                        </Typography>
-                                                    </Box>
-                                                    {hasLevels && (
-                                                        <TextField
-                                                            type="number"
-                                                            size="small"
-                                                            value={condicoes[name] || ''}
-                                                            onChange={(e) => setConditionLevel(name, parseInt(e.target.value) || 0)}
-                                                            onClick={(e) => e.stopPropagation()}
-                                                            sx={{ 
-                                                                width: '50px', 
-                                                                ml: 1,
-                                                                '& .MuiInputBase-input': { 
-                                                                    textAlign: 'center',
-                                                                    padding: '4px',
-                                                                    color: isActive ? 'white' : 'inherit'
-                                                                }
-                                                            }}
-                                                            inputProps={{ min: 0, max: 20 }}
-                                                            placeholder="Rd"
-                                                        />
-                                                    )}
-                                                </Box>
-                                                {info.duracao && (
-                                                    <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.6, fontSize: '10px' }}>
-                                                        ⏱️ {info.duracao}
-                                                    </Typography>
-                                                )}
-                                            </Paper>
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                        </Box>
-                    )}
-                </CardContent>
-            </Card>
-        );
-    };
+    // CondicoesSection foi extraído para o componente ConditionsPanel
+    // Importado como <ConditionsPanel /> acima
 
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f3eb' }}>
@@ -4416,7 +4172,13 @@ const CharacterSheet = () => {
                 {activeTab === 3 && <RegaliasSection />}
 
                 {/* Condições */}
-                <CondicoesSection />
+                <ConditionsPanel
+                    character={character}
+                    nivelLuz={nivelLuz}
+                    sectionStyle={sectionStyle}
+                    cardHeaderStyle={cardHeaderStyle}
+                    saveConditions={saveConditions}
+                />
 
                 {/* Footer com datas */}
                 <Box sx={{ 
