@@ -1,0 +1,116 @@
+import React from 'react';
+import { Grid, TextField, Tooltip, Typography, Box, Button } from '@mui/material';
+
+const BasicInfoTab = React.memo(function BasicInfoTab({
+    charName, setCharName,
+    age, setAge,
+    gender, setGender,
+    altura, setAltura,
+    charDiscription, setCharDiscription,
+    image,
+    handleDrop, handleDragOver, handleButtonClick, handleFileChange,
+    fileInputRef,
+}) {
+    return (
+        <Grid container spacing={2} sx={{ height: '400px' }}>
+            <Grid item xs={6}>
+                <Grid container spacing={2} sx={{ height: '100%' }}>
+                    <Grid item xs={6}>
+                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" value={charName} onChange={(e) => { setCharName(e.target.value) }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        {age == 18 ?
+                            <Tooltip title="Idade mínima para fazer sentido estar em um aventura no sistema LDO.">
+                                <TextField
+                                    fullWidth
+                                    type="number"
+                                    inputProps={{ min: 18 }}
+                                    label="idade"
+                                    name="idade"
+                                    defaultValue="18"
+                                    value={age}
+                                    onChange={(e) => { setAge(e.target.value) }}
+                                />
+                            </Tooltip> :
+                            <TextField
+                                fullWidth
+                                type="number"
+                                inputProps={{ min: 18 }}
+                                label="idade"
+                                name="idade"
+                                defaultValue="18"
+                                value={age}
+                                onChange={(e) => { setAge(e.target.value) }}
+                            />
+                        }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField fullWidth label="genêro" name="genero" value={gender} onChange={(e) => { setGender(e.target.value) }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            type="number"
+                            label="Altura (cm)"
+                            name="altura"
+                            value={altura}
+                            onChange={(e) => { setAltura(parseInt(e.target.value) || 170) }}
+                            inputProps={{ min: 10, max: 5000 }}
+                            helperText={`Tamanho: ${altura <= 60 ? 'Minúsculo' : altura <= 130 ? 'Pequeno' : altura <= 220 ? 'Médio' : altura <= 350 ? 'Grande' : altura <= 600 ? 'Muito Grande' : altura <= 1200 ? 'Gigante' : 'Colossal'}`}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField fullWidth label="Nível" name="nivel" defaultValue={1} disabled />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField multiline rows={9} fullWidth label="Descrição" name="descricao" sx={{ height: '250px' }} value={charDiscription} onChange={(e) => { setCharDiscription(e.target.value) }} />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={6}>
+                <Box
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    sx={{
+                        border: '2px dashed #BB8130',
+                        borderRadius: 2,
+                        padding: 2,
+                        textAlign: 'center',
+                        bgcolor: '#756A3422',
+                        position: 'relative',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        maxHeight: '600px'
+                    }}
+                >
+                    <Box>
+                        <Typography variant="body1" sx={{ mb: 1 }}>
+                            Arraste e solte uma imagem aqui
+                        </Typography>
+                        <Button variant="text" sx={{ width: 'fit-content', marginX: 'auto' }} onClick={handleButtonClick}>
+                            Selecionar imagem
+                        </Button>
+                    </Box>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                    />
+                    {image && (
+                        <Box
+                            component="img"
+                            src={image}
+                            alt="Imagem do personagem"
+                            sx={{ mt: 2, maxWidth: '50%', margin: '0 auto', borderRadius: 1, maxHeight: '300px' }}
+                        />
+                    )}
+                </Box>
+            </Grid>
+        </Grid>
+    );
+});
+
+export default BasicInfoTab;

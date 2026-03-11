@@ -613,7 +613,7 @@
   ```
   **Aceite:** Toda mutação de personagem gera registro no log.
 
-- [ ] ⚪ **TODO-BE-007** · Versionar regras (`rule_version = 0.5`)  
+- [x] ✅ **TODO-BE-007** · Versionar regras (`rule_version = 0.5`)  
   **Contexto:** Para migração futura quando sair versão 0.6+ do livro.  
   **Aceite:** Campo `rule_version` no personagem; engine seleciona fórmulas pela versão.
 
@@ -649,13 +649,13 @@
   **Comportamento:** Mostrar regalias disponíveis, custo, pré-requisitos; bloquear compra inválida; mostrrar árvore de progressão.  
   **Aceite:** Botão "comprar" desabilitado se sem pontos ou sem pré-requisitos.
 
-- [ ] ⚪ **TODO-UI-005** · Refatorar `criarPersonagem.js` (3492 linhas → componentes)  
-  **Contexto:** Arquivo monolítico que dificulta manutenção. Extrair em componentes por tab/seção.  
-  **Aceite:** Nenhum componente acima de 500 linhas.
+- [x] ✅ **TODO-UI-005** · Refatorar `criarPersonagem.js` (3582→304 linhas)  
+  **Contexto:** Extraído useCharCreation.js hook + 8 tab components + CreationModals em `components/creation/`.  
+  **Aceite:** Nenhum componente acima de 500 linhas. ✅ Build OK, 271 testes passando.
 
-- [ ] ⚪ **TODO-UI-006** · Refatorar `characterSheet.js` (4458 linhas → componentes)  
-  **Contexto:** Mesma situação. Já existe início de extração com `CharacterHeader`, etc.  
-  **Aceite:** Nenhum componente acima de 500 linhas.
+- [x] ✅ **TODO-UI-006** · Refatorar `characterSheet.js` (4230→274 linhas)  
+  **Contexto:** Extraído useCharacterSheet.js hook + 13 componentes props-based em `components/`.  
+  **Aceite:** Nenhum componente acima de 500 linhas. ✅ Build OK, 271 testes passando.
 
 ---
 
@@ -850,9 +850,9 @@
 | 43 | TODO-UI-003 | UI condições | 🟡 P2 | ✅ Done |
 | 44 | TODO-UI-004 | UI regalias | 🟡 P2 | ✅ Done |
 | 45 | TODO-BE-006 | Auditoria | 🟡 P2 | ✅ Done |
-| 46 | TODO-UI-005 | Refatorar criação | ⚪ P4 |  |
-| 47 | TODO-UI-006 | Refatorar ficha | ⚪ P4 |  |
-| 48 | TODO-BE-007 | Versionar regras | ⚪ P4 |  |
+| 46 | TODO-UI-005 | Refatorar criação | ⚪ P4 | ✅ Done |
+| 47 | TODO-UI-006 | Refatorar ficha | ⚪ P4 | ✅ Done |
+| 48 | TODO-BE-007 | Versionar regras | ⚪ P4 | ✅ Done |
 | 49 | TODO-DAT-002 | Seed catálogos | 🟡 P2 | ✅ Done |
 | 50 | TODO-DAT-003 | JSON compartilhado | ⚪ P4 |  |
 | 51 | TODO-CLS-002 | Classes no pipeline | 🟠 P1 | ✅ Done |

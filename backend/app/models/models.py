@@ -37,6 +37,7 @@ class Personagem(Base):
     gender = Column(String, nullable=True)
     age = Column(Integer, nullable=True)
     description = Column(Text, nullable=True)
+    rule_version = Column(String, nullable=False, default='0.5', server_default='0.5')
 
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
@@ -69,6 +70,7 @@ class Personagem(Base):
             "classe": self.character_class,
             "nivel": self.level,
             "especie": self.race,
+            "rule_version": self.rule_version or '0.5',
             "criado_em": self.created_at.isoformat() if isinstance(self.created_at, datetime) else self.created_at,
             "atualizado_em": self.updated_at.isoformat() if isinstance(self.updated_at, datetime) else self.updated_at,
         }

@@ -19,6 +19,16 @@ from typing import Any
 # ============================================================================
 
 RULE_VERSION = "0.5"
+RULE_VERSIONS_SUPPORTED = ["0.5"]
+
+
+def get_rule_version(personagem: dict) -> str:
+    """Retorna a versão de regras do personagem (default: atual)."""
+    version = personagem.get('rule_version', RULE_VERSION)
+    if version not in RULE_VERSIONS_SUPPORTED:
+        return RULE_VERSION  # fallback para versão atual
+    return version
+
 
 # --- Espécies: pvBase e velocidadeBase (Ref: especies.js) ---
 ESPECIES: dict[str, dict[str, Any]] = {
@@ -439,6 +449,10 @@ def calcular_ficha_completa(personagem: dict) -> dict:
         - carga (capacidade_max)
     """
     resultado = dict(personagem)
+
+    # --- Versão de regras ---
+    version = get_rule_version(personagem)
+    resultado["rule_version"] = version
 
     # --- Espécie ---
     especie_key = personagem.get("especie") or personagem.get("race") or "humano"

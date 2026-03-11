@@ -24,6 +24,7 @@ BASE_FIELD_MAP = {
     'description': 'description',
     'experience': 'experience',
     'xp': 'experience',
+    'rule_version': 'rule_version',
 }
 
 IGNORE_SECTION_KEYS = {
@@ -63,6 +64,7 @@ class PersonagemService:
             user_id=user_id,
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow(),
+            rule_version=data.get('rule_version', '0.5'),
             **base_fields
         )
 

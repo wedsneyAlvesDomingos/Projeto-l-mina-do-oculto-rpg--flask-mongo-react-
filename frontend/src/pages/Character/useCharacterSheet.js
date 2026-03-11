@@ -1,0 +1,615 @@
+/**
+ * useCharacterSheet.js
+ * Hook central que encapsula TODO o estado e callbacks da ficha de personagem.
+ * Extraído de characterSheet.js para manter o componente principal sob 500 linhas.
+ */
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import {
+    calcularPontosDeVida,
+    calcularEstamina,
+    calcularPontosDeMagia,
+    calcularCuraKitMedico,
+    calcularTempoRespiracao,
+    calcularVantagemDesvantagem,
+    cobreParaMoedas,
+    calcularDescansosCurto,
+    calcularDescansoLongo,
+    calcularPenalidadeLuz,
+    calcularCapacidadeCarga,
+    calcularCargaAtual,
+    verificarStatusCarga,
+    calcularBonusIniciativa,
+    calcularBonusDefesaAgilidade,
+    calcularDefesaTotal,
+    calcularVelocidadeMovimento,
+} from '../../data/constants';
+
+/* Dados constantes para seletor de dados */
+export const DADOS_DISPONIVEIS = [
+    { valor: 2, nome: 'd2' },
+    { valor: 3, nome: 'd3' },
+    { valor: 4, nome: 'd4' },
+    { valor: 6, nome: 'd6' },
+    { valor: 8, nome: 'd8' },
+    { valor: 10, nome: 'd10' },
+    { valor: 12, nome: 'd12' },
+    { valor: 20, nome: 'd20' },
+    { valor: 100, nome: 'd100' },
+];
+
+export default function useCharacterSheet() {
+    /* ── Parâmetros ─────────────────────────────────── */
+    const params  = useMemo(() => new URLSearchParams(window.location.search), []);
+    const characterId = params.get('id');
+    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
+    const user    = useMemo(() => JSON.parse(localStorage.getItem('user') || '{}'), []);
+    const userId  = user?.id;
+
+    /* ── Estado principal ───────────────────────────── */
+    const [character, setCharacter]           = useState(null);
+    const [originalCharacter, setOriginalCharacter] = useState(null);
+    const [editMode, setEditMode]             = useState(false);
+    const [activeTab, setActiveTab]           = useState(0);
+    const [snackbar, setSnackbar]             = useState({ open: false, message: '', severity: 'success' });
+    const [loading, setLoading]               = useState(true);
+    const [erro, setErro]                     = useState('');
+
+    /* ── Vantagem / Desvantagem / Luz ───────────────── */
+    const [vantagens, setVantagens]           = useState(0);
+    const [desvantagens, setDesvantagens]     = useState(0);
+    const [nivelLuz, setNivelLuz]             = useState('completa');
+
+    /* ── Modais ─────────────────────────────────────── */
+    const [dinheiroModalOpen, setDinheiroModalOpen]     = useState(false);
+    const [descansoModalOpen, setDescansoModalOpen]     = useState(false);
+    const [combatRulesModalOpen, setCombatRulesModalOpen] = useState(false);
+
+    /* ── Equipamento ────────────────────────────────── */
+    const [armasEquipadas, setArmasEquipadas]       = useState([null, null]);
+    const [armaduraEquipada, setArmaduraEquipada]   = useState(null);
+    const [escudoEquipado, setEscudoEquipado]       = useState(null);
+
+    /* ── Dados ──────────────────────────────────────── */
+    const [dadoSelecionado, setDadoSelecionado]     = useState(20);
+    const [quantidadeDados, setQuantidadeDados]     = useState(1);
+    const [diceResult, setDiceResult]               = useState(null);
+    const [diceRolling, setDiceRolling]             = useState(false);
+    const [diceHistory, setDiceHistory]             = useState([]);
+
+    /* ── Ref imagem ─────────────────────────────────── */
+    const fileInputRef = useRef(null);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Imagem
+       ═══════════════════════════════════════════════════ */
+    const processFile = useCallback((file) => {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = () => setCharacter(prev => prev ? { ...prev, image: reader.result } : prev);
+            reader.readAsDataURL(file);
+        }
+    }, []);
+    const handleImageDrop        = useCallback((e) => { e.preventDefault(); processFile(e.dataTransfer.files[0]); }, [processFile]);
+    const handleDragOver         = useCallback((e) => e.preventDefault(), []);
+    const handleImageButtonClick = useCallback(() => fileInputRef.current?.click(), []);
+    const handleImageFileChange  = useCallback((e) => processFile(e.target.files?.[0]), [processFile]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Persistência
+       ═══════════════════════════════════════════════════ */
+    const salvarHistoricoRolagens = useCallback(async (novoHistorico) => {
+        try {
+            await fetch(`${baseUrl}/personagens/${character?.id}`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...character, historico_rolagens: novoHistorico.slice(0, 50) }),
+            });
+        } catch (err) { console.error('Erro ao salvar histórico:', err); }
+    }, [character, baseUrl]);
+
+    const salvarMoedas = useCallback(async (novasMoedas) => {
+        if (!character?.id) return;
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...character, moedas: novasMoedas }),
+            });
+        } catch (err) { console.error('Erro ao salvar moedas:', err); }
+    }, [character, baseUrl]);
+
+    const atualizarMoeda = useCallback((tipo, valor) => {
+        if (!character) return;
+        const novasMoedas = { ...(character.moedas || {}), [tipo]: parseInt(valor) || 0 };
+        setCharacter(prev => ({ ...prev, moedas: novasMoedas }));
+        salvarMoedas(novasMoedas);
+    }, [character, salvarMoedas]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Rolagem de dados
+       ═══════════════════════════════════════════════════ */
+    const rollDice = useCallback((sides, quantity = 1, bonus = 0, label = '') => {
+        setDiceRolling(true);
+        let animationCount = 0;
+        const animationInterval = setInterval(() => {
+            const tempResults = [];
+            for (let i = 0; i < quantity; i++) tempResults.push(Math.floor(Math.random() * sides) + 1);
+            setDiceResult({
+                rolls: tempResults, total: tempResults.reduce((a, b) => a + b, 0) + bonus,
+                sides, quantity, bonus, label, isAnimating: true
+            });
+            animationCount++;
+            if (animationCount >= 10) {
+                clearInterval(animationInterval);
+                const finalResults = [];
+                for (let i = 0; i < quantity; i++) finalResults.push(Math.floor(Math.random() * sides) + 1);
+                const total = finalResults.reduce((a, b) => a + b, 0) + bonus;
+                const result = {
+                    rolls: finalResults, total, sides, quantity, bonus, label, isAnimating: false,
+                    isCriticalHit: sides === 20 && quantity === 1 && finalResults[0] === 20,
+                    isCriticalFail: sides === 20 && quantity === 1 && finalResults[0] === 1,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setDiceResult(result);
+                const novoHistorico = [result, ...diceHistory.slice(0, 49)];
+                setDiceHistory(novoHistorico);
+                salvarHistoricoRolagens(novoHistorico);
+                setDiceRolling(false);
+            }
+        }, 80);
+    }, [diceHistory, salvarHistoricoRolagens]);
+
+    const rollD20ComVantagem = useCallback((bonus = 0, label = '', numVantagens = 0, numDesvantagens = 0) => {
+        setDiceRolling(true);
+        const config = calcularVantagemDesvantagem(numVantagens, numDesvantagens);
+        let animationCount = 0;
+        const animationInterval = setInterval(() => {
+            const tempResults = [];
+            for (let i = 0; i < config.dados; i++) tempResults.push(Math.floor(Math.random() * 20) + 1);
+            const tempResult = config.tipo === 'vantagem' ? Math.max(...tempResults)
+                : config.tipo === 'desvantagem' ? Math.min(...tempResults) : tempResults[0];
+            setDiceResult({
+                rolls: tempResults, total: tempResult + bonus, sides: 20,
+                quantity: config.dados, bonus,
+                label: `${label} ${config.tipo !== 'normal' ? `(${config.tipo})` : ''}`,
+                isAnimating: true, tipoRolagem: config.tipo
+            });
+            animationCount++;
+            if (animationCount >= 10) {
+                clearInterval(animationInterval);
+                const finalResults = [];
+                for (let i = 0; i < config.dados; i++) finalResults.push(Math.floor(Math.random() * 20) + 1);
+                const finalResult = config.tipo === 'vantagem' ? Math.max(...finalResults)
+                    : config.tipo === 'desvantagem' ? Math.min(...finalResults) : finalResults[0];
+                const total = finalResult + bonus;
+                const result = {
+                    rolls: finalResults, resultadoEscolhido: finalResult, total, sides: 20,
+                    quantity: config.dados, bonus,
+                    label: `${label} ${config.tipo !== 'normal' ? `(${config.tipo})` : ''}`,
+                    isAnimating: false,
+                    isCriticalHit: finalResult === 20, isCriticalFail: finalResult === 1,
+                    tipoRolagem: config.tipo, descricaoRolagem: config.descricao,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setDiceResult(result);
+                const novoHistorico = [result, ...diceHistory.slice(0, 49)];
+                setDiceHistory(novoHistorico);
+                salvarHistoricoRolagens(novoHistorico);
+                setDiceRolling(false);
+            }
+        }, 80);
+    }, [diceHistory, salvarHistoricoRolagens]);
+
+    const rollCustomDice = useCallback(() => {
+        if (diceRolling) return;
+        setDiceRolling(true);
+        let rollCount = 0;
+        const totalDice = quantidadeDados;
+        const animationInterval = setInterval(() => {
+            const animatedRolls = [];
+            for (let i = 0; i < totalDice; i++) animatedRolls.push(Math.floor(Math.random() * dadoSelecionado) + 1);
+            setDiceResult({ total: animatedRolls.reduce((a, b) => a + b, 0), label: `Rolando ${totalDice}d${dadoSelecionado}...`, rolls: animatedRolls, critical: false });
+            rollCount++;
+            if (rollCount >= 15) {
+                clearInterval(animationInterval);
+                const finalRolls = [];
+                for (let i = 0; i < totalDice; i++) finalRolls.push(Math.floor(Math.random() * dadoSelecionado) + 1);
+                const total = finalRolls.reduce((a, b) => a + b, 0);
+                const result = {
+                    total, label: `${totalDice}d${dadoSelecionado}`, rolls: finalRolls,
+                    critical: total === totalDice * dadoSelecionado,
+                    criticalFail: total === totalDice && dadoSelecionado >= 4,
+                    sides: dadoSelecionado, quantity: totalDice, bonus: 0,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setDiceResult(result);
+                const novoHistorico = [result, ...diceHistory.slice(0, 49)];
+                setDiceHistory(novoHistorico);
+                salvarHistoricoRolagens(novoHistorico);
+                setDiceRolling(false);
+            }
+        }, 60);
+    }, [diceRolling, dadoSelecionado, quantidadeDados, diceHistory, salvarHistoricoRolagens]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Helpers de combate
+       ═══════════════════════════════════════════════════ */
+    const getPenalidadeLuzAtual = useCallback(() => {
+        const temVisaoNoEscuro = character?.visao_no_escuro || false;
+        const alcanceVisao = character?.alcance_visao_no_escuro || 0;
+        return calcularPenalidadeLuz(nivelLuz, temVisaoNoEscuro, alcanceVisao, 0);
+    }, [nivelLuz, character?.visao_no_escuro, character?.alcance_visao_no_escuro]);
+
+    const parseDiceString = useCallback((diceString) => {
+        const match = diceString.match(/(\d+)?d(\d+)([+-]\d+)?/i);
+        if (match) return { quantity: parseInt(match[1]) || 1, sides: parseInt(match[2]), bonus: parseInt(match[3]) || 0 };
+        return null;
+    }, []);
+
+    const rollFromString = useCallback((diceString, label = '') => {
+        const parsed = parseDiceString(diceString);
+        if (parsed) rollDice(parsed.sides, parsed.quantity, parsed.bonus, label);
+    }, [parseDiceString, rollDice]);
+
+    const hasAcuidadeRegalia = useCallback(() => {
+        const regaliasClasse = character?.regalias_de_classe || {};
+        const regaliasTexto = JSON.stringify(regaliasClasse).toLowerCase();
+        return regaliasTexto.includes('acuidade') || regaliasTexto.includes('armas de acuidade');
+    }, [character?.regalias_de_classe]);
+
+    const isAcuidadeWeapon = useCallback((item) => {
+        if (!item) return false;
+        const name = (item.name || '').toLowerCase();
+        const category = (item.category || '').toLowerCase();
+        const tags = (item.tags || []).map(t => t.toLowerCase());
+        const acuidadeKeywords = ['adaga', 'dagger', 'rapieira', 'rapier', 'espada curta', 'shortsword',
+            'sabre', 'florete', 'estilete', 'faca', 'punhal', 'acuidade', 'leve', 'finesse'];
+        return acuidadeKeywords.some(kw => name.includes(kw) || category.includes(kw) || tags.includes(kw)) || item.acuidade === true;
+    }, []);
+
+    const getDamageBonus = useCallback((item) => {
+        const habilidades = character?.habilidades || {};
+        const forca = habilidades['Força'] || 0;
+        const destreza = habilidades['Destreza'] || 0;
+        if (isAcuidadeWeapon(item) && hasAcuidadeRegalia()) return { bonus: destreza, atributo: 'Destreza' };
+        return { bonus: forca, atributo: 'Força' };
+    }, [character?.habilidades, isAcuidadeWeapon, hasAcuidadeRegalia]);
+
+    const rollWeaponDamage = useCallback((damageString, weaponName, isCritical = false, item = null) => {
+        const parsed = parseDiceString(damageString);
+        if (parsed) {
+            const multiplier = isCritical ? 2 : 1;
+            const { bonus: attrBonus, atributo } = getDamageBonus(item);
+            const totalBonus = (parsed.bonus + attrBonus) * multiplier;
+            rollDice(parsed.sides, parsed.quantity * multiplier, totalBonus,
+                `Dano ${weaponName} (+${attrBonus} ${atributo})${isCritical ? ' (CRÍTICO!)' : ''}`);
+        }
+    }, [parseDiceString, rollDice, getDamageBonus]);
+
+    const rollSkillCheck = useCallback((skillBonus, skillName) => {
+        const luzInfo = getPenalidadeLuzAtual();
+        let bonusTotal = skillBonus;
+        const habilidadesAfetadasLuz = ['combate_corpo_a_corpo', 'combate_a_distancia', 'combate_arcano',
+            'investigacao', 'rastreamento', 'percepcao', 'Combate Corpo a Corpo', 'Combate a Distância',
+            'Combate Arcano', 'Investigação', 'Rastreamento', 'Percepção'];
+        const nomeNormalizado = skillName.toLowerCase().replace(/\s+/g, '_');
+        if (habilidadesAfetadasLuz.some(h => h.toLowerCase().replace(/\s+/g, '_') === nomeNormalizado || h === skillName)) {
+            bonusTotal -= luzInfo.penalidade;
+        }
+        if (luzInfo.condicaoCego) {
+            rollD20ComVantagem(bonusTotal, `Teste de ${skillName} (Cego)`, vantagens, desvantagens + 1);
+        } else {
+            rollD20ComVantagem(bonusTotal, `Teste de ${skillName}${luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : ''}`, vantagens, desvantagens);
+        }
+    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem]);
+
+    const rollAttackWithAdvantage = useCallback((attackBonus, attackType) => {
+        const luzInfo = getPenalidadeLuzAtual();
+        let bonusTotal = attackBonus - luzInfo.penalidade;
+        if (luzInfo.condicaoCego) {
+            rollD20ComVantagem(bonusTotal, `Ataque ${attackType} (Cego)`, vantagens, desvantagens + 1);
+        } else {
+            rollD20ComVantagem(bonusTotal, `Ataque ${attackType}${luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : ''}`, vantagens, desvantagens);
+        }
+    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Condições & Equipar/Desequipar
+       ═══════════════════════════════════════════════════ */
+    const saveConditions = useCallback(async (newCondicoes) => {
+        if (!character?.id) return;
+        try {
+            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...character, condicoes: newCondicoes }),
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.message || errorData.error || 'Erro ao salvar condições';
+                if (/inválid[oa]/i.test(errorMessage)) throw new Error('Condição inválida selecionada');
+                if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
+                throw new Error(errorMessage);
+            }
+            setCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
+            setOriginalCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
+            const condCount = Object.keys(newCondicoes).length;
+            setSnackbar({ open: true, message: condCount > 0 ? `Condições atualizadas (${condCount} ativa${condCount > 1 ? 's' : ''})` : 'Condições removidas', severity: 'success' });
+        } catch (error) {
+            console.error(error);
+            setSnackbar({ open: true, message: error.message || 'Erro ao salvar condições', severity: 'error' });
+        }
+    }, [baseUrl, character]);
+
+    const updateField = useCallback((path, value) => {
+        setCharacter(prev => {
+            if (!prev) return prev;
+            const newChar = { ...prev };
+            const keys = path.split('.');
+            let obj = newChar;
+            for (let i = 0; i < keys.length - 1; i++) { obj[keys[i]] = obj[keys[i]] ? { ...obj[keys[i]] } : {}; obj = obj[keys[i]]; }
+            obj[keys[keys.length - 1]] = value;
+            return newChar;
+        });
+    }, []);
+
+    const equiparArma = useCallback(async (arma, slot) => {
+        const novasArmas = [...armasEquipadas]; novasArmas[slot] = arma; setArmasEquipadas(novasArmas);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armas_equipadas: novasArmas }) });
+            setCharacter(prev => ({ ...prev, armas_equipadas: novasArmas }));
+        } catch (err) { console.error('Erro ao salvar arma equipada:', err); }
+    }, [armasEquipadas, character, baseUrl]);
+
+    const desequiparArma = useCallback(async (slot) => {
+        const novasArmas = [...armasEquipadas]; novasArmas[slot] = null; setArmasEquipadas(novasArmas);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armas_equipadas: novasArmas }) });
+            setCharacter(prev => ({ ...prev, armas_equipadas: novasArmas }));
+        } catch (err) { console.error('Erro ao desequipar arma:', err); }
+    }, [armasEquipadas, character, baseUrl]);
+
+    const equiparArmadura = useCallback(async (armadura) => {
+        setArmaduraEquipada(armadura);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armadura_equipada: armadura }) });
+            setCharacter(prev => ({ ...prev, armadura_equipada: armadura }));
+        } catch (err) { console.error('Erro ao salvar armadura:', err); }
+    }, [character, baseUrl]);
+
+    const desequiparArmadura = useCallback(async () => {
+        setArmaduraEquipada(null);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armadura_equipada: null }) });
+            setCharacter(prev => ({ ...prev, armadura_equipada: null }));
+        } catch (err) { console.error('Erro ao desequipar armadura:', err); }
+    }, [character, baseUrl]);
+
+    const equiparEscudo = useCallback(async (escudo) => {
+        setEscudoEquipado(escudo);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, escudo_equipado: escudo }) });
+            setCharacter(prev => ({ ...prev, escudo_equipado: escudo }));
+        } catch (err) { console.error('Erro ao salvar escudo:', err); }
+    }, [character, baseUrl]);
+
+    const desequiparEscudo = useCallback(async () => {
+        setEscudoEquipado(null);
+        try {
+            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, escudo_equipado: null }) });
+            setCharacter(prev => ({ ...prev, escudo_equipado: null }));
+        } catch (err) { console.error('Erro ao desequipar escudo:', err); }
+    }, [character, baseUrl]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Save / Cancel / Tab
+       ═══════════════════════════════════════════════════ */
+    const handleSave = useCallback(async () => {
+        const validationPatterns = {
+            nome: /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/,
+            descricao: /^[\s\S]{0,2000}$/,
+        };
+        if (character.nome && !validationPatterns.nome.test(character.nome)) {
+            setSnackbar({ open: true, message: 'Nome inválido. Use apenas letras, espaços, hífens e apóstrofos (2-50 caracteres)', severity: 'error' }); return;
+        }
+        if (character.descricao && !validationPatterns.descricao.test(character.descricao)) {
+            setSnackbar({ open: true, message: 'Descrição muito longa (máximo 2000 caracteres)', severity: 'error' }); return;
+        }
+        if (JSON.stringify(character) === JSON.stringify(originalCharacter)) {
+            setEditMode(false); setSnackbar({ open: true, message: 'Nenhuma alteração detectada', severity: 'info' }); return;
+        }
+        try {
+            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(character)
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.message || errorData.error || 'Erro ao salvar personagem';
+                if (/nome.*já.*existe/i.test(errorMessage)) throw new Error('Este nome de personagem já está em uso');
+                if (/inválid[oa]/i.test(errorMessage)) throw new Error('Dados inválidos. Verifique os campos preenchidos');
+                if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
+                if (/permissão|autorização/i.test(errorMessage)) throw new Error('Você não tem permissão para editar este personagem');
+                throw new Error(errorMessage);
+            }
+            setOriginalCharacter(JSON.parse(JSON.stringify(character)));
+            setEditMode(false);
+            setSnackbar({ open: true, message: 'Personagem salvo com sucesso!', severity: 'success' });
+        } catch (error) {
+            console.error(error);
+            setSnackbar({ open: true, message: error.message || 'Erro ao salvar personagem', severity: 'error' });
+        }
+    }, [character, originalCharacter, baseUrl]);
+
+    const handleCancel = useCallback(() => {
+        setCharacter(JSON.parse(JSON.stringify(originalCharacter)));
+        setEditMode(false);
+    }, [originalCharacter]);
+
+    const handleTabChange = useCallback((_event, newValue) => setActiveTab(newValue), []);
+
+    /* ═══════════════════════════════════════════════════
+       ESTILOS compartilhados
+       ═══════════════════════════════════════════════════ */
+    const sectionStyle = useMemo(() => ({
+        borderRight: '2px solid #756A34', borderLeft: '2px solid #756A34',
+        borderRadius: '12px', backgroundColor: '#fcfcfcee', mb: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    }), []);
+
+    const cardHeaderStyle = useMemo(() => ({
+        background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
+        color: 'white', borderRadius: '12px 12px 0 0', py: 1,
+    }), []);
+
+    /* ═══════════════════════════════════════════════════
+       PIPELINE CENTRALIZADO — Stats Derivados
+       ═══════════════════════════════════════════════════ */
+    const statsDerivados = useMemo(() => {
+        if (!character) return null;
+        const habs = character.habilidades || {};
+        const fortitude = habs['Fortitude'] || 0;
+        const agilidade = habs['Agilidade'] || 0;
+        const percepcao = habs['Percepção'] || 0;
+        const arcanismo = habs['Arcanismo'] || 0;
+        const atletismo = habs['Atletismo'] || 0;
+        const forca     = habs['Força'] || 0;
+        const medicina  = habs['Medicina'] || 0;
+
+        const especieBaseVida = character.pv_base_especie || 10;
+        const especieBaseVelocidade = character.velocidade_base_especie || 9;
+        const regaliaClasseVida     = character.pv_regalia_classe || 0;
+        const regaliaClasseMagia    = character.pm_regalia_classe || 0;
+        const regaliaClasseEstamina = character.pe_regalia_classe || 0;
+
+        const pvMax = calcularPontosDeVida(especieBaseVida, fortitude) + regaliaClasseVida;
+        const peMax = calcularEstamina(atletismo) + regaliaClasseEstamina;
+        const pmMax = calcularPontosDeMagia(arcanismo) + regaliaClasseMagia;
+
+        const armaduraPesada = armaduraEquipada?.tipo?.toLowerCase() === 'pesada' ||
+            armaduraEquipada?.category?.toLowerCase().includes('pesada') ||
+            (armaduraEquipada?.defesa >= 10 && !armaduraEquipada?.bonusDefesa) || false;
+        let defesaArmadura = armaduraPesada ? (armaduraEquipada?.defesa || 0) : (armaduraEquipada?.bonusDefesa || armaduraEquipada?.defesa || 0);
+        const defesaEscudo = escudoEquipado?.bonusDefesa || escudoEquipado?.defesa || 0;
+
+        const proficiencias = character.proficiencias;
+        const temProficienciaEscudo = Array.isArray(proficiencias)
+            ? proficiencias.includes('Escudos')
+            : (typeof proficiencias === 'object' && proficiencias !== null)
+                ? Object.keys(proficiencias).some(k => k.toLowerCase().includes('escudo'))
+                : true;
+
+        const defesaInfo = calcularDefesaTotal({ agilidade, defesaArmadura, defesaEscudo, armaduraPesada, temProficienciaEscudo });
+        const defesaTotal = defesaInfo.defesaTotal;
+        const bonusDefAgi = calcularBonusDefesaAgilidade(agilidade);
+        const velocidadeInfo = calcularVelocidadeMovimento(especieBaseVelocidade, agilidade, armaduraPesada);
+        const velocidadeTotal = velocidadeInfo.velocidadeTotal;
+        const iniciativa = calcularBonusIniciativa(agilidade, percepcao);
+        const tamanho = character.tamanho || 'medio';
+        const cargaMax = calcularCapacidadeCarga(forca, tamanho);
+        const cargaAtual = calcularCargaAtual(character.equipamentos || []);
+        const statusCarga = verificarStatusCarga(cargaAtual, cargaMax);
+        const curaKit = calcularCuraKitMedico(medicina);
+        const respiracao = calcularTempoRespiracao(fortitude);
+
+        return {
+            pvMax, peMax, pmMax,
+            pvAtual: character.pv_atual !== undefined ? character.pv_atual : pvMax,
+            peAtual: character.pe_atual !== undefined ? character.pe_atual : peMax,
+            pmAtual: character.pm_atual !== undefined ? character.pm_atual : pmMax,
+            defesaTotal, bonusDefAgi, defesaArmadura, defesaEscudo, armaduraPesada,
+            defesaComponentes: defesaInfo.componentes, defesaFormula: defesaInfo.formula,
+            velocidadeTotal, velocidadeInfo, iniciativa,
+            cargaMax, cargaAtual, statusCarga, curaKit, respiracao,
+            fortitude, agilidade, percepcao, arcanismo, atletismo, forca, medicina
+        };
+    }, [character, armaduraEquipada, escudoEquipado]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACKS — Descanso (dependem de statsDerivados)
+       ═══════════════════════════════════════════════════ */
+    const aplicarDescansoCurto = useCallback(() => {
+        if (!character || !statsDerivados) return;
+        const stats = { vidaMax: statsDerivados.pvMax, vidaAtual: statsDerivados.pvAtual, estaminaMax: statsDerivados.peMax, estaminaAtual: statsDerivados.peAtual, magiaMax: statsDerivados.pmMax, magiaAtual: statsDerivados.pmAtual };
+        const recuperacao = calcularDescansosCurto(stats);
+        setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia }));
+        setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        setDescansoModalOpen(false);
+    }, [character, statsDerivados]);
+
+    const aplicarDescansoLongo = useCallback(() => {
+        if (!character || !statsDerivados) return;
+        const stats = { vidaMax: statsDerivados.pvMax, estaminaMax: statsDerivados.peMax, magiaMax: statsDerivados.pmMax, nivelCansaco: character.nivel_cansaco || 0 };
+        const recuperacao = calcularDescansoLongo(stats);
+        setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia, nivel_cansaco: recuperacao.novoNivelCansaco }));
+        setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        setDescansoModalOpen(false);
+    }, [character, statsDerivados]);
+
+    /* ═══════════════════════════════════════════════════
+       EFEITO — Carregar personagem
+       ═══════════════════════════════════════════════════ */
+    useEffect(() => {
+        if (!userId) return;
+        setLoading(true);
+        fetch(`${baseUrl}/personagens/${userId}`)
+            .then(response => { if (!response.ok) throw new Error('Erro ao buscar personagens'); return response.json(); })
+            .then(data => {
+                const personagem = data.find(char => char.id === parseInt(characterId));
+                if (personagem) {
+                    setCharacter(personagem);
+                    setOriginalCharacter(JSON.parse(JSON.stringify(personagem)));
+                    if (personagem.armas_equipadas) setArmasEquipadas(personagem.armas_equipadas);
+                    if (personagem.armadura_equipada) setArmaduraEquipada(personagem.armadura_equipada);
+                    if (personagem.escudo_equipado) setEscudoEquipado(personagem.escudo_equipado);
+                    if (personagem.historico_rolagens) setDiceHistory(personagem.historico_rolagens);
+                    if (!personagem.moedas && personagem.dinheiro !== undefined) {
+                        const totalCobre = Math.round((parseFloat(personagem.dinheiro) || 0) * 100);
+                        setCharacter(prev => ({
+                            ...prev,
+                            moedas: { platina: Math.floor(totalCobre / 1000), ouro: Math.floor((totalCobre % 1000) / 100), prata: Math.floor((totalCobre % 100) / 10), cobre: totalCobre % 10 }
+                        }));
+                    }
+                } else { console.warn('Personagem não encontrado para o ID:', characterId); }
+                setLoading(false);
+            })
+            .catch(error => { console.error(error); setErro(error.message); setLoading(false); });
+    }, [userId, characterId, baseUrl]);
+
+    /* ═══════════════════════════════════════════════════
+       RETORNO — tudo que o componente precisa
+       ═══════════════════════════════════════════════════ */
+    return {
+        // Identidade
+        characterId, baseUrl, userId,
+        // Estado principal
+        character, setCharacter, originalCharacter, editMode, setEditMode,
+        activeTab, setActiveTab, snackbar, setSnackbar, loading, erro,
+        // Vantagem / Luz
+        vantagens, setVantagens, desvantagens, setDesvantagens,
+        nivelLuz, setNivelLuz,
+        // Modais
+        dinheiroModalOpen, setDinheiroModalOpen,
+        descansoModalOpen, setDescansoModalOpen,
+        combatRulesModalOpen, setCombatRulesModalOpen,
+        // Equipamento
+        armasEquipadas, armaduraEquipada, escudoEquipado,
+        equiparArma, desequiparArma, equiparArmadura, desequiparArmadura,
+        equiparEscudo, desequiparEscudo,
+        // Dados
+        dadoSelecionado, setDadoSelecionado, quantidadeDados, setQuantidadeDados,
+        diceResult, setDiceResult, diceRolling, diceHistory, setDiceHistory,
+        rollDice, rollD20ComVantagem, rollCustomDice,
+        rollFromString, parseDiceString,
+        rollAttackWithAdvantage, rollSkillCheck, rollWeaponDamage,
+        hasAcuidadeRegalia, isAcuidadeWeapon, getDamageBonus,
+        salvarHistoricoRolagens,
+        // Imagem
+        fileInputRef, handleImageDrop, handleDragOver, handleImageButtonClick, handleImageFileChange,
+        // CRUD
+        updateField, handleSave, handleCancel, handleTabChange,
+        atualizarMoeda, saveConditions,
+        // Descanso
+        aplicarDescansoCurto, aplicarDescansoLongo,
+        getPenalidadeLuzAtual,
+        // Estilos & Derivados
+        sectionStyle, cardHeaderStyle, statsDerivados,
+        // Constantes
+        DADOS_DISPONIVEIS,
+    };
+}
