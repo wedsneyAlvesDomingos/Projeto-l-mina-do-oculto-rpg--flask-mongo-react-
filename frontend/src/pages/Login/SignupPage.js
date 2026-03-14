@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AppFooter from '../../componentes/Footer/Footer';
 import { useNavigate } from "react-router-dom";
 import './Login.css';
 import TextField from '@mui/material/TextField';
@@ -197,7 +198,7 @@ const SignUpPage = () => {
                 </Box>
 
             </Container>
-            <Box sx={{ background: '#40150A', position: 'absolute', bottom: '0px', width: '100%', color: '#fff', textAlign: 'center', fontSize: '10px', p: '4px' }}>© 2024 Lâmina do oculto. All rights reserved.</Box>
+            <AppFooter position="absolute" />
         </>
     );
 };

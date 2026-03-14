@@ -2,34 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, Grid, Tab, Tabs, Accordion, AccordionSummary, AccordionDetails, List, ListItem } from '@mui/material';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./backgrounds.css";
-
 // Importações centralizadas de dados
 import { antecedentes } from '../../../data/constants';
 
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+
+
+// Componente de card para cada antecedente — definido fora da função para
+// evitar recriação de tipo a cada render (causaria warning do React DevTools)
+const AntecedenteCard = ({ antecedente }) => (
+    <Paper sx={{ minWidth: 275, m: 2, p: 2, borderTop: "4px solid #162A22", borderBottom: "8px solid #162A22", height: '470px', }}>
+        <CardContent>
+            <Typography className="boxTextTitle" variant="h6" component="div">
+                {antecedente.nome}
+            </Typography>
+            <Box className="armaCard" sx={{ height: "150px", overflowY: 'scroll', p: 1, border: "1px solid #5B1F0F", borderRadius: '10px' }}>
+                <Typography className="bigBoxTextEquips">
+                    {antecedente.descricao}
+                </Typography>
+            </Box>
+
+            <ul>
+                {antecedente.habilidades.map((hab, index) => (
+                    <li className="bigBoxTextBG" key={index}>{hab}</li>
+                ))}
+            </ul>
+        </CardContent>
+    </Paper>
+);
 
 const AntecendetesPage = () => {
-
-    // Componente de card para cada antecedente
-    const AntecedenteCard = ({ antecedente }) => (
-        <Paper sx={{ minWidth: 275, m: 2, p: 2, borderTop: "4px solid #162A22", borderBottom: "8px solid #162A22", height: '470px', }}>
-            <CardContent>
-                <Typography className="boxTextTitle" variant="h6" component="div">
-                    {antecedente.nome}
-                </Typography>
-                <Box className="armaCard" sx={{ height: "150px", overflowY: 'scroll', p: 1, border: "1px solid #5B1F0F", borderRadius: '10px' }}>
-                    <Typography className="bigBoxTextEquips "  >
-                        {antecedente.descricao}
-                    </Typography>
-                </Box>
-
-                <ul>
-                    {antecedente.habilidades.map((hab, index) => (
-                        <li className="bigBoxTextBG" key={index}>{hab}</li>
-                    ))}
-                </ul>
-            </CardContent>
-        </Paper>
-    );
 
     return (
         <Box sx={{ minHeight: '700px', width: '100%' }} >
@@ -50,26 +55,25 @@ const AntecendetesPage = () => {
                 <Typography className="bigBoxTextClasses" paragraph>
                     Assim, o antecedente não é apenas uma mecânica de jogo, mas também um elemento narrativo que dá significado a cada decisão tomada pelo personagem. Seja em situações de combate, exploração ou interação, o antecedente permite que o jogador explore um leque maior de possibilidades, com escolhas que são coerentes com a vida e as experiências de seu personagem.
                 </Typography>
-                <Typography className="bigBoxTextClasses" paragraph>
-                    Todo antecedente começa com:
+                <Box className="bigBoxTextClasses" sx={{ mb: 2 }}>
+                    <Typography className="bigBoxTextClasses" component="span">
+                        Todo antecedente começa com:
+                    </Typography>
                     <ul>
                         <li>250 M.O.</li>
                         <li>Roupas simples</li>
-                        <li> 5 Rações de Viagem</li>
+                        <li>5 Rações de Viagem</li>
                     </ul>
-                </Typography>
+                </Box>
                 <Grid container spacing={2}>
                     {antecedentes.map((antecedente, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Grid item xs={12} sm={6} md={3} key={index} id={toAnchorId(antecedente.nome)}>
                             <AntecedenteCard antecedente={antecedente} />
                         </Grid>
                     ))}
                 </Grid>
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

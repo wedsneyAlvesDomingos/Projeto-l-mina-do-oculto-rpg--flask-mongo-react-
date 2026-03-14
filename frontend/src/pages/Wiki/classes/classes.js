@@ -4877,8 +4877,8 @@ const ClassesPage = () => {
       )}
       {thisvalue === 3 && (
         <Box>
-          {EspecializacaoCombatenteSkillsData.map(especializacao =>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+          {EspecializacaoCombatenteSkillsData.map((especializacao, idx) =>
+            <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
@@ -5080,8 +5080,8 @@ const ClassesPage = () => {
       )}
       {thisvalue === 4 && (
         <Box>
-          {EspecializacaoIniciadoSkillsData.map(especializacao =>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+          {EspecializacaoIniciadoSkillsData.map((especializacao, idx) =>
+            <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
@@ -5283,8 +5283,8 @@ const ClassesPage = () => {
       )}
       {thisvalue === 5 && (
         <Box>
-          {EspecializacaoNovicoSkillsData.map(especializacao =>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+          {EspecializacaoNovicoSkillsData.map((especializacao, idx) =>
+            <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
@@ -5486,8 +5486,8 @@ const ClassesPage = () => {
       )}
       {thisvalue === 6 && (
         <Box>
-          {EspecializacaoFeiticeiroSkillsData.map(especializacao =>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+          {EspecializacaoFeiticeiroSkillsData.map((especializacao, idx) =>
+            <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
@@ -5688,8 +5688,8 @@ const ClassesPage = () => {
         </Box>
       )}   {thisvalue === 7 && (
         <Box>
-          {EspecializacaoMistaSkillsData.map(especializacao =>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+          {EspecializacaoMistaSkillsData.map((especializacao, idx) =>
+            <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
               <Box sx={{ width: "80%", mx: "auto" }}>
                 {/* Título e Descrição */}
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
@@ -5889,9 +5889,6 @@ const ClassesPage = () => {
 
         </Box>
       )}
-      <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-      </Box>
     </Box>
   );
 };

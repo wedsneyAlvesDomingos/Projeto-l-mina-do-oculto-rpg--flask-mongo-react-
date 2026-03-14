@@ -16,6 +16,7 @@ class User(Base):
     password = Column(String, nullable=False)
     email_confirmed = Column(Boolean, default=False, nullable=False)
     confirmation_token = Column(String, nullable=True)
+    avatar = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 

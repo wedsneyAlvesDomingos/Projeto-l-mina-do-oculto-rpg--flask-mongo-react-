@@ -34,9 +34,6 @@ export const CharacterProvider = ({ children, characterId, baseUrl, userId }) =>
     // Estados para sistema de descanso
     const [descansoModalOpen, setDescansoModalOpen] = useState(false);
     
-    // Estado para modal de regras de combate
-    const [combatRulesModalOpen, setCombatRulesModalOpen] = useState(false);
-    
     // Estados para itens equipados
     const [armasEquipadas, setArmasEquipadas] = useState([null, null]);
     const [armaduraEquipada, setArmaduraEquipada] = useState(null);
@@ -349,10 +346,8 @@ export const CharacterProvider = ({ children, characterId, baseUrl, userId }) =>
     // Estilos compartilhados
     const sectionStyle = useMemo(() => ({
         borderRadius: 2,
-        backgroundColor: '#fffef9',
-        border: '1px solid #756A34'
-    }), []);
-
+        backgroundColor: 'var(--surface-paper)',
+        border: '1px solid var(--text-muted)'
     const cardHeaderStyle = useMemo(() => ({
         background: 'linear-gradient(135deg, #40150A 0%, #5B1F0F 50%, #7B3311 100%)',
         color: 'white',
@@ -393,8 +388,6 @@ export const CharacterProvider = ({ children, characterId, baseUrl, userId }) =>
         setDinheiroModalOpen,
         descansoModalOpen,
         setDescansoModalOpen,
-        combatRulesModalOpen,
-        setCombatRulesModalOpen,
         
         // Moedas
         moedas,
@@ -443,7 +436,7 @@ export const CharacterProvider = ({ children, characterId, baseUrl, userId }) =>
     }), [
         character, originalCharacter, editMode, activeTab, snackbar, loading, erro, baseUrl, userId,
         vantagens, desvantagens, nivelLuz,
-        dinheiroModalOpen, descansoModalOpen, combatRulesModalOpen,
+        dinheiroModalOpen, descansoModalOpen,
         moedas, atualizarMoeda,
         armasEquipadas, armaduraEquipada, escudoEquipado,
         equiparArma, equiparArmadura, desequiparArmadura, equiparEscudo, desequiparEscudo,

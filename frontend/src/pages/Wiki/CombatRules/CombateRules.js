@@ -3,6 +3,10 @@ import { Card, CardContent, Container, Table, TableBody, TableCell, TableContain
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./combatRules.css";
 
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 
 const CombatRulesPage = () => {
 
@@ -298,7 +302,7 @@ const CombatRulesPage = () => {
                     </Typography>
                 </Box>
                 {sections.map((section, index) => (
-                    <Box key={index} mb={2} >
+                    <Box key={index} mb={2} id={toAnchorId(section.title)}>
                         <Typography variant="h6" className="boxTextTitle" gutterBottom>
                             {section.title}
                         </Typography>
@@ -316,9 +320,6 @@ const CombatRulesPage = () => {
                 <CombatMechanicsPage />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

@@ -18,7 +18,7 @@ const ProfessionTab = React.memo(function ProfessionTab({
                                 borderBottom: '6px solid #7B3311',
                                 height: '320px',
                                 overflowY: 'scroll',
-                                background: '#EDEDED',
+                              
                                 borderColor: selectedId.startsWith(prof.nome + '::') ? 'primary.main' : undefined
                             }}
                         >

@@ -1,12 +1,12 @@
 .MainTitleMC {
     font-family: "Viaoda_Libre variant0", serif !important;
     font-style: normal !important;
-    color: #5B1F0F;
+    color: var(--color-title);
     text-align: center !important;
 }
 
 .boxTextTitleText {
-    color: #5B1F0F;
+    color: var(--color-title);
     text-align: left;
     font-family: "Esteban", serif !important;
     text-align: justify;
@@ -15,7 +15,7 @@
 }
 
 .boxTextTitle {
-    color: #5B1F0F;
+    color: var(--color-title);
     text-align: left;
     font-family: "Esteban", serif !important;
     text-align: center;

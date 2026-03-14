@@ -26,10 +26,12 @@ import {
     categoriasCondicoes,
     getCondicao,
     getCondicoesPorCategoria,
+    getCondicaoParaNivel,
     getCondicaoResumo,
     getCondicoesComFlag,
     getCondicoesComDanoRecorrente,
     isCondicaoIncapacitante,
+    resolverCondicoesImplicitas,
     aplicarCondicao,
     removerCondicao,
 } from '../../../data/constants';
@@ -38,40 +40,71 @@ import {
    Ícones por categoria
    ───────────────────────────────────────────────────────── */
 const CATEGORIA_ICONS = {
-    'Debilitação Física': '🦴',
-    'Controle & Incapacitação': '⛓️',
-    'Dano Contínuo': '🔥',
-    'Mental & Sensorial': '🧠',
-    'Ambiental': '🌪️',
-    'Proteção & Bônus': '🛡️',
+    'incapacitante': '⛓️',
+    'mental': '🧠',
+    'fisica': '🦴',
+    'magica': '🔮',
+    'ambiente': '🌪️',
+    'progressiva': '🔥',
 };
 
 /* ─────────────────────────────────────────────────────────
    Subcomponente: Resumo de penalidades ativas
    ───────────────────────────────────────────────────────── */
-const PenaltySummary = ({ condicoesAtivas }) => {
+const PenaltySummary = ({ condicoesAtivas, modificadoresAutoritativos }) => {
     const resumo = useMemo(() => {
+        // Se temos modificadores autoritativos (do hook central), usar esses
+        if (modificadoresAutoritativos) {
+            const mod = modificadoresAutoritativos.modificadores || {};
+            const vel = modificadoresAutoritativos.velocidade || {};
+            const flags = [];
+            if (modificadoresAutoritativos.flags) {
+                Object.entries(modificadoresAutoritativos.flags).forEach(([k, v]) => {
+                    if (v === true) flags.push(k);
+                });
+            }
+            // Adicionar flags de vantagem/desvantagem de ataque
+            if (modificadoresAutoritativos.vantagensAtaque > 0) flags.push('vantagemAtaques');
+            if (modificadoresAutoritativos.desvantagensAtaque > 0) flags.push('desvantagemAtaques');
+            return {
+                pen: {
+                    defesa: mod.defesa || 0,
+                    ataques: mod.ataques || 0,
+                    testes: mod.testes || 0,
+                    velocidade: vel.zero ? -999 : vel.metade ? -50 : (vel.reducao || 0),
+                    percepcao: mod.percepcao || 0,
+                },
+                flags,
+                resumoTexto: modificadoresAutoritativos.resumoTexto || [],
+            };
+        }
+        // Fallback: calcular localmente
         const pen = { defesa: 0, ataques: 0, testes: 0, velocidade: 0, percepcao: 0 };
         const flags = new Set();
 
-        condicoesAtivas.forEach(({ condObj }) => {
+        condicoesAtivas.forEach(({ condObj, value }) => {
             if (!condObj) return;
+            // Para condições progressivas com níveis, usar penalidades do nível ativo
+            let effectiveCond = condObj;
+            if (condObj.niveisDetalhes && typeof value === 'number' && value >= 1) {
+                effectiveCond = getCondicaoParaNivel(condObj.id || condObj.nome, value) || condObj;
+            }
             // Penalidades numéricas: só a pior prevalece por tipo
-            if (condObj.penalidades) {
-                Object.entries(condObj.penalidades).forEach(([key, val]) => {
+            if (effectiveCond.penalidades) {
+                Object.entries(effectiveCond.penalidades).forEach(([key, val]) => {
                     if (typeof val === 'number' && val < pen[key]) pen[key] = val;
                 });
             }
             // Flags booleanas (semAcoes, desvantagemAtaques, etc.)
-            if (condObj.flags) {
-                Object.entries(condObj.flags).forEach(([k, v]) => {
+            if (effectiveCond.flags) {
+                Object.entries(effectiveCond.flags).forEach(([k, v]) => {
                     if (v === true) flags.add(k);
                 });
             }
         });
 
         return { pen, flags: [...flags] };
-    }, [condicoesAtivas]);
+    }, [condicoesAtivas, modificadoresAutoritativos]);
 
     const hasPenalties = Object.values(resumo.pen).some(v => v !== 0) || resumo.flags.length > 0;
     if (!hasPenalties) return null;
@@ -113,7 +146,9 @@ const PenaltySummary = ({ condicoesAtivas }) => {
                         sx={{ backgroundColor: '#8B6914', color: 'white', fontWeight: 'bold', fontSize: '11px' }} />
                 )}
                 {resumo.pen.velocidade !== 0 && (
-                    <Chip icon={<SpeedIcon sx={{ fontSize: 14 }} />} label={`Velocidade ${resumo.pen.velocidade}`} size="small"
+                    <Chip icon={<SpeedIcon sx={{ fontSize: 14 }} />}
+                        label={resumo.pen.velocidade === -999 ? 'Velocidade: 0 (imóvel)' : resumo.pen.velocidade === -50 ? 'Velocidade: metade' : `Velocidade ${resumo.pen.velocidade}`}
+                        size="small"
                         sx={{ backgroundColor: '#2E5C4F', color: 'white', fontWeight: 'bold', fontSize: '11px' }} />
                 )}
                 {resumo.pen.percepcao !== 0 && (
@@ -135,9 +170,20 @@ const PenaltySummary = ({ condicoesAtivas }) => {
    ───────────────────────────────────────────────────────── */
 const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, onSetLevel }) => {
     const [expanded, setExpanded] = useState(false);
-    const hasLevels = condObj?.stackRegra === 'acumula' || (typeof value === 'number' && value > 1);
+    const hasLevels = condObj?.niveis > 0;
     const hasDano = condObj?.danoRecorrente && condObj.danoRecorrente.valor;
     const incapacitante = condObj ? isCondicaoIncapacitante(condObj.id) : false;
+
+    // Resolve level-specific data for progressive conditions
+    const effectiveCond = useMemo(() => {
+        if (hasLevels && typeof value === 'number' && value >= 1 && condObj?.niveisDetalhes) {
+            return getCondicaoParaNivel(condObj.id || condKey, value) || condObj;
+        }
+        return condObj;
+    }, [condObj, condKey, value, hasLevels]);
+
+    const effectiveDano = effectiveCond?.danoRecorrente && effectiveCond.danoRecorrente.valor;
+    const levelLabel = hasLevels && effectiveCond?.nomeNivel ? ` — ${effectiveCond.nomeNivel}` : '';
 
     return (
         <Paper
@@ -160,7 +206,7 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
             {isAuto && (
                 <Chip label="AUTO" size="small" sx={{
                     position: 'absolute', top: -8, right: -8,
-                    backgroundColor: '#40150A', color: 'white',
+                    backgroundColor: 'var(--footer-bg)', color: 'white',
                     fontSize: '9px', height: '16px', fontWeight: 'bold',
                 }} />
             )}
@@ -179,10 +225,11 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1 }}>
                     <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px' }}>
                         {isAuto && '🔒 '}{condKey}
-                        {typeof value === 'number' && value > 1 ? ` (${value})` : ''}
+                        {hasLevels && typeof value === 'number' ? ` (${value}/${condObj.niveis})` : ''}
+                        {levelLabel}
                     </Typography>
-                    {hasDano && (
-                        <Tooltip title={`Dano: ${condObj.danoRecorrente.valor} ${condObj.danoRecorrente.tipo}`} arrow>
+                    {effectiveDano && (
+                        <Tooltip title={`Dano: ${effectiveCond.danoRecorrente.valor} ${effectiveCond.danoRecorrente.tipo}`} arrow>
                             <LocalFireDepartmentIcon sx={{ fontSize: 14, opacity: 0.8 }} />
                         </Tooltip>
                     )}
@@ -206,28 +253,44 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
             </Box>
 
             {/* Penalidades resumidas em uma linha */}
-            {condObj?.penalidades && (
+            {effectiveCond?.penalidades && (
                 <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5, flexWrap: 'wrap' }}>
-                    {condObj.penalidades.defesa && (
-                        <Chip label={`Def ${condObj.penalidades.defesa}`} size="small"
+                    {effectiveCond.penalidades.defesa && (
+                        <Chip label={`Def ${effectiveCond.penalidades.defesa}`} size="small"
                             sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }} />
                     )}
-                    {condObj.penalidades.ataques && (
-                        <Chip label={`Atq ${condObj.penalidades.ataques}`} size="small"
+                    {effectiveCond.penalidades.ataques && (
+                        <Chip label={`Atq ${effectiveCond.penalidades.ataques}`} size="small"
                             sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }} />
                     )}
-                    {condObj.penalidades.velocidade && (
-                        <Chip label={`Vel ${condObj.penalidades.velocidade}`} size="small"
+                    {effectiveCond.penalidades.velocidade && (
+                        <Chip label={`Vel ${effectiveCond.penalidades.velocidade}`} size="small"
                             sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }} />
                     )}
-                    {condObj.penalidades.testes && (
-                        <Chip label={`Tes ${condObj.penalidades.testes}`} size="small"
+                    {effectiveCond.penalidades.testes && (
+                        <Chip label={`Tes ${effectiveCond.penalidades.testes}`} size="small"
                             sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }} />
                     )}
-                    {condObj.penalidades.percepcao && (
-                        <Chip label={`Per ${condObj.penalidades.percepcao}`} size="small"
+                    {effectiveCond.penalidades.percepcao && (
+                        <Chip label={`Per ${effectiveCond.penalidades.percepcao}`} size="small"
                             sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }} />
                     )}
+                </Box>
+            )}
+
+            {/* Ações reduzidas (Congelando) */}
+            {effectiveCond?.acoesReduzidas > 0 && (
+                <Box sx={{ mt: 0.5 }}>
+                    <Chip label={`-${effectiveCond.acoesReduzidas} ação(ões)/turno`} size="small"
+                        sx={{ height: '16px', fontSize: '10px', backgroundColor: 'rgba(255,23,68,0.5)', color: 'white' }} />
+                </Box>
+            )}
+
+            {/* Condição aplicada (Congelando ≥9: Atordoado, etc.) */}
+            {effectiveCond?.condicaoAplicada && (
+                <Box sx={{ mt: 0.5 }}>
+                    <Chip label={`⚠ ${effectiveCond.condicaoAplicada}`} size="small"
+                        sx={{ height: '18px', fontSize: '10px', backgroundColor: 'rgba(255,23,68,0.7)', color: 'white', fontWeight: 'bold' }} />
                 </Box>
             )}
 
@@ -235,7 +298,7 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
             <Collapse in={expanded} timeout="auto">
                 <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid rgba(255,255,255,0.3)' }}>
                     <Typography variant="body2" sx={{ fontSize: '12px', opacity: 0.9 }}>
-                        {condObj?.descricao || 'Sem descrição disponível.'}
+                        {effectiveCond?.descricao || condObj?.descricao || 'Sem descrição disponível.'}
                     </Typography>
 
                     {isAuto && (
@@ -244,10 +307,10 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
                         </Typography>
                     )}
 
-                    {hasDano && (
-                        <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: '#FFD54F', fontWeight: 'bold' }}>
-                            🔥 Dano Recorrente: {condObj.danoRecorrente.valor} ({condObj.danoRecorrente.tipo})
-                            {condObj.danoRecorrente.momento === 'inicioTurno' ? ' no início do turno' : ' no fim do turno'}
+                    {effectiveDano && (
+                        <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: 'var(--text-primary)', fontWeight: 'bold' }}>
+                            🔥 Dano Recorrente: {effectiveCond.danoRecorrente.valor} ({effectiveCond.danoRecorrente.tipo})
+                            {effectiveCond.danoRecorrente.momento === 'inicioTurno' ? ' no início do turno' : ' no fim do turno'}
                         </Typography>
                     )}
 
@@ -258,17 +321,17 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
                     )}
 
                     {/* Flags ativas */}
-                    {condObj?.flags && Object.entries(condObj.flags).some(([, v]) => v) && (
+                    {effectiveCond?.flags && Object.entries(effectiveCond.flags).some(([, v]) => v) && (
                         <Box sx={{ mt: 0.5, display: 'flex', flexWrap: 'wrap', gap: 0.3 }}>
-                            {condObj.flags.semAcoes && <Chip label="Sem Ações" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.6)', color: 'white' }} />}
-                            {condObj.flags.semReacoes && <Chip label="Sem Reações" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.4)', color: 'white' }} />}
-                            {condObj.flags.semMovimento && <Chip label="Sem Movimento" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.4)', color: 'white' }} />}
-                            {condObj.flags.desvantagemAtaques && <Chip label="Desv. Ataques" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,152,0,0.5)', color: 'white' }} />}
-                            {condObj.flags.vantagemContraAlvo && <Chip label="Vant. Contra" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,152,0,0.5)', color: 'white' }} />}
+                            {effectiveCond.flags.semAcoes && <Chip label="Sem Ações" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.6)', color: 'white' }} />}
+                            {effectiveCond.flags.semReacoes && <Chip label="Sem Reações" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.4)', color: 'white' }} />}
+                            {effectiveCond.flags.semMovimento && <Chip label="Sem Movimento" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.4)', color: 'white' }} />}
+                            {effectiveCond.flags.desvantagemAtaques && <Chip label="Desv. Ataques" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,152,0,0.5)', color: 'white' }} />}
+                            {effectiveCond.flags.vantagemContraAlvo && <Chip label="Vant. Contra" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,152,0,0.5)', color: 'white' }} />}
                         </Box>
                     )}
 
-                    {/* Controle de nível para condições empilháveis */}
+                    {/* Controle de nível para condições com níveis */}
                     {hasLevels && !isAuto && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
                             <Typography variant="caption" sx={{ opacity: 0.8 }}>Nível:</Typography>
@@ -283,8 +346,25 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.4)' },
                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.7)' },
                                 }}
-                                inputProps={{ min: 0, max: 20 }}
+                                inputProps={{ min: 0, max: condObj?.niveis || 20 }}
                             />
+                            <Typography variant="caption" sx={{ opacity: 0.6 }}>/ {condObj?.niveis || '?'}</Typography>
+
+                            {/* Barra de progressão visual */}
+                            <Box sx={{ flex: 1, ml: 1 }}>
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={((typeof value === 'number' ? value : 1) / (condObj?.niveis || 1)) * 100}
+                                    sx={{
+                                        height: 6, borderRadius: 3,
+                                        backgroundColor: 'rgba(255,255,255,0.2)',
+                                        '& .MuiLinearProgress-bar': {
+                                            backgroundColor: ((typeof value === 'number' ? value : 1) / (condObj?.niveis || 1)) > 0.7 ? '#FF1744' : '#FFD54F',
+                                            borderRadius: 3,
+                                        },
+                                    }}
+                                />
+                            </Box>
                         </Box>
                     )}
                 </Box>
@@ -301,14 +381,19 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
     const [filtro, setFiltro] = useState('');
 
     const categorias = useMemo(() => {
-        const cats = Object.entries(categoriasCondicoes).map(([catNome, catCondicoes]) => ({
-            nome: catNome,
-            icon: CATEGORIA_ICONS[catNome] || '📋',
-            cor: CORES_CONDICOES[catNome] || '#756A34',
-            condicoes: catCondicoes.filter(c =>
-                !filtro || c.toLowerCase().includes(filtro.toLowerCase())
-            ),
-        }));
+        const cats = categoriasCondicoes.map((cat) => {
+            const condsDoGrupo = getCondicoesPorCategoria(cat.id);
+            const nomes = condsDoGrupo.map(c => c.nome).filter(n =>
+                !filtro || n.toLowerCase().includes(filtro.toLowerCase())
+            );
+            return {
+                nome: cat.nome,
+                id: cat.id,
+                icon: CATEGORIA_ICONS[cat.id] || '📋',
+                cor: cat.cor || CORES_CONDICOES[cat.id] || '#756A34',
+                condicoes: nomes,
+            };
+        });
         return cats.filter(c => c.condicoes.length > 0);
     }, [filtro]);
 
@@ -321,7 +406,7 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                 onChange={(e) => setFiltro(e.target.value)}
                 sx={{
                     mb: 2,
-                    '& .MuiOutlinedInput-root': { borderRadius: 2, backgroundColor: '#f5f3eb' },
+                    '& .MuiOutlinedInput-root': { borderRadius: 2, backgroundColor: 'var(--surface-default)' },
                 }}
             />
 
@@ -334,11 +419,11 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                                 p: 1.5,
                                 cursor: 'pointer',
                                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                backgroundColor: isOpen ? cat.cor : '#f5f3eb',
-                                color: isOpen ? 'white' : '#40150A',
+                                backgroundColor: isOpen ? cat.cor : 'var(--surface-default)',
+                                color: isOpen ? 'white' : 'var(--text-primary)',
                                 borderRadius: 1.5,
                                 transition: 'all 0.2s',
-                                '&:hover': { backgroundColor: isOpen ? cat.cor : '#ebe8dd', transform: 'scale(1.005)' },
+                                '&:hover': { backgroundColor: isOpen ? cat.cor : 'var(--surface-default)', transform: 'scale(1.005)' },
                             }}
                             onClick={() => setCategoriaAberta(isOpen ? null : cat.nome)}
                         >
@@ -354,18 +439,24 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                                     const condObj = condicoesDisponiveis[condNome];
                                     if (!condObj) return null;
                                     const isActive = condicoesAtivas.hasOwnProperty(condNome);
-                                    const hasLevels = condObj.stackRegra === 'acumula';
+                                    const hasLevels = condObj.niveis > 0;
+                                    const currentLevel = typeof condicoesAtivas[condNome] === 'number' ? condicoesAtivas[condNome] : 0;
+
+                                    // Get level-specific data for active progressive conditions
+                                    const displayCond = (hasLevels && isActive && currentLevel >= 1 && condObj.niveisDetalhes)
+                                        ? (getCondicaoParaNivel(condObj.id, currentLevel) || condObj)
+                                        : condObj;
 
                                     return (
                                         <Grid item xs={12} sm={6} md={4} key={condNome}>
                                             <Paper
                                                 sx={{
                                                     p: 1.5,
-                                                    backgroundColor: isActive ? condObj.cor : 'white',
-                                                    color: isActive ? 'white' : '#40150A',
+                                                    backgroundColor: isActive ? condObj.cor : 'var(--surface-default)',
+                                                    color: isActive ? 'white' : 'var(--text-primary)',
                                                     borderRadius: 2,
                                                     border: `2px solid ${isActive ? condObj.cor : '#756A3444'}`,
-                                                    cursor: 'pointer',
+                                                    cursor: hasLevels ? 'default' : 'pointer',
                                                     transition: 'all 0.2s',
                                                     '&:hover': {
                                                         borderColor: condObj.cor,
@@ -379,15 +470,20 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                                                     <Box sx={{ flex: 1 }}>
                                                         <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px' }}>
                                                             {isActive ? '✓ ' : ''}{condNome}
+                                                            {hasLevels && isActive ? ` (${currentLevel}/${condObj.niveis})` : ''}
+                                                            {hasLevels && isActive && displayCond.nomeNivel ? ` — ${displayCond.nomeNivel}` : ''}
                                                         </Typography>
                                                         <Typography variant="body2" sx={{ fontSize: '11px', opacity: 0.8, mt: 0.5 }}>
-                                                            {condObj.descricao?.substring(0, 80)}{condObj.descricao?.length > 80 ? '...' : ''}
+                                                            {hasLevels && isActive && displayCond.descricao
+                                                                ? displayCond.descricao
+                                                                : (condObj.descricao?.substring(0, 80) + (condObj.descricao?.length > 80 ? '...' : ''))
+                                                            }
                                                         </Typography>
                                                     </Box>
                                                     {hasLevels && (
                                                         <TextField
                                                             type="number" size="small"
-                                                            value={condicoesAtivas[condNome] || ''}
+                                                            value={currentLevel || ''}
                                                             onChange={(e) => onSetLevel(condNome, parseInt(e.target.value) || 0)}
                                                             onClick={(e) => e.stopPropagation()}
                                                             sx={{
@@ -397,15 +493,34 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                                                                     color: isActive ? 'white' : 'inherit',
                                                                 },
                                                             }}
-                                                            inputProps={{ min: 0, max: 20 }}
+                                                            inputProps={{ min: 0, max: condObj.niveis }}
                                                             placeholder="Nv"
                                                         />
                                                     )}
                                                 </Box>
-                                                {/* Mini-info de penalidades */}
-                                                {condObj.penalidades && (
+
+                                                {/* Progress bar for progressive conditions */}
+                                                {hasLevels && isActive && currentLevel > 0 && (
+                                                    <Box sx={{ mt: 0.8 }}>
+                                                        <LinearProgress
+                                                            variant="determinate"
+                                                            value={(currentLevel / condObj.niveis) * 100}
+                                                            sx={{
+                                                                height: 4, borderRadius: 2,
+                                                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                                                '& .MuiLinearProgress-bar': {
+                                                                    backgroundColor: (currentLevel / condObj.niveis) > 0.7 ? '#FF1744' : '#FFD54F',
+                                                                    borderRadius: 2,
+                                                                },
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                )}
+
+                                                {/* Mini-info de penalidades (use level-specific for active progressive) */}
+                                                {displayCond.penalidades && (
                                                     <Box sx={{ display: 'flex', gap: 0.3, mt: 0.5, flexWrap: 'wrap' }}>
-                                                        {Object.entries(condObj.penalidades).filter(([, v]) => v).map(([k, v]) => (
+                                                        {Object.entries(displayCond.penalidades).filter(([, v]) => v).map(([k, v]) => (
                                                             <Chip key={k} label={`${k.substring(0, 3)} ${v > 0 ? '+' : ''}${v}`}
                                                                 size="small"
                                                                 sx={{
@@ -416,6 +531,20 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                                                         ))}
                                                     </Box>
                                                 )}
+
+                                                {/* Dano recorrente info for active progressive */}
+                                                {displayCond.danoRecorrente?.valor && (
+                                                    <Typography variant="caption" sx={{ display: 'block', mt: 0.3, opacity: 0.8, fontSize: '10px', color: isActive ? '#FFD54F' : '#E65100' }}>
+                                                        🔥 {displayCond.danoRecorrente.valor} {displayCond.danoRecorrente.tipo}
+                                                    </Typography>
+                                                )}
+
+                                                {/* Applied condition warning (Congelando ≥9) */}
+                                                {displayCond.condicaoAplicada && (
+                                                    <Chip label={`⚠ ${displayCond.condicaoAplicada}`} size="small"
+                                                        sx={{ mt: 0.5, height: '16px', fontSize: '9px', backgroundColor: 'rgba(255,23,68,0.7)', color: 'white', fontWeight: 'bold' }} />
+                                                )}
+
                                                 {condObj.duracao && (
                                                     <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.6, fontSize: '10px' }}>
                                                         ⏱️ {condObj.duracao}
@@ -444,6 +573,7 @@ const ConditionsPanel = ({
     sectionStyle,
     cardHeaderStyle,
     saveConditions,
+    condicoesModificadores,
 }) => {
     const [showPicker, setShowPicker] = useState(false);
     const [selectedInfo, setSelectedInfo] = useState(null);
@@ -452,13 +582,26 @@ const ConditionsPanel = ({
     const condicoesBase = character?.condicoes || {};
 
     // ── Condições automáticas (ex: Cego por escuridão) ──
-    const condicoesAutomaticas = useMemo(() => {
+    const condicoesAmbientais = useMemo(() => {
         const auto = {};
         if (nivelLuz === 'escuridao' && !character?.visao_no_escuro) {
             auto['Cego'] = 'escuridão';
         }
         return auto;
     }, [nivelLuz, character?.visao_no_escuro]);
+
+    // ── Condições implícitas (ex: Escondido→Obscurecido, Paralisado→Atordoado) ──
+    const condicoesImplicitasMap = useMemo(() => {
+        // Merge base + ambientais para resolver cadeias completas
+        const todasManuais = { ...condicoesBase, ...condicoesAmbientais };
+        return resolverCondicoesImplicitas(todasManuais);
+    }, [condicoesBase, condicoesAmbientais]);
+
+    // ── Todas as automáticas (ambientais + implícitas) ──
+    const condicoesAutomaticas = useMemo(() => ({
+        ...condicoesAmbientais,
+        ...condicoesImplicitasMap,
+    }), [condicoesAmbientais, condicoesImplicitasMap]);
 
     // ── Condições combinadas (base + auto) ──
     const condicoes = useMemo(() => ({
@@ -496,7 +639,10 @@ const ConditionsPanel = ({
         if (level === 0 || level === '') {
             delete newCondicoes[conditionName];
         } else {
-            newCondicoes[conditionName] = level;
+            // Enforce max level
+            const condObj = condicoesDisponiveis[conditionName];
+            const maxLevel = condObj?.niveis || 20;
+            newCondicoes[conditionName] = Math.min(Math.max(1, level), maxLevel);
         }
         saveConditions(newCondicoes);
     }, [condicoesBase, condicoesAutomaticas, saveConditions]);
@@ -524,10 +670,19 @@ const ConditionsPanel = ({
         return contagem;
     }, [condicoes]);
 
-    // ── Condições com dano recorrente ativas ──
+    // ── Condições com dano recorrente ativas (level-aware) ──
     const danoRecorrenteAtivo = useMemo(() => {
         return Object.entries(condicoes)
-            .map(([key]) => condicoesDisponiveis[key])
+            .map(([key, value]) => {
+                const condObj = condicoesDisponiveis[key];
+                if (!condObj) return null;
+                // For progressive conditions, get the level-specific damage
+                if (condObj.niveisDetalhes && typeof value === 'number' && value >= 1) {
+                    const lvlCond = getCondicaoParaNivel(condObj.id, value);
+                    return lvlCond || condObj;
+                }
+                return condObj;
+            })
             .filter(c => c?.danoRecorrente?.valor);
     }, [condicoes]);
 
@@ -542,16 +697,17 @@ const ConditionsPanel = ({
                         ? 'linear-gradient(135deg, #931C4A 0%, #5B1F0F 100%)'
                         : cardHeaderStyle.background,
                 }}
+                titleTypographyProps={{ component: 'div' }}
                 title={
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                        <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography className="esteban" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             ⚠️ Condições Ativas
                             <Badge
                                 badgeContent={Object.keys(condicoes).length}
                                 color="error"
                                 sx={{ ml: 1 }}
                             >
-                                <Box sx={{ width: 4 }} />
+                                <Box component="span" sx={{ width: 4 }} />
                             </Badge>
                             {Object.keys(condicoesAutomaticas).length > 0 && (
                                 <Chip
@@ -590,7 +746,7 @@ const ConditionsPanel = ({
             />
             <CardContent>
                 {/* Resumo de Penalidades */}
-                {hasCondicoes && <PenaltySummary condicoesAtivas={condicoesEnriquecidas} />}
+                {hasCondicoes && <PenaltySummary condicoesAtivas={condicoesEnriquecidas} modificadoresAutoritativos={condicoesModificadores} />}
 
                 {/* Alerta de dano recorrente */}
                 {danoRecorrenteAtivo.length > 0 && (
@@ -607,7 +763,7 @@ const ConditionsPanel = ({
                             <LocalFireDepartmentIcon sx={{ fontSize: 16 }} /> Dano Recorrente Ativo
                         </Typography>
                         {danoRecorrenteAtivo.map(c => (
-                            <Typography key={c.id} variant="caption" sx={{ display: 'block', color: '#BF360C' }}>
+                            <Typography key={c.id} variant="caption" sx={{ display: 'block', color: 'var(--text-primary)' }}>
                                 • {c.descricao?.split('.')[0] || c.id}: <strong>{c.danoRecorrente.valor} {c.danoRecorrente.tipo}</strong>
                                 {' '}({c.danoRecorrente.momento === 'inicioTurno' ? 'início do turno' : 'fim do turno'})
                             </Typography>
@@ -641,7 +797,7 @@ const ConditionsPanel = ({
                         </Grid>
                     </Box>
                 ) : (
-                    <Typography className="esteban" sx={{ textAlign: 'center', color: '#454E30', mb: showPicker ? 2 : 0 }}>
+                    <Typography className="esteban" sx={{ textAlign: 'center', color: 'var(--text-primary)', mb: showPicker ? 2 : 0 }}>
                         ✓ Nenhuma condição ativa
                     </Typography>
                 )}
@@ -650,10 +806,10 @@ const ConditionsPanel = ({
                 {showPicker && (
                     <Box sx={{ mt: 2 }}>
                         <Divider sx={{ mb: 2 }} />
-                        <Typography className="esteban" variant="subtitle1" sx={{ fontWeight: 'bold', color: '#40150A', mb: 1 }}>
+                        <Typography className="esteban" variant="subtitle1" sx={{ fontWeight: 'bold', color: 'var(--text-primary)', mb: 1 }}>
                             📋 Adicionar/Remover Condições
                         </Typography>
-                        <Typography className="esteban" variant="body2" sx={{ color: '#5B1F0F', mb: 2, fontStyle: 'italic' }}>
+                        <Typography className="esteban" variant="body2" sx={{ color: 'var(--text-primary)', mb: 2, fontStyle: 'italic' }}>
                             💡 Apenas a maior penalidade ou bônus de acerto/defesa é aplicada. Outros efeitos são cumulativos.
                         </Typography>
                         <ConditionPicker

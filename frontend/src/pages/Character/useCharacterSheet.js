@@ -22,7 +22,9 @@ import {
     calcularBonusDefesaAgilidade,
     calcularDefesaTotal,
     calcularVelocidadeMovimento,
+    calcularModificadoresCondicoes,
 } from '../../data/constants';
+import { calcularPenalidadesForcaArmadura } from '../../data/constants/equipamentos';
 
 /* Dados constantes para seletor de dados */
 export const DADOS_DISPONIVEIS = [
@@ -62,7 +64,6 @@ export default function useCharacterSheet() {
     /* ── Modais ─────────────────────────────────────── */
     const [dinheiroModalOpen, setDinheiroModalOpen]     = useState(false);
     const [descansoModalOpen, setDescansoModalOpen]     = useState(false);
-    const [combatRulesModalOpen, setCombatRulesModalOpen] = useState(false);
 
     /* ── Equipamento ────────────────────────────────── */
     const [armasEquipadas, setArmasEquipadas]       = useState([null, null]);
@@ -229,8 +230,24 @@ export default function useCharacterSheet() {
         }, 60);
     }, [diceRolling, dadoSelecionado, quantidadeDados, diceHistory, salvarHistoricoRolagens]);
 
-    /* ═══════════════════════════════════════════════════
-       CALLBACKS — Helpers de combate
+    /* ═══════════════════════════════════════════════════       MEMO — Modificadores de Condições para Rolamentos
+       ═══════════════════════════════════════════════════════ */
+    const condicoesModificadores = useMemo(() => {
+        if (!character) return {
+            modificadores: { defesa: 0, ataques: 0, testes: 0, percepcao: 0 },
+            velocidade: { reducao: 0, metade: false, zero: false },
+            flags: {}, vantagensAtaque: 0, desvantagensAtaque: 0, resumoTexto: [],
+        };
+        const condicoesBase = character.condicoes || {};
+        // Adicionar condições ambientais (ex: Cego por escuridão)
+        const merged = { ...condicoesBase };
+        if (nivelLuz === 'escuridao' && !character.visao_no_escuro) {
+            merged['Cego'] = true;
+        }
+        return calcularModificadoresCondicoes(merged);
+    }, [character, nivelLuz]);
+
+    /* ═══════════════════════════════════════════════════════       CALLBACKS — Helpers de combate
        ═══════════════════════════════════════════════════ */
     const getPenalidadeLuzAtual = useCallback(() => {
         const temVisaoNoEscuro = character?.visao_no_escuro || false;
@@ -294,22 +311,57 @@ export default function useCharacterSheet() {
         if (habilidadesAfetadasLuz.some(h => h.toLowerCase().replace(/\s+/g, '_') === nomeNormalizado || h === skillName)) {
             bonusTotal -= luzInfo.penalidade;
         }
-        if (luzInfo.condicaoCego) {
-            rollD20ComVantagem(bonusTotal, `Teste de ${skillName} (Cego)`, vantagens, desvantagens + 1);
-        } else {
-            rollD20ComVantagem(bonusTotal, `Teste de ${skillName}${luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : ''}`, vantagens, desvantagens);
+
+        // Aplicar penalidades/bônus de condições
+        const modCond = condicoesModificadores.modificadores;
+        bonusTotal += modCond.testes;
+        // Percepção recebe penalidade adicional de percepcao (Cego: -5, Surdo: -5)
+        const isPercepcao = nomeNormalizado === 'percepcao' || nomeNormalizado === 'percepção'
+            || skillName === 'Percepção';
+        if (isPercepcao && modCond.percepcao !== 0) {
+            bonusTotal += modCond.percepcao;
         }
-    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem]);
+
+        // Construir label com info de condições
+        const condParts = [];
+        if (modCond.testes !== 0) condParts.push(`${modCond.testes > 0 ? '+' : ''}${modCond.testes} cond`);
+        if (isPercepcao && modCond.percepcao !== 0) condParts.push(`${modCond.percepcao > 0 ? '+' : ''}${modCond.percepcao} per`);
+        const condLabel = condParts.length > 0 ? ` [${condParts.join(', ')}]` : '';
+        const luzLabel = luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : '';
+
+        if (luzInfo.condicaoCego) {
+            rollD20ComVantagem(bonusTotal, `Teste de ${skillName} (Cego)${condLabel}`, vantagens, desvantagens + 1);
+        } else {
+            rollD20ComVantagem(bonusTotal, `Teste de ${skillName}${luzLabel}${condLabel}`, vantagens, desvantagens);
+        }
+    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem, condicoesModificadores]);
 
     const rollAttackWithAdvantage = useCallback((attackBonus, attackType) => {
         const luzInfo = getPenalidadeLuzAtual();
         let bonusTotal = attackBonus - luzInfo.penalidade;
+
+        // Aplicar penalidades/bônus de condições nos ataques
+        bonusTotal += condicoesModificadores.modificadores.ataques;
+
+        // Vantagem/Desvantagem de condições (ex: Invisível→vantagem, Cego→desvantagem)
+        let vantagensFinal = vantagens + condicoesModificadores.vantagensAtaque;
+        let desvantagensFinal = desvantagens + condicoesModificadores.desvantagensAtaque;
+
+        // Construir label com info de condições
+        const condParts = [];
+        const modAtq = condicoesModificadores.modificadores.ataques;
+        if (modAtq !== 0) condParts.push(`${modAtq > 0 ? '+' : ''}${modAtq} cond`);
+        if (condicoesModificadores.vantagensAtaque > 0) condParts.push('vant. cond');
+        if (condicoesModificadores.desvantagensAtaque > 0) condParts.push('desv. cond');
+        const condLabel = condParts.length > 0 ? ` [${condParts.join(', ')}]` : '';
+        const luzLabel = luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : '';
+
         if (luzInfo.condicaoCego) {
-            rollD20ComVantagem(bonusTotal, `Ataque ${attackType} (Cego)`, vantagens, desvantagens + 1);
+            rollD20ComVantagem(bonusTotal, `Ataque ${attackType} (Cego)${condLabel}`, vantagensFinal, desvantagensFinal + 1);
         } else {
-            rollD20ComVantagem(bonusTotal, `Ataque ${attackType}${luzInfo.penalidade > 0 ? ` (-${luzInfo.penalidade} luz)` : ''}`, vantagens, desvantagens);
+            rollD20ComVantagem(bonusTotal, `Ataque ${attackType}${luzLabel}${condLabel}`, vantagensFinal, desvantagensFinal);
         }
-    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem]);
+    }, [vantagens, desvantagens, getPenalidadeLuzAtual, rollD20ComVantagem, condicoesModificadores]);
 
     /* ═══════════════════════════════════════════════════
        CALLBACKS — Condições & Equipar/Desequipar
@@ -345,6 +397,10 @@ export default function useCharacterSheet() {
             const keys = path.split('.');
             let obj = newChar;
             for (let i = 0; i < keys.length - 1; i++) { obj[keys[i]] = obj[keys[i]] ? { ...obj[keys[i]] } : {}; obj = obj[keys[i]]; }
+            /* Proficiências, habilidades e pontos de regalia nunca devem ficar abaixo de 0 */
+            if ((keys[0] === 'proficiencias' || keys[0] === 'habilidades' || keys[0] === 'pontos_de_regalia') && typeof value === 'number') {
+                value = Math.max(0, value);
+            }
             obj[keys[keys.length - 1]] = value;
             return newChar;
         });
@@ -415,9 +471,16 @@ export default function useCharacterSheet() {
         if (JSON.stringify(character) === JSON.stringify(originalCharacter)) {
             setEditMode(false); setSnackbar({ open: true, message: 'Nenhuma alteração detectada', severity: 'info' }); return;
         }
+        // Sanitizar habilidades — remover chaves vazias
+        const charToSave = { ...character };
+        if (charToSave.habilidades) {
+            charToSave.habilidades = Object.fromEntries(
+                Object.entries(charToSave.habilidades).filter(([k]) => k && k.trim() !== '')
+            );
+        }
         try {
             const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(character)
+                method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(charToSave)
             });
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
@@ -449,7 +512,7 @@ export default function useCharacterSheet() {
        ═══════════════════════════════════════════════════ */
     const sectionStyle = useMemo(() => ({
         borderRight: '2px solid #756A34', borderLeft: '2px solid #756A34',
-        borderRadius: '12px', backgroundColor: '#fcfcfcee', mb: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        borderRadius: '12px', backgroundColor: 'var(--surface-paper)', mb: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
     }), []);
 
     const cardHeaderStyle = useMemo(() => ({
@@ -495,30 +558,58 @@ export default function useCharacterSheet() {
                 : true;
 
         const defesaInfo = calcularDefesaTotal({ agilidade, defesaArmadura, defesaEscudo, armaduraPesada, temProficienciaEscudo });
-        const defesaTotal = defesaInfo.defesaTotal;
+        let defesaTotal = defesaInfo.defesaTotal;
         const bonusDefAgi = calcularBonusDefesaAgilidade(agilidade);
         const velocidadeInfo = calcularVelocidadeMovimento(especieBaseVelocidade, agilidade, armaduraPesada);
-        const velocidadeTotal = velocidadeInfo.velocidadeTotal;
+        let velocidadeTotal = velocidadeInfo.velocidadeTotal;
         const iniciativa = calcularBonusIniciativa(agilidade, percepcao);
+
+        // Penalidade extra de forca abaixo do requisito da armadura
+        const penalidadesForca = calcularPenalidadesForcaArmadura(forca, armaduraEquipada);
+        if (!penalidadesForca.atendido) {
+            velocidadeTotal = Math.max(0, velocidadeTotal + penalidadesForca.penalidadeVelocidadeExtra);
+        }
+
+        // Aplicar modificadores de condições à defesa e velocidade
+        if (condicoesModificadores) {
+            defesaTotal += condicoesModificadores.modificadores.defesa;
+            if (condicoesModificadores.velocidade.zero) {
+                velocidadeTotal = 0;
+            } else {
+                if (condicoesModificadores.velocidade.metade) {
+                    velocidadeTotal = Math.floor(velocidadeTotal / 2);
+                }
+                if (condicoesModificadores.velocidade.reducao < 0) {
+                    velocidadeTotal = Math.max(0, velocidadeTotal + condicoesModificadores.velocidade.reducao);
+                }
+            }
+        }
         const tamanho = character.tamanho || 'medio';
-        const cargaMax = calcularCapacidadeCarga(forca, tamanho);
+        const cargaMax = calcularCapacidadeCarga(tamanho, forca);
         const cargaAtual = calcularCargaAtual(character.equipamentos || []);
         const statusCarga = verificarStatusCarga(cargaAtual, cargaMax);
         const curaKit = calcularCuraKitMedico(medicina);
         const respiracao = calcularTempoRespiracao(fortitude);
 
+        // Ler valor atual: prioriza campo direto, fallback para recursos.*, depois max
+        const recursos = character.recursos || {};
+        const pvAtual = character.pv_atual ?? recursos.pv_atual ?? pvMax;
+        const peAtual = character.pe_atual ?? recursos.estamina_atual ?? recursos.pe_atual ?? peMax;
+        const pmAtual = character.pm_atual ?? recursos.pm_atual ?? pmMax;
+
         return {
             pvMax, peMax, pmMax,
-            pvAtual: character.pv_atual !== undefined ? character.pv_atual : pvMax,
-            peAtual: character.pe_atual !== undefined ? character.pe_atual : peMax,
-            pmAtual: character.pm_atual !== undefined ? character.pm_atual : pmMax,
+            pvAtual, peAtual, pmAtual,
+            // Fontes de cálculo para breakdown
+            especieBaseVida, regaliaClasseVida, regaliaClasseEstamina, regaliaClasseMagia,
             defesaTotal, bonusDefAgi, defesaArmadura, defesaEscudo, armaduraPesada,
             defesaComponentes: defesaInfo.componentes, defesaFormula: defesaInfo.formula,
             velocidadeTotal, velocidadeInfo, iniciativa,
             cargaMax, cargaAtual, statusCarga, curaKit, respiracao,
-            fortitude, agilidade, percepcao, arcanismo, atletismo, forca, medicina
+            fortitude, agilidade, percepcao, arcanismo, atletismo, forca, medicina,
+            penalidadesForca
         };
-    }, [character, armaduraEquipada, escudoEquipado]);
+    }, [character, armaduraEquipada, escudoEquipado, condicoesModificadores]);
 
     /* ═══════════════════════════════════════════════════
        CALLBACKS — Descanso (dependem de statsDerivados)
@@ -586,7 +677,6 @@ export default function useCharacterSheet() {
         // Modais
         dinheiroModalOpen, setDinheiroModalOpen,
         descansoModalOpen, setDescansoModalOpen,
-        combatRulesModalOpen, setCombatRulesModalOpen,
         // Equipamento
         armasEquipadas, armaduraEquipada, escudoEquipado,
         equiparArma, desequiparArma, equiparArmadura, desequiparArmadura,
@@ -609,6 +699,8 @@ export default function useCharacterSheet() {
         getPenalidadeLuzAtual,
         // Estilos & Derivados
         sectionStyle, cardHeaderStyle, statsDerivados,
+        // Condições — modificadores aplicados aos rolamentos
+        condicoesModificadores,
         // Constantes
         DADOS_DISPONIVEIS,
     };

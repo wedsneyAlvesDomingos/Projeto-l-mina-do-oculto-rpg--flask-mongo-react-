@@ -105,10 +105,13 @@ export {
     // Funções auxiliares
     getCondicao,
     getCondicoesPorCategoria,
+    getCondicaoParaNivel,
     getCondicaoResumo,
     getCondicoesComFlag,
     getCondicoesComDanoRecorrente,
     isCondicaoIncapacitante,
+    resolverCondicoesImplicitas,
+    calcularModificadoresCondicoes,
     // Funções de engine — Fase 2 (CON-002/003)
     aplicarCondicao,
     removerCondicao,

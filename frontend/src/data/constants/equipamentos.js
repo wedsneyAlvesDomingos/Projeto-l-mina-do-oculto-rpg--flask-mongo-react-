@@ -1915,6 +1915,28 @@ export const calcularDefesaComEquipamento = (agilidade, armaduraEquipada, escudo
 };
 
 /**
+ * Calcula penalidades por nao atingir o requisito de Forca de uma armadura pesada.
+ * Ref: LDO 0.5 — armaduras pesadas requerem minimo de forca
+ *
+ * @param {number} forcaPersonagem
+ * @param {Object|null} armadura
+ * @returns {{ atendido, requisitoForca, pontosFaltando, penalidadeVelocidadeExtra, penalidadeAcerto, duasAcoesMover }}
+ */
+export const calcularPenalidadesForcaArmadura = (forcaPersonagem, armadura) => {
+    const isPesada = armadura?.categoriaProf === 'pesada' || armadura?.tipo === 'pesada';
+    const requisitoForca = isPesada ? (armadura?.forca ?? 0) : 0;
+    const pontosFaltando = Math.max(0, requisitoForca - (forcaPersonagem ?? 0));
+    return {
+        atendido: pontosFaltando === 0,
+        requisitoForca,
+        pontosFaltando,
+        penalidadeVelocidadeExtra: -(pontosFaltando * 1.5),
+        penalidadeAcerto: -pontosFaltando,
+        duasAcoesMover: pontosFaltando > 0,
+    };
+};
+
+/**
  * Calcula o dano total de uma arma com modificadores de habilidade.
  *
  * Ref: LDO 0.5, seção Dano

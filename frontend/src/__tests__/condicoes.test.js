@@ -40,14 +40,14 @@ const criarFichaBase = (extras = {}) => ({
 // Dados estruturais
 // ============================================================================
 describe('Dados de condições', () => {
-    test('condicoesDisponiveis é objeto com 32+ condições', () => {
+    test('condicoesDisponiveis é objeto com 28+ condições', () => {
         expect(typeof condicoesDisponiveis).toBe('object');
-        expect(Object.keys(condicoesDisponiveis).length).toBeGreaterThanOrEqual(32);
+        expect(Object.keys(condicoesDisponiveis).length).toBeGreaterThanOrEqual(28);
     });
 
     test('condicoesArray é array', () => {
         expect(Array.isArray(condicoesArray)).toBe(true);
-        expect(condicoesArray.length).toBeGreaterThanOrEqual(32);
+        expect(condicoesArray.length).toBeGreaterThanOrEqual(28);
     });
 
     test('CORES_CONDICOES tem 6 categorias', () => {

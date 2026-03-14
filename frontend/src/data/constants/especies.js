@@ -112,6 +112,13 @@ Assim, os seres humanos em um mundo representam mais do que simples mortais. Ele
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'sobrevivente_deserto', nome: 'Sobrevivente do Deserto', custo: 1, descricao: 'Resiste à condição de cansaço causada pela falta de comida, água ou sono. Recebe apenas um nível de exaustão para cada 3 noites sem dormir ou a cada 2 dias de viagem sem água e recursos.' },
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 2, descricao: 'Tatuagem mágica tribal. Escolha: Falcão (vantagem em Percepção >100m), Touro (vantagem em Atletismo p/ mover objetos pesados), Raposa (vantagem em Enganação p/ fugir), Tartaruga (Buscar Cobertura na mesma ação de correr/andar, com escudo ou cobertura).' },
+        { id: 'pantaneiro', nome: 'Pantaneiro', custo: 1, descricao: 'Pode andar em terrenos difíceis de alagamento ou lama sem penalidade de movimento. Recebe +2 em testes de Natureza sobre mangues e pântanos.' },
+        { id: 'determinacao_humana', nome: 'Determinação Humana', custo: 2, descricao: 'Pode rolar novamente qualquer teste de Habilidade que falhou, usando o novo resultado (2×/dia). Ao sofrer dano letal, pode usar uma ação como reação antes de entrar em À Beira da Morte (1×/dia).' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -195,6 +202,16 @@ Os Elfos, em geral, compartilham uma conexão singular com a magia e o mundo nat
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'marca_de_origem', nome: 'Marca de Origem', custo: 2, descricao: 'Tatuagem mágica de nascença. Escolha: Fênix (3×/vida: ao chegar a 0 PV, fica com 1 PV), Búfalo (vantagem em Atletismo p/ mover objetos pesados), Nove Caudas (+3 em Sedução), Tartaruga Leão (Buscar Cobertura ao atacar com magia/milagre, com escudo).' },
+        { id: 'vida_longa', nome: 'Vida Longa', custo: 1, descricao: 'Requisito: ter mais de 100 anos. Vantagem dupla (3 dados) em Habilidades de Conhecimento sobre assuntos do seu tempo de vida.' },
+        { id: 'armas_exoticas', nome: 'Armas Exóticas', custo: 1, descricao: 'Recebe 2 pontos na proficiência em Armas Exóticas.' },
+        { id: 'anatomia_esguia', nome: 'Anatomia Esguia', custo: 1, descricao: '+3 em testes de Acrobacia para entrar e passar por lugares apertados.' },
+        { id: 'passos_largos', nome: 'Passos Largos', custo: 1, descricao: '+3 metros de velocidade de movimento. Vantagem em testes de Atletismo para saltos.' },
+        { id: 'um_com_a_natureza', nome: 'Um com a Natureza', custo: 1, descricao: 'Sem penalidade de movimento em terrenos difíceis naturais. Vantagem em Atletismo para escalar árvores e paredes rochosas naturais.' },
+        { id: 'passo_mistico', nome: 'Passo Místico', custo: 1, descricao: 'Como ação, teletransporta para espaço desocupado visível em alcance igual à velocidade (3×/dia). Efeito extra por linhagem: Exordial (próximo ataque causa dano = nível), Selvagem (fica invisível até o próximo turno), Lunar (cria cópia ilusória no ponto de origem).' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -296,6 +313,13 @@ Os Anões, como um povo, são conhecidos por sua durabilidade e sua determinaç�
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Topeira (+3 em Percepção p/ vibrações no solo, cava 1,5m/min), Picareta (+3 em Atletismo p/ escalar paredes rochosas), Mula (resistêt ao ser movido contra vontade, 3×/dia), Jabuti (Buscar Cobertura ao Recuar cuidadosamente com escudo).' },
+        { id: 'gloria_a_terra', nome: 'Glória a Terra', custo: 1, descricao: 'Ao realizar um ataque, pode usar a ação Derrubar ao mesmo tempo. 3×/dia, recupera em descanso longo.' },
+        { id: 'resistencia_deslizamentos', nome: 'Resistência a Deslizamentos', custo: 2, descricao: 'Resistência a ataques de propriedade Terra ou Concussivo (escolha 1). Vantagem em Atletismo para mover pedras e objetos pesados.' },
+        { id: 'odio_anao', nome: 'Ódio Anão', custo: 2, descricao: 'Escolhe um oponente (é até 30m) como alvo Odiado: vantagem em acerto e +1d4 de dano contra esse alvo, porém -2 em ataques contra outros. Dura 10 min ou até um dos dois chegar a 0 PV. 1×/dia (descanso longo). +1 uso em nível 10 e 20.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -525,6 +549,14 @@ export const feerico = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Coruja (vantagem em Percepção na escuridão/meia luz), Unicórnio (+4 em Atletismo p/ atravessar obstáculos), Duende da Rocha (+3 em Furtividade p/ fugir de perseguidores), Dragão Féérico (Buscar Cobertura na mesma ação de Performar).' },
+        { id: 'eu_aposto', nome: 'Eu aposto que esse bicho me aguenta', custo: 1, descricao: 'Feérico minúsculo pode montar qualquer besta/monstro pequeno ou maior e receber benefícios de montária. Consegue conversar com a criatura como se falasse a língua dela.' },
+        { id: 'asas', nome: 'Asas pra quem te quero', custo: 2, descricao: 'Desperta asas que brotam das costas. Velocidade de voo igual à velocidade de movimento.' },
+        { id: 'anatomia_feerica', nome: 'Anatomia Féérica', custo: 1, descricao: 'Resistência ao dano arcano. Porém vulnerabilidade a ataques com armas de aço negro.' },
+        { id: 'camaleao_magico', nome: 'Camaleão Mágico', custo: 1, descricao: 'Fica invisível encostado em qualquer superfície com movimento máximo de 3m/6s. Termina ao mover mais rápido, perder contato com a superfície ou atacar. 3×/dia.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -663,6 +695,14 @@ export const draconiano = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Dragão Ancão (+1 em Percepção p/ criaturas menores), Dragão do Fogo (vantagem em Atletismo p/ mover objetos pesados), Dragão do Troveão (+1,5m de velocidade ao fugir), Tartaruga Dragão (Buscar Cobertura ao usar habilidades mágicas sem dano).' },
+        { id: 'asa_draconiana', nome: 'Asa Draconiana', custo: 2, descricao: 'Manifesta asas de couro e ossos iguais às de seu ancestral. Ganha capacidade de voar com velocidade igual à de movimento. (Meio-Draco não pode escolher esta Regalia.)' },
+        { id: 'bafo_de_dragao', nome: 'Bafo de Dragão', custo: 1, descricao: 'Escolha um elemento (fogo, gelo ou raio). Em cone de 6m/60°, causa 2d10 de dano elemental. 1 ação, 2×/descanso curto.' },
+        { id: 'escamas', nome: 'Escamas', custo: 2, descricao: 'Desenvolve forte carapace. Valor de defesa base passa a ser 10 + Agilidade + armadura leve ou média (ao invés de 7).' },
+        { id: 'sabedoria_hereditaria', nome: 'Sabedoria Hereditária', custo: 1, descricao: '+5 em testes de História e Arcanismo sobre dragões. +5 em Recordar Conhecimento sobre dragões. Detecta ninhos/influência draconônica a até 1km. Vantagem em Intuição ao lidar com dragões.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -753,6 +793,15 @@ export const meioElfo = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Falcão (vantagem em Percepção >100m), Touro (vantagem em Atletismo p/ objetos pesados), Nove Caudas (+5 em Sedução), Tartaruga Leão (Buscar Cobertura ao atacar com magia/milagre).' },
+        { id: 'determinacao_humana', nome: 'Determinação Humana', custo: 2, descricao: 'Pode rolar novamente qualquer teste que falhou, usando o novo resultado (1×/dia). Ao sofrer dano letal, pode usar uma ação como reação antes de entrar em À Beira da Morte (1×/dia).' },
+        { id: 'vida_longa', nome: 'Vida Longa', custo: 1, descricao: 'Requisito: ter mais de 100 anos. Recebe +5 em Habilidades de Conhecimento sobre assuntos vivenciados em sua vida.' },
+        { id: 'armas_exoticas', nome: 'Armas Exóticas', custo: 1, descricao: 'Proficiência com Espada de Lâminas Duplas, Espada Diapasão e Katar.' },
+        { id: 'vida_longa_menos_amigos', nome: 'Vida Longa, Menos Amigos', custo: 1, descricao: '+2 em Enganação ou Persuasão para esconder os verdadeiros sentimentos. +3 em Intuição para entender sentimentos de criaturas com rosto humano.' },
+        { id: 'influencia_social', nome: 'Influência Social', custo: 1, descricao: 'Ao rolar 20 natural em teste de Habilidade, pode garantir a uma criatura +4 em qualquer rolamento no próximo minuto (deve ser anunciado antes do rolamento).' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -844,6 +893,14 @@ export const meioDemonio = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Hebrides (+4 em Ritualismo p/ atividade demoníaca), Bode (vantagem em Atletismo p/ escalar), Ovelha (vantagem em Enganação p/ fingir ser civil), Carneiro (Buscar Cobertura ao saltar ou escalar).' },
+        { id: 'olhos_negros', nome: 'Olhos Negros', custo: 1, descricao: 'Visão no escuro até 6m (escuridão = meia luz, meia luz = luz completa). Vantagem em Ocultismo para identificar rastros de contratos e atividades demoníacas.' },
+        { id: 'resistencia_demoniaca', nome: 'Resistência Demoníaca', custo: 2, descricao: 'Resistência a dano sombrio. Pode escolher resistir a um ataque de elemento fogo 1×/dia.' },
+        { id: 'intimidacao_infernal', nome: 'Intimidação Infernal', custo: 1, descricao: 'Ativa herança infernal (olhos brilhantes, chifres e garras ameaçadores): vantagem em rolamentos de Intimidação. 5×/dia.' },
+        { id: 'ma_influencia', nome: 'Má Influência', custo: 1, descricao: 'Ao rolar 20 natural, pode impor -2 no próximo rolamento de uma criatura (ou -5 se for em um ataque). 3×/dia.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -935,6 +992,14 @@ export const meioCelestial = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Cordeiro (+5 em Persuasão p/ evitar batalha), Cervo (+5 em Sobrevivência p/ encontrar água em florestas), Mariposa (+4 em Ritualismo p/ atividade celestial), Anjo do Mar (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'olhos_iluminados', nome: 'Olhos Iluminados', custo: 1, descricao: 'Visão no escuro até 6m (escuridão = meia luz, meia luz = luz completa). Vantagem em Teologia para procurar rastros de atividade divina.' },
+        { id: 'resistencia_celestial', nome: 'Resistência Celestial', custo: 2, descricao: 'Resistência a dano sagrado. Pode escolher resistir a um ataque de elemento arcano 1×/dia.' },
+        { id: 'maos_abencoadsa', nome: 'Mãos Abênçoadas', custo: 1, descricao: 'Ganha pontos de cura por nível (4 × nível). Usa-os para curar uma criatura em até 10 PV como ação (10 pontos = 10 PV). Recuperados em descanso longo.' },
+        { id: 'juiz', nome: 'Juiz', custo: 1, descricao: 'Cria área de 6m de raio ao redor de si: vantagem dupla em Intuição para detectar mentiras dentro dela. A área fica iluminada com meia luz em ambientes escuros.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1052,6 +1117,13 @@ export const meioGenio = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Ar (vantagem em Percepção >100m), Terra (vantagem em Atletismo p/ mover objetos pesados), Gelo (vantagem em Furtividade ao fugir), Fogo (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'dominio_do_ar', nome: 'Domínio do Ar', custo: 2, descricao: 'Perde afinidade elemental (perde resistência e vulnerabilidade do elemento). Ganha capacidade de voo com velocidade de movimento. Consegue segurar a respiração por 5h (10min de descanso para repetir).' },
+        { id: 'controle_elemento_interior', nome: 'Controle do Elemento Interior', custo: 2, descricao: 'Carrega elementalmente os ataques desarmados por 1 minuto: +1d6 de dano do elemento herdado. 3×/dia.' },
+        { id: 'conceder_desejos', nome: 'Conceder Desejos', custo: 2, descricao: 'A cada 3 dias, concede um simples desejo: um item que caiba na mão valendo até 50 MO. Cópias de itens mágicos são evidentes e sem efeito mágico.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1142,6 +1214,13 @@ export const meioTroll = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Nuvem (vantagem em Percepção até 100m), Gelo (+1,5m de velocidade ao fugir), Areia (+5 em Percepção p/ vibrações no solo), Rocha (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'fisico_incomparavel', nome: 'Físico Incompatável', custo: 1, descricao: 'Capacidade de carga como se fosse um tamanho maior. Vantagem dupla (3 dados) em Atletismo para escalar superfícies naturais.' },
+        { id: 'descendente_monstruoso', nome: 'Descendente Monstruoso', custo: 1, descricao: 'Traços de troll marcados. Em locais onde trolls não são comuns: +10 em Intimidação e -5 em Persuasão/Negociação. Em outros contextos: +2 em Intimidação.' },
+        { id: 'gigante_pela_propria_natureza', nome: 'Gigante Pela Própria Natureza', custo: 2, descricao: 'Passa para o tamanho “Muito Grande” com todas as vantagens desse tamanho. Porém, não cabe em estabelecimentos para criaturas pequenas.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1306,8 +1385,15 @@ export const bestial = {
             ],
             bonusHabilidades: {},
             proficienciasGanhas: [],
-            flags: { necessidadeSubmersao: { intervaloHoras: 48, duracaoMinHoras: 1, penalidade: 'cansado_1' } }
+            flags: { necessidadeSubmersao: { intervaloHoras: 48, duracaoMinHoras: 1, penalidade: 'cansado' } }
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Elfo (vantagem em Percepção até 100m), Draconiano (vantagem em Atletismo p/ mover objetos pesados), Féérico (vantagem em Enganação p/ fugir), Anão (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'animal_noturno', nome: 'Animal Noturno', custo: 1, descricao: 'Visão no escuro até 12m (escuridão = meia luz, meia luz = luz completa).' },
+        { id: 'instintivo', nome: 'Instintivo', custo: 1, descricao: '+3 em Iniciativa e vantagem dupla em Atletismo ao cair em armadilhas naturais ou emboscadas de animais selvagens.' },
+        { id: 'reacao_instantanea', nome: 'Reação Instantânea', custo: 1, descricao: 'Como reação, recua 1,5m de criatura que se aproxime a 6m. 5×/dia.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1398,6 +1484,13 @@ export const halfling = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Coruja Anã (vantagem em Percepção até 100m), Pônei (vantagem em Atletismo p/ mover objetos pesados), Raposa do Deserto (vantagem em Enganação ao fugir), Caranguejo-Ermitão (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'monstruoso', nome: 'Monstruoso', custo: 1, descricao: 'Traços assustadores. Em locais onde essas criaturas não são comuns: +10 em Intimidação e -5 em Persuasão/Negociação. Nos demais: +2 em Intimidação.' },
+        { id: 'pequeno_e_fragil', nome: 'Pequeno e Frágil', custo: 1, descricao: 'Como reação, se encolhe para fazer atacante desistir e escolher novo alvo (Enganação/Performance vs. Intuição do atacante). Se sucesso, não sofre ataques deste atacante até o início do próximo turno. 3×/dia.' },
+        { id: 'entocar', nome: 'Entocar', custo: 1, descricao: '+4 em Acrobacia para entrar e passar por lugares apertados. +1 em outros testes de Acrobacia. Tentativas de tirá-lo têm penalidade de -2.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1488,6 +1581,14 @@ export const troll = {
             proficienciasGanhas: [],
             flags: {}
         }
+    ],
+    regalias: [
+        { id: 'tatuagem_tribal', nome: 'Tatuagem Tribal', custo: 1, descricao: 'Tatuagem mágica tribal. Escolha: Harpia (vantagem em Percepção >100m), Bisão (vantagem em Atletismo p/ mover objetos pesados), Coiote (vantagem em Enganação ao fugir), Tatu (Buscar Cobertura na mesma ação de correr/andar).' },
+        { id: 'fisico_incomparavel', nome: 'Físico Incomparável', custo: 1, descricao: 'Capacidade de carga como se fosse um tamanho maior. +5 em Atletismo para escalar superfícies naturais.' },
+        { id: 'monstruoso', nome: 'Monstruoso', custo: 1, descricao: 'Traços assustadores. Em locais onde trolls não são comuns: +10 em Intimidação e -5 em Persuasão/Negociação.' },
+        { id: 'presas_esmagadoras', nome: 'Presas Esmagadoras', custo: 2, descricao: 'Grandes bocas e mandíbulas fortíssimas. Morde causando 2d10 de dano esmagador. 3×/dia, recupera em descanso longo.' },
+        { id: 'terreno_favorito', nome: 'Terreno Favorito', custo: 1, descricao: '+3 metros de velocidade de movimento enquanto estiver em seu ambiente de origem.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 
@@ -1605,6 +1706,13 @@ export const constructo = {
             proficienciasGanhas: [],
             flags: { semComida: true, semAgua: true, descansoReduzido: { longo: 2, curto: 'padrao' } }
         }
+    ],
+    regalias: [
+        { id: 'programacao_emergencia', nome: 'Programação de Emergência', custo: 1, descricao: 'Ao chegar a 10 PV ou menos, recebe PV temporários iguais ao máximo de pontos de magia por 2 rodadas. 1×/descanso longo.' },
+        { id: 'constructo_da_natureza', nome: 'Constructo da Natureza', custo: 1, descricao: 'Substitui partes de metal por madeira. Fica resistente a dano de impacto e perfurante, porém vulnerável a dano de fogo.' },
+        { id: 'sobrecarga_elemental', nome: 'Sobrecarga Elemental', custo: 1, descricao: 'Após gastar ⅓ dos pontos de magia/estâmina em um turno, o próximo ataque causa dano dobrado (metade do tipo elemental do espírito interior).' },
+        { id: 'porta_gente', nome: 'Porta Gente', custo: 2, descricao: 'O constructo é desmontado e remontado para tamanho Grande. Consegue armazenar dentro de si uma criatura Média voluntária ou menor como reação em combate.' },
+        { id: 'aumento_habilidade', nome: 'Aumento do Valor da Habilidade', custo: 1, descricao: 'Aumenta qualquer Habilidade que não seja de combate em +2. OU: Aumenta qualquer Habilidade que não seja de combate, força, destreza ou agilidade em +2.' }
     ]
 };
 

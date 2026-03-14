@@ -1,12 +1,12 @@
 .MainTitleC {
     font-family: "Viaoda_Libre variant0", serif !important;
     font-style: normal !important;
-    color: #5B1F0F;
+    color: var(--color-title);
     text-align: center !important;
 }
 
 .boxTextTitleText {
-    color: #5B1F0F;
+    color: var(--color-title);
     text-align: left;
     font-family: "Esteban", serif !important;
     text-align: justify;
@@ -16,14 +16,14 @@
 }
 
 .boxTextTitle {
-    color: #5B1F0F !important;
+    color: var(--color-title) !important;
     text-align: left !important;
     font-family: "Esteban", serif !important;
     text-align: center;
     margin-top: 2% !important;
 }
 .tabs {
-    color: #7B3311 !important;
+    color: var(--color-tabs) !important;
     text-align: left !important;
     font-family: "Esteban", serif !important;
     text-align: center;
@@ -82,6 +82,6 @@
     padding: 2px !important ;
 }
 .bigBoxTextClasses::-webkit-scrollbar-thumb{
-    background: #5B1F0F !important;
+    background: var(--color-scrollbar) !important;
     border-radius: 15px !important;
 }

@@ -24,7 +24,7 @@ const EspeciesPage = () => {
 
                 </Typography>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Humano</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="humano" sx={{ my: 2, mx: 3 }}>Humano</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -109,7 +109,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Elfo</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="elfo" sx={{ my: 2, mx: 3 }}>Elfo</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -207,7 +207,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Anão</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="anao" sx={{ my: 2, mx: 3 }}>Anão</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -304,7 +304,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Feérico</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="feerico" sx={{ my: 2, mx: 3 }}>Feérico</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -432,7 +432,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Draconiano</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="draconiano" sx={{ my: 2, mx: 3 }}>Draconiano</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -530,7 +530,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Elfo</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="meio-elfo" sx={{ my: 2, mx: 3 }}>Meio Elfo</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -620,7 +620,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Demônio</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="meio-demonio" sx={{ my: 2, mx: 3 }}>Meio Demônio</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -709,7 +709,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Celestial</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="meio-celestial" sx={{ my: 2, mx: 3 }}>Meio Celestial</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -799,7 +799,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Gênio</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="meio-genio" sx={{ my: 2, mx: 3 }}>Meio Gênio</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -894,7 +894,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Meio Troll</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="meio-troll" sx={{ my: 2, mx: 3 }}>Meio Troll</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -985,7 +985,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Bestial</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="bestial" sx={{ my: 2, mx: 3 }}>Bestial</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -1081,7 +1081,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Halfling</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="halfling" sx={{ my: 2, mx: 3 }}>Halfling</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -1170,7 +1170,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Troll</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="troll" sx={{ my: 2, mx: 3 }}>Troll</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -1264,7 +1264,7 @@ const EspeciesPage = () => {
         return (
             <Box sx={{ width: "100%", p: 2 }}>
                 <Paper className="bigBoxTextClasses" sx={{ p: 2, height: '750px', overflowY: 'scroll' }}>
-                    <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Constructo</Typography>
+                    <Typography variant="h5" className="boxTextTitle" id="constructo" sx={{ my: 2, mx: 3 }}>Constructo</Typography>
 
                     <Tabs value={tab} onChange={handleChange} centered>
                         <Tab label="Descrição" className="tabs" />
@@ -1429,7 +1429,7 @@ const EspeciesPage = () => {
                     </TabPanel>
 
                     <TabPanel value={tab} index={1}>
-                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Psíquico</Typography>
+                        <Typography variant="h5" className="boxTextTitle" id="psiquico" sx={{ my: 2, mx: 3 }}>Psíquico</Typography>
                         <Typography className="bigBoxTextEquipsHeader">Escolha um dos seguintes poderes psíquicos para começar:</Typography>
 
                         <Typography className="bigBoxTextEquips">
@@ -1448,7 +1448,7 @@ const EspeciesPage = () => {
                     </TabPanel>
 
                     <TabPanel value={tab} index={2}>
-                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Vampiro / Wight / Draugr</Typography>
+                        <Typography variant="h5" className="boxTextTitle" id="vampiro-wight-draugr" sx={{ my: 2, mx: 3 }}>Vampiro / Wight / Draugr</Typography>
                         <Typography className="bigBoxTextEquipsHeader">Ao escolher ser um morto vivo, o personagem não pode ser curado por milagres. Escolha um dos seguintes poderes de mortos vivos para começar com (A habilidade Drenagem de Vida pode ser escolhido por qualquer tipo de morto vivo):</Typography>
 
                         <Typography className="bigBoxTextEquips">
@@ -1466,7 +1466,7 @@ const EspeciesPage = () => {
                         </Typography>
                     </TabPanel>
                     <TabPanel value={tab} index={3}>
-                        <Typography variant="h5" className="boxTextTitle" sx={{ my: 2, mx: 3 }}>Mutante</Typography>
+                        <Typography variant="h5" className="boxTextTitle" id="mutante" sx={{ my: 2, mx: 3 }}>Mutante</Typography>
                         <Typography className="bigBoxTextEquipsHeader">Uma criatura que sofreu de alguma forma uma exposição a um efeito que mudou permanentemente sua aparência e fisionomia é considerada um mutante.<br />
                             O mutante tem uma penalidade de -2 em todos os testes da aba social, exceto intimidação, sempre que que tiver a mutação visível. Todos sabem que o personagem possui mutações, a não ser que o personagem a mantenha contida dentro de roupas, máscaras e afins. Ao escolher ser um mutante é necessário escolher apenas uma das opções abaixo:
                         </Typography>
@@ -1520,9 +1520,6 @@ const EspeciesPage = () => {
                 <EspecieSpecialOptions />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

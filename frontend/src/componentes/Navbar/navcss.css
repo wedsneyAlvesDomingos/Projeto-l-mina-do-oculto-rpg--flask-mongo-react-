@@ -1,3 +1,7 @@
-.navbar{
+.navbar {
     border-bottom: 2px solid #BB8130;
+}
+
+.nav-logo {
+    width: 150px;
 }

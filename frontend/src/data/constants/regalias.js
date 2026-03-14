@@ -64,14 +64,20 @@ Milagres:
         habilidadesGanhas: [
             {
                 nome: 'Abençoar Água',
-                descricao: 'Abençoa uma porção de água, tornando-a sagrada por 1h. Pode acumular até 5 frascos. Usar para encantar arma por 1 minuto (1 Magia/frasco) ou jogar em morto-vivo causando 1d12 de dano (3 Magia).',
+                descricao: 'Abençoa uma porção de água, tornando-a sagrada por 1h. Pode acumular até 5 frascos. Usar para encantar arma por 1 minuto (1 Magia/frasco) ou jogar em morto-vivo causando 1d12 de dano (3 Magia total).',
                 tipo: 'milagre',
                 custoAcoes: 1,
                 custoMagia: 1,
                 duracao: '1 hora',
                 efeito: {
                     encantarArma: { duracao: '1 minuto', propriedade: 'sagrado', custoMagiaPorFrasco: 1 },
-                    atacarMortoVivo: { dano: '1d12', tipoDano: 'sagrado', custoMagia: 3 }
+                },
+                efeitoOpcional: {
+                    nome: 'Jogar em Morto-Vivo',
+                    custoMagiaExtra: 2, // total 3 PM (1 base + 2 extra)
+                    alcance: 9,
+                    dano: '1d12',
+                    tipoDano: 'sagrado'
                 },
                 limiteAcumulo: 5
             },
@@ -223,16 +229,18 @@ Rolamento define desconto: 5% com sucesso moderado, maiores descontos com rolage
         habilidadesGanhas: [
             {
                 nome: 'Barganhar',
-                descricao: 'Pode fazer um teste de Negociação por descontos em serviços (hospedagem, etc.), mas NÃO em compras de mercadorias. 1x por pessoa por semana.',
+                descricao: 'Pode fazer um teste de Negociação por descontos em serviços (hospedagem, etc.), mas NÃO em compras de mercadorias. 1x por pessoa por semana. Role 1d20 + bônus de Negociação.',
                 tipo: 'ativa',
                 custoAcoes: null, // fora de combate
                 custoMagia: 0,
                 limiteUso: '1x por pessoa por semana',
+                dado: '1d20',
                 efeito: {
                     tabelaDesconto: [
-                        { rolagem: '0-10', desconto: 5 },
-                        { rolagem: '11-15', desconto: 5 },
-                        { rolagem: '16-20', desconto: 15 }
+                        { rolagem: '1-7',  desconto: 0,  resultado: 'Falha — sem desconto' },
+                        { rolagem: '8-14', desconto: 5,  resultado: 'Sucesso moderado — 5%' },
+                        { rolagem: '15-17',desconto: 10, resultado: 'Bom sucesso — 10%' },
+                        { rolagem: '18-20',desconto: 15, resultado: 'Ótimo sucesso — 15%' }
                     ]
                 }
             }
@@ -258,9 +266,9 @@ Um explorador aprendiz consegue procurar um abrigo natural para proteger dos ele
         habilidadesGanhas: [
             {
                 nome: 'Visão para Abrigo',
-                descricao: 'Pode procurar um abrigo natural para se proteger dos elementos. 80% de chance de sucesso. Se não houver abrigos naturais, pode criar um com elementos locais. +2 em testes de sobrevivência para achar comida e água.',
-                tipo: 'passiva',
-                custoAcoes: null,
+                descricao: 'Procura um abrigo natural para se proteger dos elementos. 80% de chance de sucesso. Se não houver abrigos naturais, pode criar um com elementos locais. +2 em testes de sobrevivência para achar comida e água.',
+                tipo: 'ativa',
+                custoAcoes: null, // fora de combate
                 custoMagia: 0,
                 efeito: {
                     chanceSucesso: 80,
@@ -765,6 +773,7 @@ export const classesPrimarias = [
                         escolhasHabilidades: [{ grupo: ['destreza', 'forca'], pontos: 1 }],
                         habilidadeGanha: {
                             nome: 'Guarda de Duelo',
+                            descricao: 'Ação livre: vantagem em ataques e +1 Defesa se apenas 1 inimigo corpo a corpo. Custa 3 Estâmina. Dura até o fim do turno.',
                             tipo: 'ativa',
                             custoAcoes: 0, // ação livre
                             custoEstamina: 3,
@@ -786,6 +795,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateADistancia: 3, destreza: 1 },
                         habilidadeGanha: {
                             nome: 'Desarmar',
+                            descricao: 'Ataque a distância pode desarmar o alvo (40%). Arma cai a 3m. Custa 4 Estâmina, +5%/Estâmina extra.',
                             tipo: 'ativa',
                             custoAcoes: null, // parte do ataque
                             custoEstamina: 4,
@@ -810,6 +820,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { agilidade: 1, percepcao: 1, furtividade: 1 },
                         habilidadeGanha: {
                             nome: 'Ponto Fraco',
+                            descricao: '+1d6 dano extra no primeiro ataque ao flanquear. +1d6 por cada 2 Estâmina extras.',
                             tipo: 'passiva',
                             efeito: { danoExtraFlanqueando: '1d6', apenasFirstAtaquePorAcao: true },
                             escalamento: { custoEstaminaPorD6Extra: 2 }
@@ -836,6 +847,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { fortitude: 1, agilidade: 1 },
                         habilidadeGanha: {
                             nome: 'Guarda-Costas',
+                            descricao: 'Reação: protege aliado a 1,5m de ataque. Bloqueia ou reduz dano à metade. Custa 3 Estâmina, +1 para repetir.',
                             tipo: 'reacao',
                             custoEstamina: 3,
                             efeito: { protegerAliado: true, alcance: 1.5, reducaoDano: 'metade' },
@@ -855,6 +867,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateCorpoACorpo: 1, forca: 1 },
                         habilidadeGanha: {
                             nome: 'Estocada',
+                            descricao: 'Com arma de haste, estende alcance em 1,5m na ação atacar. Custa 2 Estâmina.',
                             tipo: 'ativa',
                             custoEstamina: 2,
                             efeito: { alcanceExtra: 1.5, requerArmaHaste: true }
@@ -886,6 +899,7 @@ export const classesPrimarias = [
                         escolhasHabilidades: [{ grupo: ['forca', 'destreza'], pontos: 1 }],
                         habilidadeGanha: {
                             nome: 'Derrubar ou Agarrar',
+                            descricao: 'Ataque desarmado: derruba ou agarra o alvo (50% de chance). Custa 4 Estâmina.',
                             tipo: 'ativa',
                             custoEstamina: 4,
                             efeito: { escolha: ['derrubar', 'agarrar'], chanceSucesso: 50 }
@@ -962,7 +976,7 @@ export const classesPrimarias = [
     // ==========================================================================
     {
         id: 'novico_primario',
-        nome: 'Noviço',
+        nome: 'Noviço(a)',
         tipo: 'classe_primaria',
         preRequisitos: { regaliaAprendiz: 'novico', nivelMinimo: 3 },
         bonusPorRegalia: { pv: 2, estamina: 0, magia: 4 },
@@ -1008,6 +1022,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { medicina: 3, teologia: 3, intuicao: 3 },
                         habilidadeGanha: {
                             nome: 'Cura',
+                            descricao: 'Cura 1d6+2 PV a até 1,5m. Custa 2 Magia. +1d6 por 2 Magia extras.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             custoMagia: 2,
@@ -1020,6 +1035,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Abençoar',
+                            descricao: '+1,5m movimento e vantagem em ataques por 5 rodadas. Custa 6 Magia. +1 alvo/3 Magia.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             custoMagia: 6,
@@ -1032,6 +1048,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Ataque Guiado',
+                            descricao: 'Reação: dá vantagem no ataque de criatura a até 18m. 4x/dia.',
                             tipo: 'reacao',
                             custoMagia: 0,
                             alcance: 18,
@@ -1050,6 +1067,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { ocultismo: 3, combateArcano: 3 },
                         habilidadeGanha: {
                             nome: 'Marca Divina',
+                            descricao: 'Marca a até 18m: 1d8 sagrado por 10 rodadas (1 ação/turno). Custa 5 Magia.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             custoMagia: 5,
@@ -1062,6 +1080,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Chama Sagrada',
+                            descricao: '1d6 dano sagrado. Custa 1 Magia. +1d8/2 Magia extras.',
                             tipo: 'milagre',
                             custoAcoes: 1,
                             custoMagia: 1,
@@ -1073,6 +1092,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Fonte Divina',
+                            descricao: 'Mortos-vivos e demônios a até 12m fogem (80%). 2x/dia ou 10 Magia.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             alcance: 12,
@@ -1091,6 +1111,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { fortitude: 2, percepcao: 2 },
                         habilidadeGanha: {
                             nome: 'Santuário',
+                            descricao: '+2 Defesa por 1 rodada. Custa 4 Magia. +1 rodada/2 Magia extras.',
                             tipo: 'milagre',
                             custoAcoes: 1,
                             custoMagia: 4,
@@ -1103,6 +1124,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Farol',
+                            descricao: 'Luz que cega não-aliados a até 27m até fim do próximo turno. Custa 8 Magia.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             custoMagia: 8,
@@ -1114,10 +1136,11 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Restauração',
+                            descricao: 'Remove Envenenado, Congelado, Queimando ou Cansado (1 nível). 4x/dia.',
                             tipo: 'milagre',
                             custoAcoes: 2,
                             cooldown: '4x por dia',
-                            efeito: { removerCondicao: ['envenenado', 'congelando_1', 'queimando_1', 'cansado_1'] }
+                            efeito: { removerCondicao: ['envenenado', 'congelando', 'queimando', 'cansado'] }
                         }
                     }
                 ]
@@ -1131,6 +1154,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { medicina: 3, teologia: 3, intuicao: 3 },
                         habilidadeGanha: {
                             nome: 'Estabilizar',
+                            descricao: 'Estabiliza criatura À Beira da Morte (falhas necessárias: 10). 4x/dia.',
                             tipo: 'milagre',
                             custoAcoes: 1,
                             cooldown: '4x por dia',
@@ -1141,6 +1165,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Resistência',
+                            descricao: 'Reação: alvo sofre metade do dano de um ataque ou efeito. Custa 3 Magia.',
                             tipo: 'reacao',
                             custoMagia: 3,
                             efeito: { reducaoDano: 'metade', alvos: 1 }
@@ -1150,6 +1175,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Lente Investigativa',
+                            descricao: 'Quem mente a até 3m sofre 1d4 dano e fala cortada. 10min. 4x/dia.',
                             tipo: 'milagre',
                             custoAcoes: 1,
                             cooldown: '4x por dia',
@@ -1229,7 +1255,7 @@ export const classesPrimarias = [
     // ==========================================================================
     {
         id: 'iniciado_primario',
-        nome: 'Iniciado',
+        nome: 'Iniciado(a)',
         tipo: 'classe_primaria',
         preRequisitos: { regaliaAprendiz: 'iniciado', nivelMinimo: 3 },
         bonusPorRegalia: { pv: 2, estamina: 0, magia: 4 },
@@ -1248,6 +1274,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, arcanismo: 2 },
                         habilidadeGanha: {
                             nome: 'Cone Arcano',
+                            descricao: 'Cone 6m/60°: 2d8 arcano + devagar. Custa 6 Magia. +1d8/3 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 6,
                             area: { tipo: 'cone', distancia: 6, angulo: 60 },
@@ -1259,6 +1286,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Esfera Arcana',
+                            descricao: 'Esfera 3m raio: 3d10 arcano + queimando. Custa 10 Magia. +1d10/3 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 10,
                             area: { tipo: 'esfera', raio: 3 },
@@ -1270,6 +1298,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Raio Arcano',
+                            descricao: 'Linha 36m×3m: 3d10 arcano. Custa 10 Magia. +1d10/3 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 10,
                             area: { tipo: 'linha', distancia: 36, largura: 3 },
@@ -1288,6 +1317,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { agilidade: 1, fortitude: 2 },
                         habilidadeGanha: {
                             nome: 'Armadura Arcana',
+                            descricao: '+2 PV temp. e +2 Defesa por 1h. Custa 2 Magia. +2PV/+1Def por 2 Magia.',
                             tipo: 'magia',
                             custoAcoes: 1, custoMagia: 2,
                             duracao: '1 hora',
@@ -1299,6 +1329,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Defesa contra Armas',
+                            descricao: 'Resistência a dano de armas mágicas, não-mágicas e elementais por 2 rodadas. Custa 2 Magia.',
                             tipo: 'magia',
                             custoAcoes: 1, custoMagia: 2,
                             duracao: '2 rodadas',
@@ -1309,6 +1340,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Refletir',
+                            descricao: 'Reação: reflete dano mágico (d100: <40=¼, >40=½, 100=total). Dano vira PV temp. Custa 4 Magia.',
                             tipo: 'reacao',
                             custoMagia: 4,
                             alcance: 30,
@@ -1330,6 +1362,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { persuasao: 2, seducao: 2 },
                         habilidadeGanha: {
                             nome: 'Voz de Comando',
+                            descricao: '50%: alvo obedece comando de 1 palavra sem dano/perigo. Custa 4 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 4,
                             efeito: { chanceSucesso: 50, comandoUmaPalavra: true, semDanoExtremo: true },
@@ -1340,6 +1373,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Controlar Animal',
+                            descricao: '60%: animal coopera por 1 hora. Custa 6 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 6,
                             duracao: '1 hora',
@@ -1351,6 +1385,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Hipnose',
+                            descricao: '50%: alvo coopera como amigo por 1 hora. Custa 8 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoAcoes: 3, custoMagia: 8,
                             duracao: '1 hora',
@@ -1369,6 +1404,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { arcanismo: 1, enganacao: 2, performance: 2 },
                         habilidadeGanha: {
                             nome: 'Disfarce Arcano',
+                            descricao: 'Aparência de humanoide por 2h. Tátil. Brilha em Detectar Magia. Custa 4 Magia.',
                             tipo: 'magia',
                             custoAcoes: 3, custoMagia: 4,
                             duracao: '2 horas',
@@ -1379,6 +1415,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Gerar Imagens',
+                            descricao: 'Imagem animada com sons rudimentares em cubo 6m por 10min. Custa 6 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 6,
                             duracao: '10 minutos',
@@ -1389,6 +1426,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Ataque Fantasma',
+                            descricao: '60%: Aterrorizado por 5 rodadas; se persistir, Atordoado. Custa 10 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoMagia: 10,
                             efeito: {
@@ -1411,6 +1449,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, intuicao: 2 },
                         habilidadeGanha: {
                             nome: 'Mover Objeto',
+                            descricao: 'Move objeto até 3kg pelo ar por 1min. Sem ataques. Custa 1 Magia. +4/min.',
                             tipo: 'magia',
                             custoMagia: 1,
                             duracao: '1 minuto',
@@ -1422,6 +1461,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Ruptura Mental',
+                            descricao: '50%: 2d10 dano + surdez. Custa 8 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 8,
                             efeito: { chanceSucesso: 50, dano: '2d10', condicao: 'surdo' },
@@ -1432,6 +1472,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Psicose Súbita',
+                            descricao: '50%: Paralisado e depois Aterrorizado por 2 rodadas. Custa 8 Magia. +5%/Magia.',
                             tipo: 'magia',
                             custoAcoes: 1, custoMagia: 8,
                             efeito: {
@@ -1453,6 +1494,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, ritualismo: 2 },
                         habilidadeGanha: {
                             nome: 'Disco de Carga',
+                            descricao: 'Disco energia (3m raio, 200kg). Move por ação até 18m. 1h. Custa 2 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 2,
                             duracao: '1 hora',
@@ -1463,6 +1505,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Névoa de Combate',
+                            descricao: 'Cubo 3m: obscurecido mas vê fora. 2 turnos. Custa 3 Magia. +6 Magia/turno.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 3,
                             duracao: '2 turnos',
@@ -1474,6 +1517,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Arma Arcana',
+                            descricao: 'Arma arcana: 2d10+Arcanismo dano, usa Combate Arcano. 5 turnos. Custa 10 Magia.',
                             tipo: 'magia',
                             custoAcoes: 1, custoMagia: 10,
                             duracao: '5 turnos',
@@ -1492,6 +1536,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { tecnologia: 1, arcanatec: 3, natureza: 2 },
                         habilidadeGanha: {
                             nome: 'Destrancar Fechadura',
+                            descricao: 'Abre fechadura com som alto. Destruída após uso. Custa 5 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 5,
                             efeito: { destrancar: true, somAlto: true, fechaduraDestruida: true }
@@ -1501,6 +1546,7 @@ export const classesPrimarias = [
                         nivel: 2, custo: 1,
                         habilidadeGanha: {
                             nome: 'Mudar Temperatura',
+                            descricao: 'Muda temp. de objeto (até 1,5m³). 80% Congelando/Queimando. 5 rodadas. Custa 4 Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 4,
                             duracao: '5 rodadas',
@@ -1516,6 +1562,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Prisão Arcana',
+                            descricao: '40%: Restringido em 3m raio a 9m de alcance. Custa 10 Magia. +5% e duração/Magia.',
                             tipo: 'magia',
                             custoAcoes: 2, custoMagia: 10,
                             alcance: 9,
@@ -1535,7 +1582,7 @@ export const classesPrimarias = [
     // ==========================================================================
     {
         id: 'feiticeiro_primario',
-        nome: 'Feiticeiro',
+        nome: 'Feiticeiro(a)',
         tipo: 'classe_primaria',
         preRequisitos: { regaliaAprendiz: 'feiticeiro', nivelMinimo: 3 },
         bonusPorRegalia: { pv: 3, estamina: 0, magia: 3 },
@@ -1560,12 +1607,14 @@ export const classesPrimarias = [
             {
                 id: 'maldicao',
                 nome: 'Maldição',
+                ordemLivre: true,
                 niveis: [
                     {
                         nivel: 1, custo: 1,
                         bonusHabilidades: { intuicao: 1, ocultismo: 1 },
                         habilidadeGanha: {
                             nome: 'Enfraquecer',
+                            descricao: '40%: desvantagem ataques e -1,5m movimento por 5 rodadas. Custa 6 Magia. +5%/2 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 6,
                             duracao: '5 rodadas',
@@ -1578,6 +1627,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { arcanismo: 1, ocultismo: 1 },
                         habilidadeGanha: {
                             nome: 'Paranóia',
+                            descricao: '30%: surdo e cego por 5 rodadas. Custa 6 Magia. +5%/3 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 6,
                             duracao: '5 rodadas',
@@ -1589,6 +1639,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Olhar Amaldiçoado',
+                            descricao: '50%: Aterrorizado por 3 turnos em criatura a até 9m. Custa 5 Magia. +5%/Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 5,
                             alcance: 9,
@@ -1601,12 +1652,14 @@ export const classesPrimarias = [
             {
                 id: 'caos',
                 nome: 'Caos',
+                ordemLivre: true,
                 niveis: [
                     {
                         nivel: 1, custo: 1,
                         bonusHabilidades: { combateArcano: 1, arcanismo: 1, natureza: 1 },
                         habilidadeGanha: {
                             nome: 'Aperto do Caos',
+                            descricao: 'Elemento aleatório a 36m. 40%: 1d10 + Restringido. Bônus por elemento. Custa 3 Magia. +5%/Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 3,
                             alcance: 36,
@@ -1629,6 +1682,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { arcanismo: 1, natureza: 1 },
                         habilidadeGanha: {
                             nome: 'Eletrodança Caótica',
+                            descricao: 'Esfera 3m: 1d4+1 de cada elemento. 40% Congelado/Queimando. Custa 8 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 8,
                             area: { tipo: 'esfera', raio: 3 },
@@ -1642,6 +1696,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Roleta Caótica',
+                            descricao: 'Linha 18m×3m: 3d10 elemental aleatório. 10% de backfire. Custa 5 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 5,
                             area: { tipo: 'linha', distancia: 18, largura: 3 },
@@ -1656,12 +1711,14 @@ export const classesPrimarias = [
             {
                 id: 'rito',
                 nome: 'Rito',
+                ordemLivre: true,
                 niveis: [
                     {
                         nivel: 1, custo: 1,
                         bonusHabilidades: { percepcao: 1, ritualismo: 1 },
                         habilidadeGanha: {
                             nome: 'Espiritomancia',
+                            descricao: '3 espíritos por 1h. Controle a 100m, ver/ouvir. Custa 1 Magia + 5 M.O.',
                             tipo: 'ritual',
                             tempoExecucao: '1 minuto',
                             custoMagia: 1,
@@ -1675,6 +1732,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, ritualismo: 1 },
                         habilidadeGanha: {
                             nome: 'Fantoche',
+                            descricao: 'Fantoche animado: Combate Arcano, 1d6 necrótico, PV=20% do feiticeiro. Custa 4 Magia + 5 M.O.',
                             tipo: 'ritual',
                             tempoExecucao: '1 minuto',
                             custoMagia: 4,
@@ -1692,6 +1750,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Comunicar com os Mortos',
+                            descricao: 'Fala com espírito de morto por 10min ou 5 perguntas. Custa 4 Magia + 5 M.O.',
                             tipo: 'ritual',
                             tempoExecucao: '10 minutos',
                             custoMagia: 4,
@@ -1706,6 +1765,7 @@ export const classesPrimarias = [
             {
                 id: 'metamorfose',
                 nome: 'Metamorfose',
+                ordemLivre: true,
                 nota: 'Todos os elixires duram 24h ou até consumidos. Tomar/criar um elixir custa 1 ação cada.',
                 niveis: [
                     {
@@ -1713,6 +1773,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, alquimia: 1 },
                         habilidadeGanha: {
                             nome: 'Elixir Padrão',
+                            descricao: '+1 acerto, visão no escuro 6m, vantagem Percepção. 10 rodadas. Custa 5 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 1, custoMagia: 5,
                             duracao: '10 rodadas',
@@ -1729,6 +1790,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, alquimia: 1 },
                         habilidadeGanha: {
                             nome: 'Elixir do Predador',
+                            descricao: '+2 acerto, garras 1d8+Ocultismo, visão no escuro. 10 rodadas. Custa 3 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 1, custoMagia: 3,
                             duracao: '10 rodadas',
@@ -1745,6 +1807,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Elixir da Aceleração',
+                            descricao: '+6m velocidade + efeitos do Elixir Padrão. 10 rodadas. Custa 8 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 1, custoMagia: 8,
                             duracao: '10 rodadas',
@@ -1757,6 +1820,7 @@ export const classesPrimarias = [
             {
                 id: 'runico',
                 nome: 'Rúnico',
+                ordemLivre: true,
                 nota: 'Criar uma runa custa 1 minuto por runa.',
                 niveis: [
                     {
@@ -1764,6 +1828,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { combateArcano: 1, ritualismo: 1 },
                         habilidadeGanha: {
                             nome: 'Runa Protetiva',
+                            descricao: 'Nega todo dano de 1 ataque, 1x/dia. Custa 5 Magia. +1 uso/Magia extra.',
                             tipo: 'reacao',
                             custoMagia: 5,
                             cooldown: '1x por dia',
@@ -1776,6 +1841,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { arcanismo: 1, ritualismo: 1 },
                         habilidadeGanha: {
                             nome: 'Runa Regenerativa',
+                            descricao: 'Recupera 3 PV, 2 Estâmina, 4 Magia 1x/dia. Custa 5 Magia. +1 uso/5 Magia.',
                             tipo: 'ativa',
                             custoAcoes: 1, custoMagia: 5,
                             cooldown: '1x por dia',
@@ -1787,6 +1853,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Runa de Ataque',
+                            descricao: 'Dano sombrio/divino/arcano em arma por 1h. Custa 5 Magia. +1 uso/5 Magia.',
                             tipo: 'ativa',
                             custoAcoes: 1, custoMagia: 5,
                             duracao: '1 hora',
@@ -1799,12 +1866,14 @@ export const classesPrimarias = [
             {
                 id: 'elemental',
                 nome: 'Elemental',
+                ordemLivre: true,
                 niveis: [
                     {
                         nivel: 1, custo: 1,
                         bonusHabilidades: { combateArcano: 1, arcanismo: 1, natureza: 1 },
                         habilidadeGanha: {
                             nome: 'Ataque Elemental',
+                            descricao: 'Jato elemental à escolha: 2d10. Gelo: 40% Congelado. Fogo: 40% Queimando. Custa 4 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 2, custoMagia: 4,
                             efeito: {
@@ -1818,6 +1887,7 @@ export const classesPrimarias = [
                         bonusHabilidades: { arcanismo: 1, natureza: 1 },
                         habilidadeGanha: {
                             nome: 'Dominar Elemento',
+                            descricao: 'Controla pequenas quantidades de vento, terra, fogo, água ou raio para efeitos utilitários.',
                             tipo: 'feitico',
                             custoAcoes: 2,
                             efeito: { controlarElemento: true, descricao: 'Controla pequenas quantidades de vento/terra/fogo/água/raio' }
@@ -1827,6 +1897,7 @@ export const classesPrimarias = [
                         nivel: 3, custo: 1,
                         habilidadeGanha: {
                             nome: 'Armadura Elemental',
+                            descricao: 'Armadura de um elemento: +5 PV temporário. Custa 2 Magia. +5 PV/2 Magia.',
                             tipo: 'feitico',
                             custoAcoes: 3, custoMagia: 2,
                             efeito: { pvTemporario: 5 },
@@ -2010,7 +2081,7 @@ export const especializacoes = [
 
 export const pontosRegaliaPorNivel = (nivel) => {
     if (nivel < 1) return 0;
-    if (nivel === 1) return 4;
+    if (nivel === 1) return 0; // pontos no nível 1 só via guardarPonto na criação
     if (nivel === 2) return 8;
     return 8 + 2 * (nivel - 2);
 };

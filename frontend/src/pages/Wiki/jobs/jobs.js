@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, Grid, Tab, Tabs, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Divider, Chip } from '@mui/material';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./jobs.css";
-
 // Importações centralizadas de dados
 import { profissoes } from '../../../data/constants';
+
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 
 
 const JobsPage = () => {
@@ -59,7 +63,7 @@ const JobsPage = () => {
         A flexibilidade de escolha permite que o jogador adapte o desenvolvimento de seu personagem às circunstâncias do jogo e à narrativa que se desenrola.
       </Typography>
       {profissoes.map((p, i) => (
-        <Accordion key={i}>
+        <Accordion key={i} id={toAnchorId(p.nome)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className="boxTextTitle" variant="h6">{p.nome}</Typography>
           </AccordionSummary>
@@ -241,9 +245,6 @@ const JobsPage = () => {
         <ProfissoesComponent></ProfissoesComponent>
       </Box>
 
-      <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-        <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-      </Box>
     </Box>
   );
 };

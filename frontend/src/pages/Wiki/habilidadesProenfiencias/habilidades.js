@@ -56,7 +56,7 @@ const HabilidadesPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
+            <Paper id="fisico" elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
                 <Typography className="boxTextTitleText" variant="h6" gutterBottom>
                     Físico
                 </Typography>
@@ -119,7 +119,7 @@ const HabilidadesPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
+            <Paper id="conhecimento" elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
                 <Typography className="boxTextTitleText" variant="h6" gutterBottom>
                     Conhecimento
                 </Typography>
@@ -188,7 +188,7 @@ const HabilidadesPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
+            <Paper id="exploracao" elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1, }}>
                 <Typography className="boxTextTitleText" variant="h6" gutterBottom>
                     Exploração
                 </Typography>
@@ -246,7 +246,7 @@ const HabilidadesPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1 }}>
+            <Paper id="arcana" elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1 }}>
                 <Typography className="boxTextTitleText" variant="h6" gutterBottom>
                     Arcana
                 </Typography>
@@ -304,7 +304,7 @@ const HabilidadesPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1 }}>
+            <Paper id="social" elevation={3} sx={{ padding: 2, mx: "auto", width: '100%', my: 1 }}>
                 <Typography className="boxTextTitleText" variant="h6" gutterBottom>
                     Social
                 </Typography>
@@ -604,9 +604,6 @@ const HabilidadesPage = () => {
                 <ProficienciesPage />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

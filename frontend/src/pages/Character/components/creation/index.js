@@ -16,3 +16,4 @@ export {
     MutationModal,
     AttributeChoiceModals,
 } from './CreationModals';
+export { default as AntecedenteChoiceModal } from './AntecedenteChoiceModal';

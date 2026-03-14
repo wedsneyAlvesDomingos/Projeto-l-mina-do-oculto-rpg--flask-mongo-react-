@@ -3,10 +3,12 @@ import { Card, CardContent, Container, Table, TableBody, TableCell, TableContain
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./actions.css";
 
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-const Actionspage = () => {
 
-    const acoes = [
+const acoes = [
         {
             title: "Abrir Fechadura",
             description: "Custa duas ações. Uma criatura proficiente com kit de arrombamento que as tenha em mãos, pode tentar arrombar uma fechadura usando suas Habilidades.  A dificuldade dessa ação depende da complexidade da fechadura. Alternativamente, um personagem pode tentar arrombar a porta com um golpe poderoso ou magia.A dificuldade dessa ação depende da porta e sua construção.",
@@ -249,7 +251,7 @@ const Actionspage = () => {
                     Ações Primárias
                 </Typography>
                 {acoes.map((acao, index) => (
-                    <Accordion key={index}>
+                    <Accordion key={index} id={toAnchorId(acao.title)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className="estebanText" variant="h6">{acao.title}</Typography>
                         </AccordionSummary>
@@ -265,7 +267,7 @@ const Actionspage = () => {
                     Ações de turno completo
                 </Typography>
                 {acoesTurnocompleto.map((acao, index) => (
-                    <Accordion key={index}>
+                    <Accordion key={index} id={toAnchorId(acao.title)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className="estebanText" variant="h6">{acao.title}</Typography>
                         </AccordionSummary>
@@ -281,7 +283,7 @@ const Actionspage = () => {
                     Reações
                 </Typography>
                 {reactions.map((acao, index) => (
-                    <Accordion key={index}>
+                    <Accordion key={index} id={toAnchorId(acao.title)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className="estebanText" variant="h6">{acao.title}</Typography>
                         </AccordionSummary>
@@ -309,7 +311,7 @@ const Actionspage = () => {
 
                 </Typography>
                 {acoesDeMovimento.map((acao, index) => (
-                    <Accordion key={index}>
+                    <Accordion key={index} id={toAnchorId(acao.title)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className="estebanText" variant="h6">{acao.title}</Typography>
                         </AccordionSummary>
@@ -324,8 +326,9 @@ const Actionspage = () => {
 
             </div>
         );
-    };
+};
 
+const Actionspage = () => {
     return (
         <Box sx={{ minHeight: '700px', width: '100%' }} >
 
@@ -333,12 +336,12 @@ const Actionspage = () => {
                 <Typography className="MainTitleC" variant="h4" gutterBottom sx={{ my: 4 }}>
                     Ações
                 </Typography>
-                <Typography className="bigBoxTextClasses" paragraph sx={{ py: 1 }}>
+                <Box className="bigBoxTextClasses" sx={{ py: 1 }}>
                     <Typography className="boxTextTitle" variant="h5" gutterBottom>
                         Rodada, Turno e o Sistema de Ações
                     </Typography>
 
-                    <Typography lassName="bigBoxTextClasses"  paragraph>
+                    <Typography className="bigBoxTextClasses" paragraph>
                         Em um jogo de RPG de mesa (TTRPG), os conceitos de <strong>rodada</strong> e <strong>turno</strong> são fundamentais para estruturar a dinâmica do combate e da exploração. Embora possam parecer semelhantes, eles possuem diferenças importantes.
                     </Typography>
 
@@ -374,7 +377,7 @@ const Actionspage = () => {
                         </Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: "#f5f5f5", padding: 2, borderRadius: 2 }}>
+                    <Box sx={{ padding: 2, borderRadius: 2 }}>
                         <Typography variant="h6" gutterBottom>
                             Resumo do funcionamento:
                         </Typography>
@@ -384,11 +387,11 @@ const Actionspage = () => {
                         <Typography  className="bigBoxTextClasses">- <strong>Quando termina o turno do último participante:</strong> A rodada se encerra e uma nova começa, repetindo o ciclo.</Typography>
                     </Box>
 
-                    <Typography  className="bigBoxTextClasses" sx={{ marginTop: 3 }}>
+                    <Typography className="bigBoxTextClasses" sx={{ marginTop: 3 }}>
                         Esse sistema torna o combate <strong>dinâmico e estratégico</strong>, permitindo que os jogadores decidam como distribuir suas ações de acordo com a situação no campo de batalha.
                     </Typography>
 
-                </Typography>
+                </Box>
 
                 <Paper sx={{ px: 2, py: 2, mb: 4, display: "flex", flexFlow: 'column wrap', justifyContent: 'center' }}>
                     <Typography variant="h5" gutterBottom sx={{ pt: 1, textAlign: 'center' }}>
@@ -426,9 +429,6 @@ const Actionspage = () => {
                 <AcoesComponent />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

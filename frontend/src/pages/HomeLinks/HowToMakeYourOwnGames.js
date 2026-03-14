@@ -1,4 +1,5 @@
 import { Container, Grid, Typography, Box, Card, CardContent, CardMedia } from '@mui/material';
+import AppFooter from '../../componentes/Footer/Footer';
 import React, { useState, useEffect, useCallback } from 'react';
 import "./ldop.css";
 import creatStories from "../../assets/images/creatStories.png";
@@ -354,10 +355,7 @@ const HowToMakeYourOwnGames = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 8 }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>Art by John D Batten</Typography>
-            </Box>
+            <AppFooter credit="Art by John D Batten" />
         </Box >
 
     );

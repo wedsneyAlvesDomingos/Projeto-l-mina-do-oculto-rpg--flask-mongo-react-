@@ -1,283 +1,518 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    Box, Grid, Paper, Typography, TextField, IconButton,
-    Accordion, AccordionSummary, AccordionDetails,
+    Box, Paper, Typography, TextField, IconButton,
     Chip, Select, MenuItem, FormControl, InputLabel, Tooltip,
+    Modal, Backdrop, Fade, useMediaQuery, useTheme, Grid,
+    LinearProgress,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PersonIcon from '@mui/icons-material/Person';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import CloseIcon from '@mui/icons-material/Close';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import UIcon from '../../../assets/images/userIcon.png';
-import { especiesMap, determinarTamanho } from '../../../data/constants';
+import { especiesMap, determinarTamanho, calcularNivel, TABELA_XP_POR_NIVEL } from '../../../data/constants';
 import EditableField from './EditableField';
 
-/* Campo de moeda inline — evita repetição 4× */
+/* ── Espaçamentos padronizados (mesmo padrão CombatVitalSection) ── */
+const SP = { gap: 1.5, p: 1.5, radius: 2 };
+
+/* ── Campo de moeda inline ── */
 const MoedaInput = ({ label, value, onChange, color, bgColor }) => (
-    <Grid item xs={6} sm={3}>
-        <Box sx={{ textAlign: 'center', p: 0.5, backgroundColor: bgColor, borderRadius: 1 }}>
-            <Typography variant="caption" sx={{ color: '#5B1F0F', display: 'block', fontSize: '10px' }}>{label}</Typography>
-            <TextField
-                type="number"
-                size="small"
-                variant="standard"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                InputProps={{ disableUnderline: false, sx: { color: `${color} !important` } }}
-                inputProps={{ min: 0, style: { textAlign: 'center', fontWeight: 'bold', color, fontSize: '16px' } }}
-                sx={{
-                    width: '60px',
-                    '& input': { color: `${color} !important` },
-                    '& .MuiInput-underline:before': { borderBottomColor: 'transparent' },
-                    '& .MuiInput-underline:hover:before': { borderBottomColor: `${color} !important` },
-                    '& .MuiInput-underline:after': { borderBottomColor: color },
-                }}
-            />
-        </Box>
-    </Grid>
+    <Box sx={{ textAlign: 'center', p: 0.5, backgroundColor: bgColor, borderRadius: 1, flex: '1 1 50px', minWidth: 50 }}>
+        <Typography variant="caption" sx={{ color: 'var(--text-primary)', display: 'block', fontSize: 10 }}>{label}</Typography>
+        <TextField
+            type="number" size="small" variant="standard"
+            value={value} onChange={(e) => onChange(e.target.value)}
+            InputProps={{ disableUnderline: false, sx: { color: `${color} !important` } }}
+            inputProps={{ min: 0, style: { textAlign: 'center', fontWeight: 'bold', color, fontSize: 16 } }}
+            sx={{
+                width: { xs: 44, sm: 55 },
+                '& input': { color: `${color} !important` },
+                '& .MuiInput-underline:before': { borderBottomColor: 'transparent' },
+                '& .MuiInput-underline:hover:before': { borderBottomColor: `${color} !important` },
+                '& .MuiInput-underline:after': { borderBottomColor: color },
+            }}
+        />
+    </Box>
 );
 
+/* ── InfoChip — campo label+valor compacto ── */
+const InfoChip = ({ label, children }) => (
+    <Box sx={{ flex: '1 1 80px', minWidth: { xs: 60, sm: 80 }, minWidth: 0, overflow: 'hidden' }}>
+        <Typography className="esteban" noWrap sx={{ color: 'var(--text-primary)', fontSize: 10, lineHeight: 1.2 }}>{label}</Typography>
+        <Typography className="esteban" noWrap sx={{ fontWeight: 'bold', fontSize: 14, lineHeight: 1.3 }}>{children}</Typography>
+    </Box>
+);
+
+/* ════════════════════════════════════════════════════════════
+   CharacterHeader — Layout compacto em flexbox
+   ════════════════════════════════════════════════════════════ */
 const CharacterHeader = ({
     character, editMode, setEditMode,
     sectionStyle, cardHeaderStyle,
     updateField, handleSave, handleCancel, atualizarMoeda,
     fileInputRef, handleImageDrop, handleDragOver, handleImageButtonClick, handleImageFileChange,
-}) => (
-    <Paper elevation={4} sx={{ ...sectionStyle, mb: 3, overflow: 'hidden' }}>
-        {/* Header bar */}
-        <Box sx={cardHeaderStyle}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2 }}>
-                <Typography className="esteban" variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <PersonIcon /> Informações do Personagem
-                </Typography>
-                {!editMode ? (
-                    <IconButton onClick={() => setEditMode(true)} sx={{ color: 'white' }}><EditIcon /></IconButton>
-                ) : (
-                    <Box>
-                        <IconButton onClick={handleSave} sx={{ color: '#454E30' }}><SaveIcon /></IconButton>
-                        <IconButton onClick={handleCancel} sx={{ color: '#931C4A' }}><CancelIcon /></IconButton>
-                    </Box>
-                )}
-            </Box>
-        </Box>
+}) => {
+    const [avatarModalOpen, setAvatarModalOpen] = useState(false);
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
+    const isSmallScreen = useMediaQuery('(max-width:300px)');
 
-        <Box sx={{ p: 3 }}>
-            <Grid container spacing={3}>
-                {/* Imagem */}
-                <Grid item xs={12} md={3}>
-                    {editMode ? (
-                        <Box
-                            onDrop={handleImageDrop}
-                            onDragOver={handleDragOver}
-                            onClick={handleImageButtonClick}
-                            sx={{
-                                border: '2px dashed #BB8130', borderRadius: 2, padding: 2,
-                                textAlign: 'center', bgcolor: '#756A3422', position: 'relative',
-                                minHeight: '200px', display: 'flex', flexDirection: 'column',
-                                justifyContent: 'center', alignItems: 'center', cursor: 'pointer',
-                                transition: 'all 0.2s',
-                                '&:hover': { bgcolor: '#756A3444', borderColor: '#40150A' },
-                            }}
-                        >
-                            <Typography className="esteban" variant="body2" sx={{ mb: 1, color: '#40150A' }}>
-                                Arraste e solte uma imagem aqui
-                            </Typography>
-                            <Typography className="esteban" variant="body2" sx={{ color: '#BB8130', fontWeight: 'bold' }}>
-                                ou clique para selecionar
-                            </Typography>
-                            <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageFileChange} style={{ display: 'none' }} />
-                            {character.image && (
-                                <Box component="img" src={character.image} alt="Imagem do personagem"
-                                    sx={{ mt: 2, maxWidth: '100%', maxHeight: '250px', borderRadius: 1, border: '2px solid #BB8130' }}
-                                    onClick={(e) => e.stopPropagation()}
-                                />
-                            )}
-                        </Box>
+    const avatarSrc = character.image || UIcon;
+    const tamanhoInfo = determinarTamanho(character.altura || 170);
+
+    // ── XP & Nível ──────────────────────────────────────
+    const xpAtual = character.experiencia || 0;
+    const xpInfo = calcularNivel(xpAtual);
+    const xpInicioNivel = xpInfo.nivel <= 1 ? 0 : TABELA_XP_POR_NIVEL[xpInfo.nivel - 2];
+    const xpTotalNivel  = xpInfo.xpProximoNivel ? xpInfo.xpProximoNivel - xpInicioNivel : 1;
+    const xpProgressPct = xpInfo.xpProximoNivel
+        ? Math.min(100, ((xpAtual - xpInicioNivel) / xpTotalNivel) * 100)
+        : 100;
+
+    /** Atualiza XP e recalcula nível automaticamente */
+    const handleXpChange = (val) => {
+        const newXp = Math.max(0, parseInt(val) || 0);
+        const info  = calcularNivel(newXp);
+        updateField('experiencia', newXp);
+        updateField('nivel', info.nivel);
+    };
+
+    return (
+        <Paper elevation={4} sx={{ ...sectionStyle, mb: 2, overflow: 'hidden' }}>
+            {/* ─── Header bar ── */}
+            <Box sx={cardHeaderStyle}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0, overflow: 'hidden' }}>
+                        <PersonIcon sx={{ flexShrink: 0 }} />
+                        <Typography className="esteban" variant="h6" component="div"
+                            noWrap sx={{ fontSize: { xs: '0.8rem', sm: '1.25rem' } }}>
+                            Informações do Personagem
+                        </Typography>
+                    </Box>
+                    {!editMode ? (
+                        <IconButton onClick={() => setEditMode(true)} sx={{ color: 'white' }}>
+                            <EditIcon />
+                        </IconButton>
                     ) : (
-                        <Box sx={{ textAlign: 'center' }}>
-                            <img src={character.image || UIcon} alt="Character"
-                                style={{ width: '250px', height: '250px', border: '3px solid #BB8130', borderRadius: '10%', objectFit: 'cover' }}
-                            />
+                        <Box>
+                            <IconButton onClick={handleSave} sx={{ color: 'var(--text-primary)' }}><SaveIcon /></IconButton>
+                            <IconButton onClick={handleCancel} sx={{ color: '#931C4A' }}><CancelIcon /></IconButton>
                         </Box>
                     )}
-                </Grid>
+                </Box>
+            </Box>
 
-                {/* Dados básicos */}
-                <Grid item xs={12} md={9}>
-                    <Grid container spacing={2}>
-                        {/* Nome */}
-                        <Grid item xs={12} md={6}>
-                            {editMode ? (
-                                <EditableField fullWidth label="Nome do Personagem" value={character.nome_personagem || ''} onChange={(val) => updateField('nome_personagem', val)} />
-                            ) : (
-                                <Typography className="esteban" variant="h4" sx={{ color: '#40150A', fontWeight: 'bold' }}>{character.nome_personagem}</Typography>
-                            )}
-                        </Grid>
-                        {/* Nível */}
-                        <Grid item xs={6} md={2}>
-                            {editMode ? (
-                                <EditableField fullWidth type="number" label="Nível" value={character.nivel || 1} onChange={(val) => updateField('nivel', parseInt(val) || 1)} />
-                            ) : (
-                                <Box sx={{ background: '#756A34', borderRadius: 2, p: 1, textAlign: 'center' }}>
-                                    <Typography className="esteban" sx={{ color: 'white', fontSize: '12px' }}>Nível</Typography>
-                                    <Typography className="esteban" sx={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>{character.nivel}</Typography>
-                                </Box>
-                            )}
-                        </Grid>
-                        {/* Moedas */}
-                        <Grid item xs={12} md={4}>
-                            <Box sx={{ backgroundColor: '#f5ede4', borderRadius: 2, p: 1.5, border: '1px solid #BB8130' }}>
-                                <Typography className="esteban" sx={{ color: '#40150A', fontSize: '12px', fontWeight: 'bold', mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                    <LocalAtmIcon fontSize="small" /> Moedas
+            <Box sx={{ p: { xs: 1, sm: 2 } }}>
+
+                {/* ═══ Linha 1: Avatar | Dados básicos | Moedas ═══
+                    xs (< 600px)  : empilhados verticalmente, avatar centralizado
+                    sm (600-900)  : avatar auto | dados cresce | moedas auto
+                    md (900-1200) : igual ao sm, chips em linha única
+                    lg (1200px+)  : igual ao md
+                ═══ */}
+                <Grid container spacing={2} alignItems="flex-start">
+
+                    {/* ── Avatar ── */}
+                    <Grid item xs={12} sm="auto"
+                        sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}
+                    >
+                        {editMode ? (
+                            <Box
+                                onDrop={handleImageDrop}
+                                onDragOver={handleDragOver}
+                                onClick={handleImageButtonClick}
+                                sx={{
+                                    border: '2px dashed #BB8130', borderRadius: SP.radius, p: SP.p,
+                                    textAlign: 'center', bgcolor: '#756A3422',
+                                    width: 100, minHeight: 100,
+                                    display: 'flex', flexDirection: 'column',
+                                    justifyContent: 'center', alignItems: 'center', cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    '&:hover': { bgcolor: '#756A3444', borderColor: '#40150A' },
+                                }}
+                            >
+                                <Typography className="esteban" variant="body2" sx={{ color: 'var(--text-primary)', fontSize: 11 }}>
+                                    Arraste uma imagem
                                 </Typography>
-                                <Grid container spacing={1}>
-                                    <MoedaInput label="Platina" value={character.moedas?.platina || 0} onChange={(v) => atualizarMoeda('platina', v)} color="#756A34" bgColor="#e0e5e0" />
-                                    <MoedaInput label="Ouro"    value={character.moedas?.ouro || 0}    onChange={(v) => atualizarMoeda('ouro', v)}    color="#BB8130" bgColor="#f5ebe3" />
-                                    <MoedaInput label="Prata"   value={character.moedas?.prata || 0}   onChange={(v) => atualizarMoeda('prata', v)}   color="#666"    bgColor="#e8e8e8" />
-                                    <MoedaInput label="Cobre"   value={character.moedas?.cobre || 0}   onChange={(v) => atualizarMoeda('cobre', v)}   color="#8B4513" bgColor="#f0dcc8" />
-                                </Grid>
-                                <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#756A34', textAlign: 'center', fontSize: '10px' }}>
-                                    Total: {((character.moedas?.platina || 0) * 1000 + (character.moedas?.ouro || 0) * 100 + (character.moedas?.prata || 0) * 10 + (character.moedas?.cobre || 0)) / 100} M.O
+                                <Typography className="esteban" variant="body2" sx={{ color: '#BB8130', fontWeight: 'bold', fontSize: 11 }}>
+                                    ou clique para selecionar
                                 </Typography>
+                                <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageFileChange} style={{ display: 'none' }} />
+                                {character.image && (
+                                    <Box component="img" src={character.image} alt="Imagem do personagem"
+                                        sx={{
+                                            mt: 1, width: '100%', maxWidth: 100, maxHeight: 100,
+                                            borderRadius: 1, border: '2px solid #BB8130', objectFit: 'cover',
+                                        }}
+                                        onClick={(e) => e.stopPropagation()}
+                                    />
+                                )}
                             </Box>
-                        </Grid>
-                        {/* Classe */}
-                        <Grid item xs={6} md={3}>
-                            {editMode ? (
-                                <EditableField fullWidth label="Classe" value={character.classe || ''} onChange={(val) => updateField('classe', val)} />
-                            ) : (
-                                <Box>
-                                    <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Classe</Typography>
-                                    <Typography className="esteban" sx={{ fontWeight: 'bold' }}>{character.classe || 'Aprendiz'}</Typography>
+                        ) : (
+                            <Box sx={{ position: 'relative' }}>
+                                <Box
+                                    onClick={() => setAvatarModalOpen(true)}
+                                    sx={{
+                                        width: 100, height: 100,
+                                        borderRadius: '10%', overflow: 'hidden',
+                                        border: '3px solid #BB8130', cursor: 'pointer',
+                                        position: 'relative',
+                                        '&:hover .zoom-icon': { opacity: 1 },
+                                    }}
+                                >
+                                    <img src={avatarSrc} alt="Character"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                    <Box className="zoom-icon" sx={{
+                                        position: 'absolute', inset: 0,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        backgroundColor: 'rgba(0,0,0,0.3)', opacity: 0,
+                                        transition: 'opacity .2s',
+                                    }}>
+                                        <ZoomInIcon sx={{ color: 'white', fontSize: 28 }} />
+                                    </Box>
                                 </Box>
-                            )}
+
+                                {/* Modal expandido — 800px */}
+                                <Modal
+                                    open={avatarModalOpen}
+                                    onClose={() => setAvatarModalOpen(false)}
+                                    closeAfterTransition
+                                    slots={{ backdrop: Backdrop }}
+                                    slotProps={{ backdrop: { timeout: 300 } }}
+                                >
+                                    <Fade in={avatarModalOpen}>
+                                        <Box sx={{
+                                            position: 'absolute', top: '50%', left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            bgcolor: 'var(--surface-paper)', borderRadius: 2,
+                                            boxShadow: 24, p: 1,
+                                            width: { xs: '92vw', sm: '80vw', md: '60vw', lg: 800 },
+                                            maxWidth: 800, maxHeight: '90vh',
+                                            outline: 'none',
+                                        }}>
+                                            <IconButton
+                                                onClick={() => setAvatarModalOpen(false)}
+                                                sx={{ position: 'absolute', top: 4, right: 4, bgcolor: '#00000044', color: 'white', '&:hover': { bgcolor: '#00000088' } }}
+                                                size="small"
+                                            >
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                            <img src={avatarSrc} alt="Character"
+                                                style={{
+                                                    width: '100%', height: 'auto',
+                                                    maxHeight: '85vh',
+                                                    borderRadius: 8, objectFit: 'contain',
+                                                }}
+                                            />
+                                        </Box>
+                                    </Fade>
+                                </Modal>
+                            </Box>
+                        )}
+                    </Grid>
+
+                    {/* ── Dados básicos ── */}
+                    <Grid item xs={12} sm>
+
+                        {/* Nome + Nível
+                            xs: Nome(9 cols) | Nível(3 cols)
+                            sm+: Nome(10 cols) | Nível(2 cols)
+                        */}
+                        <Grid container spacing={1} alignItems="center" sx={{ mb: 0.75 }}>
+                            <Grid item xs={9} sm={10}>
+                                {editMode ? (
+                                    <EditableField fullWidth label="Nome do Personagem"
+                                        value={character.nome_personagem || ''}
+                                        onChange={(val) => updateField('nome_personagem', val)} />
+                                ) : (
+                                    <Typography className="esteban" variant="h4" sx={{
+                                    color: 'var(--text-primary)', fontWeight: 'bold',
+                                        fontSize: { xs: '1rem', sm: '1.4rem', md: '2.125rem' },
+                                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                                    }}>
+                                        {character.nome_personagem}
+                                    </Typography>
+                                )}
+                            </Grid>
+                            <Grid item xs={3} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                {editMode ? (
+                                    <EditableField fullWidth type="number" label="Nível"
+                                        value={character.nivel || 1}
+                                        onChange={(val) => updateField('nivel', parseInt(val) || 1)} />
+                                ) : (
+                                    <Paper sx={{
+                                        background: 'var(--panel-bg)', borderRadius: SP.radius,
+                                        px: 1.5, py: 0.5, textAlign: 'center', width: 'fit-content',
+                                    }}>
+                                        <Typography className="esteban" sx={{ color: 'white', fontSize: 10, lineHeight: 1 }}>Nível</Typography>
+                                        <Typography className="esteban" sx={{ color: 'white', fontWeight: 'bold', fontSize: 22, lineHeight: 1 }}>
+                                            {character.nivel}
+                                        </Typography>
+                                    </Paper>
+                                )}
+                            </Grid>
                         </Grid>
-                        {/* Espécie */}
-                        <Grid item xs={6} md={3}>
-                            {editMode ? (
-                                <FormControl fullWidth>
-                                    <InputLabel>Espécie</InputLabel>
-                                    <Select value={character.especie || ''} label="Espécie" onChange={(e) => updateField('especie', e.target.value)}>
-                                        {Object.entries(especiesMap).map(([key, value]) => (
-                                            <MenuItem key={key} value={key}>{value}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            ) : (
-                                <Box>
-                                    <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Espécie</Typography>
-                                    <Typography className="esteban" sx={{ fontWeight: 'bold' }}>{especiesMap[character.especie] || character.especie}</Typography>
-                                </Box>
-                            )}
-                        </Grid>
-                        {/* Gênero */}
-                        <Grid item xs={6} md={3}>
-                            {editMode ? (
-                                <FormControl fullWidth>
-                                    <InputLabel>Gênero</InputLabel>
-                                    <Select value={character.genero || ''} label="Gênero" onChange={(e) => updateField('genero', e.target.value)}>
-                                        <MenuItem value="Masculino">Masculino</MenuItem>
-                                        <MenuItem value="Feminino">Feminino</MenuItem>
-                                        <MenuItem value="Outro">Outro</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            ) : (
-                                <Box>
-                                    <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Gênero</Typography>
-                                    <Typography className="esteban" sx={{ fontWeight: 'bold' }}>{character.genero}</Typography>
-                                </Box>
-                            )}
-                        </Grid>
-                        {/* Idade */}
-                        <Grid item xs={6} md={3}>
-                            {editMode ? (
-                                <EditableField fullWidth type="number" label="Idade" value={character.idade || 0} onChange={(val) => updateField('idade', parseInt(val) || 0)} />
-                            ) : (
-                                <Box>
-                                    <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Idade</Typography>
-                                    <Typography className="esteban" sx={{ fontWeight: 'bold' }}>{character.idade} anos</Typography>
-                                </Box>
-                            )}
-                        </Grid>
-                        {/* Altura */}
-                        <Grid item xs={6} md={3}>
-                            {editMode ? (
-                                <EditableField fullWidth type="number" label="Altura (cm)" value={character.altura || 170} onChange={(val) => updateField('altura', parseInt(val) || 170)} inputProps={{ min: 1, max: 5000 }} />
-                            ) : (
-                                <Tooltip title={<Box><Typography variant="caption" sx={{ fontWeight: 'bold' }}>Tamanho: {determinarTamanho(character.altura || 170).nome}</Typography><Typography variant="caption" sx={{ display: 'block' }}>{determinarTamanho(character.altura || 170).descricao}</Typography></Box>} arrow>
-                                    <Box sx={{ cursor: 'help' }}>
-                                        <Typography className="esteban" sx={{ color: '#5B1F0F', fontSize: '12px' }}>Altura</Typography>
-                                        <Typography className="esteban" sx={{ fontWeight: 'bold' }}>
-                                            {character.altura || 170} cm
-                                            <Chip label={determinarTamanho(character.altura || 170).nome} size="small" sx={{ ml: 1, fontSize: '10px', height: '18px', backgroundColor: '#f5ebe3' }} />
+
+                        {/* ── Barra de Experiência ── */}
+                        {editMode ? (
+                            <Box sx={{ mb: 1.5 }}>
+                                <EditableField
+                                    fullWidth type="number" label="Experiência (XP)"
+                                    value={character.experiencia || 0}
+                                    onChange={handleXpChange}
+                                    inputProps={{ min: 0 }}
+                                />
+                            </Box>
+                        ) : (
+                            <Box sx={{ mb: 1.5 }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.4 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                        <EmojiEventsIcon sx={{ fontSize: 13, color: '#BB8130' }} />
+                                        <Typography sx={{ fontSize: 11, fontWeight: 'bold', color: 'var(--text-primary)' }}>XP</Typography>
+                                        <Typography sx={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                                            {xpAtual.toLocaleString('pt-BR')}
+                                            {xpInfo.xpProximoNivel
+                                                ? ` / ${xpInfo.xpProximoNivel.toLocaleString('pt-BR')}`
+                                                : ' — Nível máximo'}
                                         </Typography>
                                     </Box>
-                                </Tooltip>
-                            )}
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
+                                    {xpInfo.xpProximoNivel && (
+                                        <Typography sx={{ fontSize: 10, color: 'var(--text-muted)' }}>
+                                            {xpInfo.xpFaltando.toLocaleString('pt-BR')} p/ Nv {xpInfo.nivel + 1}
+                                        </Typography>
+                                    )}
+                                </Box>
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={xpProgressPct}
+                                    sx={{
+                                        height: 6, borderRadius: 3,
+                                        backgroundColor: 'rgba(187,129,48,0.18)',
+                                        '& .MuiLinearProgress-bar': {
+                                            borderRadius: 3,
+                                            background: xpProgressPct >= 100
+                                                ? 'linear-gradient(90deg, #BB8130, #FFD700)'
+                                                : 'linear-gradient(90deg, #756A34, #BB8130)',
+                                        },
+                                    }}
+                                />
+                            </Box>
+                        )}
 
-            {/* Antecedente & Descrição */}
-            <Box sx={{ mt: 2 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
-                        <Accordion sx={{ backgroundColor: '#f5f3eb', borderLeft: '4px solid #AB6422' }}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 'bold', color: '#40150A' }}>
-                                    <HistoryEduIcon fontSize="small" /> Antecedente: {character.antecedente?.nome || 'Não definido'}
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails sx={{ backgroundColor: '#faf8f5' }}>
+                        {/* Info chips: Classe | Espécie | Gênero | Idade | Altura
+                            xs:  Classe(12) Espécie(12) Gênero(12) Idade(6) Altura(6)  — campos altos empilhados, núm lado a lado
+                            sm:  Classe(4)  Espécie(4)  Gênero(4)  Idade(6) Altura(6)  — 3 + 2
+                            md:  Classe(3)  Espécie(3)  Gênero(2)  Idade(2) Altura(2)  — linha única (=12)
+                        */}
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} sm={4} md={3}>
                                 {editMode ? (
-                                    <>
-                                        <EditableField fullWidth label="Nome do Antecedente" value={character.antecedente?.nome || ''} onChange={(val) => updateField('antecedente.nome', val)} sx={{ mb: 2 }} />
-                                        <EditableField fullWidth multiline rows={4} label="Descrição do Antecedente" value={character.antecedente?.descricao || ''} onChange={(val) => updateField('antecedente.descricao', val)} />
-                                    </>
+                                    <EditableField fullWidth label="Classe"
+                                        value={character.classe || ''}
+                                        onChange={(val) => updateField('classe', val)} />
                                 ) : (
-                                    <Typography className="esteban" variant="body2" sx={{ wordBreak: 'break-word', lineHeight: 1.6, color: '#5B1F0F' }}>
-                                        {character.antecedente?.descricao || 'Sem descrição'}
-                                    </Typography>
+                                    <InfoChip label="Classe">{character.classe || 'Aprendiz'}</InfoChip>
                                 )}
-                                {character.antecedente?.habilidades && character.antecedente.habilidades.length > 0 && (
-                                    <Box sx={{ mt: 2 }}>
-                                        <Typography className="esteban" variant="subtitle2" sx={{ color: '#40150A', mb: 1, fontWeight: 'bold' }}>Habilidades do Antecedente:</Typography>
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {character.antecedente.habilidades.map((hab, idx) => (
-                                                <Chip key={idx} label={hab} size="small" sx={{ backgroundColor: hab.includes('-') ? '#931C4A' : '#454E30', color: 'white' }} />
+                            </Grid>
+
+                            <Grid item xs={12} sm={4} md={3}>
+                                {editMode ? (
+                                    <FormControl fullWidth>
+                                        <InputLabel>Espécie</InputLabel>
+                                        <Select value={character.especie || ''} label="Espécie" onChange={(e) => updateField('especie', e.target.value)}>
+                                            {Object.entries(especiesMap).map(([key, value]) => (
+                                                <MenuItem key={key} value={key}>{value}</MenuItem>
                                             ))}
-                                        </Box>
-                                    </Box>
-                                )}
-                            </AccordionDetails>
-                        </Accordion>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Accordion sx={{ backgroundColor: '#f5f3eb', borderLeft: '4px solid #162A22' }}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 'bold', color: '#40150A' }}>
-                                    <PersonIcon fontSize="small" /> Descrição do Personagem
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails sx={{ backgroundColor: '#faf8f5' }}>
-                                {editMode ? (
-                                    <EditableField fullWidth multiline rows={6} label="Descrição" value={character.descricao || ''} onChange={(val) => updateField('descricao', val)} />
+                                        </Select>
+                                    </FormControl>
                                 ) : (
-                                    <Typography className="esteban" variant="body2" sx={{ wordBreak: 'break-word', lineHeight: 1.6, color: '#5B1F0F' }}>
-                                        {character.descricao || 'Sem descrição'}
-                                    </Typography>
+                                    <InfoChip label="Espécie">{especiesMap[character.especie] || character.especie}</InfoChip>
                                 )}
-                            </AccordionDetails>
-                        </Accordion>
+                            </Grid>
+
+                            <Grid item xs={12} sm={4} md={2}>
+                                {editMode ? (
+                                    <FormControl fullWidth>
+                                        <InputLabel>Gênero</InputLabel>
+                                        <Select value={character.genero || ''} label="Gênero" onChange={(e) => updateField('genero', e.target.value)}>
+                                            <MenuItem value="Masculino">Masculino</MenuItem>
+                                            <MenuItem value="Feminino">Feminino</MenuItem>
+                                            <MenuItem value="Outro">Outro</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                ) : (
+                                    <InfoChip label="Gênero">{character.genero}</InfoChip>
+                                )}
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2}>
+                                {editMode ? (
+                                    <EditableField fullWidth type="number" label="Idade"
+                                        value={character.idade || 0}
+                                        onChange={(val) => updateField('idade', parseInt(val) || 0)} />
+                                ) : (
+                                    <InfoChip label="Idade">{character.idade} anos</InfoChip>
+                                )}
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2}>
+                                {editMode ? (
+                                    <EditableField fullWidth type="number" label="Altura (cm)"
+                                        value={character.altura || 170}
+                                        onChange={(val) => updateField('altura', parseInt(val) || 170)}
+                                        inputProps={{ min: 1, max: 5000 }} />
+                                ) : (
+                                    <Tooltip title={
+                                        <Box>
+                                            <Typography variant="caption" sx={{ fontWeight: 'bold' }}>Tamanho: {tamanhoInfo.nome}</Typography>
+                                            <Typography variant="caption" sx={{ display: 'block' }}>{tamanhoInfo.descricao}</Typography>
+                                        </Box>
+                                    } arrow>
+                                        <Box sx={{ cursor: 'help' }}>
+                                            <Typography className="esteban" sx={{ color: 'var(--text-primary)', fontSize: 10, lineHeight: 1.2 }}>Altura</Typography>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 14, lineHeight: 1.3 }}>
+                                                    {character.altura || 170} cm
+                                                </Typography>
+                                                <Chip label={tamanhoInfo.nome} size="small"
+                                                    sx={{ fontSize: 9, height: 18}} />
+                                            </Box>
+                                        </Box>
+                                    </Tooltip>
+                                )}
+                            </Grid>
+                        </Grid>
+
+                    </Grid>{/* fim Dados básicos */}
+
+                    {/* ── Moedas ── */}
+                    <Grid item xs={12} sm="auto">
+                        <Paper sx={{
+                            p: { xs: 1, sm: SP.p }, px: { xs: 1.5, sm: 3 }, borderRadius: SP.radius,
+                            backgroundColor: 'var(--surface-warm)', border: '1px solid #BB8130',
+                        }}>
+                            <Typography className="esteban" sx={{
+                                color: 'var(--text-primary)', fontSize: 11, fontWeight: 'bold', mb: 0.75,
+                                display: 'flex', alignItems: 'center', gap: 0.5,
+                            }}>
+                                <LocalAtmIcon sx={{ fontSize: 16 }} /> Moedas
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                                <MoedaInput label="Platina" value={character.moedas?.platina || 0} onChange={(v) => atualizarMoeda('platina', v)} color={isDark ? 'var(--text-primary)' : '#756A34'} bgColor={isDark ? 'var(--surface-default)' : '#e0e5e0'} />
+                                <MoedaInput label="Ouro"    value={character.moedas?.ouro || 0}    onChange={(v) => atualizarMoeda('ouro', v)}    color={isDark ? 'var(--text-primary)' : '#BB8130'} bgColor={isDark ? 'var(--surface-warm)'    : '#f5ebe3'} />
+                                <MoedaInput label="Prata"   value={character.moedas?.prata || 0}   onChange={(v) => atualizarMoeda('prata', v)}   color={isDark ? 'var(--text-primary)' : '#666'}    bgColor={isDark ? 'var(--surface-alt)'     : '#e8e8e8'} />
+                                <MoedaInput label="Cobre"   value={character.moedas?.cobre || 0}   onChange={(v) => atualizarMoeda('cobre', v)}   color={isDark ? 'var(--text-primary)' : '#8B4513'} bgColor={isDark ? 'var(--surface-raised)'  : '#f0dcc8'} />
+                            </Box>
+                            <Typography variant="caption" sx={{
+                                display: 'block', mt: 0.75, color: 'var(--text-primary)',
+                                textAlign: 'center', fontSize: 10,
+                            }}>
+                                Total: {((character.moedas?.platina || 0) * 1000 + (character.moedas?.ouro || 0) * 100 + (character.moedas?.prata || 0) * 10 + (character.moedas?.cobre || 0)) / 100} M.O
+                            </Typography>
+                        </Paper>
                     </Grid>
-                </Grid>
+
+                </Grid>{/* fim Linha 1 */}
+
+                {/* ═══ Linha 2: Antecedente | Descrição
+                    xs: empilhados (12 cada)
+                    sm+: lado a lado (6 cada)
+                ═══ */}
+                <Grid container spacing={2} sx={{ mt: 1 }}>
+
+                    <Grid item xs={12} sm={6}>
+                        <Paper sx={{
+                            p: { xs: 1, sm: SP.p }, px: { xs: 1, sm: 3 }, borderRadius: SP.radius,
+                            backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #AB6422',
+                            maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
+                        }}>
+                            <Typography className="esteban" sx={{
+                                display: 'flex', alignItems: 'center', gap: 0.5,
+                                fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
+                                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                            }}>
+                                <HistoryEduIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    Antecedente: {character.antecedente?.nome || 'Não definido'}
+                                </Box>
+                            </Typography>
+                            {editMode ? (
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    <EditableField fullWidth label="Nome do Antecedente"
+                                        value={character.antecedente?.nome || ''}
+                                        onChange={(val) => updateField('antecedente.nome', val)} />
+                                    <EditableField fullWidth multiline rows={3} label="Descrição do Antecedente"
+                                        value={character.antecedente?.descricao || ''}
+                                        onChange={(val) => updateField('antecedente.descricao', val)} />
+                                </Box>
+                            ) : (
+                                <Typography className="esteban" variant="body2" sx={{
+                                    wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                }}>
+                                    {character.antecedente?.descricao || 'Sem descrição'}
+                                </Typography>
+                            )}
+                            {character.antecedente?.habilidades && character.antecedente.habilidades.length > 0 && (
+                                <Box sx={{ mt: 1 }}>
+                                    <Typography className="esteban" variant="caption" sx={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: 10 }}>
+                                        Habilidades:
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
+                                        {character.antecedente.habilidades.map((hab, idx) => (
+                                            <Chip key={idx} label={hab} size="small"
+                                                sx={{
+                                                    backgroundColor: hab.includes('-') ? '#931C4A' : '#454E30',
+                                                    color: 'white', fontSize: 10, height: 22,
+                                                }} />
+                                        ))}
+                                    </Box>
+                                </Box>
+                            )}
+                        </Paper>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <Paper sx={{
+                            p: { xs: 1, sm: SP.p }, px: { xs: 1, sm: 3 }, borderRadius: SP.radius,
+                            backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #162A22',
+                            maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
+                        }}>
+                            <Typography className="esteban" sx={{
+                                display: 'flex', alignItems: 'center', gap: 0.5,
+                                fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
+                                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                            }}>
+                                <PersonIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    Descrição do Personagem
+                                </Box>
+                            </Typography>
+                            {editMode ? (
+                                <EditableField fullWidth multiline rows={5} label="Descrição"
+                                    value={character.descricao || ''}
+                                    onChange={(val) => updateField('descricao', val)} />
+                            ) : (
+                                <Typography className="esteban" variant="body2" sx={{
+                                    wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                }}>
+                                    {character.descricao || 'Sem descrição'}
+                                </Typography>
+                            )}
+                        </Paper>
+                    </Grid>
+
+                </Grid>{/* fim Linha 2 */}
+
             </Box>
-        </Box>
-    </Paper>
-);
+        </Paper>
+    );
+};
 
 export default CharacterHeader;

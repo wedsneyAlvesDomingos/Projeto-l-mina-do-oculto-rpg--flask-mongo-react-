@@ -1,5 +1,6 @@
 SECRET_KEY = "BOKISLAD"
 REACT_APP_LISTEN_ADDRESS=http://localhost:5055
+FRONTEND_URL=http://localhost:5009
 MAIL_PASSWORD ='kuly zlhy emwp bpfw'
 POSTGRES_USER=ldoBanco
 POSTGRES_PASSWORD=bancoLDO2025

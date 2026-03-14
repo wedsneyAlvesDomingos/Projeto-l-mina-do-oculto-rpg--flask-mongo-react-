@@ -3,7 +3,7 @@
  * Extrai TODO o estado, handlers e lógica de criarPersonagem.js
  * Refatoração UI-005 — Fase 4
  */
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -72,10 +72,32 @@ export const mutacaoData = {
 };
 
 const VALIDATION_PATTERNS = {
-    nome: /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/,
+    nome: /^[a-zA-Z0-9À-ÿ\s'.,-]{2,50}$/,
     descricao: /^[\s\S]{0,2000}$/,
     idade: /^(1[0-9]|[2-9][0-9]|[1-9][0-9]{2}|1000)$/,
     dinheiro: /^\d+(\.\d{1,2})?$/
+};
+
+// ============================================================================
+// LOCALSTORAGE — Rascunho de criação
+// ============================================================================
+const STORAGE_KEY = 'ldo_char_creation_draft';
+
+const loadDraft = () => {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const draft = JSON.parse(raw);
+        const today = new Date().toISOString().slice(0, 10);
+        if (draft._savedDate !== today) {
+            localStorage.removeItem(STORAGE_KEY);
+            return null;
+        }
+        return draft;
+    } catch {
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+    }
 };
 
 // ============================================================================
@@ -85,6 +107,7 @@ export default function useCharCreation() {
     const navigate = useNavigate();
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const fileInputRef = useRef();
+    const [draft] = useState(() => loadDraft());
 
     // ------------------------------------------------------------------
     // ESTADO — Atributos de modal
@@ -199,11 +222,118 @@ export default function useCharCreation() {
     const [mensagem, setMensagem] = useState('');
 
     // ------------------------------------------------------------------
+    // ESTADO — Modal de escolha de antecedente
+    // ------------------------------------------------------------------
+    const [antecedenteChoiceModalOpen, setAntecedenteChoiceModalOpen] = useState(false);
+    const [antecedenteEscolhas, setAntecedenteEscolhas] = useState(
+        { habilidades: [], proficiencias: [] }
+    );
+
+    // ------------------------------------------------------------------
     // ESTADO — Feedback / Validação
     // ------------------------------------------------------------------
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formErrors, setFormErrors] = useState({});
+
+    // ============================================================
+    // LOCALSTORAGE — Hidratar estado do rascunho no mount
+    // ============================================================
+    useEffect(() => {
+        if (!draft) return;
+        if (draft.charName) setCharName(draft.charName);
+        if (draft.charDiscription != null) setCharDiscription(draft.charDiscription);
+        if (draft.gender) setGender(draft.gender);
+        if (draft.age != null) setAge(draft.age);
+        if (draft.altura != null) setAltura(draft.altura);
+        if (draft.image != null) setImage(draft.image);
+        if (draft.tabIndex != null) setTabIndex(draft.tabIndex);
+        if (draft.especieSelecionada) setEspecieSelecionada(draft.especieSelecionada);
+        if (draft.regaliaEscolhida) setRegaliaEscolhida(draft.regaliaEscolhida);
+        if (draft.especieSelecionadaLista) setEspecieSelecionadaLista(draft.especieSelecionadaLista);
+        if (draft.allValues) setAllValues(draft.allValues);
+        if (draft.autoIncrementedValues) setAutoIncrementedValues(draft.autoIncrementedValues);
+        if (draft.values) setValues(draft.values);
+        if (draft.valuesPoints) setValuesPoints(draft.valuesPoints);
+        if (draft.autoIncrementedProfValues) setAutoIncrementedProfValues(draft.autoIncrementedProfValues);
+        if (draft.checkedGroups) setCheckedGroups(draft.checkedGroups);
+        if (draft.checkedOrder) setCheckedOrder(draft.checkedOrder);
+        if (draft.RegaliasDeAprendiz) setRegaliasDeAprendiz(draft.RegaliasDeAprendiz);
+        if (draft.RegaliasDeAprendizSelecionada) setRegaliasDeAprendizSelecionada(draft.RegaliasDeAprendizSelecionada);
+        if (draft.RegaliaComprada) setRegaliaComprada(draft.RegaliaComprada);
+        if (draft.pontosDeRegalia != null) setPontosDeRegalia(draft.pontosDeRegalia);
+        if (draft.professionReg) setProfessionReg(draft.professionReg);
+        if (draft.professionRegAntecedente) setProfessionRegAntecedente(draft.professionRegAntecedente);
+        if (draft.selectedId) setSelectedId(draft.selectedId);
+        if (draft.selectedIdModal) setSelectedIdModal(draft.selectedIdModal);
+        if (draft.selectedItems) setSelectedItems(draft.selectedItems);
+        if (draft.selectedItemsBG) setSelectedItemsBG(draft.selectedItemsBG);
+        if (draft.finallMoney != null) setFinallMoney(draft.finallMoney);
+        if (draft.inicialMoney != null) setInicialMoney(draft.inicialMoney);
+        if (draft.group1) setGroup1(draft.group1);
+        if (draft.group2) setGroup2(draft.group2);
+        if (draft.antecedenteEscolhas) setAntecedenteEscolhas(draft.antecedenteEscolhas);
+        if (draft.selectedAttribute) setSelectedAttribute(draft.selectedAttribute);
+        if (draft.selectedAttributeCombatente) setSelectedAttributeCombatente(draft.selectedAttributeCombatente);
+        if (draft.selectedAttributeCombatente2) setSelectedAttributeCombatente2(draft.selectedAttributeCombatente2);
+        if (draft.selectedAttributeNovico) setSelectedAttributeNovico(draft.selectedAttributeNovico);
+        if (draft.selectedAttributeNovico2) setSelectedAttributeNovico2(draft.selectedAttributeNovico2);
+        if (draft.selectedAttributeIniciado) setSelectedAttributeIniciado(draft.selectedAttributeIniciado);
+        if (draft.selectedAttributeIniciado2) setSelectedAttributeIniciado2(draft.selectedAttributeIniciado2);
+        if (draft.selectedAttributeFeiticeiro) setSelectedAttributeFeiticeiro(draft.selectedAttributeFeiticeiro);
+        if (draft.selectedAttributeFeiticeiro2) setSelectedAttributeFeiticeiro2(draft.selectedAttributeFeiticeiro2);
+        if (draft.selectedAttributeDiplomata) setSelectedAttributeDiplomata(draft.selectedAttributeDiplomata);
+        if (draft.selectedAttributeExplorador) setSelectedAttributeExplorador(draft.selectedAttributeExplorador);
+        if (draft.selectedAttributeExplorador2) setSelectedAttributeExplorador2(draft.selectedAttributeExplorador2);
+        if (draft.selectedAttributeAcademico) setSelectedAttributeAcademico(draft.selectedAttributeAcademico);
+        if (draft.selectedAttributeAcademico2) setSelectedAttributeAcademico2(draft.selectedAttributeAcademico2);
+        if (draft.selectedProfModal) setSelectedProfModal(draft.selectedProfModal);
+        if (draft.antecedenteSelecionadoNome) {
+            const ant = antecedentes.find(a => a.nome === draft.antecedenteSelecionadoNome);
+            if (ant) {
+                setAntecedenteSelecionado(ant);
+                setChosenAntecedentes(prev => new Set(prev).add(ant));
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // ============================================================
+    // LOCALSTORAGE — Salvar rascunho automaticamente (debounce 2s)
+    // ============================================================
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            try {
+                const draftData = {
+                    _savedDate: new Date().toISOString().slice(0, 10),
+                    charName, charDiscription, gender, age, altura, image, tabIndex,
+                    especieSelecionada, regaliaEscolhida, especieSelecionadaLista,
+                    antecedenteSelecionadoNome: antecedenteSelecionado?.nome || null,
+                    allValues, autoIncrementedValues,
+                    values, valuesPoints, autoIncrementedProfValues,
+                    checkedGroups, checkedOrder,
+                    RegaliasDeAprendiz, RegaliasDeAprendizSelecionada, pontosDeRegalia,
+                    RegaliaComprada,
+                    professionReg, professionRegAntecedente, selectedId, selectedIdModal,
+                    selectedItems, selectedItemsBG, finallMoney, inicialMoney,
+                    group1, group2, antecedenteEscolhas,
+                    selectedAttribute,
+                    selectedAttributeCombatente, selectedAttributeCombatente2,
+                    selectedAttributeNovico, selectedAttributeNovico2,
+                    selectedAttributeIniciado, selectedAttributeIniciado2,
+                    selectedAttributeFeiticeiro, selectedAttributeFeiticeiro2,
+                    selectedAttributeDiplomata,
+                    selectedAttributeExplorador, selectedAttributeExplorador2,
+                    selectedAttributeAcademico, selectedAttributeAcademico2,
+                    selectedProfModal,
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(draftData));
+            } catch (e) {
+                console.warn('Falha ao salvar rascunho de criação:', e);
+            }
+        }, 2000);
+        return () => clearTimeout(timer);
+    }); // sem deps — roda após cada render, debounced a 2s
 
     // ============================================================
     // STATS DERIVADOS — Recalculados automaticamente (UI-001)
@@ -221,9 +351,20 @@ export default function useCharCreation() {
         const percepcao = allValues['Percepção'] || 0;
         const medicina = allValues['Medicina'] || 0;
 
-        const pvMax = calcularPontosDeVida(pvBase, fortitude);
-        const estaminaMax = calcularEstamina(atletismo);
-        const pmMax = calcularPontosDeMagia(arcanismo);
+        // Bônus de recursos por regalia de aprendiz (PV, Estamina, Magia)
+        let regaliaPV = 0, regaliaEstamina = 0, regaliaMagia = 0;
+        RegaliasDeAprendiz.forEach(regId => {
+            const regalia = regaliasDeAprendiz.find(r => r.id === regId);
+            if (regalia?.bonusPorRegalia) {
+                regaliaPV += regalia.bonusPorRegalia.pv || 0;
+                regaliaEstamina += regalia.bonusPorRegalia.estamina || 0;
+                regaliaMagia += regalia.bonusPorRegalia.magia || 0;
+            }
+        });
+
+        const pvMax = calcularPontosDeVida(pvBase, fortitude) + regaliaPV;
+        const estaminaMax = calcularEstamina(atletismo) + regaliaEstamina;
+        const pmMax = calcularPontosDeMagia(arcanismo) + regaliaMagia;
         const bonusVel = calcularBonusVelocidade(agilidade);
         const bonusDefAgi = calcularBonusDefesaAgilidade(agilidade);
         const defesaResult = calcularDefesaTotal({ agilidade, defesaArmadura: 0, defesaEscudo: 0, armaduraPesada: false });
@@ -233,6 +374,7 @@ export default function useCharCreation() {
         const velTotal = velBase + bonusVel;
 
         return {
+            pvBase, regaliaPV, regaliaEstamina, regaliaMagia,
             pvMax, estaminaMax, pmMax,
             bonusVel, velBase, velTotal,
             bonusDefAgi, defesaTotal,
@@ -240,7 +382,7 @@ export default function useCharCreation() {
             curaKit: calcularCuraKitMedico(medicina),
             respiracao: calcularTempoRespiracao(fortitude),
         };
-    }, [especieSelecionada, allValues]);
+    }, [especieSelecionada, allValues, RegaliasDeAprendiz]);
 
     // ------------------------------------------------------------------
     // VALORES DERIVADOS SIMPLES
@@ -271,6 +413,7 @@ export default function useCharCreation() {
     };
 
     const setAutoIncrementedValueByName = (nome, valor) => {
+        if (!nome) return;
         setAutoIncrementedValues(prev => ({
             ...prev,
             [nome]: (prev[nome] || 0) + valor
@@ -282,13 +425,14 @@ export default function useCharCreation() {
     };
 
     const removeAutoIncrementedValueByName = (nome, valor) => {
+        if (!nome) return;
         setAutoIncrementedValues(prev => ({
             ...prev,
-            [nome]: (prev[nome] || 0) - valor
+            [nome]: Math.max(0, (prev[nome] || 0) - valor)
         }));
         setAllValues(prev => ({
             ...prev,
-            [nome]: (prev[nome] || 0) - valor
+            [nome]: Math.max(0, (prev[nome] || 0) - valor)
         }));
     };
 
@@ -306,11 +450,11 @@ export default function useCharCreation() {
     const removeAutoIncrementedProfByName = (nome, valor) => {
         setAutoIncrementedProfValues(prev => ({
             ...prev,
-            [nome]: (prev[nome] || 0) - valor
+            [nome]: Math.max(0, (prev[nome] || 0) - valor)
         }));
         setValues(prev => ({
             ...prev,
-            [nome]: (prev[nome] || 0) - valor
+            [nome]: Math.max(0, (prev[nome] || 0) - valor)
         }));
     };
 
@@ -413,6 +557,52 @@ export default function useCharCreation() {
                     removeAutoIncrementedValueByName('Medicina', 1);
                     removeAutoIncrementedValueByName('Investigação', 1);
                     break;
+                case 'ASSISTENTE DE LABORATÓRIO':
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('Alquimia', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Arcanismo', 1);
+                    setEspecieSelecionadaLista([]);
+                    setOpenMutatioModal(false);
+                    break;
+                case 'ASTRÔNOMO':
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Natureza', 2);
+                    removeAutoIncrementedValueByName('História', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    handleRemoveBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1);
+                    break;
+                case 'ATOR':
+                    removeAutoIncrementedValueByName('Performance', 2);
+                    removeAutoIncrementedValueByName('Persuasão', 2);
+                    removeAutoIncrementedValueByName('Sedução', 1);
+                    removeAutoIncrementedValueByName('Enganação', 1);
+                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
+                    break;
+                case 'BANDIDO':
+                    removeAutoIncrementedValueByName('Intimidação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 2);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    handleRemoveBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1);
+                    break;
+                case 'BARBEIRO':
+                    removeAutoIncrementedValueByName('Intuição', 2);
+                    removeAutoIncrementedValueByName('Negociação', 2);
+                    removeAutoIncrementedValueByName('Agilidade', 1);
+                    removeAutoIncrementedValueByName('Destreza', 1);
+                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
+                    break;
+                case 'BATEDOR':
+                    removeAutoIncrementedValueByName('Sobrevivência', 2);
+                    removeAutoIncrementedValueByName('Navegação', 2);
+                    removeAutoIncrementedValueByName('Furtividade', 1);
+                    removeAutoIncrementedValueByName('Percepção', 1);
+                    removeAutoIncrementedProfByName('Ferramentas de ladrão', 1);
+                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
+                    handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
+                    break;
                 case 'AVENTUREIRO':
                     removeAutoIncrementedValueByName('Sobrevivência', 2);
                     removeAutoIncrementedValueByName('Percepção', 2);
@@ -422,8 +612,8 @@ export default function useCharCreation() {
                     handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
                     break;
                 case 'BIBLIOTECÁRIO':
-                    removeAutoIncrementedValueByName('SobreviHistóriavência', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência', 2);
+                    removeAutoIncrementedValueByName('História', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
                     removeAutoIncrementedValueByName('Teologia', 1);
                     removeAutoIncrementedValueByName('Natureza', 1);
                     removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
@@ -454,7 +644,7 @@ export default function useCharCreation() {
                     break;
                 case 'CAMPONÊS':
                     removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName(' Lidar com animais', 2);
+                    removeAutoIncrementedValueByName('Lidar com animais', 2);
                     removeAutoIncrementedValueByName('Fortitude', 1);
                     removeAutoIncrementedValueByName('Destreza', 1);
                     removeAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
@@ -462,7 +652,7 @@ export default function useCharCreation() {
                 case 'CHARLATÃO':
                     removeAutoIncrementedValueByName('Performance', 2);
                     removeAutoIncrementedValueByName('Enganação', 2);
-                    removeAutoIncrementedValueByName('EngPersuasãoanação', 1);
+                    removeAutoIncrementedValueByName('Persuasão', 1);
                     removeAutoIncrementedValueByName('Agilidade', 1);
                     removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
                     handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
@@ -472,6 +662,8 @@ export default function useCharCreation() {
                     removeAutoIncrementedValueByName('Performance', 2);
                     removeAutoIncrementedValueByName('Agilidade', 1);
                     removeAutoIncrementedValueByName('Acrobacia', 1);
+                    setEspecieSelecionadaLista([]);
+                    setOpenMutatioModal(false);
                     break;
                 case 'COMERCIANTE':
                     removeAutoIncrementedValueByName('Negociação', 2);
@@ -498,7 +690,7 @@ export default function useCharCreation() {
                 case 'DETETIVE':
                     removeAutoIncrementedValueByName('Investigação', 2);
                     removeAutoIncrementedValueByName('Rastreamento', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                     removeAutoIncrementedValueByName('Intuição', 1);
                     handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
                     break;
@@ -605,7 +797,7 @@ export default function useCharCreation() {
                     removeAutoIncrementedValueByName('História', 1);
                     break;
                 case 'NOBRE':
-                    removeAutoIncrementedValueByName('Jurisprudência', 2);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
                     removeAutoIncrementedValueByName('História', 2);
                     handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
                     handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
@@ -633,7 +825,7 @@ export default function useCharCreation() {
                 case 'PRISIONEIRO':
                     removeAutoIncrementedValueByName('Furtividade', 2);
                     removeAutoIncrementedValueByName('Intimidação', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência', 1);
+                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                     removeAutoIncrementedValueByName('Agilidade', 1);
                     break;
                 case 'REFUGIADO':
@@ -651,6 +843,11 @@ export default function useCharCreation() {
                 default:
                     break;
             }
+            // Desfazer escolhas do modal de antecedente (Força/Destreza, Proficiências etc.)
+            antecedenteEscolhas.habilidades.forEach(h => removeAutoIncrementedValueByName(h.nome, h.pontos));
+            antecedenteEscolhas.proficiencias.forEach(p => removeAutoIncrementedProfByName(p.nome, p.pontos));
+            setAntecedenteEscolhas({ habilidades: [], proficiencias: [] });
+
             setAntecedenteSelecionado(null);
             return;
         }
@@ -726,6 +923,51 @@ export default function useCharCreation() {
                 setAutoIncrementedValueByName('Medicina', 1);
                 setAutoIncrementedValueByName('Investigação', 1);
                 break;
+            case 'ASSISTENTE DE LABORATÓRIO':
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('Alquimia', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Arcanismo', 1);
+                setOpenMutatioModal(true);
+                break;
+            case 'ASTRÔNOMO':
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Natureza', 2);
+                setAutoIncrementedValueByName('História', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
+                handleChangeShopBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1);
+                break;
+            case 'ATOR':
+                setAutoIncrementedValueByName('Performance', 2);
+                setAutoIncrementedValueByName('Persuasão', 2);
+                setAutoIncrementedValueByName('Sedução', 1);
+                setAutoIncrementedValueByName('Enganação', 1);
+                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
+                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
+                break;
+            case 'BANDIDO':
+                setAutoIncrementedValueByName('Intimidação', 2);
+                setAutoIncrementedValueByName('Furtividade', 2);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
+                handleChangeShopBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1);
+                break;
+            case 'BARBEIRO':
+                setAutoIncrementedValueByName('Intuição', 2);
+                setAutoIncrementedValueByName('Negociação', 2);
+                setAutoIncrementedValueByName('Agilidade', 1);
+                setAutoIncrementedValueByName('Destreza', 1);
+                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
+                break;
+            case 'BATEDOR':
+                setAutoIncrementedValueByName('Sobrevivência', 2);
+                setAutoIncrementedValueByName('Navegação', 2);
+                setAutoIncrementedValueByName('Furtividade', 1);
+                setAutoIncrementedValueByName('Percepção', 1);
+                setAutoIncrementedProfByName('Ferramentas de ladrão', 1);
+                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
+                handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
+                break;
             case 'AVENTUREIRO':
                 setAutoIncrementedValueByName('Sobrevivência', 2);
                 setAutoIncrementedValueByName('Percepção', 2);
@@ -735,8 +977,8 @@ export default function useCharCreation() {
                 handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
                 break;
             case 'BIBLIOTECÁRIO':
-                setAutoIncrementedValueByName('SobreviHistóriavência', 2);
-                setAutoIncrementedValueByName('Jurisprudência', 2);
+                setAutoIncrementedValueByName('História', 2);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
                 setAutoIncrementedValueByName('Teologia', 1);
                 setAutoIncrementedValueByName('Natureza', 1);
                 setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
@@ -767,7 +1009,7 @@ export default function useCharCreation() {
                 break;
             case 'CAMPONÊS':
                 setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName(' Lidar com animais', 2);
+                setAutoIncrementedValueByName('Lidar com animais', 2);
                 setAutoIncrementedValueByName('Fortitude', 1);
                 setAutoIncrementedValueByName('Destreza', 1);
                 setAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
@@ -775,7 +1017,7 @@ export default function useCharCreation() {
             case 'CHARLATÃO':
                 setAutoIncrementedValueByName('Performance', 2);
                 setAutoIncrementedValueByName('Enganação', 2);
-                setAutoIncrementedValueByName('EngPersuasãoanação', 1);
+                setAutoIncrementedValueByName('Persuasão', 1);
                 setAutoIncrementedValueByName('Agilidade', 1);
                 setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
                 handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
@@ -812,7 +1054,7 @@ export default function useCharCreation() {
             case 'DETETIVE':
                 setAutoIncrementedValueByName('Investigação', 2);
                 setAutoIncrementedValueByName('Rastreamento', 2);
-                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                 setAutoIncrementedValueByName('Intuição', 1);
                 handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
                 break;
@@ -827,7 +1069,6 @@ export default function useCharCreation() {
                 setAutoIncrementedValueByName('História', 2);
                 setAutoIncrementedValueByName('Atletismo', 2);
                 setAutoIncrementedValueByName('Fortitude', 1);
-                setOpenForcaOuDex(true);
                 handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
                 break;
             case 'ESPIÃO':
@@ -860,13 +1101,11 @@ export default function useCharCreation() {
             case 'GLADIADOR':
                 setAutoIncrementedValueByName('Atletismo', 2);
                 setAutoIncrementedValueByName('Acrobacia', 2);
-                setOpenForcaOuDex(true);
                 setAutoIncrementedValueByName('Fortitude', 1);
                 break;
             case 'GUARDA':
                 setAutoIncrementedValueByName('Atletismo', 2);
                 setAutoIncrementedValueByName('Acrobacia', 2);
-                setOpenProfEsgrimaOuArmadura(true);
                 break;
             case 'HERDEIRO':
                 setAutoIncrementedValueByName('Persuasão', 2);
@@ -891,14 +1130,12 @@ export default function useCharCreation() {
                 setAutoIncrementedValueByName('Investigação', 2);
                 setAutoIncrementedValueByName('História', 1);
                 setAutoIncrementedValueByName('Navegação', 1);
-                setOpenForcaOuDex(true);
                 break;
             case 'MÉDICO DE BECO':
                 setAutoIncrementedValueByName('Medicina', 2);
                 setAutoIncrementedValueByName('Alquimia', 2);
                 setAutoIncrementedValueByName('Furtividade', 1);
                 setAutoIncrementedValueByName('Enganação', 1);
-                setOpenForcaOuDex(true);
                 handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
                 break;
             case 'MENESTREL':
@@ -906,7 +1143,6 @@ export default function useCharCreation() {
                 setAutoIncrementedValueByName('Sedução', 2);
                 setAutoIncrementedValueByName('Persuasão', 1);
                 setAutoIncrementedValueByName('Enganação', 1);
-                setOpenForcaOuDex(true);
                 handleChangeShopBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1);
                 handleChangeShopBG("Kits", { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55 }, 1);
                 break;
@@ -925,7 +1161,7 @@ export default function useCharCreation() {
                 setAutoIncrementedValueByName('História', 1);
                 break;
             case 'NOBRE':
-                setAutoIncrementedValueByName('Jurisprudência', 2);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
                 setAutoIncrementedValueByName('História', 2);
                 handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
                 handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
@@ -953,7 +1189,7 @@ export default function useCharCreation() {
             case 'PRISIONEIRO':
                 setAutoIncrementedValueByName('Furtividade', 2);
                 setAutoIncrementedValueByName('Intimidação', 2);
-                setAutoIncrementedValueByName('Jurisprudência', 1);
+                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
                 setAutoIncrementedValueByName('Agilidade', 1);
                 break;
             case 'REFUGIADO':
@@ -971,6 +1207,24 @@ export default function useCharCreation() {
             default:
                 break;
         }
+
+        // Abrir modal de escolha se o antecedente possuir escolhasHabilidades ou escolhasProficiencias
+        if (
+            (antecedente.escolhasHabilidades?.length > 0 || antecedente.escolhasProficiencias?.length > 0) &&
+            antecedente.nome !== 'ARTESÃO' // Artesão usa ProfessionSelectionModal próprio
+        ) {
+            setAntecedenteChoiceModalOpen(true);
+        }
+    };
+
+    // ============================================================
+    // HANDLER — Confirmar escolha do modal de antecedente
+    // ============================================================
+    const handleAntecedenteChoiceConfirm = (escolhas) => {
+        escolhas.habilidades.forEach(h => setAutoIncrementedValueByName(h.nome, h.pontos));
+        escolhas.proficiencias.forEach(p => setAutoIncrementedProfByName(p.nome, p.pontos));
+        setAntecedenteEscolhas(escolhas);
+        setAntecedenteChoiceModalOpen(false);
     };
 
     // ============================================================
@@ -1147,13 +1401,18 @@ export default function useCharCreation() {
         }
     };
 
-    const handleRemoveBG = (item) => {
-        const index = selectedItemsBG.findIndex(i => i.key === item.key);
+    const handleRemoveBG = (category, item, qty) => {
+        if (!item || typeof item !== 'object') return;
+        const key = `${category}-${item.name}`;
+        const index = selectedItemsBG.findIndex(i => i.key === key);
+        if (index === -1) return;
         const updatedItems = [...selectedItemsBG];
-        updatedItems.splice(index, 1);
+        if (qty && updatedItems[index]?.quantity > qty) {
+            updatedItems[index] = { ...updatedItems[index], quantity: updatedItems[index].quantity - qty };
+        } else {
+            updatedItems.splice(index, 1);
+        }
         setSelectedItemsBG(updatedItems);
-        console.log(updatedItems);
-        console.log(index);
     };
 
     // ============================================================
@@ -1210,6 +1469,7 @@ export default function useCharCreation() {
     const handleProficienciaChange = (nome, newVal) => {
         const prof = proficiencias.find(p => p.nome === nome);
         const maxNiveis = prof.niveis.length;
+        if (newVal < 0) newVal = 0;
         newVal = Math.max(0, Math.min(newVal, maxNiveis));
         const prevVal = values[nome] || 0;
         const prevPoints = valuesPoints[nome] || 0;
@@ -1335,7 +1595,7 @@ export default function useCharCreation() {
         if (!charName || charName.trim() === '') {
             errors.nome = 'Nome do personagem é obrigatório';
         } else if (!VALIDATION_PATTERNS.nome.test(charName)) {
-            errors.nome = 'Nome deve conter apenas letras, espaços, hífens e apóstrofos (2-50 caracteres)';
+            errors.nome = 'Nome inválido (2-50 caracteres, sem caracteres especiais proibidos)';
         }
 
         if (charDiscription && !VALIDATION_PATTERNS.descricao.test(charDiscription)) {
@@ -1343,7 +1603,7 @@ export default function useCharCreation() {
         }
 
         if (!gender || gender.trim() === '') {
-            errors.genero = 'Gênero é obrigatório';
+            errors.genero = 'Gênero é obrigatório (aba: Informações Básicas)';
         }
 
         if (!especieSelecionada) {
@@ -1351,20 +1611,22 @@ export default function useCharCreation() {
         }
 
         if (!antecedenteSelecionado) {
-            errors.antecedente = 'Antecedente é obrigatório';
+            errors.antecedente = 'Antecedente é obrigatório (aba: Antecedente)';
         }
 
         if (RegaliasDeAprendiz.length === 0) {
-            errors.regalias = 'Selecione pelo menos uma regalia de aprendiz';
+            errors.regalias = 'Selecione pelo menos uma regalia de aprendiz (aba: Aprendiz)';
         }
 
         setFormErrors(errors);
-        return Object.keys(errors).length === 0;
+        return errors;
     };
 
     const handleCriarPersonagem = async () => {
-        if (!validateForm()) {
-            setSnackbar({ open: true, message: 'Por favor, corrija os erros no formulário', severity: 'error' });
+        const formErros = validateForm();
+        if (Object.keys(formErros).length > 0) {
+            const errorList = Object.values(formErros).join(' \u2022 ');
+            setSnackbar({ open: true, message: errorList, severity: 'error' });
             return;
         }
 
@@ -1378,19 +1640,65 @@ export default function useCharCreation() {
             return;
         }
 
+        // Construir regaliasCompradas com os custos de pontos de criação
+        // Regra: 4 pontos totais — 1 obrigatório por categoria (aprendiz, espécie, profissão)
+        //        + 1 livre (qualquer categoria ou guardarPonto)
+        const regaliasCompradasCriacao = {};
+        // Aprendiz: 1 ponto cada (exceto guardarPonto)
+        RegaliasDeAprendiz.forEach(id => {
+            if (id !== 'guardarPonto') {
+                regaliasCompradasCriacao[id] = 1;
+            }
+        });
+        // Espécie: 1 ponto
+        if (regaliaEscolhida && (regaliaEscolhida.id || regaliaEscolhida.nome)) {
+            const especieKey = `especie:${regaliaEscolhida.id || regaliaEscolhida.nome}`;
+            regaliasCompradasCriacao[especieKey] = 1;
+        }
+        // Profissão: 1 ponto
+        if (professionReg && professionReg.nome) {
+            const profissaoKey = `profissao:${professionReg.nome}`;
+            regaliasCompradasCriacao[profissaoKey] = 1;
+        }
+
+        // Sanitizar habilidades — remover chaves vazias que possam ter surgido
+        const habilidadesSanitizadas = Object.fromEntries(
+            Object.entries(allValues).filter(([k]) => k && k.trim() !== '')
+        );
+
+        // Converter checkedGroups (título → bool) para grupos_marcados (key → bool)
+        const gruposMarcadosCriacao = {};
+        const gruposRef = [
+            { title: 'Físico', key: 'fisico' },
+            { title: 'Exploração', key: 'exploracao' },
+            { title: 'Conhecimento', key: 'conhecimento' },
+            { title: 'Arcana', key: 'arcana' },
+            { title: 'Social', key: 'social' },
+        ];
+        gruposRef.forEach(g => {
+            if (checkedGroups[g.title]) gruposMarcadosCriacao[g.key] = true;
+        });
+
+        // pontos_de_regalia = total pool = pontos gastos na criação + ponto salvo via guardarPonto
+        // Isso permite que a ficha exiba corretamente "X de Y" (ex: "1 de 4")
+        const totalPontosGastosCriacao = Object.values(regaliasCompradasCriacao)
+            .reduce((acc, v) => acc + (typeof v === 'number' ? v : 1), 0);
+        const totalPontosDeRegalia = totalPontosGastosCriacao + pontosDeRegalia;
+
         const payload = {
             nome_personagem: charName.trim(),
             classe: '',
             image: image,
             nível: 1,
-            pontos_de_regalia: pontosDeRegalia,
+            pontos_de_regalia: totalPontosDeRegalia,
             genero: gender,
             dinheiro: finallMoney,
             idade: age,
             altura: altura,
             descricao: charDiscription?.trim() || '',
             antecedente: antecedenteSelecionado,
-            habilidades: allValues,
+            habilidades: habilidadesSanitizadas,
+            grupos_marcados: gruposMarcadosCriacao,
             condições: {},
             proficiencias: values,
             especie: especieSelecionada,
@@ -1399,7 +1707,13 @@ export default function useCharCreation() {
             regalias_de_classe: {},
             regalias_de_especialization: {},
             regalias_de_profissao: [professionReg],
+            regaliasCompradas: regaliasCompradasCriacao,
             equipamentos: selectedItems,
+            pv_base_especie: statsDerivados.pvBase,
+            velocidade_base_especie: statsDerivados.velBase,
+            pv_regalia_classe: statsDerivados.regaliaPV,
+            pm_regalia_classe: statsDerivados.regaliaMagia,
+            pe_regalia_classe: statsDerivados.regaliaEstamina,
             recursos: {
                 pv_atual: statsDerivados.pvMax,
                 pv_max: statsDerivados.pvMax,
@@ -1434,6 +1748,7 @@ export default function useCharCreation() {
             const data = await response.json();
 
             if (response.ok) {
+                localStorage.removeItem(STORAGE_KEY);
                 setSnackbar({ open: true, message: `Personagem "${charName}" criado com sucesso! (ID: ${data.id})`, severity: 'success' });
                 setTimeout(() => handleNavigateToCharPage(), 1500);
             } else {
@@ -1501,6 +1816,8 @@ export default function useCharCreation() {
 
         // Antecedente
         antecedenteSelecionado, handleAntecedenteChange,
+        antecedenteChoiceModalOpen, setAntecedenteChoiceModalOpen,
+        handleAntecedenteChoiceConfirm,
 
         // Regalias de aprendiz
         RegaliasDeAprendiz, handleRegaliaChange,

@@ -47,7 +47,7 @@ const EquipmentShopTab = React.memo(function EquipmentShopTab({
                         position: 'fixed',
                         bottom: 16,
                         right: 16,
-                        backgroundColor: 'white',
+                        border: '2px solid #7B3311',
                         padding: 2,
                         borderRadius: 2,
                         boxShadow: 3,
@@ -83,7 +83,7 @@ const EquipmentShopTab = React.memo(function EquipmentShopTab({
 
                 {Object.entries(categories).map(([category, items]) => (
                     <Box key={category} my={3}>
-                        <Typography className="esteban" sx={{ color: '#40150A', my: 3 }} variant="h6">{category}</Typography>
+                        <Typography className="esteban" sx={{ color: 'var(--text-primary)', my: 3 }} variant="h6">{category}</Typography>
                         <Grid container spacing={1} sx={{ display: 'flex !important', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'start', gap: 1 }}>
                             {items.map(item => {
                                 const key = `${category}-${item.name}`;
@@ -93,14 +93,14 @@ const EquipmentShopTab = React.memo(function EquipmentShopTab({
                                 return (
                                     item.description ?
                                         <Tooltip title={`${item.description} ${forcaRequisito}`} key={key}>
-                                            <Box sx={{ width: 'fitContent' }}>
+                                            <Box sx={{ width: 'fitContent', background: disabled ? "#ffffff11" : "" }}>
                                                 <Button
                                                     className="esteban"
                                                     variant={selected ? "contained" : "outlined"}
                                                     color={disabled ? "inherit" : "primary"}
                                                     disabled={disabled}
                                                     onClick={() => handleChangeShop(category, item)}
-                                                    sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED" }}
+                                                    sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "" }}
                                                 >
                                                     {item.name} ({item.price} M.O.)
                                                 </Button>
@@ -113,7 +113,7 @@ const EquipmentShopTab = React.memo(function EquipmentShopTab({
                                                 color={disabled ? "inherit" : "primary"}
                                                 disabled={disabled}
                                                 onClick={() => handleChangeShop(category, item)}
-                                                sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "#EDEDED" }}
+                                                sx={{ fontSize: '14px !important', background: selected ? "#40150A" : "" }}
                                             >
                                                 {item.name} ({item.price} M.O.)
                                             </Button>

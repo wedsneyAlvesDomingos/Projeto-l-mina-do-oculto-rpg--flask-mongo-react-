@@ -39,3 +39,6 @@ class Config:
     # Endereço para o front-end React
     LISTEN_ADDRESS = os.getenv('REACT_APP_LISTEN_ADDRESS', 'http://localhost')
 
+    # URL pública do front-end (usada nos links dos e-mails)
+    FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5009')
+

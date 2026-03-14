@@ -449,7 +449,7 @@ export const habilidadesConhecimento = [
         ]
     },
     {
-        title: "Jurisprudência",
+        title: "Jurisprudência (Política e leis)",
         key: "jurisprudencia",
         categoria: "conhecimento",
         description: "Essa Habilidade está relacionada à capacidade de entender as leis e ordem de sociedades estruturadas.",

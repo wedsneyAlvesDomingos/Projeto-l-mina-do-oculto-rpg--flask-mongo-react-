@@ -38,7 +38,8 @@ const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoi
                 size="small"
                 value={value}
                 onChange={(e) => {
-                    (onChange(nome, parseInt(e.target.value) || 0)); console.log(e.target.value);
+                    const val = Math.max(0, parseInt(e.target.value) || 0);
+                    onChange(nome, val);
                 }}
                 inputProps={{ min: 0, max: niveis.length, step: 1 }}
                 sx={{ width: '80px' }}
@@ -60,7 +61,7 @@ const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoi
                                 {nivelDesc}
                             </Typography>
                             {value < nivel && (
-                                <Typography variant="caption" sx={{ color: '#ffb74d', display: 'block', mt: 1 }}>
+                                <Typography variant="caption" sx={{ color: 'var(--text-primary)', display: 'block', mt: 1 }}>
                                     ⚠️ Você precisa de {nivel - value} ponto(s) a mais para desbloquear
                                 </Typography>
                             )}

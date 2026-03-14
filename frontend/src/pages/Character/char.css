@@ -50,7 +50,7 @@
 
 /* Polegar (thumb) da barra de rolagem */
 .descriptionBox::-webkit-scrollbar-thumb {
-  background-color: #7B3311;
+  background-color: var(--color-scrollbar);
   border-radius: 5px;
 }
 
@@ -62,12 +62,12 @@
 
 /* Canto inferior direito onde as barras horizontal e vertical se encontram */
 .descriptionBox::-webkit-scrollbar-corner {
-  background-color: #7B3311;
+  background-color: var(--color-scrollbar);
 }
 
 /* Alça de redimensionamento (se aplicável) */
 .descriptionBox::-webkit-resizer {
-  background-color: #7B3311;
+  background-color: var(--color-scrollbar);
 }
 
 
@@ -106,7 +106,6 @@
 }
 
 .character-card:hover {
-  transform: translateY(-8px);
   box-shadow: 0 16px 32px rgba(0,0,0,0.2);
 }
 
@@ -281,7 +280,7 @@
 /* Tooltip customizado */
 .MuiTooltip-tooltip {
   font-family: "Esteban", serif !important;
-  background-color: #40150A !important;
+  background-color: var(--footer-bg) !important;
   border-radius: 8px !important;
   padding: 8px 12px !important;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import AppFooter from '../../componentes/Footer/Footer';
 
 const PaginaNaoEncontrada = () => {
   const voltar = () => {
@@ -42,6 +43,7 @@ const PaginaNaoEncontrada = () => {
       >
         Voltar à página anterior
       </button>
+      <AppFooter />
     </div>
   );
 };

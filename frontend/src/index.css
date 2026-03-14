@@ -1,14 +1,82 @@
+/* ── Design tokens via CSS variables (troca com body.dark) ── */
+:root {
+    --color-title:      #5B1F0F;
+    --color-tabs:       #7B3311;
+    --color-scrollbar:  #5B1F0F;
+    --panel-bg:         #756A34;
+    --panel-border:     #BB8130;
+    --footer-bg:        #40150A;
+    --surface-default:  #f5f3eb;
+    --surface-warm:     #f5ede4;
+    --surface-alt:      #ebe5e3;
+    --action-bg:        #162A22;
+    --input-bg:         #ffffff;
+    --scrollbar-track:  #756A34;
+    --scrollbar-thumb:  #BB8130;
+    --text-primary:     #40150A;
+    --text-muted:       #756A34;
+    --bg-dark:          #162A22;
+    --surface-paper:    #ffffff;
+    --surface-raised:   #faf9f5;
+}
+body.dark {
+    --color-title:      #f1e6d6;
+    --color-tabs:       #c8b99a;
+    --color-scrollbar:  #BB8130;
+    --panel-bg:         #2a3c28;
+    --panel-border:     #756A34;
+    --footer-bg:        #0d1a10;
+    --surface-default:  #1f2e1a;
+    --surface-warm:     #243322;
+    --surface-alt:      #1a2616;
+    --action-bg:        #BB8130;
+    --input-bg:         #243322;
+    --scrollbar-track:  #0d1a10;
+    --scrollbar-thumb:  #4a6641;
+    --footer-bg:        #40150A;
+    --text-primary:     #f1e6d6;
+    --text-muted:       #c8b99a;
+    --bg-dark:          #0d1a10;
+    --surface-paper:    #2a3c28;
+    --surface-raised:   #324a2e;
+}
+
+/* ── Dark mode: chips neutros (só os que usam className="chip-neutral") ── */
+body.dark .chip-neutral.MuiChip-root {
+    background-color: var(--surface-paper) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--panel-border) !important;
+}
+
+/* ── Dark mode: força cor de texto em todos os elementos ── */
+body.dark .MuiTypography-root,
+body.dark .MuiTableCell-root,
+body.dark .MuiFormLabel-root,
+body.dark .MuiFormHelperText-root,
+body.dark .MuiInputBase-input,
+body.dark .MuiSelect-select,
+body.dark .MuiMenuItem-root,
+body.dark .MuiAccordionSummary-content,
+body.dark .MuiAccordionDetails-root,
+body.dark .MuiListItemText-primary,
+body.dark .MuiListItemText-secondary,
+body.dark .esteban,
+body.dark p,
+body.dark span:not(.MuiChip-label):not(.MuiBadge-badge) {
+    color: #f1e6d6 !important;
+}
+
 body{
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
 }
 body::-webkit-scrollbar{
-    background: #756A34;
+    background: var(--scrollbar-track);
    width: 10px;  
 }
 body::-webkit-scrollbar-thumb{
-    background: #BB8130;
+    background: var(--scrollbar-thumb);
 }
 body::before {
     content: "";

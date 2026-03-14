@@ -1,227 +1,307 @@
 
-import dayjs from 'dayjs';
-import { Paper, Typography, Box, Grid, Autocomplete } from '@mui/material';
-import Card from '@mui/material/Card';
-import { PieChart } from '@mui/x-charts/PieChart';
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import "./wiki.css";
-import Title from "../../assets/images/image.png";
-import LDO from "../../assets/images/LDO.png";
-import feather from "../../assets/images/image-from-rawpixel-id-6605206-png.png";
-import helmet from "../../assets/images/image-from-rawpixel-id-6439958-png.png";
-import puppet from "../../assets/images/image-from-rawpixel-id-6553179-png.png";
-import linkOut from "../../assets/icons/linkout.png";
-import search from "../../assets/icons/search.png";
+import React, { useState, useEffect } from 'react';
+import AppFooter from '../../componentes/Footer/Footer';
+import { Typography, Box, Autocomplete, Tab, Tabs } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import "./wiki.css";
+import search from "../../assets/icons/search.png";
+
+// Wiki section pages
+import ClassesPage from './classes/classes';
+import EquipmentPage from './equipment/equipment';
+import AntecendetesPage from './backgrounds/backgrounds';
+import Actionspage from './actions/actions';
+import HabilidadesPage from './habilidadesProenfiencias/habilidades';
+import EspeciesPage from './especies/especies';
+import JobsPage from './jobs/jobs';
+import ConditionsPage from './conditions/conditions';
+import GeneralRulesPage from './GeneralRules/generalRules';
+import CombatRulesPage from './CombatRules/CombateRules';
+
+const WIKI_TABS = [
+    { label: 'Classes',                  Component: ClassesPage },
+    { label: 'Antecedentes',             Component: AntecendetesPage },
+    { label: 'Habilidades e Proficiências', Component: HabilidadesPage },
+    { label: 'Profissões',               Component: JobsPage },
+    { label: 'Regras Gerais',            Component: GeneralRulesPage },
+    { label: 'Equipamentos e Itens',     Component: EquipmentPage },
+    { label: 'Ações',                    Component: Actionspage },
+    { label: 'Espécies',                 Component: EspeciesPage },
+    { label: 'Condições',                Component: ConditionsPage },
+    { label: 'Regras de Combate',        Component: CombatRulesPage },
+];
+
+// Normalise a string into a DOM-safe anchor id
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// maps search-result paths → tab index
+const PATH_TO_TAB = {
+    '/classes':      0,
+    '/antecedentes': 1,
+    '/habilidades':  2,
+    '/profissoes':   3,
+    '/regrasGerais': 4,
+    '/equipment':    5,
+    '/acoes':        6,
+    '/especies':     7,
+    '/condicoes':    8,
+    '/regrasCombate':9,
+};
 
 const WikiPage = () => {
 
+    const [activeTab, setActiveTab] = useState(0);
+    // Track which tabs have ever been visited (lazy-mount + keep-alive)
+    const [mounted, setMounted] = useState(() => new Set([0]));
     const [query, setQuery] = useState('');
-    const navigate = useNavigate();
+    const [pendingAnchor, setPendingAnchor] = useState(null);
+
+    // After the target tab becomes visible, scroll to the pending anchor
+    useEffect(() => {
+        if (!pendingAnchor) return;
+        const timer = setTimeout(() => {
+            const el = document.getElementById(pendingAnchor);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setPendingAnchor(null);
+        }, 80);
+        return () => clearTimeout(timer);
+    }, [pendingAnchor, activeTab]);
+
+    const handleTabChange = (_, newValue) => {
+        setActiveTab(newValue);
+        setMounted(prev => new Set([...prev, newValue]));
+    };
+
+    const handleTabByPath = (path) => {
+        // Support optional #anchor: '/condicoes#cego' → root='/condicoes', anchor='cego'
+        const [pathPart, anchor] = path.split('#');
+        const root = '/' + pathPart.split('/').filter(Boolean)[0];
+        const idx = PATH_TO_TAB[root];
+        if (idx !== undefined) {
+            handleTabChange(null, idx);
+            if (anchor) {
+                setPendingAnchor(anchor);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    };
     const searchKeyWords = [
+        // ── Regras de Combate ──────────────────────────────────────────────
         { label: 'Regras de Combate', path: '/regrasCombate' },
         { label: 'Combate', path: '/regrasCombate' },
-        { label: 'Turno', path: '/regrasCombate' },
-        { label: 'Rodada', path: '/regrasCombate' },
-        { label: 'Turno e Rodada', path: '/regrasCombate' },
-        { label: 'Iniciativa', path: '/regrasCombate' },
-        { label: 'Ordem de Combate', path: '/regrasCombate' },
-        { label: 'Dano', path: '/regrasCombate' },
-        { label: 'Tipos de Dano', path: '/regrasCombate' },
-        { label: 'Acerto', path: '/regrasCombate' },
-        { label: 'Regras de Acerto', path: '/regrasCombate' },
-        { label: 'Acerto Crítico', path: '/regrasCombate' },
-        { label: 'Velocidade', path: '/regrasCombate' },
-        { label: 'Velocidade de Movimento', path: '/regrasCombate' },
-        { label: 'Defesa', path: '/regrasCombate' },
-        { label: 'Regras de Defesa', path: '/regrasCombate' },
-        { label: 'Regras de Velocidade', path: '/regrasCombate' },
-        { label: 'Pontos de Magia', path: '/regrasCombate' },
-        { label: 'Pontos de Estamina', path: '/regrasCombate' },
-        { label: 'Magia', path: '/regrasCombate' },
-        { label: 'Vida', path: '/regrasCombate' },
-        { label: 'Estamina', path: '/regrasCombate' },
-        { label: 'Proficiência em Armas', path: '/regrasCombate' },
-        { label: 'Regras de Poções', path: '/regrasCombate' },
-        { label: 'Regras de Poção', path: '/regrasCombate' },
-        { label: 'Regras de Armas', path: '/regrasCombate' },
-        { label: 'Combate Montado', path: '/regrasCombate' },
-        { label: 'Regra de Montaria', path: '/regrasCombate' },
-        { label: 'Ameaça', path: '/regrasCombate' },
-        { label: 'Alcance', path: '/regrasCombate' },
-        { label: 'Alcance e Ameaça', path: '/regrasCombate' },
-        { label: 'Campo de Visão', path: '/regrasCombate' },
-        { label: 'Tamanho', path: '/regrasGerais' },
-        { label: 'Carga', path: '/regrasGerais' },
-        { label: 'Capacidade de Carga', path: '/regrasGerais' },
-        { label: 'Vantagem', path: '/regrasGerais' },
-        { label: 'Desvantagem', path: '/regrasGerais' },
-        { label: 'Dinheiro', path: '/regrasGerais' },
-        { label: 'Bônus e Penalidades', path: '/regrasGerais' },
-        { label: 'Itens Mágicos', path: '/regrasGerais' },
-        { label: 'Vulnerabilidade e Resitência', path: '/regrasGerais' },
-        { label: 'Regras de Armadilhas', path: '/regrasGerais' },
-        { label: 'Regras de Rituais', path: '/regrasGerais' },
-        { label: 'Regras de Luz e Visão', path: '/regrasGerais' },
-        { label: 'Descanso', path: '/regrasGerais' },
+        { label: 'Turno', path: '/regrasCombate#turno-e-rodada' },
+        { label: 'Rodada', path: '/regrasCombate#turno-e-rodada' },
+        { label: 'Turno e Rodada', path: '/regrasCombate#turno-e-rodada' },
+        { label: 'Iniciativa', path: '/regrasCombate#iniciativa' },
+        { label: 'Ordem de Combate', path: '/regrasCombate#iniciativa' },
+        { label: 'Dano', path: '/regrasCombate#dano' },
+        { label: 'Tipos de Dano', path: '/regrasCombate#dano' },
+        { label: 'Acerto', path: '/regrasCombate#acerto' },
+        { label: 'Regras de Acerto', path: '/regrasCombate#acerto' },
+        { label: 'Acerto Crítico', path: '/regrasCombate#acerto-critico' },
+        { label: 'Velocidade', path: '/regrasCombate#velocidade-de-movimento' },
+        { label: 'Velocidade de Movimento', path: '/regrasCombate#velocidade-de-movimento' },
+        { label: 'Defesa', path: '/regrasCombate#defesa' },
+        { label: 'Regras de Defesa', path: '/regrasCombate#defesa' },
+        { label: 'Regras de Velocidade', path: '/regrasCombate#velocidade-de-movimento' },
+        { label: 'Pontos de Vida', path: '/regrasCombate#pontos-de-vida' },
+        { label: 'Pontos de Magia', path: '/regrasCombate#pontos-de-magia' },
+        { label: 'Pontos de Estamina', path: '/regrasCombate#pontos-de-estamina' },
+        { label: 'Magia', path: '/regrasCombate#pontos-de-magia' },
+        { label: 'Vida', path: '/regrasCombate#pontos-de-vida' },
+        { label: 'Estamina', path: '/regrasCombate#pontos-de-estamina' },
+        { label: 'Proficiência em Armas', path: '/regrasCombate#proficiencia-em-armas' },
+        { label: 'Regras de Poções', path: '/regrasCombate#pocoes-de-recuperacao' },
+        { label: 'Regras de Poção', path: '/regrasCombate#pocoes-de-recuperacao' },
+        { label: 'Regras de Armas', path: '/regrasCombate#proficiencia-em-armas' },
+        { label: 'Combate Montado', path: '/regrasCombate#combate-montado' },
+        { label: 'Regra de Montaria', path: '/regrasCombate#combate-montado' },
+        { label: 'Ameaça', path: '/regrasCombate#alcance-de-ameaca' },
+        { label: 'Alcance', path: '/regrasCombate#alcance-de-ameaca' },
+        { label: 'Alcance e Ameaça', path: '/regrasCombate#alcance-de-ameaca' },
+        { label: 'Campo de Visão', path: '/regrasCombate#campo-de-visao' },
+        // ── Regras Gerais ──────────────────────────────────────────────────
+        { label: 'Tamanho', path: '/regrasGerais#tamanho' },
+        { label: 'Carga', path: '/regrasGerais#tamanho' },
+        { label: 'Capacidade de Carga', path: '/regrasGerais#tamanho' },
+        { label: 'Vantagem', path: '/regrasGerais#vantagem-e-desvantagem' },
+        { label: 'Desvantagem', path: '/regrasGerais#vantagem-e-desvantagem' },
+        { label: 'Dinheiro', path: '/regrasGerais#dinheiro' },
+        { label: 'Bônus e Penalidades', path: '/regrasGerais#bonus-ou-penalidade-de-acerto-e-defesa' },
+        { label: 'Itens Mágicos', path: '/regrasGerais#itens-magicos' },
+        { label: 'Vulnerabilidade e Resitência', path: '/regrasGerais#vulnerabilidade-e-resistencia' },
+        { label: 'Regras de Armadilhas', path: '/regrasGerais#armadilhas' },
+        { label: 'Regras de Rituais', path: '/regrasGerais#rituais-opcional' },
+        { label: 'Regras de Luz e Visão', path: '/regrasGerais#luz-e-visao' },
+        { label: 'Descanso', path: '/regrasGerais#descanso' },
+        { label: 'Regalias', path: '/regrasGerais#regalias-e-pontos-de-regalia' },
+        // ── Condições ─────────────────────────────────────────────────────
         { label: 'Condições', path: '/condicoes' },
-        { label: 'Atordoado', path: '/condicoes' },
-        { label: 'Cego', path: '/condicoes' },
-        { label: 'Cansado', path: '/condicoes' },
-        { label: 'Envenenado', path: '/condicoes' },
-        { label: 'Restringido', path: '/condicoes' },
-        { label: 'Deitado', path: '/condicoes' },
-        { label: 'Incapacitado', path: '/condicoes' },
-        { label: 'Surdo', path: '/condicoes' },
-        { label: 'Sangrando', path: '/condicoes' },
-        { label: 'Paralizado', path: '/condicoes' },
-        { label: 'Aterrorizado', path: '/condicoes' },
-        { label: 'À Beira da Morte', path: '/condicoes' },
-        { label: 'Congelado', path: '/condicoes' },
-        { label: 'Queimando', path: '/condicoes' },
-        { label: 'Obscurecido', path: '/condicoes' },
-        { label: 'Escondido', path: '/condicoes' },
-        { label: 'Surpreso', path: '/condicoes' },
-        { label: 'Devagar', path: '/condicoes' },
+        { label: 'Atordoado', path: '/condicoes#atordoado' },
+        { label: 'Cego', path: '/condicoes#cego' },
+        { label: 'Cansado', path: '/condicoes#cansado' },
+        { label: 'Envenenado', path: '/condicoes#envenenado' },
+        { label: 'Restringido', path: '/condicoes#restringido' },
+        { label: 'Deitado', path: '/condicoes#deitado' },
+        { label: 'Incapacitado', path: '/condicoes#incapacitado' },
+        { label: 'Surdo', path: '/condicoes#surdo' },
+        { label: 'Sangrando', path: '/condicoes#sangrando' },
+        { label: 'Paralizado', path: '/condicoes#paralisado' },
+        { label: 'Aterrorizado', path: '/condicoes#aterrorizado' },
+        { label: 'À Beira da Morte', path: '/condicoes#a-beira-da-morte' },
+        { label: 'Congelado', path: '/condicoes#congelando' },
+        { label: 'Queimando', path: '/condicoes#queimando' },
+        { label: 'Obscurecido', path: '/condicoes#obscurecido' },
+        { label: 'Escondido', path: '/condicoes#escondido' },
+        { label: 'Surpreso', path: '/condicoes#surpreso' },
+        { label: 'Devagar', path: '/condicoes#devagar' },
+        // ── Profissões ────────────────────────────────────────────────────
         { label: 'Profissões', path: '/profissoes' },
-        { label: 'Ferreiro', path: '/profissoes' },
-        { label: 'Criminoso', path: '/profissoes' },
-        { label: 'Mercador', path: '/profissoes' },
-        { label: 'Explorador', path: '/profissoes' },
-        { label: 'Acadêmico', path: '/profissoes' },
-        { label: 'Herbalista', path: '/profissoes' },
-        { label: 'Alfaiate', path: '/profissoes' },
-        { label: 'Artista', path: '/profissoes' },
-        { label: 'Joalheiro', path: '/profissoes' },
-        { label: 'Inventor', path: '/profissoes' },
-        { label: 'Carpinteiro', path: '/profissoes' },
-        { label: 'Arcanista', path: '/profissoes' },
-        { label: 'Cozinheiro', path: '/profissoes' },
-        { label: 'Soldado de Aluguel', path: '/profissoes' },
-        { label: 'Humano', path: '/especies' },
-        { label: 'Elfo', path: '/especies' },
-        { label: 'Anão', path: '/especies' },
-        { label: 'Féerico', path: '/especies' },
-        { label: 'Draconiano', path: '/especies' },
-        { label: 'Meio Elfo', path: '/especies' },
-        { label: 'Meio Demônio', path: '/especies' },
-        { label: 'Meio Celestial', path: '/especies' },
-        { label: 'Meio Gênio', path: '/especies' },
-        { label: 'Meio Troll', path: '/especies' },
-        { label: 'Bestial', path: '/especies' },
-        { label: 'Halfling', path: '/especies' },
-        { label: 'Troll', path: '/especies' },
-        { label: 'Constructo', path: '/especies' },
-        { label: 'Vampiro', path: '/especies' },
-        { label: 'Psíquico', path: '/especies' },
-        { label: 'Mutante', path: '/especies' },
+        { label: 'Ferreiro', path: '/profissoes#ferreiro' },
+        { label: 'Criminoso', path: '/profissoes#criminoso' },
+        { label: 'Mercador', path: '/profissoes#mercador' },
+        { label: 'Explorador', path: '/profissoes#explorador' },
+        { label: 'Acadêmico', path: '/profissoes#academico' },
+        { label: 'Herbalista', path: '/profissoes#herbalista' },
+        { label: 'Alfaiate', path: '/profissoes#alfaiate' },
+        { label: 'Artista', path: '/profissoes#artista' },
+        { label: 'Joalheiro', path: '/profissoes#joalheiro' },
+        { label: 'Inventor', path: '/profissoes#inventor' },
+        { label: 'Carpinteiro', path: '/profissoes#carpinteiro' },
+        { label: 'Arcanista', path: '/profissoes#arcanista' },
+        { label: 'Cozinheiro', path: '/profissoes#cozinheiro' },
+        { label: 'Soldado de Aluguel', path: '/profissoes#soldado-de-aluguel' },
+        // ── Espécies ──────────────────────────────────────────────────────
+        { label: 'Humano', path: '/especies#humano' },
+        { label: 'Elfo', path: '/especies#elfo' },
+        { label: 'Anão', path: '/especies#anao' },
+        { label: 'Féerico', path: '/especies#feerico' },
+        { label: 'Draconiano', path: '/especies#draconiano' },
+        { label: 'Meio Elfo', path: '/especies#meio-elfo' },
+        { label: 'Meio Demônio', path: '/especies#meio-demonio' },
+        { label: 'Meio Celestial', path: '/especies#meio-celestial' },
+        { label: 'Meio Gênio', path: '/especies#meio-genio' },
+        { label: 'Meio Troll', path: '/especies#meio-troll' },
+        { label: 'Bestial', path: '/especies#bestial' },
+        { label: 'Halfling', path: '/especies#halfling' },
+        { label: 'Troll', path: '/especies#troll' },
+        { label: 'Constructo', path: '/especies#constructo' },
+        { label: 'Vampiro', path: '/especies#vampiro-wight-draugr' },
+        { label: 'Psíquico', path: '/especies#psiquico' },
+        { label: 'Mutante', path: '/especies#mutante' },
+        // ── Habilidades ───────────────────────────────────────────────────
         { label: 'Habilidades', path: '/habilidades' },
-        { label: 'Físico', path: '/habilidades' },
-        { label: 'Conhecimento', path: '/habilidades' },
-        { label: 'Arcana', path: '/habilidades' },
+        { label: 'Físico', path: '/habilidades#fisico' },
+        { label: 'Conhecimento', path: '/habilidades#conhecimento' },
+        { label: 'Arcana', path: '/habilidades#arcana' },
         { label: 'Profossiências', path: '/habilidades' },
-        { label: 'Social', path: '/habilidades' },
-        { label: 'Exploração', path: '/habilidades' },
+        { label: 'Social', path: '/habilidades#social' },
+        { label: 'Exploração', path: '/habilidades#exploracao' },
+        // ── Ações ─────────────────────────────────────────────────────────
         { label: 'Rodada, Turno e o Sistema de Ações', path: '/acoes' },
         { label: 'Ações primárias, Acões de movimento, Ações de Turno Completo e Reações', path: '/acoes' },
-        { label: 'Abrir fechaduras', path: '/acoes' },
-        { label: 'Atacar', path: '/acoes' },
-        { label: 'Agarrar', path: '/acoes' },
-        { label: 'Buscar', path: '/acoes' },
-        { label: 'Buscar Cobertura', path: '/acoes' },
-        { label: 'Comandar animal', path: '/acoes' },
-        { label: 'Distrair', path: '/acoes' },
-        { label: 'Derrubar', path: '/acoes' },
-        { label: 'Desarmar', path: '/acoes' },
-        { label: 'Empurrar', path: '/acoes' },
-        { label: 'Ecapar', path: '/acoes' },
-        { label: 'Esconder', path: '/acoes' },
-        { label: 'Esconder um objeto', path: '/acoes' },
-        { label: 'Esgueirar', path: '/acoes' },
-        { label: 'Fintar', path: '/acoes' },
-        { label: 'Interagir', path: '/acoes' },
-        { label: 'Intimidar', path: '/acoes' },
-        { label: 'Ler Ambiente', path: '/acoes' },
-        { label: 'Levantar', path: '/acoes' },
-        { label: 'Montar', path: '/acoes' },
-        { label: 'Pedir', path: '/acoes' },
-        { label: 'Performar', path: '/acoes' },
-        { label: 'Preparar', path: '/acoes' },
-        { label: 'Recordar reconhecimento', path: '/acoes' },
-        { label: 'Primeiros socorros', path: '/acoes' },
-        { label: 'Tratar Veneno', path: '/acoes' },
-        { label: 'Desabilitar Habilitar dispositivo', path: '/acoes' },
-        { label: 'Atenuar Queda', path: '/acoes' },
-        { label: 'Ajudar', path: '/acoes' },
-        { label: 'Agarrar-se', path: '/acoes' },
-        { label: 'Andar, correr, voar', path: '/acoes' },
-        { label: 'Escalar, nadar, saltar', path: '/acoes' },
-        { label: 'Rastejar', path: '/acoes' },
-        { label: 'Conduzir montaria', path: '/acoes' },
-        { label: 'Atravessar acrobaticamente', path: '/acoes' },
-        { label: 'Recuar cuidadosamente', path: '/acoes' },
+        { label: 'Abrir fechaduras', path: '/acoes#abrir-fechadura' },
+        { label: 'Atacar', path: '/acoes#atacar' },
+        { label: 'Agarrar', path: '/acoes#agarrar' },
+        { label: 'Buscar', path: '/acoes#buscar' },
+        { label: 'Buscar Cobertura', path: '/acoes#buscar-cobertura' },
+        { label: 'Comandar animal', path: '/acoes#comandar-animal' },
+        { label: 'Distrair', path: '/acoes#distrair' },
+        { label: 'Derrubar', path: '/acoes#derrubar' },
+        { label: 'Desarmar', path: '/acoes#desarmar' },
+        { label: 'Empurrar', path: '/acoes#empurrar' },
+        { label: 'Ecapar', path: '/acoes#escapar' },
+        { label: 'Esconder', path: '/acoes#esconder' },
+        { label: 'Esconder um objeto', path: '/acoes#esconder-um-objeto' },
+        { label: 'Esgueirar', path: '/acoes#esgueirar' },
+        { label: 'Fintar', path: '/acoes#fintar' },
+        { label: 'Interagir', path: '/acoes#interagir' },
+        { label: 'Intimidar', path: '/acoes#intimidar' },
+        { label: 'Ler Ambiente', path: '/acoes#ler-ambiente' },
+        { label: 'Levantar', path: '/acoes#levantar' },
+        { label: 'Montar', path: '/acoes#montar' },
+        { label: 'Pedir', path: '/acoes#pedir' },
+        { label: 'Performar', path: '/acoes#performar' },
+        { label: 'Preparar', path: '/acoes#preparar' },
+        { label: 'Recordar reconhecimento', path: '/acoes#recordar-conhecimento' },
+        { label: 'Primeiros socorros', path: '/acoes#primeiros-socorros' },
+        { label: 'Tratar Veneno', path: '/acoes#tratar-veneno' },
+        { label: 'Desabilitar Habilitar dispositivo', path: '/acoes#desabilitar-habilitar-dispositivo' },
+        { label: 'Atenuar Queda', path: '/acoes#atenuar-queda' },
+        { label: 'Ajudar', path: '/acoes#ajudar' },
+        { label: 'Agarrar-se', path: '/acoes#agarrar-se' },
+        { label: 'Andar, correr, voar', path: '/acoes#andar-ou-correr' },
+        { label: 'Escalar, nadar, saltar', path: '/acoes#escalar' },
+        { label: 'Rastejar', path: '/acoes#rastejar' },
+        { label: 'Conduzir montaria', path: '/acoes#conduzir-montaria' },
+        { label: 'Atravessar acrobaticamente', path: '/acoes#atravessar-acrobaticamente' },
+        { label: 'Recuar cuidadosamente', path: '/acoes#recuar-cuidadosamente' },
+        // ── Antecedentes ──────────────────────────────────────────────────
         { label: 'Antecedentes', path: '/antecedentes' },
         { label: 'Equipamento base de antecedente', path: '/antecedentes' },
-        { label: 'Abençoado', path: '/antecedentes' },
-        { label: 'Acadêmico', path: '/antecedentes' },
-        { label: 'Aminésico', path: '/antecedentes' },
-        { label: 'Acólito', path: '/antecedentes' },
-        { label: 'Acrobata', path: '/antecedentes' },
-        { label: 'Adestrador de animais', path: '/antecedentes' },
-        { label: 'Amaldiçoado', path: '/antecedentes' },
-        { label: 'Arqueologista', path: '/antecedentes' },
-        { label: 'Artesão', path: '/antecedentes' },
-        { label: 'Assistênte de laboratório', path: '/antecedentes' },
-        { label: 'Astrônamo', path: '/antecedentes' },
-        { label: 'Ator', path: '/antecedentes' },
-        { label: 'Bandido', path: '/antecedentes' },
-        { label: 'Barbeiro', path: '/antecedentes' },
-        { label: 'Batedor', path: '/antecedentes' },
-        { label: 'Bibliotecário', path: '/antecedentes' },
-        { label: 'Caçador de recompensas', path: '/antecedentes' },
-        { label: 'Capanga', path: '/antecedentes' },
-        { label: 'Carteiro', path: '/antecedentes' },
-        { label: 'Camponês', path: '/antecedentes' },
-        { label: 'Charlatão', path: '/antecedentes' },
-        { label: 'Circense', path: '/antecedentes' },
-        { label: 'Comerciante', path: '/antecedentes' },
-        { label: 'Cortesâo', path: '/antecedentes' },
-        { label: 'Curandeiro', path: '/antecedentes' },
-        { label: 'Detetive', path: '/antecedentes' },
-        { label: 'Eremita', path: '/antecedentes' },
-        { label: 'Ecudeiro', path: '/antecedentes' },
-        { label: 'Espião', path: '/antecedentes' },
-        { label: 'Estudante de magia', path: '/antecedentes' },
-        { label: 'Fanático', path: '/antecedentes' },
-        { label: 'Forasteiro', path: '/antecedentes' },
-        { label: 'Gladiador', path: '/antecedentes' },
-        { label: 'Guarda', path: '/antecedentes' },
-        { label: 'Herdeiro', path: '/antecedentes' },
-        { label: 'Heroico', path: '/antecedentes' },
-        { label: 'Jornaleiro', path: '/antecedentes' },
-        { label: 'Marujo', path: '/antecedentes' },
-        { label: 'Médico de beco', path: '/antecedentes' },
-        { label: 'Menestrel', path: '/antecedentes' },
-        { label: 'Mineirador', path: '/antecedentes' },
-        { label: 'Navegador', path: '/antecedentes' },
-        { label: 'Nobre', path: '/antecedentes' },
-        { label: 'Nômade', path: '/antecedentes' },
-        { label: 'Orfão', path: '/antecedentes' },
-        { label: 'Peregrino', path: '/antecedentes' },
-        { label: 'Prisioneiro', path: '/antecedentes' },
-        { label: 'Refugiado', path: '/antecedentes' },
-        { label: 'Taverneiro', path: '/antecedentes' },
+        { label: 'Abençoado', path: '/antecedentes#abencado' },
+        { label: 'Acadêmico', path: '/antecedentes#academico' },
+        { label: 'Aminésico', path: '/antecedentes#aminesico' },
+        { label: 'Acólito', path: '/antecedentes#acolito' },
+        { label: 'Acrobata', path: '/antecedentes#acrobata' },
+        { label: 'Adestrador de animais', path: '/antecedentes#adestrador-de-animais' },
+        { label: 'Amaldiçoado', path: '/antecedentes#amaldicado' },
+        { label: 'Arqueologista', path: '/antecedentes#arqueologista' },
+        { label: 'Artesão', path: '/antecedentes#artesao' },
+        { label: 'Assistênte de laboratório', path: '/antecedentes#assistente-de-laboratorio' },
+        { label: 'Astrônamo', path: '/antecedentes#astronomo' },
+        { label: 'Ator', path: '/antecedentes#ator' },
+        { label: 'Bandido', path: '/antecedentes#bandido' },
+        { label: 'Barbeiro', path: '/antecedentes#barbeiro' },
+        { label: 'Batedor', path: '/antecedentes#batedor' },
+        { label: 'Bibliotecário', path: '/antecedentes#bibliotecario' },
+        { label: 'Caçador de recompensas', path: '/antecedentes#cacador-de-recompensas' },
+        { label: 'Capanga', path: '/antecedentes#capanga' },
+        { label: 'Carteiro', path: '/antecedentes#carteiro' },
+        { label: 'Camponês', path: '/antecedentes#campones' },
+        { label: 'Charlatão', path: '/antecedentes#charlatao' },
+        { label: 'Circense', path: '/antecedentes#circense' },
+        { label: 'Comerciante', path: '/antecedentes#comerciante' },
+        { label: 'Cortesâo', path: '/antecedentes#cortesao' },
+        { label: 'Curandeiro', path: '/antecedentes#curandeiro' },
+        { label: 'Detetive', path: '/antecedentes#detetive' },
+        { label: 'Eremita', path: '/antecedentes#eremita' },
+        { label: 'Ecudeiro', path: '/antecedentes#escudeiro' },
+        { label: 'Espião', path: '/antecedentes#espiao' },
+        { label: 'Estudante de magia', path: '/antecedentes#estudante-de-magia' },
+        { label: 'Fanático', path: '/antecedentes#fanatico' },
+        { label: 'Forasteiro', path: '/antecedentes#forasteiro' },
+        { label: 'Gladiador', path: '/antecedentes#gladiador' },
+        { label: 'Guarda', path: '/antecedentes#guarda' },
+        { label: 'Herdeiro', path: '/antecedentes#herdeiro' },
+        { label: 'Heroico', path: '/antecedentes#heroico' },
+        { label: 'Jornaleiro', path: '/antecedentes#jornaleiro' },
+        { label: 'Marujo', path: '/antecedentes#marujo' },
+        { label: 'Médico de beco', path: '/antecedentes#medico-de-beco' },
+        { label: 'Menestrel', path: '/antecedentes#menestrel' },
+        { label: 'Mineirador', path: '/antecedentes#mineirador' },
+        { label: 'Navegador', path: '/antecedentes#navegador' },
+        { label: 'Nobre', path: '/antecedentes#nobre' },
+        { label: 'Nômade', path: '/antecedentes#nomade' },
+        { label: 'Orfão', path: '/antecedentes#orfao' },
+        { label: 'Peregrino', path: '/antecedentes#peregrino' },
+        { label: 'Prisioneiro', path: '/antecedentes#prisioneiro' },
+        { label: 'Refugiado', path: '/antecedentes#refugiado' },
+        { label: 'Taverneiro', path: '/antecedentes#taverneiro' },
+        // ── Equipamentos ──────────────────────────────────────────────────
         { label: 'Compra e vendas', path: '/equipment' },
         { label: 'Negociação', path: '/equipment' },
-        { label: 'Armas', path: '/equipment' },
-        { label: 'Armaduras', path: '/equipment' },
+        { label: 'Armas', path: '/equipment#armas' },
+        { label: 'Armaduras', path: '/equipment#armaduras' },
         { label: 'Equipamentos', path: '/equipment' },
         { label: 'Itens gerais', path: '/equipment' },
-        { label: 'Kits', path: '/equipment' },
-        { label: 'Veículos e montarias', path: '/equipment' },
-        { label: 'Proficiência com armas', path: '/equipment' },
+        { label: 'Kits', path: '/equipment#kits' },
+        { label: 'Veículos e montarias', path: '/equipment#veiculos-e-montarias' },
+        { label: 'Proficiência com armas', path: '/equipment#armas' },
         { label: 'Adaga', path: '/equipment' },
         { label: 'Adaga de mola', path: '/equipment' },
         { label: 'Arco curto', path: '/equipment' },
@@ -333,15 +413,15 @@ const WikiPage = () => {
             .replace(/\s+/g, '');
 
         const found = searchKeyWords.find(opt =>
-            opt.path.toLowerCase().includes(normalizedQuery)
+            opt.label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '').includes(normalizedQuery) ||
+            opt.path.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery)
         );
 
         if (found) {
-            navigate(found.path);
-        } else {
-            navigate(`/pesquisa/${encodeURIComponent(normalizedQuery)}`);
+            handleTabByPath(found.path);
         }
     };
+
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             handleSearch();
@@ -349,86 +429,126 @@ const WikiPage = () => {
     };
 
     return (
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
 
-        <Box sx={{ minHeight: '700px', width: '100%', }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
-                <Typography className="esteban" variant="h4" sx={{ textAlign: 'center', my: '30px' }}>Wiki</Typography>
-                <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center' }}>
+            {/* ── Main row: sidebar + content ── */}
+            <Box sx={{ display: 'flex', flex: 1 }}>
+
+            {/* ── Sidebar ── */}
+            <Box
+                component="nav"
+                sx={{
+                    width: 200,
+                    flexShrink: 0,
+                    position: 'sticky',
+                    top: 0,
+                    height: '100vh',
+                    overflowY: 'auto',
+                    borderRight: '1px solid var(--panel-border, #2F3C29)',
+                    background: 'var(--panel-bg)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    pt: 2,
+                    pb: 2,
+                }}
+            >
+                {/* Title */}
+                <Typography
+                    className="esteban"
+                    variant="h5"
+                    sx={{ textAlign: 'center', mb: 2, color: 'var(--text-primary)', fontWeight: 700, letterSpacing: 1 }}
+                >
+                    Wiki
+                </Typography>
+
+                {/* Search */}
+                <Box sx={{ px: 1, mb: 2, display: 'flex', gap: 0.5 }}>
                     <Autocomplete
                         freeSolo
                         options={query.length > 0 ? searchKeyWords : []}
                         getOptionLabel={(option) => option.label}
                         inputValue={query}
-                        onInputChange={(event, newInputValue) => setQuery(newInputValue)}
-                        onChange={(event, newValue) => {
+                        onInputChange={(_, v) => setQuery(v)}
+                        onChange={(_, newValue) => {
                             if (newValue && newValue.path) {
-                                navigate(newValue.path);
+                                handleTabByPath(newValue.path);
+                                setQuery('');
                             }
                         }}
+                        sx={{ flex: 1 }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Pesquisar"
+                                placeholder="Pesquisar"
                                 size="small"
                                 variant="outlined"
-                                sx={{ background: '#ffffff', width: '100%', minWidth: '350px' }}
-                                id="searchBar"
+                                sx={{ background: 'var(--input-bg)' }}
                                 onKeyPress={handleKeyPress}
                             />
                         )}
                     />
-
                     <Button
-                        className="esteban"
-                        sx={{ background: '#162A22', color: '#ffffff', p: 1, width: '10%' }}
+                        sx={{ minWidth: 0, p: '6px', background: 'var(--action-bg)', color: '#fff' }}
                         onClick={handleSearch}
                     >
-                        <img src={search} alt="Search" style={{ width: '20px' }} />
+                        <img src={search} alt="Buscar" style={{ width: 16 }} />
                     </Button>
                 </Box>
-            </Box>
-            <Grid container spacing={1} sx={{ p: 4, width: '70%', m: 'auto', minHeight: '700px' }} >
-                <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-                    <a href="/classes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Classes</Typography>
-                    </a>
-                    <a href="/antecedentes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Antecedentes</Typography>
-                    </a>
-                    <a href="/habilidades" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Habilidades e Proficiências</Typography>
-                    </a>
-                    <a href="/profissoes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Profissões</Typography>
-                    </a>
-                    <a href="/regrasGerais" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Regras Gerais</Typography>
-                    </a>
-                </Grid>
-                <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
-                    <a href="/equipment" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Equipamentos e Itens</Typography>
-                    </a>
-                    <a href="/acoes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Açoes</Typography>
-                    </a>
-                    <a href="/especies" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Espécies</Typography>
-                    </a>
-                    <a href="/condicoes" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Condições</Typography>
-                    </a>
-                    <a href="/regrasCombate" style={{ display: "flex", alignItems: "center", width: '100%', justifyContent: "center", background: '#756A34', minHeight: '80px', minWidth: '100px', borderRadius: '24px', borderBottom: '5px solid #BB8130', height: '18%', position: 'relative' }}>
-                        <Typography className="boxText">Regras de Combate</Typography>
-                    </a>
-                </Grid>
 
-            </Grid>
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',position: 'absolute',width:"100%", bottom: 0 }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
+                {/* Vertical tabs */}
+                <Tabs
+                    orientation="vertical"
+                    value={activeTab}
+                    onChange={handleTabChange}
+                    aria-label="Wiki navigation"
+                    sx={{
+                        '& .MuiTab-root': {
+                            fontFamily: '"Esteban", serif',
+                            fontSize: '13px',
+                            textTransform: 'none',
+                            alignItems: 'flex-start',
+                            textAlign: 'left',
+                            pl: 2,
+                            minHeight: 44,
+                        },
+                        '& .Mui-selected': {
+                            color: 'var(--text-accent, #756A34) !important',
+                            fontWeight: 700,
+                            background: 'var(--surface-raised, rgba(117,106,52,0.12))',
+                        },
+                        '& .MuiTabs-indicator': {
+                            left: 0,
+                            right: 'unset',
+                            width: 3,
+                            backgroundColor: 'var(--text-accent, #756A34)',
+                        },
+                    }}
+                >
+                    {WIKI_TABS.map((tab, i) => (
+                        <Tab key={i} label={tab.label} id={`wiki-tab-${i}`} aria-controls={`wiki-panel-${i}`} />
+                    ))}
+                </Tabs>
             </Box>
+
+            {/* ── Content area ── */}
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+                {WIKI_TABS.map(({ Component }, i) => (
+                    <Box
+                        key={i}
+                        role="tabpanel"
+                        id={`wiki-panel-${i}`}
+                        aria-labelledby={`wiki-tab-${i}`}
+                        sx={{ display: activeTab === i ? 'block' : 'none' }}
+                    >
+                        {mounted.has(i) && <Component />}
+                    </Box>
+                ))}
+            </Box>
+
+            </Box>{/* end main row */}
+
+            <AppFooter />
         </Box>
-
     );
 }
 

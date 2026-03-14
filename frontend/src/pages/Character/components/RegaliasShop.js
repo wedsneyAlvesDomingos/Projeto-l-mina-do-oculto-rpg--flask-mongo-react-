@@ -1,625 +1,631 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-    Box, Card, CardHeader, CardContent, Grid, Paper, Typography,
-    IconButton, Chip, Tooltip, Divider, Collapse, Button,
+    Box, Grid, Paper, Typography,
+    Chip, Tooltip, Collapse, Button,
     Dialog, DialogTitle, DialogContent, DialogActions,
     Accordion, AccordionSummary, AccordionDetails,
-    LinearProgress, Alert, Badge,
+    LinearProgress, Alert,
 } from '@mui/material';
+import { colors, derived, gradients } from '../../../componentes/themes/tokens';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
 import SchoolIcon from '@mui/icons-material/School';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import ScienceIcon from '@mui/icons-material/Science';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import PersonIcon from '@mui/icons-material/Person';
 
 import {
     regaliasDeAprendiz,
     regaliasOpcionais,
     classesPrimarias,
     especializacoes,
-    pontosRegaliaPorNivel,
-    getRegaliaAprendiz,
-    getClassePrimaria,
-    getEspecializacao,
+    calcularPontosRegaliaTotal,
     validarPreRequisitosRegalia,
-    getTiposRegaliasOpcionais,
+    especies,
 } from '../../../data/constants';
 
-/* ─────────────────────────────────────────────────────────
-   Constantes de cor por tipo de regalia
-   ───────────────────────────────────────────────────────── */
+/* ─── Constantes de cor — derivadas do design token do tema escuro ─── */
 const CORES_TIPO = {
-    aprendiz: '#454E30',
-    opcional: '#6A1B9A',
-    primaria: '#AB6422',
-    especializacao: '#931C4A',
+    aprendiz:       colors.forest,
+    especie:        colors.gold,
+    opcional:       colors.olive,
+    primaria:       colors.bronze,
+    especializacao: colors.garnet,
 };
 
-/* ─────────────────────────────────────────────────────────
-   Subcomponente: Barra de pontos
-   ───────────────────────────────────────────────────────── */
+/* ─── Labels legíveis para habilidades ─── */
+const HABILIDADE_LABELS = {
+    combateCorpoACorpo: 'Combate Corpo a Corpo',
+    combateADistancia: 'Combate a Distância',
+    combateArcano: 'Combate Arcano',
+    forca: 'Força', destreza: 'Destreza', agilidade: 'Agilidade',
+    fortitude: 'Fortitude', percepcao: 'Percepção', furtividade: 'Furtividade',
+    intuicao: 'Intuição', persuasao: 'Persuasão', seducao: 'Sedução',
+    enganacao: 'Enganação', performance: 'Performance',
+    arcanismo: 'Arcanismo', ocultismo: 'Ocultismo', ritualismo: 'Ritualismo',
+    teologia: 'Teologia', medicina: 'Medicina', natureza: 'Natureza',
+    tecnologia: 'Tecnologia', arcanatec: 'Arcanatec', alquimia: 'Alquimia',
+    atletismo: 'Atletismo', intimidacao: 'Intimidação', sobrevivencia: 'Sobrevivência',
+    acrobacia: 'Acrobacia', historia: 'História',
+};
+const labelHab = (key) => HABILIDADE_LABELS[key] || key;
+
+/* ─── Helpers para chaves compostas ─── */
+export const arvoreKey = (classeId, arvoreId, nivel) => `arvore:${classeId}:${arvoreId}:${nivel}`;
+export const avulsaKey = (classeId, avulsaId) => `avulsa:${classeId}:${avulsaId}`;
+
+export const calcularPontosGastos = (regaliasCompradas) =>
+    Object.values(regaliasCompradas || {}).reduce((acc, v) => acc + (typeof v === 'number' ? v : 1), 0);
+
+/* ─── Barra de pontos ─── */
 const PointsBar = ({ pontosTotal, pontosGastos }) => {
     const restantes = pontosTotal - pontosGastos;
-    const porcentagem = pontosTotal > 0 ? (pontosGastos / pontosTotal) * 100 : 0;
-
+    const pct = pontosTotal > 0 ? (pontosGastos / pontosTotal) * 100 : 0;
     return (
-        <Paper sx={{
-            p: 2, mb: 2,
-            background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
-            borderRadius: 2, color: 'white',
-        }}>
+        <Paper sx={{ p: 2, mb: 2, background: gradients.header, borderRadius: 2, color: derived.textOnDark }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
-                    ⭐ Pontos de Regalia
-                </Typography>
+                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '16px', color: derived.textOnDark }}>⭐ Pontos de Regalia</Typography>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Chip label={`Gastos: ${pontosGastos}`} size="small"
-                        sx={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 'bold' }} />
-                    <Chip label={`Restantes: ${restantes}`} size="small"
-                        sx={{
-                            backgroundColor: restantes > 0 ? '#4CAF50' : '#f44336',
-                            color: 'white', fontWeight: 'bold',
-                        }} />
-                    <Chip label={`Total: ${pontosTotal}`} size="small"
-                        sx={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }} />
+                    <Chip label={`Gastos: ${pontosGastos}`} size="small" sx={{ backgroundColor: `${colors.olive}55`, color: derived.textOnDark, fontWeight: 'bold' }} />
+                    <Chip label={`Restantes: ${restantes}`} size="small" sx={{ backgroundColor: restantes > 0 ? colors.forest : colors.garnet, color: derived.textOnDark, fontWeight: 'bold' }} />
+                    <Chip label={`Total: ${pontosTotal}`} size="small" sx={{ backgroundColor: `${colors.midnight}99`, color: derived.textOnDarkMuted }} />
                 </Box>
             </Box>
-            <LinearProgress
-                variant="determinate" value={Math.min(porcentagem, 100)}
-                sx={{
-                    height: 8, borderRadius: 4,
-                    backgroundColor: 'rgba(255,255,255,0.15)',
-                    '& .MuiLinearProgress-bar': {
-                        borderRadius: 4,
-                        background: porcentagem >= 100
-                            ? 'linear-gradient(90deg, #f44336, #e91e63)'
-                            : 'linear-gradient(90deg, #BB8130, #FFB74D)',
-                    },
-                }}
-            />
+            <LinearProgress variant="determinate" value={Math.min(pct, 100)} sx={{
+                height: 8, borderRadius: 4, backgroundColor: `${colors.olive}33`,
+                '& .MuiLinearProgress-bar': { borderRadius: 4, background: pct >= 100 ? `linear-gradient(90deg, ${colors.garnet}, ${colors.scarlet})` : `linear-gradient(90deg, ${colors.gold}, ${colors.bronze})` },
+            }} />
         </Paper>
     );
 };
 
-/* ─────────────────────────────────────────────────────────
-   Subcomponente: Card de regalia individual
-   ───────────────────────────────────────────────────────── */
-const RegaliaCard = ({ nome, descricao, custo, cor, owned, locked, lockMsg, onBuy, bonus, children }) => {
+/* ─── Card de regalia ─── */
+const RegaliaCard = ({ nome, descricao, custo, cor, owned, locked, lockMsg, onBuy, bonus, autoIncluded, children }) => {
     const [expanded, setExpanded] = useState(false);
-
     return (
         <Paper sx={{
             p: 2, borderRadius: 2,
-            border: `2px solid ${owned ? cor : locked ? '#ccc' : cor + '66'}`,
-            backgroundColor: owned ? cor + '12' : locked ? '#fafafa' : 'white',
-            opacity: locked && !owned ? 0.7 : 1,
+            border: `2px solid ${owned || autoIncluded ? cor : locked ? colors.olive + '44' : cor + '66'}`,
+            backgroundColor: owned || autoIncluded ? cor + '18' : locked ? derived.bgDarkAlt : derived.bgDarkSurface,
+            opacity: locked && !owned ? 0.6 : 1,
             transition: 'all 0.2s ease',
             '&:hover': { transform: locked ? 'none' : 'translateY(-2px)', boxShadow: locked ? 0 : 3 },
         }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ flex: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                        {owned ? (
-                            <CheckCircleIcon sx={{ fontSize: 18, color: cor }} />
-                        ) : locked ? (
-                            <LockIcon sx={{ fontSize: 18, color: '#999' }} />
-                        ) : (
-                            <LockOpenIcon sx={{ fontSize: 18, color: cor }} />
-                        )}
-                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px', color: owned ? cor : '#40150A' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5, flexWrap: 'wrap' }}>
+                        {autoIncluded ? <CardGiftcardIcon sx={{ fontSize: 18, color: cor }} />
+                            : owned ? <CheckCircleIcon sx={{ fontSize: 18, color: cor }} />
+                            : locked ? <LockIcon sx={{ fontSize: 18, color: derived.textOnDarkMuted }} />
+                            : <LockOpenIcon sx={{ fontSize: 18, color: cor }} />}
+                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px', color: owned || autoIncluded ? cor : derived.textOnDark }}>
                             {nome}
                         </Typography>
+                        {autoIncluded && <Chip label="Incluída" size="small" sx={{ height: '18px', fontSize: '9px', backgroundColor: colors.forest, color: derived.textOnDark, fontWeight: 'bold' }} />}
                     </Box>
-                    {custo !== undefined && (
+                    {custo !== undefined && !autoIncluded && (
                         <Chip label={`${custo} pt${custo !== 1 ? 's' : ''}`} size="small"
                             sx={{ height: '18px', fontSize: '10px', backgroundColor: cor + '22', color: cor, fontWeight: 'bold', mb: 0.5 }} />
                     )}
                 </Box>
-
-                {!owned && !locked && onBuy && (
-                    <Button
-                        variant="contained" size="small"
-                        startIcon={<ShoppingCartIcon sx={{ fontSize: 14 }} />}
-                        onClick={onBuy}
-                        sx={{
-                            backgroundColor: cor,
-                            fontSize: '11px', textTransform: 'none',
-                            '&:hover': { backgroundColor: cor, filter: 'brightness(1.15)' },
-                        }}
-                    >
+                {!owned && !locked && !autoIncluded && onBuy && (
+                    <Button variant="contained" size="small" startIcon={<ShoppingCartIcon sx={{ fontSize: 14 }} />} onClick={onBuy}
+                        sx={{ backgroundColor: cor, color: derived.textOnDark, fontSize: '11px', textTransform: 'none', '&:hover': { backgroundColor: cor, filter: 'brightness(1.25)' } }}>
                         Comprar
                     </Button>
                 )}
                 {locked && lockMsg && (
                     <Tooltip title={lockMsg} arrow>
-                        <Chip label="Bloqueado" size="small" icon={<LockIcon sx={{ fontSize: 12 }} />}
-                            sx={{ fontSize: '10px', height: '22px' }} />
+                        <Chip label="Bloqueado" size="small" icon={<LockIcon sx={{ fontSize: 12 }} />} sx={{ fontSize: '10px', height: '22px' }} />
                     </Tooltip>
                 )}
             </Box>
-
-            {/* Bônus resumidos */}
             {bonus && (
                 <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mt: 0.5 }}>
-                    {bonus.pv > 0 && <Chip label={`+${bonus.pv} PV`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: '#E53935', color: 'white' }} />}
-                    {bonus.estamina > 0 && <Chip label={`+${bonus.estamina} Est`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: '#FFB300', color: '#40150A' }} />}
-                    {bonus.magia > 0 && <Chip label={`+${bonus.magia} PM`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: '#1565C0', color: 'white' }} />}
+                    {bonus.pv > 0 && <Chip label={`+${bonus.pv} PV`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.garnet, color: derived.textOnDark }} />}
+                    {bonus.estamina > 0 && <Chip label={`+${bonus.estamina} Est`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.gold, color: derived.textOnDark }} />}
+                    {bonus.magia > 0 && <Chip label={`+${bonus.magia} PM`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.midnight, color: derived.textOnDark }} />}
                 </Box>
             )}
-
-            {/* Descrição expandível */}
-            <Typography
-                variant="body2"
-                onClick={() => setExpanded(!expanded)}
-                sx={{
-                    mt: 0.5, fontSize: '12px', color: '#555',
-                    cursor: 'pointer',
-                    display: '-webkit-box',
-                    WebkitLineClamp: expanded ? 'unset' : 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: expanded ? 'visible' : 'hidden',
-                }}
-            >
+            <Typography variant="body2" onClick={() => setExpanded(!expanded)} sx={{
+                mt: 0.5, fontSize: '12px', color: derived.textOnDarkMuted, cursor: 'pointer',
+                display: '-webkit-box', WebkitLineClamp: expanded ? 'unset' : 2, WebkitBoxOrient: 'vertical', overflow: expanded ? 'visible' : 'hidden',
+            }}>
                 {descricao}
             </Typography>
-
-            {/* Conteúdo extra (árvores, habilidades, etc.) */}
             {expanded && children}
         </Paper>
     );
 };
 
-/* ─────────────────────────────────────────────────────────
-   Subcomponente: Árvore de progressão de classe primária
-   ───────────────────────────────────────────────────────── */
-const ArvoreProgressao = ({ arvores, cor }) => {
-    if (!arvores || arvores.length === 0) return null;
-
+/* ─── Item de nível de árvore comprável ─── */
+const NivelArvoreItem = ({ nv, cor, owned, canBuy, prevOwned, onBuy, ordemLivre }) => {
+    const locked = !owned && !ordemLivre && !prevOwned;
     return (
-        <Box sx={{ mt: 1 }}>
-            <Typography className="esteban" variant="subtitle2" sx={{ fontWeight: 'bold', color: cor, mb: 0.5, fontSize: '12px' }}>
-                🌳 Árvores de Progressão
-            </Typography>
-            {arvores.map(arv => (
-                <Accordion key={arv.id} sx={{ backgroundColor: '#fafaf5', mb: 0.5, '&:before': { display: 'none' } }}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 36, '& .MuiAccordionSummary-content': { my: 0.5 } }}>
-                        <Typography className="esteban" sx={{ fontSize: '12px', fontWeight: 'bold', color: cor }}>
-                            {arv.nome} ({arv.niveis?.length || 0} níveis)
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ pt: 0, pb: 1 }}>
-                        {arv.niveis?.map((nv, i) => (
-                            <Box key={i} sx={{
-                                display: 'flex', alignItems: 'center', gap: 1, py: 0.3,
-                                borderLeft: `3px solid ${cor}`, pl: 1, ml: 1, mb: 0.5,
-                            }}>
-                                <Chip label={`Nv ${nv.nivel}`} size="small"
-                                    sx={{ height: '16px', fontSize: '9px', backgroundColor: cor + '22', color: cor, fontWeight: 'bold' }} />
-                                <Typography variant="caption" sx={{ fontSize: '11px', color: '#555' }}>
-                                    Custo: {nv.custo}pt
-                                    {nv.bonusHabilidades && Object.keys(nv.bonusHabilidades).length > 0 &&
-                                        ` • +${Object.entries(nv.bonusHabilidades).map(([k, v]) => `${v} ${k}`).join(', ')}`}
-                                    {nv.habilidadeGanha && ` • 🎯 ${nv.habilidadeGanha.nome}`}
-                                </Typography>
-                            </Box>
-                        ))}
-                    </AccordionDetails>
-                </Accordion>
-            ))}
+        <Box sx={{
+            display: 'flex', alignItems: 'center', gap: 1, py: 0.5,
+            borderLeft: `3px solid ${owned ? cor : locked ? colors.olive + '44' : cor + '88'}`,
+            pl: 1.5, ml: 1, mb: 0.5, backgroundColor: owned ? cor + '18' : 'transparent', borderRadius: '0 4px 4px 0',
+        }}>
+            <Box sx={{ flex: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                    {owned ? <CheckCircleIcon sx={{ fontSize: 14, color: cor }} /> : locked ? <LockIcon sx={{ fontSize: 14, color: derived.textOnDarkMuted }} /> : <LockOpenIcon sx={{ fontSize: 14, color: cor }} />}
+                    <Chip label={`Nível ${nv.nivel}`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: owned ? cor + '33' : cor + '15', color: cor, fontWeight: 'bold' }} />
+                    <Chip label={`${nv.custo} pt${nv.custo !== 1 ? 's' : ''}`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: `${colors.olive}22`, color: derived.textOnDarkMuted }} />
+                </Box>
+                <Typography variant="caption" component="div" sx={{ fontSize: '11px', color: derived.textOnDarkMuted, mt: 0.3 }}>
+                    {nv.bonusHabilidades && Object.keys(nv.bonusHabilidades).length > 0 &&
+                        Object.entries(nv.bonusHabilidades).map(([k, v]) => `+${v} ${labelHab(k)}`).join(', ')}
+                    {nv.escolhasHabilidades?.map((e, i) =>
+                        `${(i > 0 || Object.keys(nv.bonusHabilidades || {}).length > 0) ? ', ' : ''}+${e.pontos} ${e.grupo.map(g => labelHab(g)).join(' ou ')}`
+                    ).join('')}
+                    {nv.habilidadeGanha && <><br />🎯 <strong>{nv.habilidadeGanha.nome}</strong> — {nv.habilidadeGanha.descricao?.substring(0, 120) || nv.habilidadeGanha.tipo || ''}{nv.habilidadeGanha.descricao?.length > 120 ? '…' : ''}</>}
+                    {nv.proficienciasGanhas?.length > 0 && <><br />🛡️ Proficiências: {nv.proficienciasGanhas.join(', ')}</>}
+                </Typography>
+            </Box>
+            {!owned && canBuy && (ordemLivre || prevOwned) && onBuy && (
+                <Button variant="outlined" size="small" onClick={onBuy} sx={{
+                    fontSize: '10px', textTransform: 'none', minWidth: 'auto',
+                    borderColor: cor, color: cor, '&:hover': { backgroundColor: cor + '22', borderColor: cor },
+                }}>
+                    Comprar Nv {nv.nivel}
+                </Button>
+            )}
         </Box>
     );
 };
 
 /* ═══════════════════════════════════════════════════════════
    COMPONENTE PRINCIPAL: RegaliasShop
-   Interface de compra e visualização de regalias com validação
    ═══════════════════════════════════════════════════════════ */
-const RegaliasShop = ({
-    character,
-    sectionStyle,
-    cardHeaderStyle,
-    onPurchase,   // callback(tipo, id, escolhas) para registrar compra
-    readOnly = false,
-}) => {
+const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
     const [secaoAberta, setSecaoAberta] = useState(null);
     const [confirmDialog, setConfirmDialog] = useState(null);
 
-    // ── Dados derivados ──
     const nivel = character?.nivel || 1;
-    const pontosTotal = pontosRegaliaPorNivel(nivel);
-    const pontosGastos = character?.pontosRegaliaGastos || 0;
-    const pontosRestantes = pontosTotal - pontosGastos;
     const regaliasCompradas = character?.regaliasCompradas || {};
     const regaliasOpcCompradas = character?.regaliasOpcionais || [];
 
-    // ── FichaState para validação ──
-    const fichaState = useMemo(() => ({
-        nivel,
-        regaliasCompradas,
-        pontosRegaliaGastos: pontosGastos,
-    }), [nivel, regaliasCompradas, pontosGastos]);
+    // ── Dados de espécie e regalias extras purchasáveis
+    const especieKey = character?.especie || 'humano';
+    const especieData = especies[especieKey] || null;
+    const extrasEspecie = especieData?.regalias || [];
 
-    // ── Seções com contagens ──
-    const secoes = useMemo(() => {
-        const aprendizOwned = regaliasDeAprendiz.filter(r => regaliasCompradas[r.id]).length;
-        const primariaOwned = classesPrimarias.filter(c => regaliasCompradas[c.id]).length;
-        const especOwned = especializacoes.filter(e => regaliasCompradas[e.id]).length;
-        const opcOwned = regaliasOpcCompradas.length;
-
-        return [
-            {
-                id: 'aprendiz', label: 'Regalias de Aprendiz', icon: <SchoolIcon />,
-                cor: CORES_TIPO.aprendiz, total: regaliasDeAprendiz.length, owned: aprendizOwned,
-            },
-            {
-                id: 'opcional', label: 'Regalias Opcionais', icon: <ScienceIcon />,
-                cor: CORES_TIPO.opcional, total: regaliasOpcionais.regalias_opcionais?.length || 0, owned: opcOwned,
-            },
-            {
-                id: 'primaria', label: 'Classes Primárias', icon: <MilitaryTechIcon />,
-                cor: CORES_TIPO.primaria, total: classesPrimarias.length, owned: primariaOwned,
-            },
-            {
-                id: 'especializacao', label: 'Especializações', icon: <AutoAwesomeIcon />,
-                cor: CORES_TIPO.especializacao, total: especializacoes.length, owned: especOwned,
-            },
-        ];
-    }, [regaliasCompradas, regaliasOpcCompradas]);
-
-    // ── Comprar regalia ──
-    const handleBuy = useCallback((tipo, id, extra = {}) => {
-        if (readOnly) return;
-        setConfirmDialog({ tipo, id, extra });
-    }, [readOnly]);
-
-    const confirmBuy = useCallback(() => {
-        if (confirmDialog && onPurchase) {
-            onPurchase(confirmDialog.tipo, confirmDialog.id, confirmDialog.extra);
+    // Sub-raça ativa = escolha feita na criação (obrigatória)
+    const activeSubracaNome = useMemo(() => {
+        const obrigatoriaNames = (especieData?.obrigatorias || []).map(s => s.nome);
+        for (const g of (character?.regalias_de_especie || [])) {
+            if (g?.regalias?.length > 0 && obrigatoriaNames.includes(g.regalias[0])) return g.regalias[0];
         }
-        setConfirmDialog(null);
-    }, [confirmDialog, onPurchase]);
+        return null;
+    }, [character?.regalias_de_especie, especieData]);
+
+    const pontosTotal = calcularPontosRegaliaTotal(nivel);
+
+    const pontosGastos = useMemo(() => calcularPontosGastos(regaliasCompradas), [regaliasCompradas]);
+    const pontosRestantes = pontosTotal - pontosGastos;
+
+    // Bridge: inclui regalias de aprendiz da criação + classes para validação
+    const regaliasCompradasComAprendiz = useMemo(() => {
+        const merged = { ...regaliasCompradas };
+        const aprendizCriacao = character?.regalias_de_aprendiz?.RegaliasDeAprendizSelecionada || {};
+        Object.keys(aprendizCriacao).forEach(id => { if (!merged[id]) merged[id] = 1; });
+        const regaliasClasse = character?.regalias_de_classe || {};
+        Object.keys(regaliasClasse).forEach(id => { if (!merged[id]) merged[id] = 1; });
+        return merged;
+    }, [regaliasCompradas, character?.regalias_de_aprendiz, character?.regalias_de_classe]);
+
+    // Contar total de regalias investidas numa classe (classe + árvores + avulsas)
+    const contarRegaliasClasse = useCallback((classeId) => {
+        let count = regaliasCompradasComAprendiz[classeId] ? 1 : 0;
+        Object.keys(regaliasCompradas).forEach(k => {
+            if (k.startsWith(`arvore:${classeId}:`) || k.startsWith(`avulsa:${classeId}:`)) count += 1;
+        });
+        return count;
+    }, [regaliasCompradas, regaliasCompradasComAprendiz]);
+
+    // FichaState para validação — usa contagem total por classe
+    const fichaState = useMemo(() => {
+        const compradas = { ...regaliasCompradasComAprendiz };
+        classesPrimarias.forEach(c => {
+            const total = contarRegaliasClasse(c.id);
+            if (total > 0) compradas[c.id] = total;
+        });
+        return { nivel, regaliasCompradas: compradas, pontosRegaliaGastos: pontosGastos };
+    }, [nivel, regaliasCompradasComAprendiz, pontosGastos, contarRegaliasClasse]);
+
+    // Seções
+    const secoes = useMemo(() => {
+        const aprendizOwned = regaliasDeAprendiz.filter(r => regaliasCompradasComAprendiz[r.id]).length;
+        const primariaOwned = classesPrimarias.filter(c => regaliasCompradasComAprendiz[c.id]).length;
+        const especOwned = especializacoes.filter(e => regaliasCompradasComAprendiz[e.id]).length;
+        // Contar opções individuais de espécie variante
+        const totalOpcoes = (regaliasOpcionais.regalias_opcionais || []).reduce((acc, r) => acc + (r.opcoes?.length || 0), 0);
+        const ownedShopOpcoes = regaliasOpcCompradas.filter(r => r?.tipo && r?.opcao).length;
+        const ownedCreationOpcoes = (character?.regalias_de_especie || []).reduce((acc, g) => acc + (g?.regalias?.length || 0), 0);
+        return [
+            { id: 'aprendiz', label: 'Regalias de Aprendiz', icon: <SchoolIcon />, cor: CORES_TIPO.aprendiz, total: regaliasDeAprendiz.length, owned: aprendizOwned },
+            { id: 'especie_subraca', label: `Regalias de Espécie${especieData ? ` — ${especieData.nome}` : ''}`, icon: <PersonIcon />, cor: CORES_TIPO.especie, total: extrasEspecie.length, owned: extrasEspecie.filter(e => !!regaliasCompradas[`especie_extra:${e.id}`]).length },
+            { id: 'opcional', label: 'Regalias de Espécie Variante', icon: <ScienceIcon />, cor: CORES_TIPO.opcional, total: totalOpcoes, owned: ownedShopOpcoes + ownedCreationOpcoes },
+            { id: 'primaria', label: 'Classes Primárias', icon: <MilitaryTechIcon />, cor: CORES_TIPO.primaria, total: classesPrimarias.length, owned: primariaOwned },
+            { id: 'especializacao', label: 'Especializações', icon: <AutoAwesomeIcon />, cor: CORES_TIPO.especializacao, total: especializacoes.length, owned: especOwned },
+        ];
+    }, [regaliasCompradas, regaliasCompradasComAprendiz, regaliasOpcCompradas, character?.regalias_de_especie, extrasEspecie, especieData]);
+
+    const handleBuy = useCallback((tipo, id, extra = {}) => { if (!readOnly) setConfirmDialog({ tipo, id, extra }); }, [readOnly]);
+    const confirmBuy = useCallback(() => { if (confirmDialog && onPurchase) onPurchase(confirmDialog.tipo, confirmDialog.id, confirmDialog.extra); setConfirmDialog(null); }, [confirmDialog, onPurchase]);
+
+    const getConfirmDesc = () => {
+        if (!confirmDialog) return '';
+        const { tipo, extra } = confirmDialog;
+        const custo = extra?.custo || 1;
+        if (tipo === 'arvore_nivel') return `Comprar ${extra?.arvoreNome || ''} Nível ${extra?.nivel || '?'} (${custo} pt${custo !== 1 ? 's' : ''})`;
+        if (tipo === 'avulsa') return `Comprar ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
+        if (tipo === 'especie_extra') return `Comprar Regalia de Espécie: ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
+        if (tipo === 'primaria') return `Entrar na classe (${custo} pt) — você ganha a habilidade de classe automaticamente`;
+        return `Comprar regalia (${custo} pt${custo !== 1 ? 's' : ''})`;
+    };
 
     if (!character) return null;
 
     return (
-        <Card sx={{ ...sectionStyle, mt: 2 }}>
-            <CardHeader
-                sx={{
-                    ...cardHeaderStyle,
-                    background: 'linear-gradient(135deg, #BB8130 0%, #AB6422 50%, #756A34 100%)',
-                }}
-                title={
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                        <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            🛒 Loja de Regalias
-                        </Typography>
-                        <Chip
-                            label={`${pontosRestantes} pts disponíveis`}
-                            sx={{
-                                backgroundColor: pontosRestantes > 0 ? 'rgba(76,175,80,0.8)' : 'rgba(244,67,54,0.8)',
-                                color: 'white', fontWeight: 'bold', fontSize: '12px',
-                            }}
-                        />
-                    </Box>
-                }
-            />
-            <CardContent>
-                {/* Barra de pontos */}
-                <PointsBar pontosTotal={pontosTotal} pontosGastos={pontosGastos} />
+        <Box sx={{ p: 2 }}>
+            <PointsBar pontosTotal={pontosTotal} pontosGastos={pontosGastos} />
 
-                {/* Alerta de nível */}
-                {nivel < 3 && (
-                    <Alert severity="info" sx={{ mb: 2, fontSize: '12px' }}>
-                        Classes Primárias e Especializações ficam disponíveis a partir do nível 3.
-                    </Alert>
-                )}
+            {nivel < 3 && <Alert severity="info" sx={{ mb: 2, fontSize: '12px', backgroundColor: `${colors.midnight}cc`, color: derived.textOnDark, '& .MuiAlert-icon': { color: colors.gold } }}>Classes Primárias e Especializações ficam disponíveis a partir do nível 3.</Alert>}
 
-                {/* Seções */}
-                {secoes.map(secao => {
-                    const isOpen = secaoAberta === secao.id;
-                    return (
-                        <Box key={secao.id} sx={{ mb: 1.5 }}>
-                            <Paper
-                                sx={{
-                                    p: 1.5, cursor: 'pointer',
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                    backgroundColor: isOpen ? secao.cor : '#f5f3eb',
-                                    color: isOpen ? 'white' : '#40150A',
-                                    borderRadius: 2,
-                                    transition: 'all 0.2s',
-                                    '&:hover': { backgroundColor: isOpen ? secao.cor : '#ebe8dd' },
-                                }}
-                                onClick={() => setSecaoAberta(isOpen ? null : secao.id)}
-                            >
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    {secao.icon}
-                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px' }}>
-                                        {secao.label}
-                                    </Typography>
-                                    <Chip
-                                        label={`${secao.owned}/${secao.total}`}
-                                        size="small"
-                                        sx={{
-                                            height: '20px', fontSize: '11px',
-                                            backgroundColor: isOpen ? 'rgba(255,255,255,0.3)' : secao.cor + '22',
-                                            color: isOpen ? 'white' : secao.cor,
-                                            fontWeight: 'bold',
-                                        }}
-                                    />
-                                </Box>
-                                <ExpandMoreIcon sx={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s' }} />
-                            </Paper>
+            {secoes.map(secao => {
+                const isOpen = secaoAberta === secao.id;
+                return (
+                    <Box key={secao.id} sx={{ mb: 1.5 }}>
+                        <Paper sx={{
+                            p: 1.5, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            borderRadius: 2, transition: 'all 0.2s'
+                        }} onClick={() => setSecaoAberta(isOpen ? null : secao.id)}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                {secao.icon}
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px', color: derived.textOnDark }}>{secao.label}</Typography>
+                                <Chip label={`${secao.owned}/${secao.total}`} size="small" sx={{
+                                    height: '20px', fontSize: '11px',
+                                    color: isOpen ? derived.textOnDark : secao.cor, fontWeight: 'bold',
+                                }} />
+                            </Box>
+                            <ExpandMoreIcon sx={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s' }} />
+                        </Paper>
 
-                            <Collapse in={isOpen} timeout="auto">
-                                <Box sx={{ p: 1.5 }}>
-                                    {/* ── Regalias de Aprendiz ── */}
-                                    {secao.id === 'aprendiz' && (
+                        <Collapse in={isOpen} timeout="auto">
+                            <Box sx={{ p: 1.5 }}>
+
+                                {/* ── Aprendiz ── */}
+                                {secao.id === 'aprendiz' && (
+                                    <Grid container spacing={1.5}>
+                                        {regaliasDeAprendiz.map(reg => {
+                                            const owned = !!regaliasCompradasComAprendiz[reg.id];
+                                            const validation = validarPreRequisitosRegalia(fichaState, reg.id);
+                                            return (
+                                                <Grid item xs={12} md={6} key={reg.id}>
+                                                    <RegaliaCard nome={reg.nome} descricao={reg.descricao?.substring(0, 200) || ''} custo={1}
+                                                        cor={CORES_TIPO.aprendiz} owned={owned} locked={!validation.valido && !owned} lockMsg={validation.mensagem}
+                                                        onBuy={!owned && pontosRestantes >= 1 ? () => handleBuy('aprendiz', reg.id, { custo: 1 }) : null}
+                                                        bonus={reg.bonusPorRegalia}>
+                                                        {reg.proficienciasGanhas?.length > 0 && (
+                                                            <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap', gap: 0.3 }}>
+                                                                <Typography variant="caption" sx={{ width: '100%', fontWeight: 'bold', color: derived.textOnDark }}>Proficiências:</Typography>
+                                                                {reg.proficienciasGanhas.map(p => <Chip key={p} label={p} size="small" sx={{ height: '16px', fontSize: '9px' }} />)}
+                                                            </Box>
+                                                        )}
+                                                        {reg.habilidadesGanhas?.length > 0 && (
+                                                            <Box sx={{ mt: 0.5 }}>
+                                                                <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark }}>Habilidades:</Typography>
+                                                                {reg.habilidadesGanhas.map(h => {
+                                                                    const eStr = typeof h.efeito === 'string' ? h.efeito : h.efeito ? JSON.stringify(h.efeito) : '';
+                                                                    return <Typography key={h.nome} variant="caption" sx={{ display: 'block', ml: 1, fontSize: '10px', color: derived.textOnDarkMuted }}>🎯 {h.nome}{eStr ? ` — ${eStr.substring(0, 80)}${eStr.length > 80 ? '...' : ''}` : ''}</Typography>;
+                                                                })}
+                                                            </Box>
+                                                        )}
+                                                    </RegaliaCard>
+                                                </Grid>
+                                            );
+                                        })}
+                                    </Grid>
+                                )}
+
+                                {/* ── Regalias de Espécie Extras ── */}
+                                {secao.id === 'especie_subraca' && (
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                                        {/* Banner informativo com a sub-raça ativa (escolhida na criação) */}
+                                        {especieData && (
+                                            <Paper sx={{ p: 1.5, mb: 0.5, backgroundColor: CORES_TIPO.especie + '18', borderLeft: `4px solid ${CORES_TIPO.especie}`, borderRadius: '0 8px 8px 0' }}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                                                    <PersonIcon sx={{ fontSize: 16, color: CORES_TIPO.especie }} />
+                                                    <Typography variant="body2" sx={{ fontSize: '12px', color: derived.textOnDark, fontWeight: 'bold' }}>
+                                                        Sub-raça ativa:
+                                                    </Typography>
+                                                    <Chip
+                                                        label={activeSubracaNome || 'Não definida'}
+                                                        size="small"
+                                                        sx={{ height: '20px', fontSize: '11px', backgroundColor: CORES_TIPO.especie + '33', color: CORES_TIPO.especie, fontWeight: 'bold' }}
+                                                    />
+                                                </Box>
+                                                <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted, mt: 0.5 }}>
+                                                    A sub-raça é escolhida na criação do personagem e não pode ser alterada aqui. Abaixo estão as Regalias extras de espécie que podem ser compradas com Pontos de Regalia.
+                                                </Typography>
+                                            </Paper>
+                                        )}
+                                        {extrasEspecie.length === 0 && (
+                                            <Typography variant="body2" sx={{ color: derived.textOnDarkMuted, textAlign: 'center', py: 2 }}>
+                                                Nenhuma regalia extra disponível para esta espécie.
+                                            </Typography>
+                                        )}
                                         <Grid container spacing={1.5}>
-                                            {regaliasDeAprendiz.map(reg => {
-                                                const owned = !!regaliasCompradas[reg.id];
-                                                const validation = validarPreRequisitosRegalia(fichaState, reg.id);
+                                            {extrasEspecie.map(extra => {
+                                                const isOwned = !!regaliasCompradas[`especie_extra:${extra.id}`];
+                                                const custo = extra.custo || 1;
+                                                const canAfford = pontosRestantes >= custo;
                                                 return (
-                                                    <Grid item xs={12} md={6} key={reg.id}>
+                                                    <Grid item xs={12} md={6} key={extra.id}>
                                                         <RegaliaCard
-                                                            nome={reg.nome}
-                                                            descricao={reg.descricao?.substring(0, 200) || ''}
-                                                            custo={1}
-                                                            cor={CORES_TIPO.aprendiz}
-                                                            owned={owned}
-                                                            locked={!validation.valido && !owned}
-                                                            lockMsg={validation.mensagem}
-                                                            onBuy={!readOnly ? () => handleBuy('aprendiz', reg.id) : null}
-                                                            bonus={reg.bonusPorRegalia}
-                                                        >
-                                                            {/* Proficiências ganhas */}
-                                                            {reg.proficienciasGanhas?.length > 0 && (
-                                                                <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap', gap: 0.3 }}>
-                                                                    <Typography variant="caption" sx={{ width: '100%', fontWeight: 'bold', color: '#40150A' }}>
-                                                                        Proficiências:
-                                                                    </Typography>
-                                                                    {reg.proficienciasGanhas.map(p => (
-                                                                        <Chip key={p} label={p} size="small"
-                                                                            sx={{ height: '16px', fontSize: '9px', backgroundColor: '#e8f5e9', color: '#2E7D32' }} />
-                                                                    ))}
-                                                                </Box>
-                                                            )}
-                                                            {/* Habilidades ganhas */}
-                                                            {reg.habilidadesGanhas?.length > 0 && (
-                                                                <Box sx={{ mt: 0.5 }}>
-                                                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#40150A' }}>
-                                                                        Habilidades:
-                                                                    </Typography>
-                                                                    {reg.habilidadesGanhas.map(h => (
-                                                                        <Typography key={h.nome} variant="caption" sx={{ display: 'block', ml: 1, fontSize: '10px', color: '#555' }}>
-                                                                            🎯 {h.nome} — {h.efeito?.substring(0, 80)}...
-                                                                        </Typography>
-                                                                    ))}
-                                                                </Box>
-                                                            )}
-                                                        </RegaliaCard>
+                                                            nome={extra.nome}
+                                                            descricao={extra.descricao}
+                                                            custo={isOwned ? undefined : custo}
+                                                            cor={CORES_TIPO.especie}
+                                                            owned={isOwned}
+                                                            locked={!isOwned && !canAfford}
+                                                            lockMsg="Pontos insuficientes"
+                                                            onBuy={!isOwned && canAfford && !readOnly
+                                                                ? () => handleBuy('especie_extra', `especie_extra:${extra.id}`, {
+                                                                    nome: extra.nome,
+                                                                    especieNome: especieData?.nome || especieKey,
+                                                                    custo,
+                                                                })
+                                                                : null}
+                                                        />
                                                     </Grid>
                                                 );
                                             })}
                                         </Grid>
-                                    )}
+                                    </Box>
+                                )}
 
-                                    {/* ── Regalias Opcionais ── */}
-                                    {secao.id === 'opcional' && (
-                                        <Grid container spacing={1.5}>
-                                            {(regaliasOpcionais.regalias_opcionais || []).map(reg => {
-                                                const owned = regaliasOpcCompradas.some(r =>
-                                                    r.tipo === reg.tipo || r === reg.tipo
-                                                );
-                                                return (
-                                                    <Grid item xs={12} key={reg.tipo}>
-                                                        <RegaliaCard
-                                                            nome={reg.tipo}
-                                                            descricao={reg.descricao}
-                                                            custo={reg.custo}
-                                                            cor={CORES_TIPO.opcional}
-                                                            owned={owned}
-                                                            locked={pontosRestantes < reg.custo && !owned}
-                                                            lockMsg={`Necessário ${reg.custo} pontos de regalia`}
-                                                        >
-                                                            {/* Opções dentro do tipo */}
-                                                            {reg.opcoes && (
-                                                                <Box sx={{ mt: 1 }}>
-                                                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#40150A' }}>
-                                                                        Opções disponíveis:
-                                                                    </Typography>
-                                                                    <Grid container spacing={0.5} sx={{ mt: 0.5 }}>
-                                                                        {reg.opcoes.map(opc => (
-                                                                            <Grid item xs={12} sm={6} key={opc.nome}>
-                                                                                <Paper sx={{
-                                                                                    p: 1, backgroundColor: '#f9f7f2', borderRadius: 1,
-                                                                                    border: '1px solid #ddd',
-                                                                                }}>
-                                                                                    <Typography variant="caption" sx={{ fontWeight: 'bold', fontSize: '11px' }}>
-                                                                                        {opc.nome}
-                                                                                    </Typography>
-                                                                                    <Typography variant="caption" sx={{ display: 'block', fontSize: '10px', color: '#666' }}>
-                                                                                        {opc.descricao?.substring(0, 100)}{opc.descricao?.length > 100 ? '...' : ''}
-                                                                                    </Typography>
-                                                                                    {!owned && !readOnly && pontosRestantes >= reg.custo && (
-                                                                                        <Button
-                                                                                            size="small" variant="outlined"
-                                                                                            onClick={() => handleBuy('opcional', reg.tipo, { opcao: opc.nome })}
-                                                                                            sx={{
-                                                                                                mt: 0.5, fontSize: '10px', textTransform: 'none',
-                                                                                                borderColor: CORES_TIPO.opcional, color: CORES_TIPO.opcional,
-                                                                                            }}
-                                                                                        >
-                                                                                            Escolher
-                                                                                        </Button>
-                                                                                    )}
-                                                                                </Paper>
-                                                                            </Grid>
-                                                                        ))}
+                                {/* ── Regalias de Espécie Variante ── */}
+                                {secao.id === 'opcional' && (
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                                        {(regaliasOpcionais.regalias_opcionais || []).map(reg => {
+                                            const tipoKey = reg.tipo;
+                                            const isCreationOwned = (nomeOpcao) =>
+                                                (character?.regalias_de_especie || []).some(g => g?.regalias?.includes(nomeOpcao));
+                                            const isShopOwned = (nomeOpcao) =>
+                                                regaliasOpcCompradas.some(r => r.tipo === tipoKey && r.opcao === nomeOpcao);
+                                            const ownedCount = (reg.opcoes || []).filter(o => isCreationOwned(o.nome) || isShopOwned(o.nome)).length;
+
+                                            return (
+                                                <Box key={tipoKey}>
+                                                    {/* Cabeçalho do tipo */}
+                                                    <Paper sx={{ p: 1.5, mb: 1.5, backgroundColor: CORES_TIPO.opcional + '18', borderLeft: `4px solid ${CORES_TIPO.opcional}`, borderRadius: '0 8px 8px 0' }}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 0.5 }}>
+                                                            <ScienceIcon sx={{ fontSize: 16, color: CORES_TIPO.opcional }} />
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px', color: CORES_TIPO.opcional }}>{tipoKey}</Typography>
+                                                            <Chip label={`${reg.custo} pts por opção`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.opcional + '22', color: CORES_TIPO.opcional, fontWeight: 'bold' }} />
+                                                            {ownedCount > 0 && <Chip label={`${ownedCount} possuída${ownedCount !== 1 ? 's' : ''}`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: colors.forest, color: derived.textOnDark, fontWeight: 'bold' }} />}
+                                                        </Box>
+                                                        <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>{reg.descricao}</Typography>
+                                                        {reg.penalidade && (
+                                                            <Alert severity="warning" sx={{ mt: 0.5, py: 0, fontSize: '11px', backgroundColor: `${colors.garnet}22`, color: colors.garnet, '& .MuiAlert-icon': { color: colors.garnet } }}>
+                                                                ⚠️ {reg.penalidade}
+                                                            </Alert>
+                                                        )}
+                                                        {reg.observacao && (
+                                                            <Alert severity="info" sx={{ mt: 0.5, py: 0, fontSize: '11px', backgroundColor: `${colors.midnight}44`, color: derived.textOnDark, '& .MuiAlert-icon': { color: colors.gold } }}>
+                                                                {reg.observacao}
+                                                            </Alert>
+                                                        )}
+                                                    </Paper>
+
+                                                    {/* Cards individuais de cada opção */}
+                                                    <Grid container spacing={1.5}>
+                                                        {(reg.opcoes || []).map(opc => {
+                                                            const ownedCreation = isCreationOwned(opc.nome);
+                                                            const ownedShop = isShopOwned(opc.nome);
+                                                            const canAfford = pontosRestantes >= reg.custo;
+                                                            const opcKey = `opcional:${tipoKey}:${opc.nome}`;
+                                                            return (
+                                                                <Grid item xs={12} sm={6} key={opc.nome}>
+                                                                    <RegaliaCard
+                                                                        nome={opc.nome}
+                                                                        descricao={opc.descricao}
+                                                                        custo={reg.custo}
+                                                                        cor={CORES_TIPO.opcional}
+                                                                        owned={ownedShop}
+                                                                        autoIncluded={ownedCreation}
+                                                                        locked={!canAfford && !ownedShop && !ownedCreation}
+                                                                        lockMsg={`Necessário ${reg.custo} pontos`}
+                                                                        onBuy={!ownedShop && !ownedCreation && canAfford && !readOnly
+                                                                            ? () => handleBuy('opcional', opcKey, { tipo: tipoKey, opcao: opc.nome, custo: reg.custo })
+                                                                            : null}
+                                                                    />
+                                                                </Grid>
+                                                            );
+                                                        })}
+                                                    </Grid>
+                                                </Box>
+                                            );
+                                        })}
+                                    </Box>
+                                )}
+
+                                {/* ── Classes Primárias (compra progressiva) ── */}
+                                {secao.id === 'primaria' && (
+                                    <Grid container spacing={1.5}>
+                                        {classesPrimarias.map(classe => {
+                                            const classOwned = !!regaliasCompradasComAprendiz[classe.id];
+                                            const validation = validarPreRequisitosRegalia(fichaState, classe.id);
+                                            const totalInvestido = contarRegaliasClasse(classe.id);
+                                            const cor = CORES_TIPO.primaria;
+
+                                            return (
+                                                <Grid item xs={12} key={classe.id}>
+                                                    {/* Card da classe — 1 pt para entrar */}
+                                                    <RegaliaCard
+                                                        nome={classe.nome}
+                                                        descricao={`Ao entrar nesta classe, você ganha automaticamente: ${classe.habilidadeClasse?.nome || 'habilidade de classe'}.`}
+                                                        custo={1} cor={cor} owned={classOwned}
+                                                        locked={!validation.valido && !classOwned} lockMsg={validation.mensagem}
+                                                        onBuy={!classOwned && pontosRestantes >= 1 ? () => handleBuy('primaria', classe.id, { custo: 1 }) : null}
+                                                        bonus={classe.bonusPorRegalia}>
+                                                        <Box sx={{ mt: 1, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                                                            <Chip label={`Nível mín: ${classe.preRequisitos?.nivelMinimo || '?'}`} size="small" sx={{
+                                                                height: '18px', fontSize: '10px', backgroundColor: `${colors.midnight}cc`, color: derived.textOnDarkMuted,
+                                                            }} />
+                                                            {classe.preRequisitos?.regaliaAprendiz && (
+                                                                <Chip label={`Req: ${regaliasDeAprendiz.find(r => r.id === classe.preRequisitos.regaliaAprendiz)?.nome || classe.preRequisitos.regaliaAprendiz}`} size="small" sx={{
+                                                                    height: '18px', fontSize: '10px', backgroundColor: `${colors.olive}33`, color: derived.textOnDarkMuted,
+                                                                }} />
+                                                            )}
+                                                            {classOwned && (
+                                                                <Chip label={`${totalInvestido} regalia${totalInvestido !== 1 ? 's' : ''} investida${totalInvestido !== 1 ? 's' : ''}`}
+                                                                    size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: cor + '33', color: cor, fontWeight: 'bold' }} />
+                                                            )}
+                                                        </Box>
+                                                    </RegaliaCard>
+
+                                                    {/* Se comprou a classe → mostrar habilidade auto + árvores + avulsas */}
+                                                    {classOwned && (
+                                                        <Box sx={{ ml: 2, mt: 1, borderLeft: `3px solid ${cor}`, pl: 2 }}>
+                                                            {/* Habilidade automática (sem custo) */}
+                                                            {classe.habilidadeClasse && (
+                                                                <Paper sx={{ p: 1.5, mb: 1.5, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
+                                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                                                                        <CardGiftcardIcon sx={{ fontSize: 16, color: colors.forest }} />
+                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: colors.forest }}>
+                                                                            {classe.habilidadeClasse.nome}
+                                                                        </Typography>
+                                                                        <Chip label="Automática — sem custo" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.forest, color: derived.textOnDark }} />
+                                                                    </Box>
+                                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>{classe.habilidadeClasse.descricao}</Typography>
+                                                                    {classe.habilidadeClasse.subHabilidades?.map(sub => (
+                                                                        <Box key={sub.nome} sx={{ ml: 1, mt: 0.5 }}>
+                                                                            <Typography variant="caption" sx={{ fontWeight: 'bold', color: colors.forest, fontSize: '11px' }}>• {sub.nome} ({sub.tipo})</Typography>
+                                                                            <Typography variant="caption" sx={{ display: 'block', ml: 1.5, fontSize: '10px', color: derived.textOnDarkMuted }}>{sub.descricao}</Typography>
+                                                                        </Box>
+                                                                    ))}
+                                                                </Paper>
+                                                            )}
+
+                                                            {/* Árvores — comprável nível a nível */}
+                                                            {classe.arvoresRegalia?.length > 0 && (
+                                                                <Box sx={{ mb: 1.5 }}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: derived.textOnDark, mb: 0.5 }}>🌳 Árvores de Progressão</Typography>
+                                                                    {classe.arvoresRegalia.map(arv => (
+                                                                        <Accordion key={arv.id} sx={{ backgroundColor: derived.bgDarkAlt, mb: 0.5, '&:before': { display: 'none' } }}>
+                                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 36, '& .MuiAccordionSummary-content': { my: 0.5 } }}>
+                                                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                                                    <Typography className="esteban" sx={{ fontSize: '12px', fontWeight: 'bold', color: cor }}>{arv.nome}</Typography>
+                                                                                    <Chip label={`${arv.niveis?.filter((_, i) => regaliasCompradas[arvoreKey(classe.id, arv.id, i + 1)]).length || 0}/${arv.niveis?.length || 0}`}
+                                                                                        size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: cor + '22', color: cor }} />
+                                                                                </Box>
+                                                                            </AccordionSummary>
+                                                                            <AccordionDetails sx={{ pt: 0, pb: 1 }}>
+                                                                                {arv.niveis?.map((nv) => {
+                                                                                    const key = arvoreKey(classe.id, arv.id, nv.nivel);
+                                                                                    const nivelOwned = !!regaliasCompradas[key];
+                                                                                    const prevOwned = nv.nivel === 1 || !!regaliasCompradas[arvoreKey(classe.id, arv.id, nv.nivel - 1)];
+                                                                                    const canBuy = pontosRestantes >= nv.custo;
+                                                                                    return (
+                                                                                        <NivelArvoreItem key={key} nv={nv} cor={cor} owned={nivelOwned} canBuy={canBuy} prevOwned={prevOwned} ordemLivre={!!arv.ordemLivre}
+                                                                                            onBuy={() => handleBuy('arvore_nivel', key, { classeId: classe.id, arvoreId: arv.id, arvoreNome: arv.nome, nivel: nv.nivel, custo: nv.custo, nivelData: nv })} />
+                                                                                    );
+                                                                                })}
+                                                                            </AccordionDetails>
+                                                                        </Accordion>
+                                                                    ))}
+                                                                </Box>
+                                                            )}
+
+                                                            {/* Avulsas — compráveis individualmente */}
+                                                            {classe.regaliasAvulsas?.length > 0 && (
+                                                                <Box sx={{ mb: 1 }}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: derived.textOnDark, mb: 0.5 }}>⚔️ Regalias Avulsas</Typography>
+                                                                    <Grid container spacing={1}>
+                                                                        {classe.regaliasAvulsas.map(ra => {
+                                                                            const key = avulsaKey(classe.id, ra.id);
+                                                                            const raOwned = !!regaliasCompradas[key];
+                                                                            const canBuy = pontosRestantes >= ra.custo;
+                                                                            return (
+                                                                                <Grid item xs={12} sm={6} key={ra.id}>
+                                                                                    <RegaliaCard nome={ra.nome} descricao={ra.descricao || ''} custo={ra.custo} cor={cor}
+                                                                                        owned={raOwned} locked={!canBuy && !raOwned} lockMsg={`Necessário ${ra.custo} pt${ra.custo !== 1 ? 's' : ''}`}
+                                                                                        onBuy={!raOwned && canBuy ? () => handleBuy('avulsa', key, { classeId: classe.id, avulsaId: ra.id, nome: ra.nome, custo: ra.custo, avulsaData: ra }) : null} />
+                                                                                </Grid>
+                                                                            );
+                                                                        })}
                                                                     </Grid>
                                                                 </Box>
                                                             )}
-                                                            {reg.observacao && (
-                                                                <Alert severity="warning" sx={{ mt: 1, fontSize: '11px', py: 0 }}>
-                                                                    {reg.observacao}
-                                                                </Alert>
-                                                            )}
-                                                        </RegaliaCard>
-                                                    </Grid>
-                                                );
-                                            })}
-                                        </Grid>
-                                    )}
+                                                        </Box>
+                                                    )}
+                                                </Grid>
+                                            );
+                                        })}
+                                    </Grid>
+                                )}
 
-                                    {/* ── Classes Primárias ── */}
-                                    {secao.id === 'primaria' && (
-                                        <Grid container spacing={1.5}>
-                                            {classesPrimarias.map(classe => {
-                                                const owned = !!regaliasCompradas[classe.id];
-                                                const validation = validarPreRequisitosRegalia(fichaState, classe.id);
-                                                return (
-                                                    <Grid item xs={12} key={classe.id}>
-                                                        <RegaliaCard
-                                                            nome={classe.nome}
-                                                            descricao={classe.habilidadeClasse?.descricao || ''}
-                                                            custo={1}
-                                                            cor={CORES_TIPO.primaria}
-                                                            owned={owned}
-                                                            locked={!validation.valido && !owned}
-                                                            lockMsg={validation.mensagem}
-                                                            onBuy={!readOnly ? () => handleBuy('primaria', classe.id) : null}
-                                                            bonus={classe.bonusPorRegalia}
-                                                        >
-                                                            {/* Pré-requisitos */}
+                                {/* ── Especializações ── */}
+                                {secao.id === 'especializacao' && (
+                                    <Grid container spacing={1.5}>
+                                        {especializacoes.map(esp => {
+                                            const owned = !!regaliasCompradasComAprendiz[esp.id];
+                                            const validation = validarPreRequisitosRegalia(fichaState, esp.id);
+                                            return (
+                                                <Grid item xs={12} key={esp.id}>
+                                                    <RegaliaCard nome={esp.nome} descricao={esp.habilidadeClasse?.descricao || esp.descricao || ''} custo={1}
+                                                        cor={CORES_TIPO.especializacao} owned={owned} locked={!validation.valido && !owned} lockMsg={validation.mensagem}
+                                                        onBuy={!owned && pontosRestantes >= 1 ? () => handleBuy('especializacao', esp.id, { custo: 1 }) : null}
+                                                        bonus={esp.bonusPorRegalia}>
+                                                        {esp.preRequisitos?.regaliasPrimarias && (
                                                             <Box sx={{ mt: 1, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                                                                <Chip
-                                                                    label={`Nível mín: ${classe.preRequisitos?.nivelMinimo || '?'}`}
-                                                                    size="small"
-                                                                    sx={{
-                                                                        height: '18px', fontSize: '10px',
-                                                                        backgroundColor: nivel >= (classe.preRequisitos?.nivelMinimo || 0) ? '#e8f5e9' : '#ffebee',
-                                                                        color: nivel >= (classe.preRequisitos?.nivelMinimo || 0) ? '#2E7D32' : '#C62828',
-                                                                    }}
-                                                                />
-                                                                {classe.preRequisitos?.regaliaAprendiz && (
-                                                                    <Chip
-                                                                        label={`Req: ${classe.preRequisitos.regaliaAprendiz}`}
-                                                                        size="small"
-                                                                        sx={{
+                                                                {Object.entries(esp.preRequisitos.regaliasPrimarias).map(([classId, qtd]) => {
+                                                                    const investido = contarRegaliasClasse(classId);
+                                                                    const classNome = classesPrimarias.find(c => c.id === classId)?.nome || classId;
+                                                                    return (
+                                                                        <Chip key={classId} label={`${classNome}: ${investido}/${qtd}`} size="small" sx={{
                                                                             height: '18px', fontSize: '10px',
-                                                                            backgroundColor: regaliasCompradas[classe.preRequisitos.regaliaAprendiz] ? '#e8f5e9' : '#ffebee',
-                                                                            color: regaliasCompradas[classe.preRequisitos.regaliaAprendiz] ? '#2E7D32' : '#C62828',
-                                                                        }}
-                                                                    />
-                                                                )}
+                                                                            backgroundColor: investido >= qtd ? `${colors.forest}44` : `${colors.garnet}33`,
+                                                                            color: investido >= qtd ? colors.forest : colors.garnet,
+                                                                        }} />
+                                                                    );
+                                                                })}
                                                             </Box>
-
-                                                            {/* Árvores de progressão */}
-                                                            <ArvoreProgressao arvores={classe.arvoresRegalia} cor={CORES_TIPO.primaria} />
-
-                                                            {/* Regalias avulsas */}
-                                                            {classe.regaliasAvulsas?.length > 0 && (
-                                                                <Box sx={{ mt: 1 }}>
-                                                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: CORES_TIPO.primaria }}>
-                                                                        Regalias Avulsas:
-                                                                    </Typography>
-                                                                    {classe.regaliasAvulsas.map(ra => (
-                                                                        <Typography key={ra.id} variant="caption" sx={{ display: 'block', ml: 1, fontSize: '10px', color: '#555' }}>
-                                                                            • {ra.nome} ({ra.custo}pt) — {ra.descricao?.substring(0, 60)}...
-                                                                        </Typography>
-                                                                    ))}
-                                                                </Box>
-                                                            )}
-                                                        </RegaliaCard>
-                                                    </Grid>
-                                                );
-                                            })}
-                                        </Grid>
-                                    )}
-
-                                    {/* ── Especializações ── */}
-                                    {secao.id === 'especializacao' && (
-                                        <Grid container spacing={1.5}>
-                                            {especializacoes.map(esp => {
-                                                const owned = !!regaliasCompradas[esp.id];
-                                                const validation = validarPreRequisitosRegalia(fichaState, esp.id);
-                                                return (
-                                                    <Grid item xs={12} key={esp.id}>
-                                                        <RegaliaCard
-                                                            nome={esp.nome}
-                                                            descricao={esp.habilidadeClasse?.descricao || esp.descricao || ''}
-                                                            custo={1}
-                                                            cor={CORES_TIPO.especializacao}
-                                                            owned={owned}
-                                                            locked={!validation.valido && !owned}
-                                                            lockMsg={validation.mensagem}
-                                                            onBuy={!readOnly ? () => handleBuy('especializacao', esp.id) : null}
-                                                            bonus={esp.bonusPorRegalia}
-                                                        >
-                                                            {/* Pré-requisitos de regalias primárias */}
-                                                            {esp.preRequisitos?.regaliasPrimarias && (
-                                                                <Box sx={{ mt: 1, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                                                                    {Object.entries(esp.preRequisitos.regaliasPrimarias).map(([classId, qtd]) => (
-                                                                        <Chip
-                                                                            key={classId}
-                                                                            label={`${classId}: ${regaliasCompradas[classId] || 0}/${qtd}`}
-                                                                            size="small"
-                                                                            sx={{
-                                                                                height: '18px', fontSize: '10px',
-                                                                                backgroundColor: (regaliasCompradas[classId] || 0) >= qtd ? '#e8f5e9' : '#ffebee',
-                                                                                color: (regaliasCompradas[classId] || 0) >= qtd ? '#2E7D32' : '#C62828',
-                                                                            }}
-                                                                        />
-                                                                    ))}
-                                                                </Box>
-                                                            )}
-
-                                                            {/* Árvores de progressão */}
-                                                            <ArvoreProgressao arvores={esp.arvoresRegalia} cor={CORES_TIPO.especializacao} />
-                                                        </RegaliaCard>
-                                                    </Grid>
-                                                );
-                                            })}
-                                        </Grid>
-                                    )}
-                                </Box>
-                            </Collapse>
-                        </Box>
-                    );
-                })}
-            </CardContent>
+                                                        )}
+                                                    </RegaliaCard>
+                                                </Grid>
+                                            );
+                                        })}
+                                    </Grid>
+                                )}
+                            </Box>
+                        </Collapse>
+                    </Box>
+                );
+            })}
 
             {/* Dialog de confirmação */}
             <Dialog open={!!confirmDialog} onClose={() => setConfirmDialog(null)} maxWidth="xs" fullWidth>
-                <DialogTitle className="esteban" sx={{ color: '#40150A' }}>
-                    Confirmar Compra
-                </DialogTitle>
+                <DialogTitle className="esteban" sx={{ color: derived.textOnDark }}>Confirmar Compra</DialogTitle>
                 <DialogContent>
-                    <Typography variant="body2">
-                        Deseja comprar esta regalia? Esta ação consumirá pontos de regalia.
-                    </Typography>
-                    {confirmDialog && (
-                        <Alert severity="info" sx={{ mt: 1, fontSize: '12px' }}>
-                            Tipo: <strong>{confirmDialog.tipo}</strong> • ID: <strong>{confirmDialog.id}</strong>
-                            {confirmDialog.extra?.opcao && <> • Opção: <strong>{confirmDialog.extra.opcao}</strong></>}
-                        </Alert>
-                    )}
+                    <Typography variant="body2" sx={{ color: derived.textOnDarkMuted }}>{getConfirmDesc()}</Typography>
+                    <Typography variant="body2" sx={{ mt: 1, color: derived.textOnDarkMuted }}>Pontos restantes após compra: <strong style={{ color: derived.textOnDark }}>{pontosRestantes - (confirmDialog?.extra?.custo || 1)}</strong></Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setConfirmDialog(null)} sx={{ color: '#756A34' }}>
-                        Cancelar
-                    </Button>
-                    <Button variant="contained" onClick={confirmBuy}
-                        sx={{ backgroundColor: '#BB8130', '&:hover': { backgroundColor: '#AB6422' } }}>
-                        Confirmar
-                    </Button>
+                    <Button onClick={() => setConfirmDialog(null)} sx={{ color: colors.olive }}>Cancelar</Button>
+                    <Button variant="contained" onClick={confirmBuy} sx={{ backgroundColor: colors.gold, color: derived.textOnDark, '&:hover': { backgroundColor: colors.bronze } }}>Confirmar</Button>
                 </DialogActions>
             </Dialog>
-        </Card>
+        </Box>
     );
 };
 

@@ -161,6 +161,13 @@ class PersonagemService:
 
         return base_fields
 
+    @staticmethod
+    def _sanitize_section_data(key, value):
+        """Remove chaves vazias de dicts (ex: habilidades com key '')."""
+        if key == 'habilidades' and isinstance(value, dict):
+            return {k: v for k, v in value.items() if k and str(k).strip()}
+        return value
+
     def _upsert_sections(self, personagem, data):
         if not data:
             return
@@ -169,6 +176,8 @@ class PersonagemService:
         for key, value in data.items():
             if key in BASE_FIELD_MAP or key in IGNORE_SECTION_KEYS:
                 continue
+
+            value = self._sanitize_section_data(key, value)
 
             section = existing.get(key)
             if section:

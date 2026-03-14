@@ -1,5 +1,6 @@
 
 import dayjs from 'dayjs';
+import AppFooter from '../../componentes/Footer/Footer';
 import { Paper, Typography, Box, Grid, Chip, Tooltip, IconButton } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -16,6 +17,28 @@ import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PersonIcon from '@mui/icons-material/Person';
 import StarIcon from '@mui/icons-material/Star';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { colors } from '../../componentes/themes/tokens';
+
+/* Mapa de abreviações para os nomes das habilidades */
+const ABREV_HAB = {
+    'Fortitude': 'FORT', 'Força': 'FOR', 'Agilidade': 'AGI',
+    'Combate Corpo a Corpo': 'CCC', 'Combate à Distância': 'CAD',
+    'Atletismo': 'ATL', 'Acrobacia': 'ACR', 'Destreza': 'DES',
+    'Furtividade': 'FURT', 'Investigação': 'INV', 'Rastreamento': 'RSTR',
+    'Percepção': 'PERC', 'Sobrevivência': 'SOBR', 'Lidar com Animais': 'LCA',
+    'Navegação': 'NAV', 'Armadilhas': 'ARM', 'História': 'HIST',
+    'Intuição': 'INTU', 'Natureza': 'NAT', 'Medicina': 'MED',
+    'Jurisprudência': 'JUR', 'Teologia': 'TEO', 'Tecnologia': 'TEC',
+    'Arcanismo': 'ARC', 'Alquimia': 'ALQ', 'Ritualismo': 'RIT',
+    'Ocultismo': 'OCU', 'Arcanatec': 'ATEC', 'Combate Arcano': 'CARC',
+    'Enganação': 'ENG', 'Persuasão': 'PERS', 'Performance': 'PERF',
+    'Intimidação': 'INTM', 'Sedução': 'SED', 'Negociação': 'NEG',
+};
 
 const CharPage = () => {
     const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
@@ -47,6 +70,20 @@ const CharPage = () => {
         const [personagens, setPersonagens] = useState([]);
         const [erro, setErro] = useState('');
         const [searchTerm, setSearchTerm] = useState('');
+        const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+        const handleDeletePersonagem = async (charId) => {
+            try {
+                const response = await fetch(`${baseUrl}/personagens/${charId}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Erro ao remover personagem');
+                setPersonagens(prev => prev.filter(p => p.id !== charId));
+                setDeleteConfirm(null);
+            } catch (error) {
+                console.error(error);
+                setErro('Erro ao remover personagem');
+                setDeleteConfirm(null);
+            }
+        };
 
         useEffect(() => {
             if (!userId) return;
@@ -76,13 +113,18 @@ const CharPage = () => {
         const charcterTagTemplate = (char) => {
             const especie = especiesMap[char.especie] || char.especie;
             
-            // Calcular algumas estatísticas principais
-            const mainStats = char.habilidades ? [
-                { label: 'FOR', value: char.habilidades['Força'] || 0 },
-                { label: 'AGI', value: char.habilidades['Agilidade'] || 0 },
-                { label: 'INT', value: char.habilidades['Inteligência'] || char.habilidades['Intuição'] || 0 },
-                { label: 'FORT', value: char.habilidades['Fortitude'] || 0 },
-            ] : [];
+            // Top 6 habilidades com maior valor
+            const top6 = char.habilidades
+                ? Object.entries(char.habilidades)
+                    .filter(([, v]) => v > 0)
+                    .sort(([, a], [, b]) => b - a)
+                    .slice(0, 6)
+                    .map(([nome, value]) => ({
+                        nome,
+                        label: ABREV_HAB[nome] || nome.slice(0, 4).toUpperCase(),
+                        value,
+                    }))
+                : [];
 
             return (
                 <Card
@@ -90,7 +132,6 @@ const CharPage = () => {
                     sx={{
                         width: '280px',
                         minHeight: '380px',
-                        background: 'linear-gradient(180deg, #fcfcfc 0%, #f5f5f5 100%)',
                         borderRadius: '16px',
                         border: '2px solid #756A34',
                         boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
@@ -98,7 +139,6 @@ const CharPage = () => {
                         position: 'relative',
                         overflow: 'visible',
                         '&:hover': {
-                            transform: 'translateY(-8px)',
                             boxShadow: '0 16px 32px rgba(0,0,0,0.2)',
                             borderColor: '#BB8130',
                         }
@@ -128,14 +168,14 @@ const CharPage = () => {
                     <Box sx={{
                         background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
                         borderRadius: '14px 14px 0 0',
-                        p: 2,
+                        p: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
                         <Box sx={{
-                            width: '100px',
-                            height: '100px',
+                            width: '150px',
+                            height: '150px',
                             borderRadius: '50%',
                             border: '4px solid #BB8130',
                             overflow: 'hidden',
@@ -186,10 +226,10 @@ const CharPage = () => {
                     {/* Conteúdo */}
                     <CardContent sx={{ p: 2 }}>
                         {/* Antecedente */}
-                        <Box sx={{ mb: 2 }}>
+                        <Box sx={{ mb: 2, width: '100%',display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '8px', p: 1 }}>
                             <Typography className="esteban" sx={{ 
                                 fontSize: '12px', 
-                                color: '#666',
+                                color: 'var(--text-primary)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 0.5
@@ -199,57 +239,61 @@ const CharPage = () => {
                             <Typography className="esteban" sx={{ 
                                 fontSize: '14px', 
                                 fontWeight: 'bold',
-                                color: '#40150A'
+                                color: 'var(--text-primary)'
                             }}>
                                 {char.antecedente?.nome || 'Não definido'}
                             </Typography>
                         </Box>
 
-                        {/* Stats principais */}
-                        <Box sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-around',
-                            backgroundColor: '#f5f5f5',
-                            borderRadius: '8px',
-                            p: 1,
-                            mb: 2
-                        }}>
-                            {mainStats.map((stat, idx) => (
-                                <Tooltip key={idx} title={stat.label} arrow>
-                                    <Box sx={{ textAlign: 'center' }}>
-                                        <Typography sx={{ 
-                                            fontSize: '10px', 
-                                            color: '#666',
-                                            fontWeight: 'bold'
-                                        }}>
-                                            {stat.label}
-                                        </Typography>
-                                        <Chip 
-                                            label={stat.value >= 0 ? `+${stat.value}` : stat.value}
-                                            size="small"
-                                            sx={{
-                                                backgroundColor: stat.value > 0 ? '#4caf50' : stat.value < 0 ? '#f44336' : '#9e9e9e',
-                                                color: 'white',
+                        {/* Top 6 habilidades */}
+                        {top6.length > 0 && (
+                            <Box sx={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: 0.5,
+                                justifyContent: 'center',
+                                border: '1px solid',
+                                borderRadius: '8px',
+                                p: 2,
+                                mb: 2,
+                            }}>
+                                {top6.map((stat, idx) => (
+                                    <Tooltip key={idx} title={stat.nome} arrow>
+                                        <Box sx={{ textAlign: 'center', flex: '1 1 30%', minWidth: '52px' }}>
+                                            <Typography sx={{
+                                                fontSize: '10px',
+                                                color: 'var(--text-muted)',
                                                 fontWeight: 'bold',
-                                                fontSize: '11px',
-                                                height: '22px'
-                                            }}
-                                        />
-                                    </Box>
-                                </Tooltip>
-                            ))}
-                        </Box>
+                                                lineHeight: 1.2,
+                                            }}>
+                                                {stat.label}
+                                            </Typography>
+                                            <Chip
+                                                label={stat.value}
+                                                size="small"
+                                                sx={{
+                                                    backgroundColor: colors.forest,
+                                                    color: 'white',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '11px',
+                                                    height: '22px',
+                                                }}
+                                            />
+                                        </Box>
+                                    </Tooltip>
+                                ))}
+                            </Box>
+                        )}
 
                         {/* Dinheiro */}
                         <Box sx={{ 
                             display: 'flex', 
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            backgroundColor: '#fff8e1',
                             borderRadius: '8px',
                             p: 1,
                         }}>
-                            <Typography className="esteban" sx={{ fontSize: '12px', color: '#666' }}>
+                            <Typography className="esteban" sx={{ fontSize: '12px', color: 'var(--text-primary)' }}>
                                 💰 Dinheiro
                             </Typography>
                             <Typography className="esteban" sx={{ 
@@ -266,7 +310,8 @@ const CharPage = () => {
                     <CardActions sx={{ 
                         justifyContent: 'center', 
                         borderTop: '1px solid #e0e0e0',
-                        p: 1.5
+                        p: 1.5,
+                        gap: 1,
                     }}>
                         <Button
                             variant="contained"
@@ -285,6 +330,21 @@ const CharPage = () => {
                         >
                             Ver Ficha
                         </Button>
+                        <Tooltip title="Remover Ficha" arrow>
+                            <IconButton
+                                onClick={() => setDeleteConfirm(char)}
+                                sx={{
+                                    color: colors.scarlet,
+                                    backgroundColor: `${colors.gold}99`,
+                                    borderRadius: '50% !important',
+                                    '&:hover': {
+                                        backgroundColor: `${colors.gold}ff`,
+                                    },
+                                }}
+                            >
+                                <DeleteIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
                     </CardActions>
                 </Card>
             );
@@ -311,7 +371,6 @@ const CharPage = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         sx={{ 
-                            background: '#ffffff', 
                             width: "300px",
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '20px',
@@ -349,15 +408,14 @@ const CharPage = () => {
                         <Paper sx={{ 
                             p: 4, 
                             textAlign: 'center',
-                            backgroundColor: '#f5f5f5',
                             borderRadius: '16px',
                             border: '2px dashed #756A34'
                         }}>
                             <PersonIcon sx={{ fontSize: 60, color: '#756A34', mb: 2 }} />
-                            <Typography className="esteban" variant="h6" sx={{ color: '#666' }}>
+                            <Typography className="esteban" variant="h6" sx={{ color: 'var(--text-primary)' }}>
                                 {searchTerm ? 'Nenhum personagem encontrado' : 'Você ainda não tem personagens'}
                             </Typography>
-                            <Typography className="esteban" sx={{ color: '#999', mb: 2 }}>
+                            <Typography className="esteban" sx={{ color: 'var(--text-primary)', mb: 2 }}>
                                 {searchTerm ? 'Tente outra busca' : 'Crie seu primeiro personagem para começar sua aventura!'}
                             </Typography>
                             {!searchTerm && (
@@ -377,6 +435,36 @@ const CharPage = () => {
                         filteredPersonagens.map(char => charcterTagTemplate(char))
                     )}
                 </Box>
+
+                {/* Dialog de confirmação para remover ficha */}
+                <Dialog open={!!deleteConfirm} onClose={() => setDeleteConfirm(null)} maxWidth="xs" fullWidth>
+                    <DialogTitle sx={{ color: '#b71c1c', fontFamily: '"Esteban", serif' }}>
+                        Remover Personagem
+                    </DialogTitle>
+                    <DialogContent>
+                        <Typography sx={{ fontFamily: '"Esteban", serif' }}>
+                            Tem certeza que deseja remover <strong>{deleteConfirm?.nome_personagem}</strong>?
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: 'var(--text-primary)', mt: 1 }}>
+                            Esta ação não pode ser desfeita.
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setDeleteConfirm(null)} sx={{ color: '#756A34' }}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={() => handleDeletePersonagem(deleteConfirm.id)}
+                            sx={{
+                                backgroundColor: '#b71c1c',
+                                '&:hover': { backgroundColor: '#7f0000' },
+                            }}
+                        >
+                            Remover
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         );
     };
@@ -386,7 +474,7 @@ const CharPage = () => {
 
         <Box sx={{ minHeight: '100vh', width: '100%', pb: 8 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
-                <Typography className="esteban" variant="h4" sx={{ textAlign: 'center', my: '30px', color: '#40150A' }}>
+                <Typography className="esteban" variant="h4" sx={{ textAlign: 'center', my: '30px', color: 'var(--text-primary)' }}>
                     Meus Personagens
                 </Typography>
             </Box>
@@ -396,9 +484,7 @@ const CharPage = () => {
                 </Grid>
 
             </Grid>
-            <Box sx={{ background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)', p: 1.5, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed', width: "100%", bottom: 0 }}>
-                <Typography sx={{ color: '#fff', fontSize: '12px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
+            <AppFooter position="fixed" />
         </Box>
 
     );

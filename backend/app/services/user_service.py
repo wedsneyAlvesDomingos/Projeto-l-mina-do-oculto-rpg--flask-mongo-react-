@@ -83,5 +83,121 @@ class UserService:
                     'id': user.id,
                     'name': user.name,
                     'email': user.email,
+                    'avatar': user.avatar,
                 }
         return None
+
+    # ── Perfil ────────────────────────────────────────────────────────────────
+
+    def get_user(self, user_id):
+        """Retorna dados públicos do usuário (sem senha)."""
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(id=user_id).first()
+            if not user:
+                return None
+            return {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'avatar': user.avatar,
+                'created_at': user.created_at.isoformat() if user.created_at else None,
+            }
+
+    def update_profile(self, user_id, name=None, avatar=None):
+        """Atualiza nome e/ou avatar. Levanta ValueError se nome já existir."""
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(id=user_id).first()
+            if not user:
+                return None
+
+            if name and name != user.name:
+                conflict = session.query(User).filter(
+                    User.name == name, User.id != user_id
+                ).first()
+                if conflict:
+                    raise ValueError("Nome já está em uso por outro usuário")
+                user.name = name
+
+            if avatar is not None:
+                user.avatar = avatar
+
+            user.updated_at = datetime.utcnow()
+            try:
+                session.commit()
+                session.refresh(user)
+            except IntegrityError:
+                session.rollback()
+                raise ValueError("Nome já está em uso por outro usuário")
+
+            return {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'avatar': user.avatar,
+            }
+
+    def update_password(self, user_id, current_password, new_password):
+        """
+        Atualiza a senha após verificar a senha atual.
+        Levanta ValueError se a senha atual estiver incorreta.
+        """
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(id=user_id).first()
+            if not user:
+                return None
+
+            if not check_password_hash(user.password, current_password):
+                raise ValueError("Senha atual incorreta")
+
+            user.password = generate_password_hash(new_password)
+            user.updated_at = datetime.utcnow()
+            session.commit()
+            return True
+
+    # ── Recuperação de senha ───────────────────────────────────────────────────
+
+    def request_password_reset(self, email, mail_sender_url):
+        """
+        Gera token de redefinição e envia e-mail.
+        Sempre retorna True (não revela se o e-mail existe, por segurança).
+        """
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(email=email).first()
+            if not user or not user.email_confirmed:
+                return True  # silencioso — não revela se e-mail existe
+
+            token = self.s.dumps(email, salt='password-reset')
+
+            reset_url = f"{mail_sender_url}/redefinirSenha/{token}"
+
+            msg = Message('Redefinição de Senha — Lâmina do Oculto', recipients=[email])
+            msg.html = open(
+                __file__.replace('user_service.py', '') +
+                '../templates/reset_password.html'
+            ).read().replace('{{ reset_url }}', reset_url)
+            self.mail.send(msg)
+
+        return True
+
+    def reset_password_with_token(self, token, new_password):
+        """
+        Valida o token (máx 1h) e aplica a nova senha.
+        Levanta ValueError se token inválido/expirado.
+        """
+        try:
+            email = self.s.loads(token, salt='password-reset', max_age=3600)
+        except SignatureExpired:
+            raise ValueError("O link expirou. Solicite um novo.")
+        except BadSignature:
+            raise ValueError("Link inválido.")
+
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(email=email).first()
+            if not user:
+                raise ValueError("Usuário não encontrado.")
+
+            user.password = generate_password_hash(new_password)
+            user.updated_at = datetime.utcnow()
+            session.commit()
+
+        return True

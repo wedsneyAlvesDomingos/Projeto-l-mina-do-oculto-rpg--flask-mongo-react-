@@ -3,6 +3,10 @@ import { Card, CardContent, Container, Table, TableBody, TableCell, TableContain
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./generalRules.css";
 
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 
 const GeneralRulesPage = () => {
 
@@ -63,7 +67,7 @@ const GeneralRulesPage = () => {
     );
 
     const Paragraph = ({ title, text }) => (
-        <Box my={4}>
+        <Box my={4} id={toAnchorId(title)}>
             <Typography variant="h6" className="boxTextTitle" gutterBottom>{title}</Typography>
             <Typography variant="body1" paragraph>{text}</Typography>
         </Box>
@@ -73,7 +77,7 @@ const GeneralRulesPage = () => {
         return (
             <Box>
                 <Typography variant="h4" className="MainTitleC" gutterBottom>Regras gerais</Typography>
-                <Typography variant="h5" className="boxTextTitle" gutterBottom>Tamanho</Typography>
+                <Typography variant="h5" className="boxTextTitle" id="tamanho" gutterBottom>Tamanho</Typography>
                 {renderTable('Tamanho vs Altura', ['Tamanho', 'Centímetros em Altura'], dataTamanhoAltura)}
                 {renderTable('Tamanho vs Carga', ['Tamanho', 'Capacidade de Carga'], dataTamanhoCarga)}
                 <Typography paragraph>Criaturas conseguem usar todas as armas, porém algumas precisam adaptar para o seu tamanho, para que possam usar. Armas culturais de uma espécie não sofrem essa penalidade (exemplo: anão utilizando o Machado Anão).
@@ -202,9 +206,6 @@ const GeneralRulesPage = () => {
                 <TamanhoPage />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

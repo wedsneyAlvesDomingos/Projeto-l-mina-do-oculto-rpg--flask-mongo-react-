@@ -149,7 +149,13 @@ const AtributoContainer = ({
                 updateCounts(item.title, novoStatus);
             });
 
-            setCheckedGroups(prev => ({ ...prev, [grupoTitle]: novoStatus }));
+            setCheckedGroups(prev => {
+                const updated = { ...prev, [grupoTitle]: novoStatus };
+                if (removedGrupo) {
+                    updated[removedGrupo] = false;
+                }
+                return updated;
+            });
 
             return newOrder;
         });

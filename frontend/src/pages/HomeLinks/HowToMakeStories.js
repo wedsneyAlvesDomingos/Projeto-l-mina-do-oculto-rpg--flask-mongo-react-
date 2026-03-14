@@ -1,4 +1,5 @@
 import React from 'react';
+import AppFooter from '../../componentes/Footer/Footer';
 import { Container, Typography, List, ListItem, ListItemText, Paper, Box, Grid } from '@mui/material';
 import "./ldop.css";
 import CoverImg from "../../assets/images/makeYourOwnCampaing.png"
@@ -79,6 +80,7 @@ const StoryPage = () => {
                     </Box>
                 ))}
             </Box>
+            <AppFooter />
         </Box>
     );
 };

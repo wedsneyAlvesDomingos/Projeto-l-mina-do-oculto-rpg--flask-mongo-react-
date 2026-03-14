@@ -341,9 +341,6 @@ def validar_criacao(data: dict) -> list[str]:
     habilidades_raw = data.get("habilidades", {})
     if habilidades_raw and isinstance(habilidades_raw, dict):
         habs = _normalizar_habilidades(habilidades_raw)
-        for slug, valor in habs.items():
-            if valor < 0:
-                erros.append(f"Habilidade '{slug}' não pode ser negativa ({valor}).")
 
     # --- 4. Pontos de regalia ---
     pontos_gastos = data.get("pontos_de_regalia") or data.get("regalia_points") or 0
@@ -403,13 +400,10 @@ def validar_evolucao(personagem_atual: dict, mudancas: dict) -> list[str]:
                 f"(mínimo: {xp_minimo})."
             )
 
-    # --- 3. Habilidades não-negativas ---
+    # --- 3. Habilidades (valores negativos são válidos — penalidades/condições) ---
     habilidades_raw = mudancas.get("habilidades")
     if habilidades_raw and isinstance(habilidades_raw, dict):
         habs = _normalizar_habilidades(habilidades_raw)
-        for slug, valor in habs.items():
-            if valor < 0:
-                erros.append(f"Habilidade '{slug}' não pode ser negativa ({valor}).")
 
     # --- 4. Pontos de regalia ---
     pontos_gastos = mudancas.get("pontos_de_regalia") or mudancas.get("regalia_points")
@@ -660,6 +654,8 @@ def merge_personagem(personagem_atual: dict, mudancas: dict) -> dict:
             if isinstance(existente, dict):
                 existente = dict(existente)
                 existente.update(valor)
+                # Clamp: habilidades e proficiências nunca abaixo de 0
+                existente = {k: max(0, v) if isinstance(v, (int, float)) else v for k, v in existente.items()}
                 resultado[key] = existente
             else:
                 resultado[key] = valor

@@ -8,6 +8,10 @@ import { DarkModeProvider, useDarkModeValue } from './hooks/darkmode';
 function AppContent() {
   const { isDarkMode } = useDarkModeValue();
 
+  React.useEffect(() => {
+    document.body.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
+
   return (
     <React.Fragment>
       <ThemeProvider theme={isDarkMode ? Darktheme : lightTheme}>

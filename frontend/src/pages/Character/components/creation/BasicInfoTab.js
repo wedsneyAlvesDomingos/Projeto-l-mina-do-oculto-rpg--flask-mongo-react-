@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Tooltip, Typography, Box, Button } from '@mui/material';
+import { Grid, TextField, Tooltip, Typography, Box, Button, Select, MenuItem, InputLabel, FormControl, FormHelperText } from '@mui/material';
 
 const BasicInfoTab = React.memo(function BasicInfoTab({
     charName, setCharName,
@@ -10,13 +10,22 @@ const BasicInfoTab = React.memo(function BasicInfoTab({
     image,
     handleDrop, handleDragOver, handleButtonClick, handleFileChange,
     fileInputRef,
+    formErrors,
 }) {
     return (
         <Grid container spacing={2} sx={{ height: '400px' }}>
             <Grid item xs={6}>
                 <Grid container spacing={2} sx={{ height: '100%' }}>
                     <Grid item xs={6}>
-                        <TextField fullWidth label="Nome do Personagem" name="nome_personagem" value={charName} onChange={(e) => { setCharName(e.target.value) }} />
+                        <TextField
+                            fullWidth
+                            label="Nome do Personagem *"
+                            name="nome_personagem"
+                            value={charName}
+                            onChange={(e) => { setCharName(e.target.value) }}
+                            error={!!formErrors?.nome}
+                            helperText={formErrors?.nome}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         {age == 18 ?
@@ -45,7 +54,20 @@ const BasicInfoTab = React.memo(function BasicInfoTab({
                         }
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField fullWidth label="genêro" name="genero" value={gender} onChange={(e) => { setGender(e.target.value) }} />
+                        <FormControl fullWidth required error={!!formErrors?.genero}>
+                            <InputLabel>Gênero *</InputLabel>
+                            <Select
+                                value={gender}
+                                label="Gênero *"
+                                name="genero"
+                                onChange={(e) => setGender(e.target.value)}
+                            >
+                                <MenuItem value="Masculino">Masculino</MenuItem>
+                                <MenuItem value="Feminino">Feminino</MenuItem>
+                                <MenuItem value="Outro">Outro</MenuItem>
+                            </Select>
+                            {formErrors?.genero && <FormHelperText>{formErrors.genero}</FormHelperText>}
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField

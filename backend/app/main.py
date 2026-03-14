@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_mail import Mail
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from services.user_service import UserService
 from services.personagem_service import PersonagemService
 from services.rule_engine import calcular_ficha_completa, validar_regalias, simular_acao
@@ -20,10 +21,15 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 mail.init_app(app)
 
-mail_sender_url = f"http://192.168.1.155:5009"
+# URL do frontend usada nos links dos e-mails — lida do env, nunca hardcoded
+mail_sender_url = app.config.get('FRONTEND_URL', 'http://localhost:5009')
 
 with app.app_context():
     db.create_all()
+    # Migração: adiciona coluna avatar se não existir (sem Alembic)
+    with db.engine.connect() as conn:
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT;"))
+        conn.commit()
     user_service = UserService(db.engine, mail, app.config['SECRET_KEY'], mail_sender_url)
     personagem_service = PersonagemService(db)
 
@@ -97,7 +103,20 @@ def update_personagem(personagem_id):
     except Exception as e:
         traceback.print_exc()
         return make_response(jsonify({"error": "Erro interno no servidor", "details": str(e)}), 500)
-    
+
+@app.route('/personagens/<int:personagem_id>', methods=['DELETE'])
+def delete_personagem(personagem_id):
+    try:
+        service = PersonagemService(db)
+        success = service.deletar_personagem(personagem_id)
+        if success:
+            return jsonify({'message': 'Personagem removido com sucesso!'}), 200
+        else:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+    except Exception as e:
+        traceback.print_exc()
+        return make_response(jsonify({"error": "Erro interno no servidor", "details": str(e)}), 500)
+
 @app.route('/users', methods=['POST'])
 def create_user():
     try:
@@ -208,6 +227,115 @@ def login():
             'sugestao': 'Verifique a configuração do email e duplicidade de dados'
         }), 500
 
+
+# ── Perfil de Usuário ──────────────────────────────────────────────────────────
+
+@app.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    """Retorna dados públicos do usuário (sem senha)."""
+    try:
+        user = user_service.get_user(user_id)
+        if not user:
+            return jsonify({'error': 'Usuário não encontrado'}), 404
+        return jsonify(user), 200
+    except Exception as e:
+        app.logger.error(f"Erro ao buscar usuário {user_id}: {e}")
+        return jsonify({'error': 'Erro interno do servidor', 'details': str(e)}), 500
+
+
+@app.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    """Atualiza nome e/ou avatar do usuário."""
+    try:
+        data = request.get_json() or {}
+        name   = data.get('name')
+        avatar = data.get('avatar')
+
+        if not name and avatar is None:
+            return jsonify({'error': 'Nenhum campo para atualizar'}), 400
+
+        updated = user_service.update_profile(user_id, name=name, avatar=avatar)
+        if not updated:
+            return jsonify({'error': 'Usuário não encontrado'}), 404
+        return jsonify(updated), 200
+
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 409
+    except Exception as e:
+        app.logger.error(f"Erro ao atualizar usuário {user_id}: {e}")
+        return jsonify({'error': 'Erro interno do servidor', 'details': str(e)}), 500
+
+
+@app.route('/users/<int:user_id>/password', methods=['PUT'])
+def update_password(user_id):
+    """Atualiza a senha do usuário após verificar a senha atual."""
+    try:
+        data = request.get_json() or {}
+        current_password = data.get('current_password')
+        new_password     = data.get('new_password')
+
+        if not current_password or not new_password:
+            return jsonify({'error': 'Senha atual e nova senha são obrigatórias'}), 400
+
+        if len(new_password) < 6:
+            return jsonify({'error': 'A nova senha deve ter no mínimo 6 caracteres'}), 400
+
+        ok = user_service.update_password(user_id, current_password, new_password)
+        if not ok:
+            return jsonify({'error': 'Usuário não encontrado'}), 404
+        return jsonify({'message': 'Senha atualizada com sucesso'}), 200
+
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    except Exception as e:
+        app.logger.error(f"Erro ao atualizar senha do usuário {user_id}: {e}")
+        return jsonify({'error': 'Erro interno do servidor', 'details': str(e)}), 500
+
+
+# ── Recuperação de senha ───────────────────────────────────────────────────────
+
+@app.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    """
+    Recebe e-mail e envia link de redefinição.
+    Retorna sempre 200 para não revelar se o e-mail existe (segurança).
+    """
+    try:
+        data = request.get_json() or {}
+        email = (data.get('email') or '').strip().lower()
+        if not email:
+            return jsonify({'error': 'E-mail é obrigatório'}), 400
+
+        user_service.request_password_reset(email, mail_sender_url)
+        return jsonify({'message': 'Se esse e-mail estiver cadastrado, você receberá as instruções em breve.'}), 200
+
+    except Exception as e:
+        app.logger.error(f"Erro ao solicitar redefinição de senha: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+
+
+@app.route('/reset-password', methods=['POST'])
+def reset_password():
+    """Valida token e aplica nova senha."""
+    try:
+        data = request.get_json() or {}
+        token        = data.get('token')
+        new_password = data.get('new_password')
+
+        if not token or not new_password:
+            return jsonify({'error': 'Token e nova senha são obrigatórios'}), 400
+
+        if len(new_password) < 6:
+            return jsonify({'error': 'A senha deve ter no mínimo 6 caracteres'}), 400
+
+        user_service.reset_password_with_token(token, new_password)
+        return jsonify({'message': 'Senha redefinida com sucesso!'}), 200
+
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    except Exception as e:
+        app.logger.error(f"Erro ao redefinir senha: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
 
 
 @app.route('/personagens/<int:personagem_id>/calcular', methods=['GET'])

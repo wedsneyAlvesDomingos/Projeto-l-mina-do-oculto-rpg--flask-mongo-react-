@@ -44,6 +44,7 @@ import ProfanoPage from "../pages/Wiki/classes/profano";
 import InvocadorPage from "../pages/Wiki/classes/invocador";
 import CharacterSheet from "../pages/Character/characterSheet";
 import CharCreationPage from "../pages/Character/criarPersonagem";
+import ProfilePage from "../pages/Profile/ProfilePage";
 
 export const general_routes = [
     {
@@ -83,6 +84,14 @@ export const general_routes = [
         ele: <>
             <ResponsiveAppBar />
             <CharCreationPage />
+        </>,
+        availability: [ur.admin]
+    },
+    {
+        path: "/perfil",
+        ele: <>
+            <ResponsiveAppBar />
+            <ProfilePage />
         </>,
         availability: [ur.admin]
     },

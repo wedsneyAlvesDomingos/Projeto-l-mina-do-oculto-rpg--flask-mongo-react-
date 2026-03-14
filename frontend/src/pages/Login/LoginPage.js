@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AppFooter from '../../componentes/Footer/Footer';
 import { useNavigate } from "react-router-dom";
 import './Login.css';
 import TextField from '@mui/material/TextField';
@@ -68,7 +69,7 @@ const LoginPage = () => {
     
             if (response.ok && data.message === 'Login realizado com sucesso') {
                 const { user } = data;
-                localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id }));
+                localStorage.setItem("user", JSON.stringify({ name: user.name, id: user.id, avatar: user.avatar || null }));
                 if (rememberMe) {
                     localStorage.setItem("rememberedUsername", username);
                 } else {
@@ -151,19 +152,38 @@ const LoginPage = () => {
                                 ),
                             }}
                         />
-                        <FormControlLabel
-                            control={<Checkbox checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />}
-                            label="Lembre-se de mim"
-                            sx={{ mb: 2, mt: 0, width: 'fit-content' }}
-                        />
-                        <Box sx={{ display: 'flex' }}>
-                            <Button type="submit" id="buttonLogIn" variant="contained" onClick={submitLogin} sx={{ background: '#162A22' }}>Login</Button>
-                            <Button id="buttonLogIn2" variant="text" onClick={handleNavigateToSignup} sx={{ mx: 2, textDecoration: 'underline', color: '#000' }}>Cadastrar</Button>
+                        {/* "Lembre-se de mim" + "Esqueceu sua senha?" na mesma linha */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, mt: 0 }}>
+                            <FormControlLabel
+                                control={<Checkbox checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />}
+                                label="Lembre-se de mim"
+                                sx={{ m: 0 }}
+                            />
+                            <Button
+                                variant="text"
+                                size="small"
+                                onClick={() => navigate('/esqueceuSenha')}
+                                sx={{
+                                    textDecoration: 'underline',
+                                    color: '#756A34',
+                                    fontSize: '0.78rem',
+                                    p: 0,
+                                    minWidth: 'unset',
+                                    textTransform: 'none',
+                                    '&:hover': { color: '#BB8130', background: 'transparent' },
+                                }}
+                            >
+                                Esqueceu sua senha?
+                            </Button>
+                        </Box>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button type="submit" id="buttonLogIn" variant="contained" onClick={submitLogin} sx={{ background: '#162A22', '&:hover': { background: '#2F3C29' } }}>Login</Button>
+                            <Button id="buttonLogIn2" variant="text" onClick={handleNavigateToSignup} sx={{ textDecoration: 'underline', color: 'text.primary' }}>Cadastrar</Button>
                         </Box>
                     </form>
                 </Box>
             </Container>
-            <Box sx={{ background: '#40150A', position: 'absolute', bottom: '0px', width: '100%', color: '#fff', textAlign: 'center', fontSize: '10px', p: '4px' }}>© 2024 Lâmina do oculto. All rights reserved.</Box>
+            <AppFooter position="absolute" />
         </>
     );
 };

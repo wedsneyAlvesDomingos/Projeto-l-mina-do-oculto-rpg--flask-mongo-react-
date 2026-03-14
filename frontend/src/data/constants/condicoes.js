@@ -16,7 +16,12 @@
  * stackRegra     — 'substitui'|'acumula'|'maiorValor'|'maiorDuracao'|null
  * cura           — string descrevendo como remover
  * nivel          — int (apenas em condições progressivas com níveis)
- * niveis         — int (apenas Congelando — total de níveis possíveis)
+ * niveis         — int (total de níveis possíveis para condições progressivas)
+ * niveisDetalhes — Array<{ nivel, nome?, descricao, penalidades?, flags?,
+ *                    danoRecorrente?, condicaoAplicada?, acoesReduzidas? }>
+ *                  (detalhes por nível para condições progressivas)
+ * condicoesImplicitas — Array<string> (nomes de condições que esta aplica automaticamente;
+ *                       ex: Escondido → ['Obscurecido'], Paralisado → ['Atordoado'])
  *
  * Usado em: characterSheet.js, Wiki/conditions
  */
@@ -34,7 +39,7 @@ export const CORES_CONDICOES = {
 };
 
 // ============================================================================
-// TODAS AS 32 CONDIÇÕES — DADOS COMPLETOS
+// TODAS AS CONDIÇÕES — DADOS COMPLETOS (inclui progressivas com niveisDetalhes)
 // ============================================================================
 export const condicoesDisponiveis = {
 
@@ -73,7 +78,8 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: null, tipo: null, momento: null },
         stackRegra: 'substitui',
-        cura: 'fim_duracao'
+        cura: 'fim_duracao',
+        condicoesImplicitas: ['Deitado', 'Atordoado'],
     },
 
     'Paralisado': {
@@ -91,7 +97,8 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: null, tipo: null, momento: null },
         stackRegra: 'substitui',
-        cura: 'fim_duracao_ou_magia'
+        cura: 'fim_duracao_ou_magia',
+        condicoesImplicitas: ['Atordoado'],
     },
 
     'À Beira da Morte': {
@@ -109,7 +116,8 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: null, tipo: null, momento: null },
         stackRegra: 'substitui',
-        cura: 'cura_hp_qualquer'
+        cura: 'cura_hp_qualquer',
+        condicoesImplicitas: ['Incapacitado'],
     },
 
     // ── FÍSICAS ────────────────────────────────────────────────────────
@@ -444,11 +452,11 @@ export const condicoesDisponiveis = {
 
     // ── PROGRESSIVAS ───────────────────────────────────────────────────
 
-    'Cansado (Leve)': {
-        id: 'cansado_1',
-        descricao: '-1 em todas as jogadas de ataque e habilidade.',
+    'Cansado': {
+        id: 'cansado',
+        descricao: 'Exaustão progressiva (7 níveis). Penalidades crescentes em ataques, habilidades e velocidade.',
         duracao: 'Até descansar',
-        nivel: 1,
+        niveis: 7,
         cor: '#AB6422',
         categoria: 'progressiva',
         penalidades: { defesa: null, ataques: -1, testes: -1, velocidade: null, percepcao: null },
@@ -460,131 +468,68 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: null, tipo: null, momento: null },
         stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Moderado)': {
-        id: 'cansado_2',
-        descricao: '-2 em ataques/habilidade. -1,5m velocidade.',
-        duracao: 'Até descansar',
-        nivel: 2,
-        cor: '#7B3311',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -2, testes: -2, velocidade: -1.5, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: null, tipo: null, momento: null },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Sufocante)': {
-        id: 'cansado_3',
-        descricao: '-3 em ataques/habilidade. -1,5m velocidade.',
-        duracao: 'Até descansar',
-        nivel: 3,
-        cor: '#5B1F0F',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -3, testes: -3, velocidade: -1.5, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: null, tipo: null, momento: null },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Avassalador)': {
-        id: 'cansado_4',
-        descricao: '-4 em ataques/habilidade. -1,5m velocidade.',
-        duracao: 'Até descansar',
-        nivel: 4,
-        cor: '#40150A',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -4, testes: -4, velocidade: -1.5, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: null, tipo: null, momento: null },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Esmagador)': {
-        id: 'cansado_5',
-        descricao: '-5 em ataques/habilidade. -3m velocidade.',
-        duracao: 'Até descansar',
-        nivel: 5,
-        cor: '#2F3C29',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -5, testes: -5, velocidade: -3, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: null, tipo: null, momento: null },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Exaustivo)': {
-        id: 'cansado_6',
-        descricao: '-6 em ataques/habilidade. -3m velocidade.',
-        duracao: 'Até descansar',
-        nivel: 6,
-        cor: '#162A22',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -6, testes: -6, velocidade: -3, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: null, tipo: null, momento: null },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
-    },
-
-    'Cansado (Desesperador)': {
-        id: 'cansado_7',
-        descricao: '-7 em ataques/habilidade. -4,5m velocidade. 3 dano/rodada em combate.',
-        duracao: 'Até descansar',
-        nivel: 7,
-        cor: '#931C4A',
-        categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: -7, testes: -7, velocidade: -4.5, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: '3', tipo: 'exaustao', momento: 'inicioTurno' },
-        stackRegra: 'acumula',
-        cura: 'descanso_longo'
+        cura: 'descanso_longo',
+        niveisDetalhes: [
+            {
+                nivel: 1, nome: 'Leve',
+                descricao: '-1 em todas as jogadas de ataque e habilidade.',
+                penalidades: { defesa: null, ataques: -1, testes: -1, velocidade: null, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 2, nome: 'Moderado',
+                descricao: '-2 em ataques/habilidade. -1,5m velocidade.',
+                penalidades: { defesa: null, ataques: -2, testes: -2, velocidade: -1.5, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 3, nome: 'Sufocante',
+                descricao: '-3 em ataques/habilidade. -1,5m velocidade.',
+                penalidades: { defesa: null, ataques: -3, testes: -3, velocidade: -1.5, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 4, nome: 'Avassalador',
+                descricao: '-4 em ataques/habilidade. -1,5m velocidade.',
+                penalidades: { defesa: null, ataques: -4, testes: -4, velocidade: -1.5, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 5, nome: 'Esmagador',
+                descricao: '-5 em ataques/habilidade. -3m velocidade.',
+                penalidades: { defesa: null, ataques: -5, testes: -5, velocidade: -3, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 6, nome: 'Exaustivo',
+                descricao: '-6 em ataques/habilidade. -3m velocidade.',
+                penalidades: { defesa: null, ataques: -6, testes: -6, velocidade: -3, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: null, tipo: null, momento: null },
+            },
+            {
+                nivel: 7, nome: 'Desesperador',
+                descricao: '-7 em ataques/habilidade. -4,5m velocidade. 3 dano/rodada em combate.',
+                penalidades: { defesa: null, ataques: -7, testes: -7, velocidade: -4.5, percepcao: null },
+                flags: { semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false, desvantagemAtaques: false, vantagemContraAlvo: false, vantagemAtaques: false, desvantagemContraAlvo: false, imuneADano: false, criticoReduzido: null },
+                danoRecorrente: { valor: '3', tipo: 'exaustao', momento: 'inicioTurno' },
+            },
+        ],
     },
 
     'Congelando': {
         id: 'congelando',
-        descricao: 'Progressivo: -velocidade, desvantagem, -ações. 9ª rodada: Atordoado. 20ª rodada: Morte.',
+        descricao: 'Progressivo (20 rodadas): -velocidade, desvantagem, -ações. 9ª: Atordoado. 15ª: Paralisado. 20ª: À Beira da Morte.',
         duracao: 'Progressivo',
         niveis: 20,
         cor: '#2F3C29',
         categoria: 'progressiva',
-        penalidades: { defesa: null, ataques: null, testes: null, velocidade: 'progressivo', percepcao: null },
+        penalidades: { defesa: null, ataques: null, testes: null, velocidade: -1.5, percepcao: null },
         flags: {
             semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
             desvantagemAtaques: false, vantagemContraAlvo: false,
@@ -593,16 +538,38 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: null, tipo: 'frio', momento: null },
         stackRegra: 'acumula',
-        cura: 'calor_ou_fogueira'
+        cura: 'calor_ou_fogueira',
+        niveisDetalhes: [
+            { nivel: 1, descricao: '-1,5m velocidade.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -1.5, percepcao: null }, flags: { desvantagemAtaques: false }, acoesReduzidas: 0 },
+            { nivel: 2, descricao: '-1,5m velocidade + desvantagem em ataques.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -1.5, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 0 },
+            { nivel: 3, descricao: '-3m velocidade + desvantagem em ataques.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -3, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 0 },
+            { nivel: 4, descricao: '-3m velocidade + desvantagem em ataques + 1 ação a menos.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -3, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 1 },
+            { nivel: 5, descricao: '-4,5m velocidade + desvantagem em ataques + 1 ação a menos.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -4.5, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 1 },
+            { nivel: 6, descricao: '-6m velocidade + desvantagem em ataques + 2 ações a menos.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -6, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 2 },
+            { nivel: 7, descricao: '-7,5m velocidade + desvantagem em ataques + 2 ações a menos.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -7.5, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 2 },
+            { nivel: 8, descricao: '-9m velocidade + desvantagem em ataques + 2 ações a menos.', penalidades: { defesa: null, ataques: null, testes: null, velocidade: -9, percepcao: null }, flags: { desvantagemAtaques: true }, acoesReduzidas: 2 },
+            { nivel: 9, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 10, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 11, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 12, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 13, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 14, descricao: 'Atordoado.', condicaoAplicada: 'Atordoado' },
+            { nivel: 15, descricao: 'Paralisado.', condicaoAplicada: 'Paralisado' },
+            { nivel: 16, descricao: 'Paralisado.', condicaoAplicada: 'Paralisado' },
+            { nivel: 17, descricao: 'Paralisado.', condicaoAplicada: 'Paralisado' },
+            { nivel: 18, descricao: 'Paralisado.', condicaoAplicada: 'Paralisado' },
+            { nivel: 19, descricao: 'Paralisado.', condicaoAplicada: 'Paralisado' },
+            { nivel: 20, descricao: 'À Beira da Morte.', condicaoAplicada: 'À Beira da Morte' },
+        ],
     },
 
     // ── AMBIENTE ───────────────────────────────────────────────────────
 
-    'Queimando (Nível 1)': {
-        id: 'queimando_1',
-        descricao: '1d4 dano de fogo por rodada. Apagar: água ou rolar no chão.',
+    'Queimando': {
+        id: 'queimando',
+        descricao: 'Em chamas (3 níveis). Dano de fogo por rodada crescente.',
         duracao: 'Até apagar',
-        nivel: 1,
+        niveis: 3,
         cor: '#7B3311',
         categoria: 'ambiente',
         penalidades: { defesa: null, ataques: null, testes: null, velocidade: null, percepcao: null },
@@ -614,33 +581,31 @@ export const condicoesDisponiveis = {
         },
         danoRecorrente: { valor: '1d4', tipo: 'fogo', momento: 'inicioTurno' },
         stackRegra: 'maiorValor',
-        cura: 'agua_ou_rolar_no_chao'
+        cura: 'agua_ou_rolar_no_chao',
+        niveisDetalhes: [
+            {
+                nivel: 1, nome: 'Nível 1',
+                descricao: '1d4 dano de fogo por rodada. Apagar: água ou rolar no chão.',
+                danoRecorrente: { valor: '1d4', tipo: 'fogo', momento: 'inicioTurno' },
+            },
+            {
+                nivel: 2, nome: 'Nível 2',
+                descricao: '1d6 dano de fogo por rodada. Maior área de fogo.',
+                danoRecorrente: { valor: '1d6', tipo: 'fogo', momento: 'inicioTurno' },
+            },
+            {
+                nivel: 3, nome: 'Nível 3',
+                descricao: '2d6 dano de fogo por rodada. Fogo intenso.',
+                danoRecorrente: { valor: '2d6', tipo: 'fogo', momento: 'inicioTurno' },
+            },
+        ],
     },
 
-    'Queimando (Nível 2)': {
-        id: 'queimando_2',
-        descricao: '1d6 dano de fogo por rodada. Maior área de fogo.',
-        duracao: 'Até apagar',
-        nivel: 2,
-        cor: '#AB6422',
-        categoria: 'ambiente',
-        penalidades: { defesa: null, ataques: null, testes: null, velocidade: null, percepcao: null },
-        flags: {
-            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
-            desvantagemAtaques: false, vantagemContraAlvo: false,
-            vantagemAtaques: false, desvantagemContraAlvo: false,
-            imuneADano: false, criticoReduzido: null
-        },
-        danoRecorrente: { valor: '1d6', tipo: 'fogo', momento: 'inicioTurno' },
-        stackRegra: 'maiorValor',
-        cura: 'agua_ou_rolar_no_chao'
-    },
-
-    'Queimando (Nível 3)': {
-        id: 'queimando_3',
-        descricao: '1d8 dano de fogo por rodada. Fogo intenso.',
-        duracao: 'Até apagar',
-        nivel: 3,
+    'Lava': {
+        id: 'lava',
+        descricao: 'Contato com lava (2 níveis). Dano massivo de fogo por rodada.',
+        duracao: 'Enquanto em contato',
+        niveis: 2,
         cor: '#BB8130',
         categoria: 'ambiente',
         penalidades: { defesa: null, ataques: null, testes: null, velocidade: null, percepcao: null },
@@ -650,10 +615,61 @@ export const condicoesDisponiveis = {
             vantagemAtaques: false, desvantagemContraAlvo: false,
             imuneADano: false, criticoReduzido: null
         },
-        danoRecorrente: { valor: '1d8', tipo: 'fogo', momento: 'inicioTurno' },
+        danoRecorrente: { valor: '6d6', tipo: 'fogo', momento: 'inicioTurno' },
         stackRegra: 'maiorValor',
-        cura: 'agua_ou_rolar_no_chao'
-    }
+        cura: 'sair_da_lava',
+        niveisDetalhes: [
+            {
+                nivel: 1, nome: 'Parcial',
+                descricao: 'Parcialmente submergida ou em contato com lava: 6d6 dano de fogo por rodada.',
+                danoRecorrente: { valor: '6d6', tipo: 'fogo', momento: 'inicioTurno' },
+            },
+            {
+                nivel: 2, nome: 'Submergido',
+                descricao: 'Grande parte submergida ou em contato com lava: 12d6 dano de fogo por rodada.',
+                danoRecorrente: { valor: '12d6', tipo: 'fogo', momento: 'inicioTurno' },
+            },
+        ],
+    },
+
+    // ── OUTRAS AMBIENTE ───────────────────────────────────────────────
+
+    'Obscurecido': {
+        id: 'obscurecido',
+        descricao: 'Além da visão. Não pode ser alvo de habilidades que exijam visão. +1 acerto e Furtividade.',
+        duracao: 'Enquanto obscurecido',
+        cor: '#2F3C29',
+        categoria: 'ambiente',
+        penalidades: { defesa: null, ataques: 1, testes: null, velocidade: null, percepcao: null },
+        flags: {
+            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
+            desvantagemAtaques: false, vantagemContraAlvo: false,
+            vantagemAtaques: false, desvantagemContraAlvo: false,
+            imuneADano: false, criticoReduzido: null
+        },
+        danoRecorrente: { valor: null, tipo: null, momento: null },
+        stackRegra: 'substitui',
+        cura: 'sair_do_obscurecimento'
+    },
+
+    'Escondido': {
+        id: 'escondido',
+        descricao: 'Obscurecido + posição desconhecida. Ataque fora de combate: alvo fica Surpreso. Vantagem no ataque.',
+        duracao: 'Até ser detectado',
+        cor: '#454E30',
+        categoria: 'ambiente',
+        penalidades: { defesa: null, ataques: null, testes: null, velocidade: null, percepcao: null },
+        flags: {
+            semAcoes: false, semReacoes: false, semMovimento: false, semConcentracao: false,
+            desvantagemAtaques: false, vantagemContraAlvo: false,
+            vantagemAtaques: true, desvantagemContraAlvo: false,
+            imuneADano: false, criticoReduzido: null
+        },
+        danoRecorrente: { valor: null, tipo: null, momento: null },
+        stackRegra: 'substitui',
+        cura: 'atacar_ou_ser_detectado',
+        condicoesImplicitas: ['Obscurecido'],
+    },
 };
 
 // ============================================================================
@@ -693,6 +709,197 @@ export const getCondicao = (idOuNome) => {
  */
 export const getCondicoesPorCategoria = (categoria) => {
     return condicoesArray.filter(c => c.categoria === categoria);
+};
+
+/**
+ * Retorna os dados efetivos de uma condição progressiva para um nível específico.
+ * Se a condição não for progressiva ou o nível for inválido, retorna os dados base.
+ * @param {string} nomeOuId - Nome ou id da condição
+ * @param {number} nivel - Nível atual (1-based)
+ * @returns {Object} Condição com penalidades/flags/dano ajustados para o nível
+ */
+export const getCondicaoParaNivel = (nomeOuId, nivel) => {
+    const cond = getCondicao(nomeOuId);
+    if (!cond) return null;
+    if (!cond.niveisDetalhes || !nivel || nivel < 1) return cond;
+    const idx = Math.min(nivel, cond.niveis) - 1;
+    const detalhe = cond.niveisDetalhes[idx];
+    if (!detalhe) return cond;
+    return {
+        ...cond,
+        descricao: detalhe.descricao || cond.descricao,
+        penalidades: detalhe.penalidades || cond.penalidades,
+        flags: { ...cond.flags, ...(detalhe.flags || {}) },
+        danoRecorrente: detalhe.danoRecorrente || cond.danoRecorrente,
+        nivelAtual: nivel,
+        nomeNivel: detalhe.nome || `Rodada ${nivel}`,
+        condicaoAplicada: detalhe.condicaoAplicada || null,
+        acoesReduzidas: detalhe.acoesReduzidas || 0,
+    };
+};
+
+/**
+ * Resolve TODAS as condições implícitas a partir de um mapa de condições ativas.
+ * Percorre cadeias transitivas: ex. À Beira da Morte → Incapacitado → Deitado + Atordoado.
+ * Para condições progressivas, verifica condicaoAplicada do nível ativo.
+ *
+ * @param {Object} condicoesAtivas - { 'NomeCondição': true|number, ... }
+ * @returns {Object} { 'NomeCondição': 'fonte (nome da condição pai)' } — apenas as implícitas
+ */
+export const resolverCondicoesImplicitas = (condicoesAtivas) => {
+    const implicitas = {}; // { nome: fonte }
+    const visitados = new Set();
+
+    const resolver = (condNome, fonte) => {
+        if (visitados.has(condNome)) return; // evita ciclos
+        visitados.add(condNome);
+
+        const condObj = condicoesDisponiveis[condNome];
+        if (!condObj) return;
+
+        // 1) condicoesImplicitas estáticas (Escondido→Obscurecido, etc.)
+        if (condObj.condicoesImplicitas) {
+            for (const impl of condObj.condicoesImplicitas) {
+                if (!condicoesAtivas[impl] && !implicitas[impl]) {
+                    implicitas[impl] = fonte || condNome;
+                }
+                // Resolver transitivamente (ex: Incapacitado→Atordoado, que por si não tem mais)
+                resolver(impl, condNome);
+            }
+        }
+
+        // 2) condicaoAplicada de nível em condições progressivas
+        const nivel = condicoesAtivas[condNome];
+        if (condObj.niveisDetalhes && typeof nivel === 'number' && nivel >= 1) {
+            const idx = Math.min(nivel, condObj.niveis) - 1;
+            const detalhe = condObj.niveisDetalhes[idx];
+            if (detalhe?.condicaoAplicada) {
+                const aplicada = detalhe.condicaoAplicada;
+                if (!condicoesAtivas[aplicada] && !implicitas[aplicada]) {
+                    implicitas[aplicada] = `${condNome} (nível ${nivel})`;
+                }
+                // Resolver transitivamente
+                resolver(aplicada, `${condNome} (nível ${nivel})`);
+            }
+        }
+    };
+
+    for (const condNome of Object.keys(condicoesAtivas)) {
+        resolver(condNome, condNome);
+    }
+
+    return implicitas;
+};
+
+/**
+ * Calcula os modificadores totais aplicados aos rolamentos pelas condições ativas.
+ * Resolve condições implícitas internamente e computa penalidades, bônus e flags.
+ *
+ * Regra LDO 0.5: para cada tipo de modificador, apenas a maior penalidade e o maior bônus se aplicam.
+ * Exceção especial: Cego + Surdo simultâneo = -10 adicional em todos os testes.
+ *
+ * @param {Object} condicoesAtivas - { 'NomeCondição': true|number, ... } (incluindo ambientais)
+ * @returns {Object} { modificadores, velocidade, flags, vantagensAtaque, desvantagensAtaque, resumoTexto }
+ */
+export const calcularModificadoresCondicoes = (condicoesAtivas) => {
+    const vazio = {
+        modificadores: { defesa: 0, ataques: 0, testes: 0, percepcao: 0 },
+        velocidade: { reducao: 0, metade: false, zero: false },
+        flags: {},
+        vantagensAtaque: 0,
+        desvantagensAtaque: 0,
+        resumoTexto: [],
+    };
+    if (!condicoesAtivas || Object.keys(condicoesAtivas).length === 0) return vazio;
+
+    // 1) Resolve implicit conditions to include all chained effects
+    const implicitas = resolverCondicoesImplicitas(condicoesAtivas);
+    const todas = { ...condicoesAtivas };
+    for (const nome of Object.keys(implicitas)) {
+        if (!(nome in todas)) todas[nome] = true;
+    }
+
+    // 2) Separate worst penalty (most negative) and best bonus (most positive) per stat
+    const pen = { defesa: 0, ataques: 0, testes: 0, percepcao: 0 };
+    const bon = { defesa: 0, ataques: 0, testes: 0, percepcao: 0 };
+    const flags = {};
+    const vel = { reducao: 0, metade: false, zero: false };
+
+    for (const [nome, valor] of Object.entries(todas)) {
+        let cond = condicoesDisponiveis[nome];
+        if (!cond) continue;
+
+        // For progressive conditions, use level-specific data
+        if (cond.niveisDetalhes && typeof valor === 'number' && valor >= 1) {
+            const nivelCond = getCondicaoParaNivel(cond.id || nome, valor);
+            if (nivelCond) cond = nivelCond;
+        }
+
+        // Penalidades numéricas
+        if (cond.penalidades) {
+            for (const [key, val] of Object.entries(cond.penalidades)) {
+                if (val === null || val === undefined) continue;
+                if (key === 'velocidade') {
+                    if (val === 'metade') vel.metade = true;
+                    else if (typeof val === 'number' && val < 0) {
+                        vel.reducao = Math.min(vel.reducao, val);
+                    }
+                    // val === 0 is handled by semMovimento flag
+                } else if (typeof val === 'number') {
+                    if (val < 0) pen[key] = Math.min(pen[key], val);
+                    else if (val > 0) bon[key] = Math.max(bon[key], val);
+                }
+            }
+        }
+
+        // Flags
+        if (cond.flags) {
+            for (const [key, val] of Object.entries(cond.flags)) {
+                if (val === true) flags[key] = true;
+                if (key === 'criticoReduzido' && typeof val === 'number') {
+                    flags.criticoReduzido = flags.criticoReduzido !== undefined
+                        ? Math.min(flags.criticoReduzido, val) : val;
+                }
+            }
+        }
+    }
+
+    // semMovimento → velocidade zero
+    if (flags.semMovimento) vel.zero = true;
+
+    // Special: Cego + Surdo = -10 adicional em todos os testes
+    if (todas['Cego'] && todas['Surdo']) {
+        pen.testes -= 10;
+    }
+
+    // 3) Combine: net modifier = worst penalty + best bonus
+    const modificadores = {
+        defesa: pen.defesa + bon.defesa,
+        ataques: pen.ataques + bon.ataques,
+        testes: pen.testes + bon.testes,
+        percepcao: pen.percepcao + bon.percepcao,
+    };
+
+    // 4) Attack advantage/disadvantage from flags
+    let vantagensAtaque = 0;
+    let desvantagensAtaque = 0;
+    if (flags.vantagemAtaques) vantagensAtaque++;
+    if (flags.desvantagemAtaques) desvantagensAtaque++;
+
+    // 5) Build text summary for roll labels
+    const resumoTexto = [];
+    if (modificadores.ataques !== 0) resumoTexto.push(`${modificadores.ataques > 0 ? '+' : ''}${modificadores.ataques} atq`);
+    if (modificadores.testes !== 0) resumoTexto.push(`${modificadores.testes > 0 ? '+' : ''}${modificadores.testes} testes`);
+    if (modificadores.defesa !== 0) resumoTexto.push(`${modificadores.defesa > 0 ? '+' : ''}${modificadores.defesa} def`);
+    if (modificadores.percepcao !== 0) resumoTexto.push(`${modificadores.percepcao > 0 ? '+' : ''}${modificadores.percepcao} per`);
+    if (vel.zero) resumoTexto.push('vel=0');
+    else if (vel.metade) resumoTexto.push('vel÷2');
+    else if (vel.reducao < 0) resumoTexto.push(`${vel.reducao}m vel`);
+    if (vantagensAtaque > 0) resumoTexto.push('vant. ataque');
+    if (desvantagensAtaque > 0) resumoTexto.push('desv. ataque');
+    if (flags.semAcoes) resumoTexto.push('sem ações');
+
+    return { modificadores, velocidade: vel, flags, vantagensAtaque, desvantagensAtaque, resumoTexto };
 };
 
 /**

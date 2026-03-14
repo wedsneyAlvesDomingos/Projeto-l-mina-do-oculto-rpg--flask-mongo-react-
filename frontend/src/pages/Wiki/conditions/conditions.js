@@ -3,6 +3,10 @@ import { Card, CardContent, Container, Table, TableBody, TableCell, TableContain
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./conditions.css";
 
+const toAnchorId = s =>
+    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 
 const ConditionsPage = () => {
 
@@ -184,7 +188,7 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
                 </Typography>
                 <Box>
                     {condicoes.map((cond, index) => (
-                        <Accordion key={index}>
+                        <Accordion key={index} id={toAnchorId(cond.titulo)}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Typography className="boxTextTitle" variant="h6">{cond.titulo}</Typography>
                             </AccordionSummary>
@@ -205,9 +209,6 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
                 <Condicoes />
             </Box>
 
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', width: '100%' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
         </Box>
     );
 };

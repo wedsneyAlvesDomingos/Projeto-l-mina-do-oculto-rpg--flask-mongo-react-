@@ -4,6 +4,7 @@
  * Original: ~3 582 linhas → ~280 linhas (composição pura)
  */
 import React from 'react';
+import AppFooter from '../../componentes/Footer/Footer';
 import dayjs from 'dayjs';
 import {
     Box, Tabs, Tab, Typography, Paper, Stack, Chip,
@@ -24,6 +25,7 @@ import {
     ProfessionSelectionModal,
     MutationModal,
     AttributeChoiceModals,
+    AntecedenteChoiceModal,
 } from './components/creation';
 
 import './char.css';
@@ -97,13 +99,13 @@ const CharCreationPage = () => {
                         📊 Stats Calculados (tempo real)
                     </Typography>
                     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                        <Chip label={`❤️ PV: ${h.statsDerivados.pvMax}`} color="error" variant="outlined" size="small" />
-                        <Chip label={`⚡ Estamina: ${h.statsDerivados.estaminaMax}`} color="warning" variant="outlined" size="small" />
-                        <Chip label={`🔮 PM: ${h.statsDerivados.pmMax}`} color="primary" variant="outlined" size="small" />
-                        <Chip label={`🛡️ Defesa: ${h.statsDerivados.defesaTotal}`} color="info" variant="outlined" size="small" />
-                        <Chip label={`🏃 Vel: ${h.statsDerivados.velTotal}m`} color="success" variant="outlined" size="small" />
-                        <Chip label={`⚔️ Iniciativa: ${h.statsDerivados.iniciativa}`} variant="outlined" size="small" />
-                        <Chip label={`🎒 Carga: ${h.statsDerivados.cargaMax}kg`} variant="outlined" size="small" />
+                        <Chip label={`❤️ PV: ${h.statsDerivados.pvMax}`}  />
+                        <Chip label={`⚡ Estamina: ${h.statsDerivados.estaminaMax}`}  />
+                        <Chip label={`🔮 PM: ${h.statsDerivados.pmMax}`} />
+                        <Chip label={`🛡️ Defesa: ${h.statsDerivados.defesaTotal}`} />
+                        <Chip label={`🏃 Vel: ${h.statsDerivados.velTotal}m`} />
+                        <Chip label={`⚔️ Iniciativa: ${h.statsDerivados.iniciativa}`} />
+                        <Chip label={`🎒 Carga: ${h.statsDerivados.cargaMax}kg`} />
                     </Stack>
                 </Paper>
 
@@ -133,6 +135,7 @@ const CharCreationPage = () => {
                             handleDrop={h.handleDrop} handleDragOver={h.handleDragOver}
                             handleButtonClick={h.handleButtonClick} handleFileChange={h.handleFileChange}
                             fileInputRef={h.fileInputRef}
+                            formErrors={h.formErrors}
                         />
                     </TabPanel>
 
@@ -144,6 +147,7 @@ const CharCreationPage = () => {
                             regaliaEscolhida={h.regaliaEscolhida}
                             setRegaliaEscolhida={h.setRegaliaEscolhida}
                             disableMutationOptModal={h.disableMutationOptModal}
+                            especieSelecionadaLista={h.especieSelecionadaLista}
                             racas={h.racas}
                             regaliasOpcionais={h.regaliasOpcionais}
                         />
@@ -243,6 +247,13 @@ const CharCreationPage = () => {
                     handleSelect={h.handleSelect}
                 />
 
+                <AntecedenteChoiceModal
+                    open={h.antecedenteChoiceModalOpen}
+                    onClose={() => h.setAntecedenteChoiceModalOpen(false)}
+                    antecedente={h.antecedenteSelecionado}
+                    onConfirm={h.handleAntecedenteChoiceConfirm}
+                />
+
                 <AttributeChoiceModals
                     openForcaOuDex={h.openForcaOuDex} setOpenForcaOuDex={h.setOpenForcaOuDex}
                     setOpen={h.setOpen}
@@ -293,11 +304,7 @@ const CharCreationPage = () => {
             </Snackbar>
 
             {/* Footer */}
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>
-                    © {dayjs().year()} Lâmina do oculto. All rights reserved.
-                </Typography>
-            </Box>
+            <AppFooter />
         </Box>
     );
 };

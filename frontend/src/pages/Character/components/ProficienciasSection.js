@@ -28,15 +28,15 @@ const ProficienciasSection = React.memo(({
                         </Typography>
                     </Box>
                 ))}
-                {currentValue === 0 && <Typography variant="caption" sx={{ color: '#ffb74d', display: 'block', mt: 1 }}>⚠️ Nenhum nível adquirido</Typography>}
+                {currentValue === 0 && <Typography variant="caption" sx={{ color: 'var(--text-primary)', display: 'block', mt: 1 }}>⚠️ Nenhum nível adquirido</Typography>}
             </Box>
         );
     };
 
     return (
-        <Card sx={{ ...sectionStyle, mt: 2 }}>
-            <CardHeader sx={cardHeaderStyle} title={
-                <Typography className="esteban" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Card sx={{ mt: 0, ...sectionStyle }}>
+            <CardHeader sx={cardHeaderStyle} titleTypographyProps={{ component: 'div' }} title={
+                <Typography className="esteban" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <AutoAwesomeIcon /> Proficiências
                 </Typography>
             } />
@@ -48,8 +48,8 @@ const ProficienciasSection = React.memo(({
                                 componentsProps={{ tooltip: { sx: { bgcolor: 'rgba(22, 42, 34, 0.95)', '& .MuiTooltip-arrow': { color: 'rgba(22, 42, 34, 0.95)' }, maxWidth: 400 } } }}>
                                 <Box sx={{
                                     display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1,
-                                    borderRadius: 1, backgroundColor: value !== 0 ? '#edecd8' : '#f5f3eb',
-                                    cursor: 'help', '&:hover': { backgroundColor: value !== 0 ? '#e5e4d0' : '#edebe3' }
+                                    borderRadius: 1, backgroundColor: value !== 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
+                                    cursor: 'help', '&:hover': { backgroundColor: value !== 0 ? 'var(--surface-raised)' : 'var(--surface-default)' }
                                 }}>
                                     <Typography className="esteban" variant="body2" sx={{ flex: 1 }}>{key.replace(/_/g, ' ')}</Typography>
                                     {editMode ? (

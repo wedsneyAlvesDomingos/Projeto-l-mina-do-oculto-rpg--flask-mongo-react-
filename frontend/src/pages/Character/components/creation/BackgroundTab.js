@@ -14,7 +14,6 @@ const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
             borderBottom: "8px solid #162A22",
             height: '470px',
             position: 'relative',
-            backgroundColor: selected ? '#f0f0f0' : 'white',
             width: '23%'
         }}
         onClick={() => onSelect(antecedente)}

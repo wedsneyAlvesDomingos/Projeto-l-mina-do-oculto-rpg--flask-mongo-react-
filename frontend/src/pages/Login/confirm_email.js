@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import AppFooter from '../../componentes/Footer/Footer';
 import { useNavigate, useParams } from "react-router-dom";
 import './Login.css';
 import { Typography, Box, Button, Container } from '@mui/material';
@@ -70,9 +71,7 @@ const ConfirmEmailPage = () => {
                     </Button>
                 </Box>
             </Container>
-            <Box sx={{ background: '#40150A', position: 'absolute', bottom: '0px', width: '100%', color: '#fff', textAlign: 'center', fontSize: '10px', p: '4px' }}>
-                © 2024 Lâmina do oculto. All rights reserved.
-            </Box>
+            <AppFooter position="absolute" />
         </>
     );
 };

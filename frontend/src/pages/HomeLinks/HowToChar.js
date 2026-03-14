@@ -1,5 +1,6 @@
 
 import { Paper, Box, Grid } from '@mui/material';
+import AppFooter from '../../componentes/Footer/Footer';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -494,9 +495,7 @@ const HowToMakeCharPage = () => {
                 </List>
 
             </Box >
-            <Box sx={{ background: '#40150A', p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography sx={{ color: '#fff', fontSize: '10px' }}>© 2024 Lâmina do oculto. All rights reserved.</Typography>
-            </Box>
+            <AppFooter />
         </Box>
 
     );
