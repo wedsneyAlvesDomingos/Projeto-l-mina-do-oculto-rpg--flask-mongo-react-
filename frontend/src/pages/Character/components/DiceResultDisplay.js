@@ -15,30 +15,31 @@ const DiceResultDisplay = React.memo(({ diceResult, onClose }) => {
     return (
         <Paper elevation={8} sx={{
             position: 'fixed', top: 100, right: 20, zIndex: 1000, p: 3, borderRadius: 3,
-            background: getBgColor(), color: 'white', minWidth: '200px',
+            background: getBgColor(), color: '#fff !important', minWidth: '200px',
             animation: diceResult.isAnimating ? 'shake 0.1s infinite' : 'none',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            border: diceResult.isCriticalHit ? '3px solid #BB8130' : diceResult.isCriticalFail ? '3px solid #931C4A' : 'none'
+            border: diceResult.isCriticalHit ? '3px solid #BB8130' : diceResult.isCriticalFail ? '3px solid #931C4A' : 'none',
+            '& .MuiTypography-root': { color: '#fff !important' },
         }}>
-            <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mb: 1 }}>
+            <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mb: 1, color: '#fff !important' }}>
                 {diceResult.label || 'Rolagem'}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <CasinoIcon sx={{ fontSize: 40, animation: diceResult.isAnimating ? 'spin 0.2s infinite linear' : 'none' }} />
-                <Typography variant="h3" sx={{ fontWeight: 'bold', fontFamily: 'monospace' }}>
+                <CasinoIcon sx={{ fontSize: 40, color: '#fff', animation: diceResult.isAnimating ? 'spin 0.2s infinite linear' : 'none' }} />
+                <Typography variant="h3" sx={{ fontWeight: 'bold', fontFamily: 'monospace', color: '#fff !important' }}>
                     {diceResult.total}
                 </Typography>
             </Box>
             {diceResult.isCriticalHit && <Chip label="🎯 CRÍTICO!" sx={{ backgroundColor: '#BB8130', color: '#fff', fontWeight: 'bold', mb: 1 }} />}
             {diceResult.isCriticalFail && <Chip label="💀 FALHA CRÍTICA!" sx={{ backgroundColor: '#931C4A', color: '#fff', fontWeight: 'bold', mb: 1 }} />}
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9, color: '#fff !important' }}>
                 {diceResult.quantity}d{diceResult.sides}
                 {diceResult.bonus !== 0 && (diceResult.bonus > 0 ? `+${diceResult.bonus}` : diceResult.bonus)}
             </Typography>
             {diceResult.rolls && diceResult.rolls.length > 1 && (
-                <Typography variant="caption" sx={{ display: 'block', opacity: 0.7 }}>[{diceResult.rolls.join(', ')}]</Typography>
+                <Typography variant="caption" sx={{ display: 'block', opacity: 0.7, color: '#fff !important' }}>[{diceResult.rolls.join(', ')}]</Typography>
             )}
-            <IconButton size="small" onClick={onClose} sx={{ position: 'absolute', top: 4, right: 4, color: 'white' }}>
+            <IconButton size="small" onClick={onClose} sx={{ position: 'absolute', top: 4, right: 4, color: '#fff' }}>
                 <CancelIcon fontSize="small" />
             </IconButton>
         </Paper>

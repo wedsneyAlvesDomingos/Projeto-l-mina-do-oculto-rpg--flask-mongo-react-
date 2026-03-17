@@ -2,8 +2,19 @@
  * useCharacterSheet.js
  * Hook central que encapsula TODO o estado e callbacks da ficha de personagem.
  * Extraído de characterSheet.js para manter o componente principal sob 500 linhas.
+ *
+ * Integração v2:
+ * - Condições: POST/DELETE /api/v2/personagens/{id}/condicoes
+ * - Descanso:  POST /api/v2/personagens/{id}/descanso
+ * - Ficha:     GET  /api/v2/personagens/{id}/ficha  (stats derivados do backend)
  */
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import {
+    aplicarCondicaoV2,
+    removerCondicaoV2,
+    realizarDescansoV2,
+    fetchFicha,
+} from '../../services/apiV2';
 import {
     calcularPontosDeVida,
     calcularEstamina,
@@ -366,29 +377,67 @@ export default function useCharacterSheet() {
     /* ═══════════════════════════════════════════════════
        CALLBACKS — Condições & Equipar/Desequipar
        ═══════════════════════════════════════════════════ */
+    /**
+     * saveConditions — Sincroniza a lista de condições com o backend.
+     *
+     * Estratégia v2:
+     *  • Para cada condição nova (não estava antes) → POST /api/v2/personagens/{id}/condicoes
+     *  • Para cada condição removida (estava antes, não está mais) → DELETE /api/v2/personagens/{id}/condicoes/{slug}
+     * Se o backend v2 falhar (ex: slug desconhecido), faz fallback para PUT v1
+     * para garantir que o frontend não perde estado.
+     */
     const saveConditions = useCallback(async (newCondicoes) => {
         if (!character?.id) return;
+
+        const oldCondicoes = character.condicoes || {};
+        const oldSlugs = new Set(Object.keys(oldCondicoes));
+        const newSlugs = new Set(Object.keys(newCondicoes));
+
+        const toAdd    = [...newSlugs].filter(s => !oldSlugs.has(s));
+        const toRemove = [...oldSlugs].filter(s => !newSlugs.has(s));
+
+        let v2Success = true;
+
         try {
-            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...character, condicoes: newCondicoes }),
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                const errorMessage = errorData.message || errorData.error || 'Erro ao salvar condições';
-                if (/inválid[oa]/i.test(errorMessage)) throw new Error('Condição inválida selecionada');
-                if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
-                throw new Error(errorMessage);
+            // Aplicar novas condições via v2
+            for (const slug of toAdd) {
+                await aplicarCondicaoV2(character.id, slug, { userId: userId || 0 });
             }
-            setCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
-            setOriginalCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
-            const condCount = Object.keys(newCondicoes).length;
-            setSnackbar({ open: true, message: condCount > 0 ? `Condições atualizadas (${condCount} ativa${condCount > 1 ? 's' : ''})` : 'Condições removidas', severity: 'success' });
-        } catch (error) {
-            console.error(error);
-            setSnackbar({ open: true, message: error.message || 'Erro ao salvar condições', severity: 'error' });
+            // Remover condições via v2
+            for (const slug of toRemove) {
+                await removerCondicaoV2(character.id, slug, userId || 0);
+            }
+        } catch (err) {
+            console.warn('[saveConditions] v2 falhou, usando fallback PUT v1:', err.message);
+            v2Success = false;
         }
-    }, [baseUrl, character]);
+
+        // Fallback: PUT v1 para garantir sincronização de estado
+        if (!v2Success || (toAdd.length === 0 && toRemove.length === 0)) {
+            try {
+                const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...character, condicoes: newCondicoes }),
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || errorData.error || 'Erro ao salvar condições';
+                    if (/inválid[oa]/i.test(errorMessage)) throw new Error('Condição inválida selecionada');
+                    if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
+                    throw new Error(errorMessage);
+                }
+            } catch (error) {
+                console.error(error);
+                setSnackbar({ open: true, message: error.message || 'Erro ao salvar condições', severity: 'error' });
+                return;
+            }
+        }
+
+        setCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
+        setOriginalCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
+        const condCount = Object.keys(newCondicoes).length;
+        setSnackbar({ open: true, message: condCount > 0 ? `Condições atualizadas (${condCount} ativa${condCount > 1 ? 's' : ''})` : 'Condições removidas', severity: 'success' });
+    }, [baseUrl, character, userId]);
 
     const updateField = useCallback((path, value) => {
         setCharacter(prev => {
@@ -614,23 +663,66 @@ export default function useCharacterSheet() {
     /* ═══════════════════════════════════════════════════
        CALLBACKS — Descanso (dependem de statsDerivados)
        ═══════════════════════════════════════════════════ */
-    const aplicarDescansoCurto = useCallback(() => {
+    /**
+     * aplicarDescansoCurto — Delega ao backend v2 (descanso=curto).
+     * Fallback: cálculo local se v2 não disponível.
+     */
+    const aplicarDescansoCurto = useCallback(async () => {
         if (!character || !statsDerivados) return;
-        const stats = { vidaMax: statsDerivados.pvMax, vidaAtual: statsDerivados.pvAtual, estaminaMax: statsDerivados.peMax, estaminaAtual: statsDerivados.peAtual, magiaMax: statsDerivados.pmMax, magiaAtual: statsDerivados.pmAtual };
-        const recuperacao = calcularDescansosCurto(stats);
-        setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia }));
-        setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        try {
+            const resultado = await realizarDescansoV2(character.id, 'curto', userId || 0);
+            // Backend retorna os novos valores exatos
+            setCharacter(prev => ({
+                ...prev,
+                pv_atual: resultado.pv?.depois ?? prev.pv_atual,
+                pe_atual: resultado.pe?.depois ?? prev.pe_atual,
+                pm_atual: resultado.pm?.depois ?? prev.pm_atual,
+            }));
+            const pvRec = resultado.pv?.recuperado ?? 0;
+            const peRec = resultado.pe?.recuperado ?? 0;
+            const desc = `Descanso curto: recuperou ${pvRec > 0 ? `${pvRec} PV, ` : ''}${peRec} PE`;
+            setSnackbar({ open: true, message: desc, severity: 'success' });
+        } catch (err) {
+            console.warn('[aplicarDescansoCurto] v2 falhou, usando fallback local:', err.message);
+            // Fallback local
+            const stats = { vidaMax: statsDerivados.pvMax, vidaAtual: statsDerivados.pvAtual, estaminaMax: statsDerivados.peMax, estaminaAtual: statsDerivados.peAtual, magiaMax: statsDerivados.pmMax, magiaAtual: statsDerivados.pmAtual };
+            const recuperacao = calcularDescansosCurto(stats);
+            setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia }));
+            setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        }
         setDescansoModalOpen(false);
-    }, [character, statsDerivados]);
+    }, [character, statsDerivados, userId]);
 
-    const aplicarDescansoLongo = useCallback(() => {
+    /**
+     * aplicarDescansoLongo — Delega ao backend v2 (descanso=longo).
+     * Fallback: cálculo local se v2 não disponível.
+     */
+    const aplicarDescansoLongo = useCallback(async () => {
         if (!character || !statsDerivados) return;
-        const stats = { vidaMax: statsDerivados.pvMax, estaminaMax: statsDerivados.peMax, magiaMax: statsDerivados.pmMax, nivelCansaco: character.nivel_cansaco || 0 };
-        const recuperacao = calcularDescansoLongo(stats);
-        setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia, nivel_cansaco: recuperacao.novoNivelCansaco }));
-        setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        try {
+            const resultado = await realizarDescansoV2(character.id, 'longo', userId || 0);
+            setCharacter(prev => ({
+                ...prev,
+                pv_atual: resultado.pv?.depois ?? prev.pv_atual,
+                pe_atual: resultado.pe?.depois ?? prev.pe_atual,
+                pm_atual: resultado.pm?.depois ?? prev.pm_atual,
+                nivel_cansaco: resultado.cansaco?.depois ?? prev.nivel_cansaco,
+            }));
+            const pvRec = resultado.pv?.recuperado ?? 0;
+            const pmRec = resultado.pm?.recuperado ?? 0;
+            const peRec = resultado.pe?.recuperado ?? 0;
+            const desc = `Descanso longo: recuperou ${pvRec} PV, ${peRec} PE, ${pmRec} PM`;
+            setSnackbar({ open: true, message: desc, severity: 'success' });
+        } catch (err) {
+            console.warn('[aplicarDescansoLongo] v2 falhou, usando fallback local:', err.message);
+            // Fallback local
+            const stats = { vidaMax: statsDerivados.pvMax, estaminaMax: statsDerivados.peMax, magiaMax: statsDerivados.pmMax, nivelCansaco: character.nivel_cansaco || 0 };
+            const recuperacao = calcularDescansoLongo(stats);
+            setCharacter(prev => ({ ...prev, pv_atual: recuperacao.novaVida, pe_atual: recuperacao.novaEstamina, pm_atual: recuperacao.novaMagia, nivel_cansaco: recuperacao.novoNivelCansaco }));
+            setSnackbar({ open: true, message: recuperacao.descricao, severity: 'success' });
+        }
         setDescansoModalOpen(false);
-    }, [character, statsDerivados]);
+    }, [character, statsDerivados, userId]);
 
     /* ═══════════════════════════════════════════════════
        EFEITO — Carregar personagem

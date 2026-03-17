@@ -34,6 +34,7 @@ const TIPO_CONFIG = {
     magia:   { label: 'Magia',    color: '#6A1B9A', bg: '#F3E5F5', border: '#AB47BC' },
     feitico: { label: 'Feitiço',  color: '#283593', bg: '#E8EAF6', border: '#5C6BC0' },
     reacao:  { label: 'Reação',   color: '#00695C', bg: '#E0F2F1', border: '#26A69A' },
+    ritual:  { label: 'Ritual',   color: '#4E342E', bg: '#EFEBE9', border: '#8D6E63' },
 };
 
 const HAB_LABELS = {
@@ -187,7 +188,7 @@ const DiceRollOverlay = React.memo(({ open, habNome, habTipo, rollEntries, onClo
             <Paper elevation={12} sx={{
                 p: '20px 28px', borderRadius: '16px',
                 minWidth: 260, maxWidth: 400,
-                background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 100%)',
+                backgroundColor: 'var(--surface-paper)',
                 border: `2px solid ${tipoConf.border}`,
                 textAlign: 'center',
                 boxShadow: `0 0 40px ${tipoConf.border}55`,
@@ -195,7 +196,7 @@ const DiceRollOverlay = React.memo(({ open, habNome, habTipo, rollEntries, onClo
                 {/* Título */}
                 <Typography sx={{
                     fontSize: '11px', fontWeight: 'bold', letterSpacing: '2px',
-                    color: tipoConf.border, textTransform: 'uppercase', mb: 1.5,
+                    color: tipoConf.color, textTransform: 'uppercase', mb: 1.5,
                 }}>
                     {phase === 0 ? '🎲 Rolando dados...' : `✨ ${habNome}`}
                 </Typography>
@@ -291,7 +292,7 @@ const DiceRollOverlay = React.memo(({ open, habNome, habTipo, rollEntries, onClo
     );
 });
 
-const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHeaderStyle, updateField, baseUrl, setCharacter, statsDerivados, setDiceHistory }) => {
+const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHeaderStyle, updateField, baseUrl, setCharacter, statsDerivados, setDiceHistory, salvarHistoricoRolagens }) => {
     const [expandedAccordions, setExpandedAccordions] = useState({});
     const [shopOpen, setShopOpen] = useState(false);
     const [activeTab, setActiveTab] = useState(0);
@@ -301,10 +302,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
     /** Modal de rolagem de dados */
     const [diceModal, setDiceModal] = useState({ open: false, habNome: '', habTipo: 'ativa', rollEntries: [], snackMsg: '', snackSeverity: 'success' });
 
-    const getCardState = (key) => cardStates[key] || { opcional: false, magiaExtra: 0 };
+    const getCardState = (key) => cardStates[key] || { opcional: false, magiaExtra: 0, estaminaExtra: 0 };
     const setCardState = (key, updates) => setCardStates(prev => ({
         ...prev,
-        [key]: { ...(prev[key] || { opcional: false, magiaExtra: 0 }), ...updates },
+        [key]: { ...(prev[key] || { opcional: false, magiaExtra: 0, estaminaExtra: 0 }), ...updates },
     }));
 
     const handleDiceModalClose = useCallback(() => {
@@ -321,6 +322,35 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             if (opcao) return opcao.descricao;
         }
         return null;
+    };
+
+    /** Retorna as habilidades usáveis (compatíveis com SpellCard) para uma regalia de espécie */
+    const getHabsEspecie = (nomeRegalia) => {
+        // 1. Buscar nas obrigatórias de todas as espécies
+        for (const esp of Object.values(especies)) {
+            for (const obr of (esp.obrigatorias || [])) {
+                if (obr.nome === nomeRegalia) {
+                    return (obr.habilidadesEspeciais || [])
+                        .filter(h => h?.nome)
+                        .map(h => ({
+                            ...h,
+                            tipo: h.custoAcoes != null ? 'ativa' : 'passiva',
+                            limiteUso: h.usosMax ? `${h.usosMax}× por ${h.cooldown || 'uso'}` : null,
+                        }));
+                }
+            }
+        }
+        // 2. Buscar nas regalias opcionais (Psíquico/Vampiro/Mutante)
+        for (const tipo of ['Psíquico', 'Vampiro', 'Mutante']) {
+            const opcao = getOpcaoRegalia(tipo, nomeRegalia);
+            if (opcao?.efeitos?.habilidadesAtivas?.length > 0) {
+                return opcao.efeitos.habilidadesAtivas.map(h => ({
+                    ...h,
+                    tipo: h.tipo || 'ativa',
+                }));
+            }
+        }
+        return [];
     };
 
     /* ── Auto-save: persiste ao backend ── */
@@ -340,7 +370,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
     /* ── Usar habilidade: pré-computa rolls, aplica estado, abre modal → snackbar ── */
     const handleUsarHabilidade = useCallback((hab, opcoes = {}) => {
         if (!setCharacter) return;
-        const { usarOpcional = false, magiaExtra = 0 } = opcoes;
+        const { usarOpcional = false, magiaExtra = 0, estaminaExtra = 0 } = opcoes;
 
         // Leitura dos recursos do personagem ATUAL (antes de qualquer alteração)
         const pmAtual  = character.pm_atual  ?? 0;
@@ -354,7 +384,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
         const custoBase     = hab.custoMagia || 0;
         const custoOpcional = usarOpcional ? (hab.efeitoOpcional?.custoMagiaExtra || 0) : 0;
         const custoTotal    = custoBase + custoOpcional + magiaExtra;
-        const custoEstamina = hab.custoEstamina || 0;
+        const custoEstamina = (hab.custoEstamina || 0) + estaminaExtra;
 
         // Validação imediata (sem abrir modal)
         if (custoTotal > pmAtual) {
@@ -362,7 +392,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             return;
         }
         if (custoEstamina > peAtual) {
-            setSnack({ open: true, msg: `Estamina insuficiente para ${hab.nome}!`, severity: 'error' });
+            setSnack({ open: true, msg: `Estamina insuficiente para ${hab.nome}! Precisa ${custoEstamina} PE, tem ${peAtual}.`, severity: 'error' });
             return;
         }
 
@@ -375,6 +405,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
         let deltaPV = 0;
         let deltaGanhoPE = 0;   // PE ganho (cura), separado do custo
+        let deltaGanhoPM = 0;   // PM recuperado, separado do custo
 
         // Cura PV principal
         if (hab.efeito?.curaHP != null) {
@@ -385,6 +416,17 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             deltaPV = curado;
             rollEntries.push({ label: 'Cura PV', display: exprStr, final: total, sides, breakdown, tipo: 'cura', extra: { curadoReal: curado } });
             partes.push(`❤️ +${curado} PV`);
+        }
+
+        // Recupera PM (ex: Servitude Neutro, Runa Regenerativa)
+        if (hab.efeito?.recuperarMagia != null) {
+            const exprStr = String(hab.efeito.recuperarMagia);
+            const { total, breakdown, sides } = computeDice(exprStr);
+            const pmDepois = Math.min(pmMax, pmAtual - custoTotal + total); // aplica após o custo
+            const recuperado = Math.max(0, pmDepois - (pmAtual - custoTotal));
+            deltaGanhoPM = recuperado;
+            rollEntries.push({ label: 'Recupera PM', display: exprStr, final: total, sides, breakdown, tipo: 'cura_pe', extra: { curadoReal: recuperado } });
+            partes.push(`✨ +${recuperado} PM`);
         }
 
         // Cura PE (opcional)
@@ -441,8 +483,15 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
         // Chance de sucesso
         if (hab.efeito?.chanceSucesso != null) {
             const chanceBase  = hab.efeito.chanceSucesso;
-            const bonusChance = (hab.escalamento?.bonusChancePorMagiaExtra && magiaExtra > 0)
+            const bonusChancePM = (hab.escalamento?.bonusChancePorMagiaExtra && magiaExtra > 0)
                 ? magiaExtra * hab.escalamento.bonusChancePorMagiaExtra : 0;
+            const bonusChancePE = (hab.escalamento?.bonusChancePorEstaminaExtra && estaminaExtra > 0)
+                ? estaminaExtra * hab.escalamento.bonusChancePorEstaminaExtra : 0;
+            const bonusChancePM2 = (hab.escalamento?.bonusChancePor2Magia && magiaExtra > 0)
+                ? Math.floor(magiaExtra / 2) * hab.escalamento.bonusChancePor2Magia : 0;
+            const bonusChancePM3 = (hab.escalamento?.bonusChancePor3Magia && magiaExtra > 0)
+                ? Math.floor(magiaExtra / 3) * hab.escalamento.bonusChancePor3Magia : 0;
+            const bonusChance = bonusChancePM + bonusChancePE + bonusChancePM2 + bonusChancePM3;
             const chanceFinal = Math.min(95, chanceBase + bonusChance);
             const rollVal = Math.floor(Math.random() * 100) + 1;
             const sucesso = rollVal <= chanceFinal;
@@ -481,6 +530,8 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             if (deltaPV !== 0) updated.pv_atual = Math.min(pvMax, Math.max(0, (prev.pv_atual ?? 0) + deltaPV));
             // Cura PE — aplica sobre o pe_atual já descontado do custo
             if (deltaGanhoPE !== 0) updated.pe_atual = Math.min(peMax, Math.max(0, (updated.pe_atual ?? 0) + deltaGanhoPE));
+            // Recupera PM — aplica após o custo
+            if (deltaGanhoPM !== 0) updated.pm_atual = Math.min(pmMax, Math.max(0, (updated.pm_atual ?? 0) + deltaGanhoPM));
             autoSave(updated);
             return updated;
         });
@@ -503,7 +554,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     timestamp: ts,
                 }));
             if (histEntradas.length > 0) {
-                setDiceHistory(prev => [...histEntradas, ...prev].slice(0, 50));
+                setDiceHistory(prev => {
+                    const novoHistorico = [...histEntradas, ...prev].slice(0, 50);
+                    if (salvarHistoricoRolagens) salvarHistoricoRolagens(novoHistorico);
+                    return novoHistorico;
+                });
             }
         }
 
@@ -516,7 +571,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
         } else {
             setSnack({ open: true, msg: snackMsg, severity });
         }
-    }, [character, statsDerivados, setCharacter, autoSave, setDiceHistory]);
+    }, [character, statsDerivados, setCharacter, autoSave, setDiceHistory, salvarHistoricoRolagens]);
 
     /* ── Spell-card de habilidade ── */
     const SpellCard = ({ hab, overrideSx = {} }) => {
@@ -533,13 +588,26 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
         const custoBase = hab.custoMagia || 0;
         const custoOpcional = cs.opcional ? (hab.efeitoOpcional?.custoMagiaExtra || 0) : 0;
         const custoTotal = custoBase + custoOpcional + (cs.magiaExtra || 0);
-        const canAfford = custoTotal <= pmAtual && (hab.custoEstamina || 0) <= peAtual;
+        const custoEstaminaBase = hab.custoEstamina || 0;
+        const custoEstaminaTotal = custoEstaminaBase + (cs.estaminaExtra || 0);
+        const canAfford = custoTotal <= pmAtual && custoEstaminaTotal <= peAtual;
         const isUsable = hab.tipo !== 'passiva';
 
-        // Flags de escalamento
+        // Flags de escalamento por PM
         const hasScalingMissile = !!hab.escalamento?.custoMagiaPorMissilExtra;
-        const hasScalingChance  = !!hab.escalamento?.bonusChancePorMagiaExtra;
+        const hasScalingChance  = !!(hab.escalamento?.bonusChancePorMagiaExtra ||
+                                     hab.escalamento?.bonusChancePor2Magia ||
+                                     hab.escalamento?.bonusChancePor3Magia);
+        // Flags de escalamento por PE
+        const hasScalingChancePE = !!hab.escalamento?.bonusChancePorEstaminaExtra;
+        // Escalamento genérico por PE (ex: rodadas extras, usos extras)
+        const hasScalingPE = hasScalingChancePE ||
+            !!hab.escalamento?.custoEstaminaRepetirMesmoTurno ||
+            !!hab.escalamento?.custoEstaminaPorD6Extra;
+
         const pmDisponivel = pmAtual - custoBase;
+        const peDisponivel = peAtual - custoEstaminaBase;
+
         const missileCosto = hab.escalamento?.custoMagiaPorMissilExtra || 1;
         const maxMissilesExtra = hasScalingMissile
             ? Math.min(
@@ -549,11 +617,28 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             : 0;
         const misseisSelecionados = cs.magiaExtra > 0 ? Math.floor(cs.magiaExtra / missileCosto) : 0;
 
-        // Chance atualizada com escalamento
+        // Chance atualizada com escalamento (PM)
         const chanceBase = hab.efeito?.chanceSucesso;
-        const chanceFinal = (chanceBase != null && hasScalingChance)
-            ? Math.min(95, chanceBase + (cs.magiaExtra || 0) * hab.escalamento.bonusChancePorMagiaExtra)
+        const chanceFinalPM = (chanceBase != null && (hab.escalamento?.bonusChancePorMagiaExtra || hab.escalamento?.bonusChancePor2Magia || hab.escalamento?.bonusChancePor3Magia))
+            ? Math.min(95, chanceBase
+                + ((cs.magiaExtra || 0) * (hab.escalamento.bonusChancePorMagiaExtra || 0))
+                + (Math.floor((cs.magiaExtra || 0) / 2) * (hab.escalamento.bonusChancePor2Magia || 0))
+                + (Math.floor((cs.magiaExtra || 0) / 3) * (hab.escalamento.bonusChancePor3Magia || 0))
+              )
             : chanceBase;
+        const chanceFinalPE = (chanceFinalPM != null && hab.escalamento?.bonusChancePorEstaminaExtra)
+            ? Math.min(95, (chanceFinalPM ?? chanceBase ?? 0) + ((cs.estaminaExtra || 0) * hab.escalamento.bonusChancePorEstaminaExtra))
+            : chanceFinalPM;
+        const chanceFinal = chanceFinalPE;
+
+        // Escalamento PE para texto descritivo
+        const peScalingLabel = () => {
+            if (hab.escalamento?.bonusChancePorEstaminaExtra) return `+${hab.escalamento.bonusChancePorEstaminaExtra}% chance/PE`;
+            if (hab.escalamento?.custoEstaminaRepetirMesmoTurno) return `Repetir: +${hab.escalamento.custoEstaminaRepetirMesmoTurno} PE`;
+            if (hab.escalamento?.custoEstaminaPorD6Extra) return `+1d6/${hab.escalamento.custoEstaminaPorD6Extra} PE`;
+            return 'PE extra';
+        };
+        const maxPEExtra = hasScalingPE ? Math.max(0, peDisponivel) : 0;
 
         // Exibe toggle opcional apenas para habilidades com efeitoOpcional real
         const hasOptional = !!(hab.efeitoOpcional && (
@@ -576,21 +661,22 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Typography className="esteban" sx={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: 0.5 }}>{tipoConf.label.toUpperCase()}</Typography>
                     <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
                         {custoTotal > 0 && <Chip icon={<AutoAwesomeIcon sx={{ fontSize: 10, color: '#fff !important' }} />} label={`${custoTotal} PM`} size="small" sx={{ height: 16, fontSize: '8px', '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
-                        {hab.custoEstamina > 0 && <Chip icon={<BoltIcon sx={{ fontSize: 10, color: '#FFD54F !important' }} />} label={`${hab.custoEstamina} PE`} size="small" sx={{ height: 16, fontSize: '8px', '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
+                        {custoEstaminaTotal > 0 && <Chip icon={<BoltIcon sx={{ fontSize: 10, color: '#FFD54F !important' }} />} label={`${custoEstaminaTotal} PE`} size="small" sx={{ height: 16, fontSize: '8px', '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
                     </Box>
                 </Box>
                 {/* ── Nome ── */}
-                <Box sx={{ px: 1, py: 0.5, backgroundColor: tipoConf.bg, borderBottom: `1px solid ${tipoConf.border}44` }}>
-                    <Typography className="esteban" sx={{ fontSize: '11px', fontWeight: 'bold', color: tipoConf.color, lineHeight: 1.2 }}>{hab.nome}</Typography>
+                <Box sx={{ px: 1, py: 0.5, backgroundColor: `${tipoConf.border}22`, borderBottom: `1px solid ${tipoConf.border}44` }}>
+                    <Typography className="esteban" sx={{ fontSize: '11px', fontWeight: 'bold', color: tipoConf.border, lineHeight: 1.2 }}>{hab.nome}</Typography>
                 </Box>
                 {/* ── Mecânicas: ação, tempo, alcance, duração, limite ── */}
-                <Box sx={{ display: 'flex', gap: '3px', flexWrap: 'wrap', px: 0.6, py: 0.4, backgroundColor: '#fafaf8', borderBottom: '1px solid #eee' }}>
-                    {acaoLabel && <Chip icon={<AccessTimeIcon sx={{ fontSize: 9 }} />} label={`Ação: ${acaoLabel}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#EFEBE9', color: '#5D4037' }} />}
-                    {hab.tempoExecucao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Tempo: ${hab.tempoExecucao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#EFEBE9', color: '#5D4037' }} />}
-                    {hab.alcance && <Chip icon={<GpsFixedIcon sx={{ fontSize: 9 }} />} label={`Alcance: ${hab.alcance}m`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#E0F7FA', color: '#00695C' }} />}
-                    {hab.duracao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Duração: ${hab.duracao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#FFF8E1', color: '#F57F17' }} />}
-                    {hab.limiteUso && <Chip label={`Limite: ${hab.limiteUso}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: '#FCE4EC', color: '#C62828' }} />}
-                    {hab.limiteAcumulo && <Chip label={`Acúmulo: máx ${hab.limiteAcumulo}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: '#F3E5F5', color: '#4A148C' }} />}
+                <Box sx={{ display: 'flex', gap: '3px', flexWrap: 'wrap', px: 0.6, py: 0.4, backgroundColor: 'var(--surface-raised)', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.1))' }}>
+                    {acaoLabel && <Chip icon={<AccessTimeIcon sx={{ fontSize: 9 }} />} label={`Ação: ${acaoLabel}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
+                    {hab.tempoExecucao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Tempo: ${hab.tempoExecucao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
+                    {hab.alcance && <Chip icon={<GpsFixedIcon sx={{ fontSize: 9 }} />} label={`Alcance: ${hab.alcance}m`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
+                    {hab.duracao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Duração: ${hab.duracao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
+                    {hab.limiteUso && <Chip label={`Limite: ${hab.limiteUso}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
+                    {hab.cooldown && <Chip label={`CD: ${hab.cooldown}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
+                    {hab.limiteAcumulo && <Chip label={`Acúmulo: máx ${hab.limiteAcumulo}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
                 </Box>
                 {/* ── Descrição + controles interativos ── */}
                 <Box sx={{ px: 0.8, py: 0.6, flex: 1, overflowY: 'auto', '&::-webkit-scrollbar': { width: 3 }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#ccc', borderRadius: 2 } }}>
@@ -669,39 +755,68 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                 >+</Button>
                             </Box>
                             <Typography className="esteban" sx={{ fontSize: '7.5px', color: tipoConf.color, fontWeight: 'bold' }}>
-                                → {chanceFinal}% ({chanceBase}% base)
+                                → {chanceFinalPM}% ({chanceBase}% base)
+                            </Typography>
+                        </Box>
+                    )}
+
+                    {/* ── Escalamento: chance ou efeito por PE (Guarda-Costas, Desarmar, etc.) ── */}
+                    {hasScalingPE && (
+                        <Box sx={{ mt: 0.5, pt: 0.4, borderTop: '1px dashed #ddd', display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                            <Typography className="esteban" sx={{ fontSize: '8px', color: tipoConf.color, flexShrink: 0 }}>PE extra:</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                                <Button
+                                    size="small"
+                                    onClick={() => setCardState(habKey, { estaminaExtra: Math.max(0, (cs.estaminaExtra || 0) - 1) })}
+                                    disabled={(cs.estaminaExtra || 0) <= 0}
+                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1, color: tipoConf.color }}
+                                >−</Button>
+                                <Typography className="esteban" sx={{ fontSize: '10px', fontWeight: 'bold', minWidth: 18, textAlign: 'center', color: tipoConf.color }}>
+                                    {cs.estaminaExtra || 0}
+                                </Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => setCardState(habKey, { estaminaExtra: (cs.estaminaExtra || 0) + 1 })}
+                                    disabled={(cs.estaminaExtra || 0) >= maxPEExtra}
+                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1, color: tipoConf.color }}
+                                >+</Button>
+                            </Box>
+                            <Typography className="esteban" sx={{ fontSize: '7.5px', color: tipoConf.color, fontWeight: 'bold' }}>
+                                {peScalingLabel()}
+                                {hab.escalamento?.bonusChancePorEstaminaExtra && chanceFinalPE != null
+                                    ? ` → ${chanceFinalPE}%` : ''}
                             </Typography>
                         </Box>
                     )}
                 </Box>
                 {/* ── Rodapé: efeitos + botão Usar ── */}
-                <Box sx={{ backgroundColor: '#f5f5f3', borderTop: `2px solid ${tipoConf.border}33`, mt: 'auto', px: 0.6, py: 0.4 }}>
+                <Box sx={{ backgroundColor: 'var(--surface-raised)', borderTop: `2px solid ${tipoConf.border}33`, mt: 'auto', px: 0.6, py: 0.4 }}>
                     <Box sx={{ display: 'flex', gap: '3px', flexWrap: 'wrap', mb: isUsable ? 0.4 : 0 }}>
                         {chanceFinal != null && (
                             <Chip icon={<CasinoIcon sx={{ fontSize: 9 }} />} label={`Sucesso: ${chanceFinal}%`} size="small"
-                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#E8F5E9', color: '#2E7D32', fontWeight: 'bold' }} />
+                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
                         )}
                         {hab.efeito?.dano && (
                             <Chip
                                 label={`Dano: ${hab.efeito.dano}${hab.efeito.tipoDano ? ` (${hab.efeito.tipoDano === 'elemental_aleatorio' ? 'aleatório' : hab.efeito.tipoDano})` : ''}`}
-                                size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: '#FFEBEE', color: '#C62828', fontWeight: 'bold' }}
+                                size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)', fontWeight: 'bold' }}
                             />
                         )}
                         {hab.efeito?.curaHP && (
                             <Chip label={`Cura: ${hab.efeito.curaHP} PV`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: '#FFCDD2', color: '#C62828' }} />
+                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />
                         )}
                         {cs.opcional && hab.efeitoOpcional?.curaEstamina && (
                             <Chip label={`+${hab.efeitoOpcional.curaEstamina} PE`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: '#E3F2FD', color: '#1565C0' }} />
+                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
                         )}
                         {hab.efeito?.condicao && (
                             <Chip label={`Causa: ${hab.efeito.condicao}`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: '#EDE7F6', color: '#4527A0' }} />
+                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
                         )}
                         {hab.efeito?.tabelaDesconto && (
                             <Chip icon={<CasinoIcon sx={{ fontSize: 9 }} />} label="Rola 1d20" size="small"
-                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: '#FFF9C4', color: '#F57F17', fontWeight: 'bold' }} />
+                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
                         )}
                     </Box>
                     {isUsable && (
@@ -709,17 +824,17 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                             fullWidth size="small" variant="contained"
                             startIcon={<PlayArrowIcon sx={{ fontSize: 14 }} />}
                             disabled={!canAfford}
-                            onClick={() => handleUsarHabilidade(hab, { usarOpcional: cs.opcional, magiaExtra: cs.magiaExtra || 0 })}
+                            onClick={() => handleUsarHabilidade(hab, { usarOpcional: cs.opcional, magiaExtra: cs.magiaExtra || 0, estaminaExtra: cs.estaminaExtra || 0 })}
                             sx={{
                                 height: 24, fontSize: '9px', fontWeight: 'bold', textTransform: 'none',
                                 borderRadius: '0 0 8px 8px',
-                                backgroundColor: canAfford ? tipoConf.color : '#bbb',
-                                '&:hover': { backgroundColor: canAfford ? tipoConf.border : '#bbb' },
-                                '&.Mui-disabled': { backgroundColor: '#e0e0e0', color: 'var(--text-primary)' },
+                                backgroundColor: canAfford ? tipoConf.color : 'var(--surface-alt)',
+                                '&:hover': { backgroundColor: canAfford ? tipoConf.border : 'var(--surface-alt)' },
+                                '&.Mui-disabled': { backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' },
                             }}
                         >
                             {canAfford
-                                ? `Usar${custoTotal > 0 ? ` (-${custoTotal} PM)` : ''}`
+                                ? `Usar${custoTotal > 0 ? ` (-${custoTotal} PM)` : ''}${custoEstaminaTotal > 0 ? ` (-${custoEstaminaTotal} PE)` : ''}`
                                 : 'Sem recurso'}
                         </Button>
                     )}
@@ -753,7 +868,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                 <TableContainer component={Paper} sx={{ border: '1px solid #756A3444', borderRadius: 2, overflow: 'auto' }}>
                     <Table size="small" sx={{ minWidth: 400 }}>
                         <TableHead>
-                            <TableRow sx={{ backgroundColor: '#2F3C29' }}>
+                            <TableRow sx={{ background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)' }}>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Regalia</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Bônus de Recursos</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Bônus & Proficiências</TableCell>
@@ -788,17 +903,17 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             {fullData.bonusPorRegalia?.pv > 0 && (
                                                 <Chip icon={<FavoriteIcon sx={{ fontSize: 10, color: '#fff !important' }} />}
                                                     label={`+${fullData.bonusPorRegalia.pv} PV`} size="small"
-                                                    sx={{ fontSize: 10, backgroundColor: '#C62828', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
+                                                    sx={{ fontSize: 10, backgroundColor: 'var(--color-garnet, #931C4A)', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
                                             )}
                                             {fullData.bonusPorRegalia?.estamina > 0 && (
                                                 <Chip icon={<BoltIcon sx={{ fontSize: 10, color: '#FFD54F !important' }} />}
                                                     label={`+${fullData.bonusPorRegalia.estamina} PE`} size="small"
-                                                    sx={{ fontSize: 10, backgroundColor: '#1565C0', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
+                                                    sx={{ fontSize: 10, backgroundColor: 'var(--color-midnight, #162A22)', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
                                             )}
                                             {fullData.bonusPorRegalia?.magia > 0 && (
                                                 <Chip icon={<AutoAwesomeIcon sx={{ fontSize: 10, color: '#CE93D8 !important' }} />}
                                                     label={`+${fullData.bonusPorRegalia.magia} PM`} size="small"
-                                                    sx={{ fontSize: 10, backgroundColor: '#6A1B9A', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
+                                                    sx={{ fontSize: 10, backgroundColor: 'var(--color-moss, #2F3C29)', color: 'white', '& .MuiChip-icon': { ml: '2px' } }} />
                                             )}
                                             {!fullData.bonusPorRegalia && <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>}
                                         </Box>
@@ -854,8 +969,8 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                                 onClick={() => setAprendizDetail(fullData)}
                                                 sx={{
                                                     fontSize: 10, py: 0.25, px: 1, minWidth: 'auto',
-                                                    backgroundColor: '#454E30', fontFamily: 'Esteban, serif',
-                                                    '&:hover': { backgroundColor: '#2F3C29' },
+                                                    backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif',
+                                                    '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' },
                                                 }}
                                             >
                                                 Usar
@@ -915,8 +1030,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
     };
 
     const [especieDetail, setEspecieDetail] = useState(null);   // { especie, regalias[] }
+    const [especieUsar, setEspecieUsar] = useState(null);         // { nomeRegalia, habs[] }
     const [profissaoDetail, setProfissaoDetail] = useState(null); // { nome, habilidades }
     const [classeDetail, setClasseDetail] = useState(null);       // { classDisplayName, rObj }
+    const [classeUsar, setClasseUsar] = useState(null);            // { nomeRegalia, habs[] }
 
     const renderRegaliasEspecie = () => {
         const grupos = (character.regalias_de_especie || []).filter(r => r && r.especie);
@@ -928,7 +1045,12 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
         // Flatten: cada regalia individual vira uma linha
         const rows = grupos.flatMap(g =>
-            (g.regalias || []).map(r => ({ especie: g.especie, nome: r, desc: getDescricaoRegaliaEspecie(r) }))
+            (g.regalias || []).map(r => ({
+                especie: g.especie,
+                nome: r,
+                desc: getDescricaoRegaliaEspecie(r),
+                habs: getHabsEspecie(r),
+            }))
         );
 
         return (
@@ -940,6 +1062,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Espécie</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Descrição</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -968,6 +1091,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
+                                    <TableCell align="center">
+                                        {row.habs?.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setEspecieUsar({ nomeRegalia: row.nome, habs: row.habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -981,15 +1117,50 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{especieDetail?.nome}</Typography>
                         <IconButton onClick={() => setEspecieDetail(null)} sx={{ color: '#fff' }} size="small"><CloseIcon /></IconButton>
                     </DialogTitle>
-                    <DialogContent sx={{ backgroundColor: '#faf6f0', pt: 2 }}>
+                    <DialogContent sx={{ backgroundColor: 'var(--surface-paper)', pt: 2 }}>
                         <Chip label={especieDetail?.especie} size="small" sx={{ backgroundColor: '#AB6422', color: 'white', mb: 1.5 }} />
                         <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: 'var(--text-primary)' }}>
                             {especieDetail?.desc}
                         </Typography>
                     </DialogContent>
-                    <DialogActions sx={{ backgroundColor: '#faf6f0', borderTop: '1px solid #AB642244', px: 2, py: 1 }}>
-                        <Button onClick={() => setEspecieDetail(null)} sx={{ color: '#8B4513', fontFamily: 'Esteban, serif' }}>Fechar</Button>
+                    <DialogActions sx={{ backgroundColor: 'var(--surface-paper)', borderTop: '1px solid #AB642244', px: 2, py: 1 }}>
+                        <Button onClick={() => setEspecieDetail(null)} sx={{ color: '#AB6422', fontFamily: 'Esteban, serif' }}>Fechar</Button>
                     </DialogActions>
+                </Dialog>
+
+                {/* ── Modal SpellCards: usar habilidades de espécie ── */}
+                <Dialog
+                    open={Boolean(especieUsar)}
+                    onClose={() => setEspecieUsar(null)}
+                    maxWidth={false}
+                    PaperProps={{
+                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                    }}
+                >
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <IconButton
+                            onClick={() => setEspecieUsar(null)}
+                            size="small"
+                            sx={{
+                                position: 'absolute', top: -14, right: -14, zIndex: 10,
+                                color: 'white', backgroundColor: 'rgba(0,0,0,0.55)',
+                                '&:hover': { backgroundColor: 'rgba(0,0,0,0.8)' },
+                                width: 26, height: 26,
+                            }}
+                        >
+                            <CloseIcon sx={{ fontSize: 15 }} />
+                        </IconButton>
+                        {especieUsar?.habs?.map((hab, i) => (
+                            <SpellCard
+                                key={i}
+                                hab={hab}
+                                overrideSx={especieUsar.habs.length === 1
+                                    ? { width: 300, '&:hover': { transform: 'none', boxShadow: 3 } }
+                                    : {}
+                                }
+                            />
+                        ))}
+                    </Box>
                 </Dialog>
             </>
         );
@@ -1008,7 +1179,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                 <TableContainer component={Paper} sx={{ border: '1px solid #2F3C2944', borderRadius: 2, overflow: 'auto' }}>
                     <Table size="small" sx={{ minWidth: 380 }}>
                         <TableHead>
-                            <TableRow sx={{ backgroundColor: '#2F3C29' }}>
+                            <TableRow sx={{ background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)' }}>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Profissão</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Habilidade</TableCell>
                             </TableRow>
@@ -1028,7 +1199,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Button size="small" variant="contained"
                                                 startIcon={<InfoOutlinedIcon sx={{ fontSize: 13 }} />}
                                                 onClick={() => setProfissaoDetail(regalia)}
-                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: '#2F3C29', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: '#162A22' } }}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-moss, #2F3C29)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-midnight, #162A22)' } }}
                                             >
                                                 Ver
                                             </Button>
@@ -1049,13 +1220,13 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{profissaoDetail?.nome}</Typography>
                         <IconButton onClick={() => setProfissaoDetail(null)} sx={{ color: '#fff' }} size="small"><CloseIcon /></IconButton>
                     </DialogTitle>
-                    <DialogContent sx={{ backgroundColor: '#f2f4f1', pt: 2 }}>
-                        <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: '#2F3C29' }}>
+                    <DialogContent sx={{ backgroundColor: 'var(--surface-paper)', pt: 2 }}>
+                        <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: 'var(--text-primary)' }}>
                             {profissaoDetail?.habilidades}
                         </Typography>
                     </DialogContent>
-                    <DialogActions sx={{ backgroundColor: '#f2f4f1', borderTop: '1px solid #2F3C2944', px: 2, py: 1 }}>
-                        <Button onClick={() => setProfissaoDetail(null)} sx={{ color: '#2F3C29', fontFamily: 'Esteban, serif' }}>Fechar</Button>
+                    <DialogActions sx={{ backgroundColor: 'var(--surface-paper)', borderTop: '1px solid #2F3C2944', px: 2, py: 1 }}>
+                        <Button onClick={() => setProfissaoDetail(null)} sx={{ color: 'var(--color-moss, #2F3C29)', fontFamily: 'Esteban, serif' }}>Fechar</Button>
                     </DialogActions>
                 </Dialog>
             </>
@@ -1077,7 +1248,15 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
             const arr = Array.isArray(classData) ? classData : (classData && typeof classData === 'object' ? Object.values(classData) : classData ? [classData] : []);
             return arr.map(r => {
                 const rObj = typeof r === 'object' ? r : { nome: r };
-                return { classDisplayName, rObj };
+                // Habilidades que podem ser usadas via SpellCard
+                // Prioridade: lista explícita de habilidades no rObj > habilidadeGanha no rObj
+                // Para o entry "automático" da classe: as subHabilidades são usáveis se tiverem tipo !== 'passiva'
+                const habsExplicitas = (rObj.habilidades || []).filter(h => h?.nome && h?.tipo);
+                const habGanha = rObj.habilidadeGanha ? [rObj.habilidadeGanha] : [];
+                // Se não há habilidades explícitas, mas rObj tem dados mecânicos diretos (avulsas)
+                const habDireta = (!habsExplicitas.length && !rObj.habilidadeGanha && rObj.tipo && rObj.tipo !== 'passiva') ? [rObj] : [];
+                const habs = [...habsExplicitas, ...habGanha, ...habDireta].filter(h => h?.nome && h?.tipo);
+                return { classDisplayName, rObj, habs };
             });
         });
 
@@ -1091,10 +1270,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Tipo</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map(({ classDisplayName, rObj }, idx) => (
+                            {rows.map(({ classDisplayName, rObj, habs }, idx) => (
                                 <TableRow key={idx} sx={{
                                     backgroundColor: idx % 2 === 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
                                     '&:hover': { backgroundColor: 'var(--surface-raised)' },
@@ -1127,6 +1307,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
+                                    <TableCell align="center">
+                                        {habs.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setClasseUsar({ nomeRegalia: rObj.nome, habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -1143,19 +1336,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         </Box>
                         <IconButton onClick={() => setClasseDetail(null)} sx={{ color: '#fff' }} size="small"><CloseIcon /></IconButton>
                     </DialogTitle>
-                    <DialogContent sx={{ backgroundColor: '#fdf5f8', pt: 2 }}>
+                    <DialogContent sx={{ backgroundColor: 'var(--surface-paper)', pt: 2 }}>
                         {classeDetail?.rObj?.descricao && (
-                            <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: '#5c3344', mb: classeDetail.rObj.habilidades?.length ? 2 : 0 }}>
+                            <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: 'var(--text-primary)', mb: classeDetail.rObj.habilidades?.length ? 2 : 0 }}>
                                 {classeDetail.rObj.descricao}
                             </Typography>
                         )}
                         {classeDetail?.rObj?.habilidades?.length > 0 && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                 {classeDetail.rObj.habilidades.map((sub, si) => (
-                                    <Box key={si} sx={{ pl: 1, borderLeft: '3px solid #c48fa3', backgroundColor: 'var(--surface-paper)', borderRadius: 1, p: 1 }}>
+                                    <Box key={si} sx={{ pl: 1, borderLeft: '3px solid #931C4A66', backgroundColor: 'var(--surface-raised)', borderRadius: 1, p: 1 }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.25 }}>
-                                            <Typography className="esteban" sx={{ fontWeight: 'bold', color: '#7a1640', fontSize: 13 }}>▸ {sub.nome}</Typography>
-                                            {sub.tipo && <Chip label={sub.tipo} size="small" sx={{ height: 16, fontSize: 9, backgroundColor: '#f0d0dd', color: '#7a1640' }} />}
+                                            <Typography className="esteban" sx={{ fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13 }}>▸ {sub.nome}</Typography>
+                                            {sub.tipo && <Chip label={sub.tipo} size="small" sx={{ height: 16, fontSize: 9, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
                                         </Box>
                                         <Typography className="esteban" variant="body2" sx={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.5 }}>{sub.descricao}</Typography>
                                     </Box>
@@ -1163,9 +1356,44 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                             </Box>
                         )}
                     </DialogContent>
-                    <DialogActions sx={{ backgroundColor: '#fdf5f8', borderTop: '1px solid #931C4A44', px: 2, py: 1 }}>
+                    <DialogActions sx={{ backgroundColor: 'var(--surface-paper)', borderTop: '1px solid #931C4A44', px: 2, py: 1 }}>
                         <Button onClick={() => setClasseDetail(null)} sx={{ color: '#931C4A', fontFamily: 'Esteban, serif' }}>Fechar</Button>
                     </DialogActions>
+                </Dialog>
+
+                {/* ── Modal SpellCards: usar habilidades de classe ── */}
+                <Dialog
+                    open={Boolean(classeUsar)}
+                    onClose={() => setClasseUsar(null)}
+                    maxWidth={false}
+                    PaperProps={{
+                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                    }}
+                >
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <IconButton
+                            onClick={() => setClasseUsar(null)}
+                            size="small"
+                            sx={{
+                                position: 'absolute', top: -14, right: -14, zIndex: 10,
+                                color: 'white', backgroundColor: 'rgba(0,0,0,0.55)',
+                                '&:hover': { backgroundColor: 'rgba(0,0,0,0.8)' },
+                                width: 26, height: 26,
+                            }}
+                        >
+                            <CloseIcon sx={{ fontSize: 15 }} />
+                        </IconButton>
+                        {classeUsar?.habs?.map((hab, i) => (
+                            <SpellCard
+                                key={i}
+                                hab={hab}
+                                overrideSx={classeUsar.habs.length === 1
+                                    ? { width: 300, '&:hover': { transform: 'none', boxShadow: 3 } }
+                                    : {}
+                                }
+                            />
+                        ))}
+                    </Box>
                 </Dialog>
             </>
         );
@@ -1227,10 +1455,17 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     if (classe) {
                         const regaliasClasse = { ...(prev.regalias_de_classe || {}) };
                         if (!regaliasClasse[id]) {
+                            // Normalizar subHabilidades: garantir que tenham tipo, custoMagia e custoEstamina
+                            const subHabilidades = (classe.habilidadeClasse?.subHabilidades || []).map(sub => ({
+                                tipo: 'passiva',
+                                custoMagia: 0,
+                                custoEstamina: 0,
+                                ...sub,
+                            }));
                             regaliasClasse[id] = [{
                                 nome: classe.habilidadeClasse?.nome || classe.nome,
                                 descricao: classe.habilidadeClasse?.descricao || '',
-                                habilidades: classe.habilidadeClasse?.subHabilidades || [],
+                                habilidades: subHabilidades,
                                 opcoesPontosFeiticaria: classe.habilidadeClasse?.opcoesPontosFeiticaria || null,
                                 autoIncluded: true,
                             }];
@@ -1261,6 +1496,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         classeEntries.push({
                             nome: `${extra.arvoreNome || ''} — Nível ${extra.nivel}`,
                             descricao: desc,
+                            habilidadeGanha: nv.habilidadeGanha || null,
                         });
                         regaliasClasse[extra.classeId] = classeEntries;
                         updated.regalias_de_classe = regaliasClasse;
@@ -1275,6 +1511,14 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         classeEntries.push({
                             nome: extra.avulsaData.nome,
                             descricao: extra.avulsaData.descricao || '',
+                            tipo: extra.avulsaData.tipo || null,
+                            custoMagia: extra.avulsaData.custoMagia,
+                            custoEstamina: extra.avulsaData.custoEstamina,
+                            custoAcoes: extra.avulsaData.custoAcoes,
+                            efeito: extra.avulsaData.efeito,
+                            efeitoOpcional: extra.avulsaData.efeitoOpcional,
+                            escalamento: extra.avulsaData.escalamento,
+                            limiteUso: extra.avulsaData.limiteUso,
                         });
                         regaliasClasse[extra.classeId] = classeEntries;
                         updated.regalias_de_classe = regaliasClasse;

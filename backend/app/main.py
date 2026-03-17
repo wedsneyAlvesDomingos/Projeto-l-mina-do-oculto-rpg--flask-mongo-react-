@@ -6,9 +6,16 @@ from sqlalchemy import text
 from services.user_service import UserService
 from services.personagem_service import PersonagemService
 from services.rule_engine import calcular_ficha_completa, validar_regalias, simular_acao
-from catalogs import HABILIDADES, PROFICIENCIAS, CONDICOES, ESPECIES as ESPECIES_CATALOGO
+from catalogs import (
+    HABILIDADES, PROFICIENCIAS, CONDICOES, ESPECIES as ESPECIES_CATALOGO,
+    get_all_catalogs, get_catalog_skills, get_catalog_proficiencias,
+    get_catalog_especies, get_catalog_condicoes, get_catalog_items,
+    get_catalog_abilities, get_catalog_classes, get_catalog_regalias,
+    get_catalog_arvores, get_catalog_profissoes,
+)
 import os
 import traceback
+
 
 app = Flask(__name__)
 CORS(app)
@@ -51,6 +58,7 @@ def create_personagem(user_id):
 
         return jsonify({
             'message': 'Personagem criado com sucesso!',
+            'id': resultado.get('personagem_id'),
             'personagem_id': resultado.get('personagem_id')
         }), 201
 
@@ -424,6 +432,231 @@ def index():
 @app.route('/')
 def hello_world():
     return jsonify({"message": "Bem vindo ao Lamina do oculto RPG!!"}), 200
+
+
+# =============================================================================
+# API v2 — Catálogos DB-backed
+# =============================================================================
+
+@app.route('/api/v2/catalogs', methods=['GET'])
+def v2_get_all_catalogs():
+    """Retorna todos os catálogos em uma única chamada."""
+    try:
+        return jsonify(get_all_catalogs(db.session)), 200
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/skills', methods=['GET'])
+def v2_get_skills():
+    try:
+        categoria = request.args.get('categoria')
+        from models.models import CatalogSkill
+        q = db.session.query(CatalogSkill)
+        if categoria:
+            q = q.filter_by(categoria=categoria)
+        return jsonify([r.to_dict() for r in q.order_by(CatalogSkill.display_name).all()]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/proficiencias', methods=['GET'])
+def v2_get_proficiencias():
+    try:
+        return jsonify(get_catalog_proficiencias(db.session)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/species', methods=['GET'])
+def v2_get_species():
+    try:
+        include_subs = request.args.get('subespecies', 'true').lower() != 'false'
+        return jsonify(get_catalog_especies(db.session, include_subespecies=include_subs)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/conditions', methods=['GET'])
+def v2_get_conditions():
+    try:
+        categoria = request.args.get('categoria')
+        return jsonify(get_catalog_condicoes(db.session, categoria=categoria)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/items', methods=['GET'])
+def v2_get_items():
+    try:
+        categoria   = request.args.get('categoria')
+        subcategoria = request.args.get('subcategoria')
+        return jsonify(get_catalog_items(db.session, categoria=categoria, subcategoria=subcategoria)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/abilities', methods=['GET'])
+def v2_get_abilities():
+    try:
+        tipo = request.args.get('tipo')
+        return jsonify(get_catalog_abilities(db.session, tipo=tipo)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/classes', methods=['GET'])
+def v2_get_classes():
+    try:
+        tipo = request.args.get('tipo')
+        return jsonify(get_catalog_classes(db.session, tipo=tipo)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/regalias', methods=['GET'])
+def v2_get_regalias():
+    try:
+        tipo        = request.args.get('tipo')
+        classe_slug = request.args.get('classe')
+        return jsonify(get_catalog_regalias(db.session, tipo=tipo, classe_slug=classe_slug)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/arvores', methods=['GET'])
+def v2_get_arvores():
+    try:
+        classe_slug = request.args.get('classe')
+        return jsonify(get_catalog_arvores(db.session, classe_slug=classe_slug)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/catalogs/profissoes', methods=['GET'])
+def v2_get_profissoes():
+    try:
+        return jsonify(get_catalog_profissoes(db.session)), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# =============================================================================
+# API v2 — Personagem (ficha calculada)
+# =============================================================================
+
+@app.route('/api/v2/personagens/<int:personagem_id>/ficha', methods=['GET'])
+def v2_get_ficha(personagem_id):
+    """Retorna a ficha completa com todos os derivados calculados pelo backend."""
+    try:
+        ficha = personagem_service.obter_ficha_calculada(personagem_id)
+        if not ficha:
+            return jsonify({'error': 'Personagem não encontrado'}), 404
+        return jsonify(ficha), 200
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/personagens/<int:personagem_id>/regalias', methods=['POST'])
+def v2_comprar_regalia(personagem_id):
+    """
+    Compra uma regalia ou nível de árvore.
+    Body: { "regalia_slug": "..." } ou { "arvore_nivel_slug": "..." }
+    """
+    try:
+        data = request.get_json() or {}
+        user_id = data.get('user_id') or 0
+        resultado, status = personagem_service.comprar_regalia(
+            personagem_id=personagem_id,
+            user_id=user_id,
+            regalia_slug=data.get('regalia_slug'),
+            arvore_nivel_slug=data.get('arvore_nivel_slug'),
+        )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/personagens/<int:personagem_id>/abilities/<slug>/usar', methods=['POST'])
+def v2_usar_ability(personagem_id, slug):
+    """
+    Usa uma ability.
+    Body: { "user_id": 1, "contexto": {} }
+    """
+    try:
+        data = request.get_json() or {}
+        resultado, status = personagem_service.usar_ability(
+            personagem_id=personagem_id,
+            user_id=data.get('user_id', 0),
+            ability_slug=slug,
+            contexto=data.get('contexto'),
+        )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/personagens/<int:personagem_id>/descanso', methods=['POST'])
+def v2_descanso(personagem_id):
+    """
+    Realiza descanso.
+    Body: { "tipo": "curto" | "longo" | "pleno", "user_id": 1 }
+    """
+    try:
+        data = request.get_json() or {}
+        tipo = data.get('tipo', 'curto')
+        resultado, status = personagem_service.realizar_descanso(
+            personagem_id=personagem_id,
+            user_id=data.get('user_id', 0),
+            tipo=tipo,
+        )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/personagens/<int:personagem_id>/condicoes', methods=['POST'])
+def v2_aplicar_condicao(personagem_id):
+    """
+    Aplica uma condição ao personagem.
+    Body: { "condicao_slug": "queimando_1", "duracao_turnos": 3, "fonte": "tocha", "user_id": 1 }
+    """
+    try:
+        data = request.get_json() or {}
+        if not data.get('condicao_slug'):
+            return jsonify({'error': 'Campo "condicao_slug" é obrigatório.'}), 400
+        resultado, status = personagem_service.aplicar_condicao_ao_personagem(
+            personagem_id=personagem_id,
+            user_id=data.get('user_id', 0),
+            condicao_slug=data['condicao_slug'],
+            duracao_turnos=data.get('duracao_turnos'),
+            fonte=data.get('fonte'),
+        )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/v2/personagens/<int:personagem_id>/condicoes/<slug>', methods=['DELETE'])
+def v2_remover_condicao(personagem_id, slug):
+    """Remove uma condição ativa do personagem."""
+    try:
+        data = request.get_json() or {}
+        resultado, status = personagem_service.remover_condicao_do_personagem(
+            personagem_id=personagem_id,
+            user_id=data.get('user_id', 0),
+            condicao_slug=slug,
+        )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

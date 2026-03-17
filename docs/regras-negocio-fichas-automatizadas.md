@@ -17,18 +17,21 @@ Definir, de forma implementável, as regras de negócio para criação, validaç
 ## 2) Fontes canônicas de regra
 A aplicação deve considerar como fonte de verdade, em ordem:
 1. Documento de sistema: [docs/Lâmina do Oculto 0.5.txt](docs/L%C3%A2mina%20do%20Oculto%200.5.txt)
-2. Catálogos estruturados do frontend:
-   - [frontend/src/data/constants/especies.js](frontend/src/data/constants/especies.js)
-   - [frontend/src/data/constants/antecedentes.js](frontend/src/data/constants/antecedentes.js)
-   - [frontend/src/data/constants/habilidades.js](frontend/src/data/constants/habilidades.js)
-   - [frontend/src/data/constants/proficiencias.js](frontend/src/data/constants/proficiencias.js)
-   - [frontend/src/data/constants/profissoes.js](frontend/src/data/constants/profissoes.js)
-   - [frontend/src/data/constants/regalias.js](frontend/src/data/constants/regalias.js)
-   - [frontend/src/data/constants/equipamentos.js](frontend/src/data/constants/equipamentos.js)
-   - [frontend/src/data/constants/condicoes.js](frontend/src/data/constants/condicoes.js)
-   - [frontend/src/data/constants/regras.js](frontend/src/data/constants/regras.js)
+2. **Banco de dados** — tabelas `catalog_*` servidas pelo backend:
+   - `catalog_skills` → habilidades (35 do sistema)
+   - `catalog_especies` + `catalog_subespecies` → espécies
+   - `catalog_antecedentes` → antecedentes
+   - `catalog_proficiencias` → proficiências
+   - `catalog_profissoes` → profissões
+   - `catalog_regalias` + `catalog_arvores_regalia` → regalias e árvores
+   - `catalog_items` → equipamentos
+   - `catalog_condicoes` → condições e estados
+   - `catalog_abilities` → habilidades especiais/abilities
+   - `catalog_classes` → classes
+   - Endpoint de consulta: `GET /api/v2/catalogs` (todos de uma vez) ou rotas individuais `/api/v2/catalogs/<tipo>`
+3. **Fallback estático** (apenas quando o backend não está disponível): arquivos em `frontend/src/data/constants/`. Não devem ser usados como fonte de verdade em produção.
 
-Se houver conflito entre catálogo e texto oficial, usar o texto oficial e abrir tarefa de sincronização de catálogo.
+Se houver conflito entre o banco e o texto oficial, usar o texto oficial e atualizar o seed (`backend/scripts/seed_catalogs.py`).
 
 ---
 

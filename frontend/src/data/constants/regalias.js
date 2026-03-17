@@ -727,27 +727,35 @@ export const classesPrimarias = [
             subHabilidades: [
                 {
                     nome: 'Meditação de Combate',
-                    descricao: 'Pode usar Recuperar Fôlego 1x/dia sem custo de magia, custando apenas 1 ação.',
+                    descricao: 'Pode usar Recuperar Fôlego 1x/dia sem custo de magia, custando apenas 1 ação. Recupera 4 PV.',
                     tipo: 'ativa',
                     custoAcoes: 1,
                     custoMagia: 0,
-                    cooldown: '1x por dia'
+                    custoEstamina: 0,
+                    cooldown: '1x por dia',
+                    efeito: { curaHP: 4 }
                 },
                 {
                     nome: 'Novo Fôlego',
                     descricao: 'Ao usar Meditação de Combate, remove todas as penalidades de ataque acumuladas nesta rodada.',
-                    tipo: 'passiva'
+                    tipo: 'passiva',
+                    custoMagia: 0,
+                    custoEstamina: 0
                 },
                 {
                     nome: 'Ataque Fortalecido',
                     descricao: 'Se acertar um ataque após Meditação de Combate, ganha bônus de dano igual ao valor de Fortitude.',
                     tipo: 'passiva',
+                    custoMagia: 0,
+                    custoEstamina: 0,
                     efeito: { bonusDano: 'fortitude' }
                 },
                 {
                     nome: 'Embalado',
                     descricao: 'Se usar Meditação e via Ataque Fortalecido reduzir uma criatura a 0 PV, recebe +2 ações no próximo turno.',
                     tipo: 'passiva',
+                    custoMagia: 0,
+                    custoEstamina: 0,
                     efeito: { acoesExtras: 2 }
                 }
             ]
@@ -920,6 +928,8 @@ export const classesPrimarias = [
                 id: 'combate_duas_armas',
                 nome: 'Combate com Duas Armas',
                 custo: 2,
+                tipo: 'ativa',
+                custoAcoes: null,
                 descricao: 'Pode atacar uma segunda vez com arma secundária na ação de Ataque. Ambas devem ser de uma mão, a secundária deve ser leve.',
                 custoEstamina: 1, // por rodada
                 efeito: { duasArmas: true, semPenalidadeConsecutiva: true }
@@ -928,6 +938,7 @@ export const classesPrimarias = [
                 id: 'combate_acuidade',
                 nome: 'Combate com Arma de Acuidade',
                 custo: 1,
+                tipo: 'passiva',
                 descricao: 'Pode usar Destreza para dano corpo a corpo com armas com propriedade acuidade. Se tiver Ponto Fraco com arma acuidade: +1d6 dano extra.',
                 efeito: { usarDestrezaParaDano: true, sinergiasPontoFraco: { danoExtra: '1d6' } }
             },
@@ -946,9 +957,11 @@ export const classesPrimarias = [
                 id: 'golpe_explosivo',
                 nome: 'Golpe Explosivo',
                 custo: 1,
+                tipo: 'ativa',
+                custoAcoes: null,
                 descricao: 'Na ação de ataque, causa +1d6 de dano adicional.',
                 custoEstamina: 2,
-                efeito: { danoExtra: '1d6' }
+                efeito: { dano: '1d6', tipoDano: 'fisico' }
             },
             {
                 id: 'levantar_escudo',
@@ -956,6 +969,7 @@ export const classesPrimarias = [
                 custo: 1,
                 descricao: 'Ergue escudo (não broquel) como reação. Todos os ataques contra o personagem têm desvantagem até o início do próximo turno.',
                 tipo: 'reacao',
+                custoAcoes: 0,
                 custoEstamina: 2,
                 efeito: { desvantagemAtaquesContra: true, duracao: 'até início do próximo turno' },
                 restricao: 'Não funciona com broquel'
@@ -964,6 +978,8 @@ export const classesPrimarias = [
                 id: 'recarga_oportuna',
                 nome: 'Recarga Oportuna',
                 custo: 1,
+                tipo: 'ativa',
+                custoAcoes: null,
                 descricao: 'Recarrega uma arma de recarga enquanto usa uma ação de movimento.',
                 custoEstamina: 1,
                 efeito: { recarregarDuranteMovimento: true }
@@ -986,29 +1002,39 @@ export const classesPrimarias = [
                 {
                     nome: 'Anticorrupção',
                     descricao: 'Cura em mortos-vivos/demônios causa dano sagrado. 1x por combate sem custo de magia. Todos os milagres causam dano sagrado.',
-                    tipo: 'passiva'
+                    tipo: 'passiva',
+                    custoMagia: 0,
+                    custoEstamina: 0
                 },
                 {
                     nome: 'Servitude (Deus Bom)',
                     descricao: '2x/dia, cura uma criatura (não a si) por 2d6 PV. Pode ser feito em combate junto com outra ação não-dano. Aumenta para 3d6 no nível 7.',
-                    tipo: 'ativa',
+                    tipo: 'milagre',
+                    custoAcoes: 1,
+                    custoMagia: 0,
+                    custoEstamina: 0,
                     cooldown: '2x por dia',
-                    efeito: { curaHP: '2d6', curaHPNivel7: '3d6', excluiAutoAlvo: true }
+                    efeito: { curaHP: '2d6' }
                 },
                 {
                     nome: 'Servitude (Deus Mal)',
                     descricao: '1x/dia, sacrifica animal/ser vivo para recuperar 8 Magia (oração 10 min). Ou cura 1d12 PV após matar. Nível 7: 12 PV fixo e 3d6.',
-                    tipo: 'ativa',
+                    tipo: 'milagre',
+                    custoAcoes: 0,
+                    custoMagia: 0,
+                    custoEstamina: 0,
                     cooldown: '1x por dia',
-                    efeito: { recuperarMagia: 8, alternativa: { curaHP: '1d12', condicao: 'após matar criatura' } }
+                    efeito: { recuperarMagia: 8 }
                 },
                 {
                     nome: 'Servitude (Deus Neutro)',
                     descricao: '3x/dia, oração (2 ações em combate) recuperando 1d6+1 PV e Magia. Aumenta para 2d6+2 no nível 7.',
-                    tipo: 'ativa',
+                    tipo: 'milagre',
                     custoAcoes: 2,
+                    custoMagia: 0,
+                    custoEstamina: 0,
                     cooldown: '3x por dia',
-                    efeito: { curaHP: '1d6+1', recuperarMagia: '1d6+1', nivel7: { curaHP: '2d6+2', recuperarMagia: '2d6+2' } }
+                    efeito: { curaHP: '1d6+1', recuperarMagia: '1d6+1' }
                 }
             ]
         },
@@ -1192,6 +1218,8 @@ export const classesPrimarias = [
                 id: 'novico_combate',
                 nome: 'Noviço(a) de Combate',
                 custo: 1,
+                tipo: 'passiva',
+                descricao: 'Ganha proficiência em Armaduras Leves, Médias e Escudo Simples. +5 PV máximo.',
                 proficienciasGanhas: ['armaduras_leves', 'armaduras_medias', 'escudo_simples'],
                 efeito: { bonusPVMax: 5 }
             },
@@ -1200,6 +1228,7 @@ export const classesPrimarias = [
                 nome: 'Intervenção',
                 custo: 2,
                 tipo: 'reacao',
+                custoAcoes: 0,
                 custoMagia: 3,
                 descricao: 'Oração para forçar re-rolagem de d20. Noviço escolhe resultado antigo ou novo.',
                 efeito: { reRolagemD20: true, escolherResultado: true }
@@ -1236,6 +1265,8 @@ export const classesPrimarias = [
                 custo: 1,
                 tipo: 'ativa',
                 custoAcoes: 2,
+                custoMagia: 0,
+                descricao: 'Converte PV em PM (1:1, máximo 5). Recupera a capacidade após descanso curto.',
                 cooldown: '1x por descanso curto',
                 efeito: { converterHPParaMagia: true, razao: '1:1', maximo: 5 }
             },
@@ -1244,6 +1275,8 @@ export const classesPrimarias = [
                 nome: 'Dividir a Dor',
                 custo: 1,
                 tipo: 'reacao',
+                custoAcoes: 0,
+                custoMagia: 0,
                 descricao: 'Quando vê criatura restringida/paralisada/atordoada/incapacitada sofrer ataque, absorve parte do dano.',
                 efeito: { absorverDanoParcial: true, condicoes: ['restringido', 'paralisado', 'atordoado', 'incapacitado'] }
             }
@@ -1262,7 +1295,19 @@ export const classesPrimarias = [
         habilidadeClasse: {
             nome: 'Magus',
             descricao: 'Pode lançar magias de Aprendiz de Iniciado sem custo de magia um número de vezes igual ao valor de Arcanismo. Recupera após descanso longo. Todas as magias causam dano arcano.',
-            efeito: { castSemMana: 'arcanismo', tiposDano: 'arcano', recuperacao: 'descanso_longo' }
+            efeito: { castSemMana: 'arcanismo', tiposDano: 'arcano', recuperacao: 'descanso_longo' },
+            subHabilidades: [
+                {
+                    nome: 'Magus — Cast Gratuito',
+                    descricao: 'Lança uma magia de Aprendiz de Iniciado sem custo de Magia. Número de usos = valor de Arcanismo. Recupera após descanso longo.',
+                    tipo: 'ativa',
+                    custoAcoes: 1,
+                    custoMagia: 0,
+                    custoEstamina: 0,
+                    cooldown: 'Usos = Arcanismo (descanso longo)',
+                    efeito: { castSemMana: true, tiposDano: 'arcano' }
+                }
+            ]
         },
         arvoresRegalia: [
             {
@@ -1595,6 +1640,44 @@ export const classesPrimarias = [
                 duracao: '10 rodadas',
                 maxAcumulo: 'ocultismo + ritualismo + arcanismo'
             },
+            subHabilidades: [
+                {
+                    nome: 'Acelerar Feitiço',
+                    descricao: 'Usa 4 pontos de feitiçaria: reduz 1 ação para lançar o próximo feitiço (mínimo 1 ação). 1x por rodada.',
+                    tipo: 'ativa',
+                    custoAcoes: 0,
+                    custoMagia: 4,
+                    custoEstamina: 0,
+                    efeito: { acelerarFeitico: true }
+                },
+                {
+                    nome: 'Duplicar Feitiço',
+                    descricao: 'Usa 4 pontos de feitiçaria: feitiço de alvo único atinge um segundo alvo dentro de 9m. 1x por rodada.',
+                    tipo: 'ativa',
+                    custoAcoes: 0,
+                    custoMagia: 4,
+                    custoEstamina: 0,
+                    efeito: { duplicarFeitico: true, alcanceSegundoAlvo: 9 }
+                },
+                {
+                    nome: 'Eco Elemental',
+                    descricao: 'Usa 8 pontos de feitiçaria: cria uma duplicata elemental (20 PV) que replica o próximo ataque elemental. Custa +1 ação extra.',
+                    tipo: 'ativa',
+                    custoAcoes: 1,
+                    custoMagia: 8,
+                    custoEstamina: 0,
+                    efeito: { invocarEcoElemental: true, hpEco: 20 }
+                },
+                {
+                    nome: 'Ampliação de Efeito',
+                    descricao: 'Usa 4 pontos de feitiçaria: aumenta a área de efeito do próximo feitiço em 50%. 1x por rodada.',
+                    tipo: 'ativa',
+                    custoAcoes: 0,
+                    custoMagia: 4,
+                    custoEstamina: 0,
+                    efeito: { ampliarArea: 1.5 }
+                }
+            ],
             opcoesPontosFeiticaria: [
                 { nome: 'Acelerar Feitiço', custo: 4, efeito: 'Reduz 1 ação para lançar (mínimo 1)' },
                 { nome: 'Duplicar', custo: 4, efeito: 'Feitiço de alvo único atinge 2° alvo dentro de 9m' },

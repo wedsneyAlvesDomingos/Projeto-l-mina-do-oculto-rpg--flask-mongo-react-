@@ -191,7 +191,7 @@ const CharacterSheet = () => {
                     />
                 )}
                 {h.activeTab === 3 && (
-                    <RegaliasSection character={h.character} editMode={h.editMode} sectionStyle={{ ...h.sectionStyle, mb: 0, borderRadius: '0 0 12px 12px', borderTop: 'none' }} cardHeaderStyle={h.cardHeaderStyle} updateField={h.updateField} baseUrl={h.baseUrl} setCharacter={h.setCharacter} statsDerivados={h.statsDerivados} setDiceHistory={h.setDiceHistory} />
+                    <RegaliasSection character={h.character} editMode={h.editMode} sectionStyle={{ ...h.sectionStyle, mb: 0, borderRadius: '0 0 12px 12px', borderTop: 'none' }} cardHeaderStyle={h.cardHeaderStyle} updateField={h.updateField} baseUrl={h.baseUrl} setCharacter={h.setCharacter} statsDerivados={h.statsDerivados} setDiceHistory={h.setDiceHistory} salvarHistoricoRolagens={h.salvarHistoricoRolagens} />
                 )}
                 </Box>
 

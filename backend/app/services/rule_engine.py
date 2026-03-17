@@ -183,8 +183,8 @@ def calcular_estamina(atletismo: int) -> int:
 
 
 def calcular_pontos_de_magia(arcanismo: int) -> int:
-    """PM = arcanismo × 2 (+5 se arcanismo ≥ 10). Ref: LDO 0.5"""
-    pm = arcanismo * 2
+    """PM = arcanismo (+5 se arcanismo ≥ 10). Ref: LDO 0.5 / habilidades.js calcularPontosDeMagia"""
+    pm = arcanismo
     if arcanismo >= 10:
         pm += 5
     return pm
@@ -862,3 +862,361 @@ def simular_acao(personagem: dict, acao: dict) -> dict:
             'tipo': tipo,
             'erro': f"Tipo de ação desconhecido: '{tipo}'. Tipos válidos: teste, ataque, descanso_curto, descanso_longo"
         }
+
+
+# ============================================================================
+# FUNÇÕES DB-BACKED v2
+# ============================================================================
+
+def _normalize_hab_key(k: str) -> str:
+    """Normaliza display name de habilidade para slug: lowercase, sem acentos, espaço→underscore.
+    Ex: 'Percepção' -> 'percepcao', 'Força' -> 'forca', 'Combate Corpo a Corpo' -> 'combate_corpo_a_corpo'
+    """
+    import unicodedata
+    nfkd = unicodedata.normalize('NFKD', k.lower().strip())
+    return nfkd.encode('ascii', 'ignore').decode('ascii').replace(' ', '_')
+
+def _get_personagem_row(personagem_id: int, session):
+    """Retorna o objeto ORM Personagem ou lança ValueError."""
+    from models.models import Personagem
+    p = session.query(Personagem).filter_by(id=personagem_id).first()
+    if not p:
+        raise ValueError(f"Personagem {personagem_id} não encontrado.")
+    return p
+
+
+def calcular_ficha_v2(personagem_id: int, session) -> dict:
+    """
+    Calcula todos os derivados do personagem a partir do banco (v2).
+    Lê espécie, subespécie, habilidades, regalias, conditions ativas e
+    persiste o resultado em characters.derivados.
+
+    Retorna o dict 'derivados' calculado.
+    """
+    from models.models import (
+        Personagem, CatalogEspecie, CatalogSubespecie,
+        CharacterSkillV2, CharacterRegaliaV2, CharacterEffectV2,
+        CatalogCondicao, CatalogRegalia, CatalogArvoreNivel,
+    )
+
+    p = _get_personagem_row(personagem_id, session)
+
+    # Ler seções do personagem como fallback para dados sem migração v2
+    sections_dict = {s.section_key: s.data for s in p.sections}
+
+    # --- Espécie base ---
+    especie = session.query(CatalogEspecie).filter_by(id=p.especie_id).first() if p.especie_id else None
+    subespecie = session.query(CatalogSubespecie).filter_by(id=p.subespecie_id).first() if p.subespecie_id else None
+
+    pv_base = 10
+    vel_base = 9.0
+    bonus_hab_especie: dict = {}
+    if especie:
+        pv_base  = especie.pv_base or 10          # coluna correta: pv_base
+        vel_base = float(especie.velocidade_base or 9)
+        bonus_hab_especie = especie.bonus_habilidades or {}
+    else:
+        # Fallback: pv_base_especie e velocidade_base_especie salvos nas seções pelo frontend
+        raw_pv  = sections_dict.get('pv_base_especie')
+        raw_vel = sections_dict.get('velocidade_base_especie')
+        if raw_pv is not None:
+            try:
+                pv_base = int(raw_pv)
+            except (TypeError, ValueError):
+                pass
+        if raw_vel is not None:
+            try:
+                vel_base = float(raw_vel)
+            except (TypeError, ValueError):
+                pass
+    if subespecie:
+        sub_bonus = subespecie.bonus_habilidades or {}
+        for k, v in sub_bonus.items():
+            bonus_hab_especie[k] = bonus_hab_especie.get(k, 0) + v
+
+    # --- Habilidades do personagem ---
+    skills_rows = session.query(CharacterSkillV2).filter_by(character_id=personagem_id).all()
+    habs: dict[str, int] = {}
+    for sr in skills_rows:
+        if sr.skill and sr.skill.slug:
+            habs[sr.skill.slug] = sr.valor
+
+    # Fallback: ler habilidades da seção 'habilidades' (display names) quando sem dados v2
+    if not habs:
+        section_habs = sections_dict.get('habilidades') or {}
+        if isinstance(section_habs, dict):
+            for display_name, valor in section_habs.items():
+                if display_name and isinstance(valor, (int, float)):
+                    habs[_normalize_hab_key(display_name)] = int(valor)
+
+    # Aplicar bônus de espécie
+    for slug, bonus in bonus_hab_especie.items():
+        habs[slug] = habs.get(slug, 0) + bonus
+
+    # --- Calcular derivados base ---
+    fortitude  = habs.get("fortitude", 0)
+    atletismo  = habs.get("atletismo", 0)
+    arcanismo  = habs.get("arcanismo", 0)
+    agilidade  = habs.get("agilidade", 0)
+    percepcao  = habs.get("percepcao", 0)
+    forca      = habs.get("forca", 0)
+
+    pv_max  = calcular_pontos_de_vida(pv_base, fortitude)
+    pe_max  = calcular_estamina(atletismo)
+    pm_max  = calcular_pontos_de_magia(arcanismo)
+    defesa  = calcular_defesa_total(agilidade, 0)
+    vel     = vel_base + calcular_bonus_velocidade(agilidade)
+    iniciativa = round(agilidade / 2 + percepcao / 4)
+    carga   = calcular_capacidade_carga(forca)
+
+    # --- Bônus de regalias ---
+    regalias_rows = session.query(CharacterRegaliaV2).filter_by(
+        character_id=personagem_id
+    ).all()
+
+    bonus_pv_reg = 0
+    bonus_pm_reg = 0
+    bonus_pe_reg = 0
+
+    for rr in regalias_rows:
+        if rr.regalia:
+            bonus = rr.regalia.bonus_recursos or {}
+            bonus_pv_reg += bonus.get("bonus_pv", 0)
+            bonus_pm_reg += bonus.get("bonus_pm", 0)
+            bonus_pe_reg += bonus.get("bonus_pe", 0)
+            defesa        += bonus.get("bonus_defesa", 0)
+
+    pv_max  += bonus_pv_reg + (p.pv_bonus_regalias or 0)
+    pm_max  += bonus_pm_reg + (p.pm_bonus_regalias or 0)
+    pe_max  += bonus_pe_reg + (p.pe_bonus_regalias or 0)
+
+    # Fallback: bônus de regalia de classe armazenados nas seções pelo frontend
+    if not regalias_rows:
+        def _sec_int(key):
+            try: return int(sections_dict.get(key) or 0)
+            except (TypeError, ValueError): return 0
+        pv_max += _sec_int('pv_regalia_classe')
+        pm_max += _sec_int('pm_regalia_classe')
+        pe_max += _sec_int('pe_regalia_classe')
+
+    # --- Penalidades de condições ativas ---
+    efeitos_ativos = session.query(CharacterEffectV2).filter(
+        CharacterEffectV2.character_id == personagem_id,
+    ).all()
+
+    penalidades: dict[str, Any] = {}
+    for ef in efeitos_ativos:
+        cond = ef.condicao
+        if cond and cond.flags:
+            flags = cond.flags
+            if flags.get("velocidade_zero"):
+                vel = 0
+            if flags.get("reduz_velocidade"):
+                vel = max(0, vel - 3)
+            if flags.get("desvantagem_defesa_corpo"):
+                penalidades["desvantagem_defesa_corpo"] = True
+            # cansaço escalado
+            nivel_c = flags.get("nivel_cansaco", 0)
+            if nivel_c >= 2:
+                vel = max(0, vel // 2)
+            if nivel_c >= 4:
+                pv_max = max(1, pv_max // 2)
+            if nivel_c >= 5:
+                vel = 0
+
+    # --- Construir derivados ---
+    derivados = {
+        "pv_max":      pv_max,
+        "pm_max":      pm_max,
+        "pe_max":      pe_max,
+        "defesa":      defesa,
+        "velocidade":  vel,
+        "iniciativa":  iniciativa,
+        "carga_max":   carga,
+        "penalidades": penalidades,
+        "nivel":       calcular_nivel(p.experience or 0),
+        "habilidades": habs,
+        "rule_version": RULE_VERSION,
+    }
+
+    # --- Persistir cache ---
+    p.derivados = derivados
+    p.pv_bonus_regalias = bonus_pv_reg
+    p.pm_bonus_regalias = bonus_pm_reg
+    p.pe_bonus_regalias = bonus_pe_reg
+    session.flush()
+
+    return derivados
+
+
+def validar_compra_regalia(personagem_dict: dict, regalia_dict: dict, session) -> dict:
+    """
+    Valida se o personagem pode comprar a regalia.
+    Retorna {"ok": True} ou {"ok": False, "erros": [...]}.
+    """
+    erros = []
+
+    custo = regalia_dict.get("custo", 1)
+    pontos_disp = personagem_dict.get("regalia_points_total", 0) - personagem_dict.get("regalia_points_spent", 0)
+    if pontos_disp < custo:
+        erros.append(f"Pontos insuficientes: precisa {custo}, tem {pontos_disp}.")
+
+    pre_req = regalia_dict.get("pre_requisitos") or {}
+    if pre_req:
+        # pre_requisitos.requer = slug de outro nível de árvore
+        requer_slug = pre_req.get("requer")
+        if requer_slug:
+            from models.models import CharacterRegaliaV2, CatalogRegalia
+            pid = personagem_dict.get("id")
+            regalia_req = session.query(CatalogRegalia).filter_by(slug=requer_slug).first()
+            if regalia_req:
+                tem = session.query(CharacterRegaliaV2).filter_by(
+                    character_id=pid, regalia_id=regalia_req.id
+                ).first()
+                if not tem:
+                    erros.append(f"Pré-requisito não atendido: '{requer_slug}'.")
+
+    nivel_personagem = calcular_nivel(personagem_dict.get("xp", 0))
+    requer_nivel = regalia_dict.get("requer_nivel_personagem", 1)
+    if nivel_personagem < requer_nivel:
+        erros.append(f"Nível insuficiente: precisa {requer_nivel}, tem {nivel_personagem}.")
+
+    return {"ok": len(erros) == 0, "erros": erros}
+
+
+def aplicar_condicao(personagem_id: int, condicao_slug: str, session,
+                     duracao_turnos: int | None = None,
+                     fonte: str | None = None) -> dict:
+    """
+    Aplica uma condição ao personagem criando um CharacterEffectV2.
+    Se a condição já está ativa e é empilhável, sobe o nível.
+    Retorna {"ok": True, "effect_id": id} ou {"ok": False, "erro": str}.
+    """
+    from models.models import CatalogCondicao, CharacterEffectV2
+
+    cond = session.query(CatalogCondicao).filter_by(slug=condicao_slug).first()
+    if not cond:
+        return {"ok": False, "erro": f"Condição '{condicao_slug}' não existe no catálogo."}
+
+    flags = cond.flags or {}
+    empilhavel = flags.get("empilhavel", False)
+    max_niveis = flags.get("max_niveis", 1)
+
+    # Verificar se já existe efeito ativo
+    existente = session.query(CharacterEffectV2).filter_by(
+        character_id=personagem_id,
+        condicao_id=cond.id,
+    ).first()
+
+    if existente:
+        if not empilhavel:
+            return {"ok": True, "effect_id": existente.id, "aviso": "Condição já ativa (não empilhável)."}
+        # Empilhar: aumentar nivel
+        nivel_atual = existente.nivel or 1
+        if nivel_atual >= max_niveis:
+            return {"ok": True, "effect_id": existente.id, "aviso": f"Já no nível máximo ({max_niveis})."}
+        existente.nivel = nivel_atual + 1
+        session.flush()
+        return {"ok": True, "effect_id": existente.id, "nivel": existente.nivel}
+
+    # Criar novo efeito
+    ef = CharacterEffectV2(
+        character_id=personagem_id,
+        condicao_id=cond.id,
+        effect_slug=condicao_slug,
+        display_name=cond.display_name,
+        snapshot=cond.flags or {},
+        duracao_tipo='turnos' if duracao_turnos else None,
+        duracao_valor=duracao_turnos,
+        fonte_tipo='manual' if not fonte else 'outro',
+        fonte_slug=fonte,
+        nivel=1,
+    )
+    session.add(ef)
+    session.flush()
+    return {"ok": True, "effect_id": ef.id, "nivel": 1}
+
+
+def remover_condicao(personagem_id: int, condicao_slug: str, session) -> dict:
+    """Remove uma condição ativa do personagem."""
+    from models.models import CharacterEffectV2, CatalogCondicao
+
+    cond = session.query(CatalogCondicao).filter_by(slug=condicao_slug).first()
+    q = session.query(CharacterEffectV2).filter_by(character_id=personagem_id)
+    if cond:
+        q = q.filter_by(condicao_id=cond.id)
+    else:
+        q = q.filter_by(effect_slug=condicao_slug)
+    ef = q.first()
+
+    if not ef:
+        return {"ok": False, "erro": f"Condição '{condicao_slug}' não está ativa."}
+
+    session.delete(ef)
+    session.flush()
+    return {"ok": True}
+
+
+def realizar_descanso_v2(personagem_id: int, tipo: str, session) -> dict:
+    """
+    Executa lógica de descanso v2, atualizando os recursos no banco.
+    tipo: 'curto' | 'longo' | 'pleno'
+    Retorna dict com recuperações aplicadas.
+    """
+    from models.models import CharacterEffectV2
+
+    p = _get_personagem_row(personagem_id, session)
+    derivados = p.derivados or {}
+    pv_max = derivados.get("pv_max", 10)
+    pm_max = derivados.get("pm_max", 10)
+    pe_max = derivados.get("pe_max", 10)
+
+    pv_antes = p.pv_atual if p.pv_atual is not None else pv_max
+    pm_antes = p.pm_atual if p.pm_atual is not None else pm_max
+    pe_antes = p.pe_atual if p.pe_atual is not None else pe_max
+    cansaco   = p.nivel_cansaco or 0
+
+    if tipo == "curto":
+        pe_rec  = pe_max - pe_antes
+        pv_rec  = math.floor(pv_max * 0.25)
+        pm_rec  = 0
+        cansaco_delta = 0
+    elif tipo == "longo":
+        pv_rec  = pv_max - pv_antes
+        pe_rec  = pe_max - pe_antes
+        pm_rec  = math.floor(pm_max * 0.5)
+        cansaco_delta = -1
+    elif tipo == "pleno":
+        pv_rec  = pv_max - pv_antes
+        pe_rec  = pe_max - pe_antes
+        pm_rec  = pm_max - pm_antes
+        cansaco_delta = -2
+    else:
+        return {"ok": False, "erro": f"Tipo de descanso inválido: '{tipo}'. Use: curto, longo, pleno."}
+
+    novo_pv = min(pv_max, pv_antes + pv_rec)
+    novo_pm = min(pm_max, pm_antes + pm_rec)
+    novo_pe = min(pe_max, pe_antes + pe_rec)
+    novo_cansaco = max(0, cansaco + cansaco_delta)
+
+    # Remover efeitos temporários (com duracao_valor definida) no descanso longo/pleno
+    if tipo in ("longo", "pleno"):
+        session.query(CharacterEffectV2).filter(
+            CharacterEffectV2.character_id == personagem_id,
+            CharacterEffectV2.duracao_valor != None,
+        ).delete(synchronize_session='fetch')
+
+    p.pv_atual     = novo_pv
+    p.pm_atual     = novo_pm
+    p.pe_atual     = novo_pe
+    p.nivel_cansaco = novo_cansaco
+    session.flush()
+
+    return {
+        "ok": True,
+        "tipo": tipo,
+        "pv":  {"antes": pv_antes,  "depois": novo_pv,  "recuperado": novo_pv - pv_antes},
+        "pm":  {"antes": pm_antes,  "depois": novo_pm,  "recuperado": novo_pm - pm_antes},
+        "pe":  {"antes": pe_antes,  "depois": novo_pe,  "recuperado": novo_pe - pe_antes},
+        "cansaco": {"antes": cansaco, "depois": novo_cansaco},
+    }

@@ -27,7 +27,7 @@ const DiceHistorySidebar = React.memo(({ diceHistory, onClear }) => (
                 [...diceHistory].reverse().map((roll, idx) => (
                     <Paper key={idx} elevation={1} sx={{
                         p: 1.5, borderRadius: 2,
-                        backgroundColor: roll.isCriticalHit ? '#faf3e8' : roll.isCriticalFail ? '#fae8ed' : 'var(--surface-paper)',
+                        backgroundColor: roll.isCriticalHit ? 'rgba(187,129,48,0.12)' : roll.isCriticalFail ? 'rgba(147,28,74,0.12)' : 'var(--surface-raised)',
                         borderLeft: `4px solid ${roll.isCriticalHit ? '#BB8130' : roll.isCriticalFail ? '#931C4A' : '#756A34'}`,
                         animation: idx === diceHistory.length - 1 ? 'fadeIn 0.3s ease-in' : 'none',
                         '@keyframes fadeIn': { from: { opacity: 0, transform: 'translateY(-10px)' }, to: { opacity: 1, transform: 'translateY(0)' } }
@@ -42,7 +42,7 @@ const DiceHistorySidebar = React.memo(({ diceHistory, onClear }) => (
                                 </Typography>
                             </Box>
                             <Box sx={{ textAlign: 'right' }}>
-                                <Typography sx={{ fontWeight: 'bold', fontSize: '20px', lineHeight: 1, color: roll.isCriticalHit ? '#BB8130' : roll.isCriticalFail ? '#931C4A' : 'var(--bg-dark)' }}>
+                                <Typography sx={{ fontWeight: 'bold', fontSize: '20px', lineHeight: 1, color: roll.isCriticalHit ? '#BB8130' : roll.isCriticalFail ? '#931C4A' : 'var(--text-primary)' }}>
                                     {roll.total}
                                 </Typography>
                             </Box>
