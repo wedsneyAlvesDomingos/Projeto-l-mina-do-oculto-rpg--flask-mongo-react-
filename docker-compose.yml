@@ -1,9 +1,8 @@
-
-
 services:
   backend:
     build: ./backend
     container_name: backendLDO
+    image: harbor.solv.tec.br/lamina_do_oculto/backend:latest
     ports:
       - "5055:5055"
     env_file:
@@ -27,6 +26,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: webLDO
+    image: harbor.solv.tec.br/lamina_do_oculto/frontend:latest
     ports:
       - "5009:3000"
     volumes:
@@ -52,12 +52,15 @@ services:
     networks:
       - my_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5433 -h localhost"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5433 -h localhost",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
       start_period: 10s
-
 
 volumes:
   postgres-data:
