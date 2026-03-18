@@ -3,7 +3,9 @@ import {
     Box, Paper, Typography, TextField, IconButton,
     Chip, Select, MenuItem, FormControl, InputLabel, Tooltip,
     Modal, Backdrop, Fade, useMediaQuery, useTheme, Grid,
-    LinearProgress,
+    LinearProgress, Button, Dialog, DialogTitle, DialogContent,
+    DialogActions, List, ListItem, ListItemButton, ListItemText,
+    ListItemIcon,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -14,8 +16,12 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import CloseIcon from '@mui/icons-material/Close';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import RestoreIcon from '@mui/icons-material/Restore';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UIcon from '../../../assets/images/userIcon.png';
-import { especiesMap, determinarTamanho, calcularNivel, TABELA_XP_POR_NIVEL } from '../../../data/constants';
+import { especiesMap, determinarTamanho, calcularNivel, TABELA_XP_POR_NIVEL, calcularPontosRegaliaTotal, determinarClasseAtual } from '../../../data/constants';
 import EditableField from './EditableField';
 
 /* ── Espaçamentos padronizados (mesmo padrão CombatVitalSection) ── */
@@ -43,9 +49,9 @@ const MoedaInput = ({ label, value, onChange, color, bgColor }) => (
 
 /* ── InfoChip — campo label+valor compacto ── */
 const InfoChip = ({ label, children }) => (
-    <Box sx={{ flex: '1 1 80px', minWidth: { xs: 60, sm: 80 }, minWidth: 0, overflow: 'hidden' }}>
-        <Typography className="esteban" noWrap sx={{ color: 'var(--text-primary)', fontSize: 10, lineHeight: 1.2 }}>{label}</Typography>
-        <Typography className="esteban" noWrap sx={{ fontWeight: 'bold', fontSize: 14, lineHeight: 1.3 }}>{children}</Typography>
+    <Box sx={{ flex: '1 1 80px', minWidth: { xs: 60, sm: 80 }, minWidth: 0, overflow: 'hidden', wordBreak: 'break-word' }}>
+        <Typography className="esteban" sx={{ color: 'var(--text-primary)', fontSize: 10, lineHeight: 1.2 }}>{label}</Typography>
+        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 14, lineHeight: 1.3, overflowWrap: 'break-word' }}>{children}</Typography>
     </Box>
 );
 
@@ -57,8 +63,14 @@ const CharacterHeader = ({
     sectionStyle, cardHeaderStyle,
     updateField, handleSave, handleCancel, atualizarMoeda,
     fileInputRef, handleImageDrop, handleDragOver, handleImageButtonClick, handleImageFileChange,
+    levelSnapshots = [], handleRegressLevel, handleLevelUp,
 }) => {
     const [avatarModalOpen, setAvatarModalOpen] = useState(false);
+    const [regressDialogOpen, setRegressDialogOpen] = useState(false);
+    const [regressConfirmLevel, setRegressConfirmLevel] = useState(null);
+    const [levelUpDialogOpen, setLevelUpDialogOpen] = useState(false);
+    const [levelUpInfo, setLevelUpInfo] = useState(null);
+    const [levelUpLoading, setLevelUpLoading] = useState(false);
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
     const isSmallScreen = useMediaQuery('(max-width:300px)');
@@ -241,21 +253,54 @@ const CharacterHeader = ({
                                     </Typography>
                                 )}
                             </Grid>
-                            <Grid item xs={3} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Grid item xs={3} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 0.5 }}>
                                 {editMode ? (
                                     <EditableField fullWidth type="number" label="Nível"
                                         value={character.nivel || 1}
                                         onChange={(val) => updateField('nivel', parseInt(val) || 1)} />
                                 ) : (
-                                    <Paper sx={{
-                                        background: 'var(--panel-bg)', borderRadius: SP.radius,
-                                        px: 1.5, py: 0.5, textAlign: 'center', width: 'fit-content',
-                                    }}>
-                                        <Typography className="esteban" sx={{ color: 'white', fontSize: 10, lineHeight: 1 }}>Nível</Typography>
-                                        <Typography className="esteban" sx={{ color: 'white', fontWeight: 'bold', fontSize: 22, lineHeight: 1 }}>
-                                            {character.nivel}
-                                        </Typography>
-                                    </Paper>
+                                    <>
+                                        <Paper sx={{
+                                            background: 'var(--panel-bg)', borderRadius: SP.radius,
+                                            px: 1.5, py: 0.5, textAlign: 'center', width: 'fit-content',
+                                        }}>
+                                            <Typography className="esteban" sx={{ color: 'white', fontSize: 10, lineHeight: 1 }}>Nível</Typography>
+                                            <Typography className="esteban" sx={{ color: 'white', fontWeight: 'bold', fontSize: 22, lineHeight: 1 }}>
+                                                {character.nivel}
+                                            </Typography>
+                                        </Paper>
+                                        {(character.nivel || 1) < 20 && (
+                                            <Tooltip title="Subir de nível">
+                                                <IconButton
+                                                    size="small"
+                                                    disabled={levelUpLoading}
+                                                    onClick={async () => {
+                                                        setLevelUpLoading(true);
+                                                        const result = await handleLevelUp();
+                                                        setLevelUpLoading(false);
+                                                        if (result?.success) {
+                                                            setLevelUpInfo(result);
+                                                            setLevelUpDialogOpen(true);
+                                                        }
+                                                    }}
+                                                    sx={{ color: '#BB8130' }}
+                                                >
+                                                    <KeyboardDoubleArrowUpIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )}
+                                        {levelSnapshots.length > 0 && (
+                                            <Tooltip title="Regredir nível">
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={() => setRegressDialogOpen(true)}
+                                                    sx={{ color: '#931C4A' }}
+                                                >
+                                                    <RestoreIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )}
+                                    </>
                                 )}
                             </Grid>
                         </Grid>
@@ -318,7 +363,7 @@ const CharacterHeader = ({
                                         value={character.classe || ''}
                                         onChange={(val) => updateField('classe', val)} />
                                 ) : (
-                                    <InfoChip label="Classe">{character.classe || 'Aprendiz'}</InfoChip>
+                                    <InfoChip label="Classe">{determinarClasseAtual(character)}</InfoChip>
                                 )}
                             </Grid>
 
@@ -511,6 +556,137 @@ const CharacterHeader = ({
                 </Grid>{/* fim Linha 2 */}
 
             </Box>
+
+            {/* ═══ Dialog de Regressão de Nível ═══ */}
+            <Dialog
+                open={regressDialogOpen}
+                onClose={() => { setRegressDialogOpen(false); setRegressConfirmLevel(null); }}
+                maxWidth="xs" fullWidth
+            >
+                <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <RestoreIcon /> Regredir Nível
+                </DialogTitle>
+                <DialogContent dividers>
+                    {!regressConfirmLevel ? (
+                        <>
+                            <Typography variant="body2" sx={{ mb: 2 }}>
+                                Selecione o nível para o qual deseja retornar. Tudo feito a partir desse nível será desfeito.
+                            </Typography>
+                            <List dense>
+                                {levelSnapshots.map((snap) => (
+                                    <ListItem key={snap.nivel} disablePadding>
+                                        <ListItemButton onClick={() => setRegressConfirmLevel(snap.nivel)}>
+                                            <ListItemIcon sx={{ minWidth: 36 }}>
+                                                <RestoreIcon fontSize="small" />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={`Voltar ao Nível ${snap.nivel - 1}`}
+                                                secondary={`Desfaz evolução do nível ${snap.nivel} — Snapshot de ${new Date(snap.created_at).toLocaleDateString('pt-BR')}`}
+                                            />
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </>
+                    ) : (
+                        <Box sx={{ textAlign: 'center', py: 2 }}>
+                            <WarningAmberIcon sx={{ fontSize: 48, color: '#BB8130', mb: 1 }} />
+                            <Typography variant="h6" sx={{ mb: 1 }}>
+                                Confirmar Regressão
+                            </Typography>
+                            <Typography variant="body2" sx={{ mb: 1 }}>
+                                O personagem voltará ao estado anterior ao <strong>Nível {regressConfirmLevel}</strong>.
+                            </Typography>
+                            <Typography variant="body2" color="error">
+                                Todas as alterações feitas a partir desse nível serão perdidas permanentemente.
+                            </Typography>
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => { setRegressDialogOpen(false); setRegressConfirmLevel(null); }}>
+                        Cancelar
+                    </Button>
+                    {regressConfirmLevel && (
+                        <Button
+                            variant="contained"
+                            color="error"
+                            startIcon={<RestoreIcon />}
+                            onClick={() => {
+                                handleRegressLevel(regressConfirmLevel);
+                                setRegressDialogOpen(false);
+                                setRegressConfirmLevel(null);
+                            }}
+                        >
+                            Regredir para Nível {regressConfirmLevel - 1}
+                        </Button>
+                    )}
+                </DialogActions>
+            </Dialog>
+
+            {/* ═══ Dialog de Level Up ═══ */}
+            <Dialog
+                open={levelUpDialogOpen}
+                onClose={() => setLevelUpDialogOpen(false)}
+                maxWidth="xs" fullWidth
+            >
+                <DialogTitle sx={{
+                    display: 'flex', alignItems: 'center', gap: 1,
+                    background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
+                    color: 'white',
+                }}>
+                    <AutoAwesomeIcon sx={{ color: '#FFD700' }} /> Level Up!
+                </DialogTitle>
+                <DialogContent sx={{ pt: 3, textAlign: 'center' }}>
+                    {levelUpInfo && (
+                        <Box sx={{ py: 2 }}>
+                            <KeyboardDoubleArrowUpIcon sx={{ fontSize: 56, color: '#BB8130', mb: 1 }} />
+                            <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'var(--text-primary)', mb: 1 }}>
+                                Nível {levelUpInfo.novoNivel}
+                            </Typography>
+                            <Typography variant="body1" sx={{ mb: 2, color: 'var(--text-primary)' }}>
+                                Seu personagem avançou para o <strong>Nível {levelUpInfo.novoNivel}</strong>!
+                            </Typography>
+
+                            <Paper sx={{
+                                p: 2, borderRadius: 2, mb: 2,
+                                backgroundColor: 'var(--surface-warm)',
+                                border: '1px solid #BB8130',
+                            }}>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1, color: 'var(--text-primary)' }}>
+                                    O que você ganha:
+                                </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
+                                    <AutoAwesomeIcon sx={{ color: '#FFD700', fontSize: 20 }} />
+                                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BB8130' }}>
+                                        +{levelUpInfo.pontosGanhos} {levelUpInfo.pontosGanhos === 1 ? 'Ponto' : 'Pontos'} de Regalia
+                                    </Typography>
+                                </Box>
+                                <Typography variant="body2" sx={{ color: 'var(--text-muted)' }}>
+                                    Total de pontos de regalia: <strong>{levelUpInfo.pontosTotal}</strong>
+                                </Typography>
+                            </Paper>
+
+                            <Typography variant="body2" sx={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                                Use seus novos pontos de regalia para adquirir habilidades de classe, espécie ou profissão na seção de Regalias.
+                            </Typography>
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={() => setLevelUpDialogOpen(false)}
+                        sx={{
+                            backgroundColor: '#BB8130',
+                            '&:hover': { backgroundColor: '#40150A' },
+                        }}
+                    >
+                        Entendido
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </Paper>
     );
 };

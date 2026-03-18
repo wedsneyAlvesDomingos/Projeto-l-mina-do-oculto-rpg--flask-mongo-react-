@@ -210,3 +210,42 @@ export async function usarAbilityV2(personagemId, abilitySlug, userId = 0, conte
         body: JSON.stringify({ user_id: userId, contexto }),
     });
 }
+
+// =============================================================================
+// SNAPSHOTS DE EVOLUÇÃO — Pontos de restauração por nível
+// =============================================================================
+
+/**
+ * Lista todos os snapshots de evolução de um personagem.
+ * @param {number} personagemId
+ * @returns {Promise<Array<{id, character_id, nivel, created_at}>>}
+ */
+export async function listarSnapshots(personagemId) {
+    return apiFetch(`${BASE}/personagens/${personagemId}/snapshots`);
+}
+
+/**
+ * Cria um snapshot manual para o nível indicado.
+ * @param {number} personagemId
+ * @param {number} nivel
+ */
+export async function criarSnapshotManual(personagemId, nivel) {
+    return apiFetch(`${BASE}/personagens/${personagemId}/snapshots`, {
+        method: 'POST',
+        body: JSON.stringify({ nivel }),
+    });
+}
+
+/**
+ * Restaura o personagem ao estado pré-evolução do nível indicado.
+ * Reverte tudo que foi feito a partir daquele nível.
+ * @param {number} personagemId
+ * @param {number} nivel - O nível a partir do qual reverter (ex: 3 = voltar ao estado pré-nível 3)
+ * @param {number} [userId]
+ */
+export async function restaurarSnapshot(personagemId, nivel, userId = 0) {
+    return apiFetch(`${BASE}/personagens/${personagemId}/snapshots/${nivel}/restaurar`, {
+        method: 'POST',
+        body: JSON.stringify({ user_id: userId }),
+    });
+}

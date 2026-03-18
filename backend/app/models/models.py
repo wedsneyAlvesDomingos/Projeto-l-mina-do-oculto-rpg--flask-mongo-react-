@@ -530,6 +530,7 @@ class Personagem(Base):
     char_regalias_v2    = relationship('CharacterRegaliaV2',     back_populates='character', cascade='all, delete-orphan')
     char_abilities      = relationship('CharacterAbilityV2',     back_populates='character', cascade='all, delete-orphan')
     char_effects_v2     = relationship('CharacterEffectV2',      back_populates='character', cascade='all, delete-orphan')
+    level_snapshots     = relationship('CharacterLevelSnapshot', back_populates='character', cascade='all, delete-orphan')
 
     def to_dict(self):
         data = {
@@ -801,6 +802,37 @@ class CharacterAuditLog(Base):
             'before_state': self.before_state,
             'after_state': self.after_state,
             'metadata': self.metadata_ or {},
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class CharacterLevelSnapshot(Base):
+    """
+    Snapshot de evolução: armazena o estado completo do personagem
+    no momento em que subiu de nível. Permite regredir (desfazer evolução).
+
+    - nivel: o nível PARA o qual o personagem evoluiu (2+)
+    - snapshot_data: estado COMPLETO do personagem ANTES da evolução
+    - Nível 1 (criação) nunca pode ser desfeito.
+    """
+    __tablename__ = 'character_level_snapshots'
+    __table_args__ = (
+        UniqueConstraint('character_id', 'nivel', name='uq_char_level_snapshot'),
+    )
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    character_id = Column(Integer, ForeignKey('characters.id', ondelete='CASCADE'), nullable=False)
+    nivel = Column(Integer, nullable=False)
+    snapshot_data = Column(JSONB, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    character = relationship('Personagem', back_populates='level_snapshots')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'character_id': self.character_id,
+            'nivel': self.nivel,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
 

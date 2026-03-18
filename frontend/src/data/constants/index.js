@@ -234,6 +234,7 @@ export {
     getEspecializacoesDisponiveis,
     getArvoreRegalia,
     getRegaliaAvulsa,
+    getRegaliaAvulsaEsp,
     // Funções de resolução de regalias
     aplicarRegaliaAprendiz,
     aplicarRegaliaOpcional,
@@ -320,6 +321,7 @@ export {
     getEspecializacoesMistas,
     getEspecializacoesPuras,
     getOpcoesProgressaoParaSelect,
+    determinarClasseAtual,
 } from './classesAvancadas';
 
 // ============================================================================

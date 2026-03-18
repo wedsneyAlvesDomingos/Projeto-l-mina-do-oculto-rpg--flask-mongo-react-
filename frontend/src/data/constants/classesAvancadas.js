@@ -417,6 +417,53 @@ export const getOpcoesProgressaoParaSelect = () => {
         .filter(Boolean);
 };
 
+/**
+ * Determina a classe atual do personagem com base na hierarquia:
+ * Especialização > Classe Primária > Aprendiz
+ *
+ * @param {object} character - Objeto do personagem com regalias_de_especialization,
+ *                              regalias_de_classe e regalias_de_aprendiz
+ * @returns {string} Nome da classe de maior patente
+ */
+export const determinarClasseAtual = (character) => {
+    if (!character) return 'Aprendiz';
+
+    // 1. Especialização (maior patente)
+    const regEsp = character.regalias_de_especialization || character.regalias_de_especializacao || {};
+    const espIds = Object.keys(regEsp);
+    if (espIds.length > 0) {
+        const nomes = espIds.map(id => {
+            const esp = especializacoes.find(e => e.id === id);
+            return esp ? esp.nome : id;
+        });
+        return nomes.join(' / ');
+    }
+
+    // 2. Classe Primária
+    const regClasse = character.regalias_de_classe || {};
+    const classeIds = Object.keys(regClasse);
+    if (classeIds.length > 0) {
+        const nomes = classeIds.map(id => {
+            const cls = classesPrimarias.find(c => c.id === id);
+            return cls ? cls.nome : id;
+        });
+        return nomes.join(' / ');
+    }
+
+    // 3. Aprendiz
+    const regAprendiz = character.regalias_de_aprendiz?.RegaliasDeAprendizSelecionada || {};
+    const aprendizIds = Object.keys(regAprendiz);
+    if (aprendizIds.length > 0) {
+        const nomes = aprendizIds.map(id => {
+            const ap = classesAprendiz.find(a => a.id === id);
+            return ap ? ap.nome : `${id} Aprendiz`;
+        });
+        return nomes.join(' / ');
+    }
+
+    return 'Aprendiz';
+};
+
 // ============================================================================
 // RE-EXPORTS DE REGALIAS.JS (conveniência)
 // ============================================================================
@@ -440,5 +487,6 @@ export default {
     classeEspecializacaoMap,
     resumoClassesPrimarias,
     resumoEspecializacoes,
-    pontosFeiticaria
+    pontosFeiticaria,
+    determinarClasseAtual
 };

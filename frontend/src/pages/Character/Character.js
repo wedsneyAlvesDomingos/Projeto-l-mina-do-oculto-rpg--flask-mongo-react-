@@ -23,6 +23,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { colors } from '../../componentes/themes/tokens';
+import { determinarClasseAtual } from '../../data/constants';
 
 /* Mapa de abreviações para os nomes das habilidades */
 const ABREV_HAB = {
@@ -172,6 +173,9 @@ const CharPage = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        overflow: 'hidden',
+                        maxWidth: '100%',
+                        boxSizing: 'border-box',
                     }}>
                         <Box sx={{
                             width: '150px',
@@ -201,23 +205,29 @@ const CharPage = () => {
                         }}>
                             {char.nome_personagem}
                         </Typography>
-                        <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 0.5, justifyContent: 'center', maxWidth: '100%' }}>
                             <Chip 
                                 label={especie} 
                                 size="small" 
                                 sx={{ 
                                     backgroundColor: '#BB813099', 
                                     color: 'white',
-                                    fontSize: '11px'
+                                    fontSize: '11px',
+                                    maxWidth: '100%',
+                                    p:1,
+                                    '& .MuiChip-label': { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' }
                                 }} 
                             />
                             <Chip 
-                                label={char.classe || 'Aprendiz'} 
+                                label={determinarClasseAtual(char)} 
                                 size="small" 
                                 sx={{ 
                                     backgroundColor: '#756A3499', 
                                     color: 'white',
-                                    fontSize: '11px'
+                                    fontSize: '11px',
+                                    maxWidth: '100%',
+                                    p:2,
+                                    '& .MuiChip-label': { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' }
                                 }} 
                             />
                         </Box>

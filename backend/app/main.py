@@ -36,6 +36,16 @@ with app.app_context():
     # Migração: adiciona coluna avatar se não existir (sem Alembic)
     with db.engine.connect() as conn:
         conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT;"))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS character_level_snapshots (
+                id              SERIAL      PRIMARY KEY,
+                character_id    INTEGER     NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+                nivel           INTEGER     NOT NULL,
+                snapshot_data   JSONB       NOT NULL,
+                created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                CONSTRAINT uq_char_level_snapshot UNIQUE (character_id, nivel)
+            );
+        """))
         conn.commit()
     user_service = UserService(db.engine, mail, app.config['SECRET_KEY'], mail_sender_url)
     personagem_service = PersonagemService(db)
@@ -653,6 +663,54 @@ def v2_remover_condicao(personagem_id, slug):
             user_id=data.get('user_id', 0),
             condicao_slug=slug,
         )
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+# =============================================================================
+# SNAPSHOTS DE EVOLUÇÃO — Pontos de restauração por nível
+# =============================================================================
+
+@app.route('/personagens/<int:personagem_id>/snapshots', methods=['GET'])
+def listar_snapshots(personagem_id):
+    """Lista todos os snapshots de evolução de um personagem."""
+    try:
+        service = PersonagemService(db)
+        snapshots = service.listar_snapshots(personagem_id)
+        return jsonify(snapshots), 200
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/personagens/<int:personagem_id>/snapshots', methods=['POST'])
+def criar_snapshot(personagem_id):
+    """Cria um snapshot manual para o nível atual do personagem."""
+    try:
+        data = request.get_json() or {}
+        nivel = data.get('nivel')
+        if not nivel:
+            return jsonify({'error': 'Campo "nivel" é obrigatório'}), 400
+
+        service = PersonagemService(db)
+        resultado, status = service.criar_snapshot_manual(personagem_id, nivel)
+        return jsonify(resultado), status
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/personagens/<int:personagem_id>/snapshots/<int:nivel>/restaurar', methods=['POST'])
+def restaurar_snapshot(personagem_id, nivel):
+    """Restaura o personagem ao estado pré-evolução do nível indicado."""
+    try:
+        data = request.get_json() or {}
+        user_id = data.get('user_id')
+
+        service = PersonagemService(db)
+        resultado, status = service.restaurar_snapshot(personagem_id, nivel, user_id)
         return jsonify(resultado), status
     except Exception as e:
         traceback.print_exc()

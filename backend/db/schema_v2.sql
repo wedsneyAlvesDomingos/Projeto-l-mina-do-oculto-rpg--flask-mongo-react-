@@ -672,6 +672,23 @@ CREATE TABLE IF NOT EXISTS character_audit_log (
 );
 
 -- ─────────────────────────────────────────────────────────────────────────────
+-- 21b. SNAPSHOTS DE EVOLUÇÃO (pontos de restauração por nível)
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Armazena o estado completo da ficha ANTES de evoluir para cada nível.
+-- Permite regredir o personagem desfazendo tudo feito a partir daquele nível.
+-- Nível 1 (criação) nunca pode ser revertido.
+CREATE TABLE IF NOT EXISTS character_level_snapshots (
+    id              SERIAL      PRIMARY KEY,
+    character_id    INTEGER     NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    nivel           INTEGER     NOT NULL,            -- nível PARA o qual evoluiu (2, 3, ...)
+    snapshot_data   JSONB       NOT NULL,            -- estado completo pré-evolução
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_char_level_snapshot UNIQUE (character_id, nivel)
+);
+
+CREATE INDEX IF NOT EXISTS idx_level_snapshot_char ON character_level_snapshots(character_id);
+
+-- ─────────────────────────────────────────────────────────────────────────────
 -- 22. SEÇÕES FLEXÍVEIS (retrocompatibilidade com schema v1)
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Mantém compatibilidade com o sistema de CharacterSection existente.

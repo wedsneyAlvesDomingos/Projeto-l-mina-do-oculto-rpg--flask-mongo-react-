@@ -14,6 +14,8 @@ import {
     removerCondicaoV2,
     realizarDescansoV2,
     fetchFicha,
+    listarSnapshots,
+    restaurarSnapshot,
 } from '../../services/apiV2';
 import {
     calcularPontosDeVida,
@@ -34,6 +36,9 @@ import {
     calcularDefesaTotal,
     calcularVelocidadeMovimento,
     calcularModificadoresCondicoes,
+    calcularNivel,
+    TABELA_XP_POR_NIVEL,
+    calcularPontosRegaliaTotal,
 } from '../../data/constants';
 import { calcularPenalidadesForcaArmadura } from '../../data/constants/equipamentos';
 
@@ -71,6 +76,9 @@ export default function useCharacterSheet() {
     const [vantagens, setVantagens]           = useState(0);
     const [desvantagens, setDesvantagens]     = useState(0);
     const [nivelLuz, setNivelLuz]             = useState('completa');
+
+    /* ── Snapshots de evolução ──────────────────────── */
+    const [levelSnapshots, setLevelSnapshots] = useState([]);
 
     /* ── Modais ─────────────────────────────────────── */
     const [dinheiroModalOpen, setDinheiroModalOpen]     = useState(false);
@@ -755,6 +763,73 @@ export default function useCharacterSheet() {
     }, [userId, characterId, baseUrl]);
 
     /* ═══════════════════════════════════════════════════
+       EFEITO — Carregar snapshots de evolução
+       ═══════════════════════════════════════════════════ */
+    useEffect(() => {
+        if (!character?.id) return;
+        listarSnapshots(character.id)
+            .then(setLevelSnapshots)
+            .catch(err => console.warn('Erro ao carregar snapshots:', err.message));
+    }, [character?.id]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACK — Subir nível instantâneo (+XP mínimo)
+       ═══════════════════════════════════════════════════ */
+    const handleLevelUp = useCallback(async () => {
+        if (!character?.id) return;
+        const nivelAtual = character.nivel || 1;
+        if (nivelAtual >= 20) {
+            setSnackbar({ open: true, message: 'O personagem já está no nível máximo (20)!', severity: 'warning' });
+            return { success: false };
+        }
+        const xpNecessario = TABELA_XP_POR_NIVEL[nivelAtual - 1]; // XP para alcançar nivelAtual+1
+        const novoNivel = nivelAtual + 1;
+        const charAtualizado = { ...character, experiencia: xpNecessario, nivel: novoNivel };
+        try {
+            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(charAtualizado),
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || 'Erro ao subir de nível');
+            }
+            setCharacter(charAtualizado);
+            setOriginalCharacter(JSON.parse(JSON.stringify(charAtualizado)));
+            // Recarregar snapshots
+            const snaps = await listarSnapshots(character.id);
+            setLevelSnapshots(snaps);
+            const pontosAntes = calcularPontosRegaliaTotal(nivelAtual);
+            const pontosDepois = calcularPontosRegaliaTotal(novoNivel);
+            return { success: true, novoNivel, pontosGanhos: pontosDepois - pontosAntes, pontosTotal: pontosDepois };
+        } catch (err) {
+            setSnackbar({ open: true, message: err.message || 'Erro ao subir de nível', severity: 'error' });
+            return { success: false };
+        }
+    }, [character, baseUrl]);
+
+    /* ═══════════════════════════════════════════════════
+       CALLBACK — Regredir nível (restaurar snapshot)
+       ═══════════════════════════════════════════════════ */
+    const handleRegressLevel = useCallback(async (nivelAlvo) => {
+        if (!character?.id) return;
+        try {
+            const resultado = await restaurarSnapshot(character.id, nivelAlvo, userId || 0);
+            if (resultado.personagem) {
+                setCharacter(resultado.personagem);
+                setOriginalCharacter(JSON.parse(JSON.stringify(resultado.personagem)));
+                // Recarregar snapshots após regressão
+                const snaps = await listarSnapshots(character.id);
+                setLevelSnapshots(snaps);
+                setSnackbar({ open: true, message: `Personagem regredido para antes do nível ${nivelAlvo} com sucesso!`, severity: 'success' });
+            }
+        } catch (err) {
+            setSnackbar({ open: true, message: err.message || 'Erro ao regredir nível', severity: 'error' });
+        }
+    }, [character?.id, userId]);
+
+    /* ═══════════════════════════════════════════════════
        RETORNO — tudo que o componente precisa
        ═══════════════════════════════════════════════════ */
     return {
@@ -795,5 +870,7 @@ export default function useCharacterSheet() {
         condicoesModificadores,
         // Constantes
         DADOS_DISPONIVEIS,
+        // Snapshots de evolução
+        levelSnapshots, handleRegressLevel, handleLevelUp,
     };
 }

@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from models.models import (
-    Personagem, CharacterSection, CharacterAuditLog,
+    Personagem, CharacterSection, CharacterAuditLog, CharacterLevelSnapshot,
     CharacterRegaliaV2, CharacterAbilityV2, CharacterEffectV2,
     CharacterSkillV2, CatalogRegalia, CatalogArvoreNivel,
     CatalogAbility, CatalogCondicao,
@@ -111,6 +111,7 @@ class PersonagemService:
             return {'erros': erros}
 
         before_state = personagem.to_dict()
+        nivel_anterior = personagem.level or 1
 
         base_fields = self._extract_base_fields(novos_dados)
         for attr, value in base_fields.items():
@@ -118,6 +119,12 @@ class PersonagemService:
 
         self._upsert_sections(personagem, novos_dados)
         personagem.updated_at = datetime.utcnow()
+
+        # Detectar aumento de nível e criar snapshot automático
+        nivel_novo = personagem.level or 1
+        if nivel_novo > nivel_anterior and nivel_novo >= 2:
+            self._criar_snapshot_nivel(personagem_id, nivel_novo, before_state)
+
         try:
             self._registrar_auditoria(
                 character_id=personagem_id,
@@ -453,4 +460,117 @@ class PersonagemService:
             self.db.session.rollback()
             raise
 
+    # =========================================================================
+    # SNAPSHOTS DE EVOLUÇÃO — pontos de restauração por nível
+    # =========================================================================
+
+    def _criar_snapshot_nivel(self, character_id, nivel, before_state):
+        """Cria (ou sobrescreve) o snapshot para um dado nível."""
+        existing = self.db.session.query(CharacterLevelSnapshot).filter_by(
+            character_id=character_id, nivel=nivel
+        ).first()
+        if existing:
+            existing.snapshot_data = before_state
+            existing.created_at = datetime.utcnow()
+        else:
+            snap = CharacterLevelSnapshot(
+                character_id=character_id,
+                nivel=nivel,
+                snapshot_data=before_state,
+                created_at=datetime.utcnow(),
+            )
+            self.db.session.add(snap)
+
+    def listar_snapshots(self, personagem_id):
+        """Retorna a lista de snapshots de evolução de um personagem."""
+        snapshots = (
+            self.db.session.query(CharacterLevelSnapshot)
+            .filter_by(character_id=personagem_id)
+            .order_by(CharacterLevelSnapshot.nivel.asc())
+            .all()
+        )
+        return [s.to_dict() for s in snapshots]
+
+    def restaurar_snapshot(self, personagem_id, nivel_alvo, user_id=None):
+        """
+        Restaura o personagem ao estado pré-evolução do nível indicado.
+        Isso efetivamente reverte para o nível anterior (nivel_alvo - 1).
+        Não permite reverter para nível < 1 (criação).
+        Remove todos os snapshots de nível >= nivel_alvo depois da restauração.
+        """
+        if nivel_alvo <= 1:
+            return {"erro": "Não é possível desfazer a criação do personagem (nível 1)."}, 400
+
+        personagem = self.db.session.query(Personagem).get(personagem_id)
+        if not personagem:
+            return {"erro": "Personagem não encontrado."}, 404
+
+        snapshot = self.db.session.query(CharacterLevelSnapshot).filter_by(
+            character_id=personagem_id, nivel=nivel_alvo
+        ).first()
+        if not snapshot:
+            return {"erro": f"Nenhum snapshot encontrado para o nível {nivel_alvo}."}, 404
+
+        before_state = personagem.to_dict()
+        restored_data = snapshot.snapshot_data
+
+        # Restaurar campos base
+        base_fields = self._extract_base_fields(restored_data)
+        for attr, value in base_fields.items():
+            setattr(personagem, attr, value)
+
+        # Restaurar sections (apagar existentes e recriar do snapshot)
+        for section in list(personagem.sections):
+            self.db.session.delete(section)
+        self.db.session.flush()
+
+        for key, value in restored_data.items():
+            if key in BASE_FIELD_MAP or key in IGNORE_SECTION_KEYS:
+                continue
+            personagem.sections.append(CharacterSection(section_key=key, data=value))
+
+        personagem.updated_at = datetime.utcnow()
+
+        # Remover snapshots de nível >= nivel_alvo (ficam obsoletos)
+        self.db.session.query(CharacterLevelSnapshot).filter(
+            CharacterLevelSnapshot.character_id == personagem_id,
+            CharacterLevelSnapshot.nivel >= nivel_alvo,
+        ).delete(synchronize_session='fetch')
+
+        try:
+            self._registrar_auditoria(
+                character_id=personagem_id,
+                user_id=user_id or personagem.user_id,
+                action='level_regression',
+                before_state=before_state,
+                after_state=personagem.to_dict(),
+                metadata={"nivel_revertido": nivel_alvo, "nivel_restaurado": restored_data.get("nivel", nivel_alvo - 1)},
+            )
+            self.db.session.commit()
+            return {"ok": True, "personagem": personagem.to_dict()}, 200
+        except SQLAlchemyError:
+            self.db.session.rollback()
+            raise
+
+    def criar_snapshot_manual(self, personagem_id, nivel):
+        """
+        Cria um snapshot manualmente para um nível (útil para personagens existentes
+        que não tinham snapshots antes desta feature).
+        """
+        personagem = self.db.session.query(Personagem).get(personagem_id)
+        if not personagem:
+            return {"erro": "Personagem não encontrado."}, 404
+
+        if nivel <= 1:
+            return {"erro": "Não é possível criar snapshot para o nível 1 (criação)."}, 400
+
+        current_state = personagem.to_dict()
+        self._criar_snapshot_nivel(personagem_id, nivel, current_state)
+
+        try:
+            self.db.session.commit()
+            return {"ok": True, "message": f"Snapshot para nível {nivel} criado com sucesso."}, 201
+        except SQLAlchemyError:
+            self.db.session.rollback()
+            raise
 

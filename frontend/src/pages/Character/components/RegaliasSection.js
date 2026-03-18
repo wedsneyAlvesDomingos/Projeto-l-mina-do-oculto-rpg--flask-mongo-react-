@@ -22,7 +22,8 @@ import { EditableField } from './EditableField';
 import {
     getRegaliaAprendiz, getOpcaoRegalia,
     getClassePrimaria, getEspecializacao, calcularPontosRegaliaTotal,
-    classesPrimarias, especies,
+    classesPrimarias, especies, especializacoes, determinarClasseAtual,
+    getProfissao, pocoesHerbalista, venenosAnimais, venenosPlantas, venenosMonstros,
 } from '../../../data/constants';
 import RegaliasShop, { calcularPontosGastos } from './RegaliasShop';
 
@@ -1031,9 +1032,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
     const [especieDetail, setEspecieDetail] = useState(null);   // { especie, regalias[] }
     const [especieUsar, setEspecieUsar] = useState(null);         // { nomeRegalia, habs[] }
-    const [profissaoDetail, setProfissaoDetail] = useState(null); // { nome, habilidades }
     const [classeDetail, setClasseDetail] = useState(null);       // { classDisplayName, rObj }
     const [classeUsar, setClasseUsar] = useState(null);            // { nomeRegalia, habs[] }
+    const [espDetail, setEspDetail] = useState(null);              // { espDisplayName, rObj }
+    const [espUsar, setEspUsar] = useState(null);                  // { nomeRegalia, habs[] }
 
     const renderRegaliasEspecie = () => {
         const grupos = (character.regalias_de_especie || []).filter(r => r && r.especie);
@@ -1176,59 +1178,189 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
         return (
             <>
-                <TableContainer component={Paper} sx={{ border: '1px solid #2F3C2944', borderRadius: 2, overflow: 'auto' }}>
-                    <Table size="small" sx={{ minWidth: 380 }}>
-                        <TableHead>
-                            <TableRow sx={{ background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)' }}>
-                                <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Profissão</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Habilidade</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {regalias.map((regalia, idx) => (
-                                <TableRow key={idx} sx={{
-                                    backgroundColor: idx % 2 === 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
-                                    '&:hover': { backgroundColor: 'var(--surface-raised)' },
-                                    borderLeft: '3px solid #2F3C29',
-                                }}>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13 }}>
-                                        {regalia.nome}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        {regalia.habilidades ? (
-                                            <Button size="small" variant="contained"
-                                                startIcon={<InfoOutlinedIcon sx={{ fontSize: 13 }} />}
-                                                onClick={() => setProfissaoDetail(regalia)}
-                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-moss, #2F3C29)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-midnight, #162A22)' } }}
-                                            >
-                                                Ver
-                                            </Button>
-                                        ) : (
-                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {regalias.map((regalia, idx) => {
+                    const profData = getProfissao(regalia.nome);
+                    const habsCompradas = Array.isArray(regalia.habilidades)
+                        ? regalia.habilidades
+                        : (regalia.habilidades ? [regalia.habilidades] : []);
 
-                {/* Modal habilidade profissão */}
-                <Dialog open={Boolean(profissaoDetail)} onClose={() => setProfissaoDetail(null)} maxWidth="sm" fullWidth
-                    PaperProps={{ sx: { borderRadius: 3, border: '2px solid #2F3C29' } }}>
-                    <DialogTitle component="div" sx={{ background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.5 }}>
-                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{profissaoDetail?.nome}</Typography>
-                        <IconButton onClick={() => setProfissaoDetail(null)} sx={{ color: '#fff' }} size="small"><CloseIcon /></IconButton>
-                    </DialogTitle>
-                    <DialogContent sx={{ backgroundColor: 'var(--surface-paper)', pt: 2 }}>
-                        <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: 'var(--text-primary)' }}>
-                            {profissaoDetail?.habilidades}
-                        </Typography>
-                    </DialogContent>
-                    <DialogActions sx={{ backgroundColor: 'var(--surface-paper)', borderTop: '1px solid #2F3C2944', px: 2, py: 1 }}>
-                        <Button onClick={() => setProfissaoDetail(null)} sx={{ color: 'var(--color-moss, #2F3C29)', fontFamily: 'Esteban, serif' }}>Fechar</Button>
-                    </DialogActions>
-                </Dialog>
+                    return (
+                        <Box key={idx} sx={{ mb: 3, border: '1px solid #2F3C2966', borderRadius: 2, overflow: 'hidden' }}>
+                            {/* Cabeçalho da profissão */}
+                            <Box sx={{
+                                background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)',
+                                px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1,
+                            }}>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1rem', color: '#fff' }}>
+                                    {regalia.nome}
+                                </Typography>
+                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                                    {profData?.rendaPorDia > 0 && (
+                                        <Chip size="small" label={`💰 ${profData.rendaPorDia} M.O./dia`}
+                                            sx={{ backgroundColor: '#FFD70033', color: '#FFD700', fontSize: 10, fontWeight: 'bold' }} />
+                                    )}
+                                    {profData?.chanceDeRisco && (
+                                        <Chip size="small" label={`⚠️ ${profData.chanceDeRisco}`}
+                                            sx={{ backgroundColor: '#FF444433', color: '#FF8A80', fontSize: 10 }} />
+                                    )}
+                                </Box>
+                            </Box>
+
+                            <Box sx={{ px: 2, py: 1.5, backgroundColor: 'var(--surface-raised)' }}>
+                                {/* Descrição da profissão */}
+                                {profData?.descricao && (
+                                    <Typography className="esteban" sx={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.6, mb: 1.5, fontStyle: 'italic' }}>
+                                        {profData.descricao}
+                                    </Typography>
+                                )}
+
+                                {/* Benefícios fixos */}
+                                {profData?.beneficiosFixos?.length > 0 && (
+                                    <Box sx={{ mb: 1.5 }}>
+                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 12, color: 'var(--text-primary)', mb: 0.5 }}>
+                                            📋 Benefícios Fixos:
+                                        </Typography>
+                                        {profData.beneficiosFixos.map((b, bi) => (
+                                            <Typography key={bi} className="esteban" sx={{ fontSize: 11, color: 'var(--text-primary)', pl: 1.5, lineHeight: 1.6 }}>
+                                                • {b}
+                                            </Typography>
+                                        ))}
+                                    </Box>
+                                )}
+
+                                {/* Habilidades compradas */}
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 13, color: 'var(--text-primary)', mb: 1 }}>
+                                    ✨ Habilidades Adquiridas ({habsCompradas.length})
+                                </Typography>
+
+                                {habsCompradas.length === 0 ? (
+                                    <Typography className="esteban" sx={{ fontSize: 11, color: 'var(--text-primary)', fontStyle: 'italic' }}>
+                                        Nenhuma habilidade comprada ainda.
+                                    </Typography>
+                                ) : (
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                        {habsCompradas.map((habNome, hi) => {
+                                            const habObj = profData?.habilidades?.find(h => h.nome === habNome);
+                                            return (
+                                                <Box key={hi} sx={{
+                                                    border: '1px solid #2F3C2933', borderRadius: 1.5, p: 1.5,
+                                                    backgroundColor: 'var(--surface-default)',
+                                                }}>
+                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 12, color: 'var(--text-primary)' }}>
+                                                            {habNome}
+                                                        </Typography>
+                                                        {habObj?.custoRegalia && (
+                                                            <Chip size="small" label={`${habObj.custoRegalia} pt`}
+                                                                sx={{ fontSize: 9, height: 18, backgroundColor: '#8B691422', color: '#8B6914' }} />
+                                                        )}
+                                                    </Box>
+                                                    {habObj?.descricao && (
+                                                        <Typography className="esteban" sx={{ fontSize: 11, color: 'var(--text-primary)', lineHeight: 1.5, mb: habObj.efeitos?.length ? 0.5 : 0 }}>
+                                                            {habObj.descricao}
+                                                        </Typography>
+                                                    )}
+                                                    {habObj?.efeitos?.length > 0 && (
+                                                        <Box sx={{ mt: 0.5, pl: 1 }}>
+                                                            {habObj.efeitos.map((ef, ei) => (
+                                                                <Typography key={ei} className="esteban" sx={{ fontSize: 10, color: '#2F3C29', lineHeight: 1.5 }}>
+                                                                    ▸ {ef}
+                                                                </Typography>
+                                                            ))}
+                                                        </Box>
+                                                    )}
+                                                    {!habObj && (
+                                                        <Typography className="esteban" sx={{ fontSize: 11, color: 'var(--text-primary)', fontStyle: 'italic' }}>
+                                                            {regalia.descricao || ''}
+                                                        </Typography>
+                                                    )}
+                                                </Box>
+                                            );
+                                        })}
+                                    </Box>
+                                )}
+
+                                {/* Sistemas especiais para Herbalista */}
+                                {regalia.nome?.toLowerCase() === 'herbalista' && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Accordion sx={{ border: '1px solid #2F3C2933', backgroundColor: 'var(--surface-default)', '&:before': { display: 'none' } }}>
+                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 12 }}>🧪 Poções ({pocoesHerbalista.length})</Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails sx={{ p: 1 }}>
+                                                <Table size="small">
+                                                    <TableHead>
+                                                        <TableRow sx={{ backgroundColor: '#2F3C2922' }}>
+                                                            <TableCell sx={{ fontSize: 10, fontWeight: 'bold', fontFamily: 'Esteban, serif' }}>Poção</TableCell>
+                                                            <TableCell sx={{ fontSize: 10, fontWeight: 'bold', fontFamily: 'Esteban, serif' }}>Efeito</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {pocoesHerbalista.map((p, pi) => (
+                                                            <TableRow key={pi}>
+                                                                <TableCell sx={{ fontSize: 10, fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>{p.nome}</TableCell>
+                                                                <TableCell sx={{ fontSize: 10, fontFamily: 'Esteban, serif' }}>{p.efeito}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                        <Accordion sx={{ border: '1px solid #2F3C2933', backgroundColor: 'var(--surface-default)', '&:before': { display: 'none' } }}>
+                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 12 }}>🐍 Venenos ({venenosAnimais.length + venenosPlantas.length + venenosMonstros.length})</Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails sx={{ p: 1 }}>
+                                                {[{ label: 'Animais', data: venenosAnimais }, { label: 'Plantas', data: venenosPlantas }, { label: 'Monstros', data: venenosMonstros }].map(({ label, data }) => (
+                                                    data.length > 0 && (
+                                                        <Box key={label} sx={{ mb: 1 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 11, mb: 0.5 }}>{label}:</Typography>
+                                                            {data.map((v, vi) => (
+                                                                <Typography key={vi} className="esteban" sx={{ fontSize: 10, pl: 1, lineHeight: 1.5 }}>
+                                                                    • <strong>{v.nome}</strong> — {v.efeito}
+                                                                </Typography>
+                                                            ))}
+                                                        </Box>
+                                                    )
+                                                ))}
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </Box>
+                                )}
+
+                                {/* Tabela de sistemas especiais (ex: Mercador) */}
+                                {profData?.sistemasEspeciais && (
+                                    <Box sx={{ mt: 2 }}>
+                                        {Object.entries(profData.sistemasEspeciais).map(([sysName, sys]) => (
+                                            <Accordion key={sysName} sx={{ border: '1px solid #2F3C2933', backgroundColor: 'var(--surface-default)', '&:before': { display: 'none' } }}>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 12 }}>📊 {sysName}</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails sx={{ p: 1 }}>
+                                                    {sys.tabelas && Object.entries(sys.tabelas).map(([tblName, tbl]) => (
+                                                        <Box key={tblName}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 11, mb: 0.5 }}>{tblName}:</Typography>
+                                                            <Table size="small">
+                                                                <TableBody>
+                                                                    {Object.entries(tbl).map(([faixa, valor]) => (
+                                                                        <TableRow key={faixa}>
+                                                                            <TableCell sx={{ fontSize: 10, fontFamily: 'Esteban, serif', fontWeight: 'bold', width: 80 }}>{faixa}</TableCell>
+                                                                            <TableCell sx={{ fontSize: 10, fontFamily: 'Esteban, serif' }}>{valor}</TableCell>
+                                                                        </TableRow>
+                                                                    ))}
+                                                                </TableBody>
+                                                            </Table>
+                                                        </Box>
+                                                    ))}
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        ))}
+                                    </Box>
+                                )}
+                            </Box>
+                        </Box>
+                    );
+                })}
             </>
         );
     };
@@ -1399,6 +1531,151 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
         );
     };
 
+    const renderRegaliasEspecializacao = () => {
+        const regaliasEsp = character.regalias_de_especialization;
+        if (!regaliasEsp || Object.keys(regaliasEsp).length === 0) return (
+            <Box sx={{ textAlign: 'center', py: 3 }}>
+                <Typography className="esteban" sx={{ fontSize: '12px', color: 'var(--text-primary)' }}>Nenhuma regalia de especialização adquirida.</Typography>
+            </Box>
+        );
+
+        const rows = Object.entries(regaliasEsp).flatMap(([espId, espData]) => {
+            const espInfo = especializacoes.find(e => e.id === espId);
+            const espDisplayName = espInfo?.nome || espId.replace(/_/g, ' ');
+            const arr = Array.isArray(espData) ? espData : (espData && typeof espData === 'object' ? Object.values(espData) : espData ? [espData] : []);
+            return arr.map(r => {
+                const rObj = typeof r === 'object' ? r : { nome: r };
+                const habs = (rObj.tipo && rObj.tipo !== 'passiva') ? [rObj] : [];
+                return { espDisplayName, rObj, habs };
+            });
+        });
+
+        return (
+            <>
+                <TableContainer component={Paper} sx={{ border: '1px solid #6A1B9A44', borderRadius: 2, overflow: 'auto' }}>
+                    <Table size="small" sx={{ minWidth: 400 }}>
+                        <TableHead>
+                            <TableRow sx={{ backgroundColor: '#6A1B9A' }}>
+                                <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Especialização</TableCell>
+                                <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Tipo</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map(({ espDisplayName, rObj, habs }, idx) => (
+                                <TableRow key={idx} sx={{
+                                    backgroundColor: idx % 2 === 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
+                                    '&:hover': { backgroundColor: 'var(--surface-raised)' },
+                                    borderLeft: '3px solid #6A1B9A',
+                                }}>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+                                        {espDisplayName}
+                                    </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 180 }}>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: 13, fontFamily: 'Esteban, serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>
+                                            {rObj.nome}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {rObj.autoIncluded
+                                            ? <Chip label="Automática" size="small" sx={{ fontSize: 10, backgroundColor: '#4CAF50', color: 'white' }} />
+                                            : <Chip label="Comprada" size="small" sx={{ fontSize: 10, backgroundColor: '#6A1B9A22', color: '#6A1B9A' }} />
+                                        }
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {rObj.descricao ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<InfoOutlinedIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setEspDetail({ espDisplayName, rObj })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: '#6A1B9A', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: '#4A148C' } }}
+                                            >
+                                                Ver
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {habs.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setEspUsar({ nomeRegalia: rObj.nome, habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+                {/* Modal detalhes especialização */}
+                <Dialog open={Boolean(espDetail)} onClose={() => setEspDetail(null)} maxWidth="sm" fullWidth
+                    PaperProps={{ sx: { borderRadius: 3, border: '2px solid #6A1B9A' } }}>
+                    <DialogTitle component="div" sx={{ background: 'linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%)', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.5 }}>
+                        <Box>
+                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{espDetail?.rObj?.nome}</Typography>
+                            <Typography className="esteban" sx={{ fontSize: 11, opacity: 0.8 }}>{espDetail?.espDisplayName}</Typography>
+                        </Box>
+                        <IconButton onClick={() => setEspDetail(null)} sx={{ color: '#fff' }} size="small"><CloseIcon /></IconButton>
+                    </DialogTitle>
+                    <DialogContent sx={{ backgroundColor: 'var(--surface-paper)', pt: 2 }}>
+                        {espDetail?.rObj?.descricao && (
+                            <Typography className="esteban" variant="body2" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, color: 'var(--text-primary)' }}>
+                                {espDetail.rObj.descricao}
+                            </Typography>
+                        )}
+                    </DialogContent>
+                    <DialogActions sx={{ backgroundColor: 'var(--surface-paper)', borderTop: '1px solid #6A1B9A44', px: 2, py: 1 }}>
+                        <Button onClick={() => setEspDetail(null)} sx={{ color: '#6A1B9A', fontFamily: 'Esteban, serif' }}>Fechar</Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/* Modal SpellCards: usar habilidades de especialização */}
+                <Dialog
+                    open={Boolean(espUsar)}
+                    onClose={() => setEspUsar(null)}
+                    maxWidth={false}
+                    PaperProps={{
+                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                    }}
+                >
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <IconButton
+                            onClick={() => setEspUsar(null)}
+                            size="small"
+                            sx={{
+                                position: 'absolute', top: -14, right: -14, zIndex: 10,
+                                color: 'white', backgroundColor: 'rgba(0,0,0,0.55)',
+                                '&:hover': { backgroundColor: 'rgba(0,0,0,0.8)' },
+                                width: 26, height: 26,
+                            }}
+                        >
+                            <CloseIcon sx={{ fontSize: 15 }} />
+                        </IconButton>
+                        {espUsar?.habs?.map((hab, i) => (
+                            <SpellCard
+                                key={i}
+                                hab={hab}
+                                overrideSx={espUsar.habs.length === 1
+                                    ? { width: 300, '&:hover': { transform: 'none', boxShadow: 3 } }
+                                    : {}
+                                }
+                            />
+                        ))}
+                    </Box>
+                </Dialog>
+            </>
+        );
+    };
+
     /* ── Pontos de regalia (total e gastos) ── */
     const pontosTotal = calcularPontosRegaliaTotal(character.nivel || 1);
 
@@ -1411,6 +1688,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
     const especieCount = (character.regalias_de_especie || []).filter(r => r?.especie).length;
     const profissaoCount = (character.regalias_de_profissao || []).filter(r => r?.nome).length;
     const classeCount = Object.keys(character.regalias_de_classe || {}).length;
+    const espCount = Object.keys(character.regalias_de_especialization || {}).length;
 
     /* ── Helper: aplicar bônus de regalia aos campos top-level do character ── */
     const aplicarBonusDeRegalia = (prev, bonus) => {
@@ -1531,10 +1809,42 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     if (esp) {
                         const regaliasEsp = { ...(prev.regalias_de_especialization || {}) };
                         if (!regaliasEsp[id]) {
-                            regaliasEsp[id] = [{ nome: esp.nome, descricao: esp.habilidadeClasse?.descricao || esp.descricao || '' }];
+                            const habClasse = esp.regaliaObrigatoria?.habilidadeClasse;
+                            regaliasEsp[id] = [{
+                                nome: habClasse?.nome || esp.nome,
+                                descricao: habClasse?.descricao || esp.descricao || '',
+                                tipo: habClasse?.tipo || 'passiva',
+                                custoMagia: habClasse?.custoMagia,
+                                custoEstamina: habClasse?.custoEstamina,
+                                custoAcoes: habClasse?.custoAcoes,
+                                efeito: habClasse?.efeito,
+                                escalamento: habClasse?.escalamento,
+                                autoIncluded: true,
+                            }];
                         }
                         updated.regalias_de_especialization = regaliasEsp;
                         if (esp.bonusPorRegalia) Object.assign(updated, aplicarBonusDeRegalia(prev, esp.bonusPorRegalia));
+                    }
+                } else if (tipo === 'esp_avulsa') {
+                    if (extra.espId && extra.avulsaData) {
+                        const regaliasEsp = { ...(prev.regalias_de_especialization || {}) };
+                        const espEntries = [...(regaliasEsp[extra.espId] || [])];
+                        const ra = extra.avulsaData;
+                        espEntries.push({
+                            nome: ra.nome,
+                            descricao: ra.descricao || '',
+                            tipo: ra.tipo || null,
+                            custoMagia: ra.custoMagia,
+                            custoEstamina: ra.custoEstamina,
+                            custoAcoes: ra.custoAcoes,
+                            efeito: ra.efeito,
+                            efeitoOpcional: ra.efeitoOpcional,
+                            escalamento: ra.escalamento,
+                        });
+                        regaliasEsp[extra.espId] = espEntries;
+                        updated.regalias_de_especialization = regaliasEsp;
+                        const esp = getEspecializacao(extra.espId);
+                        if (esp?.bonusPorRegalia) Object.assign(updated, aplicarBonusDeRegalia(prev, esp.bonusPorRegalia));
                     }
                 } else if (tipo === 'opcional') {
                     if (extra.tipo && extra.opcao) {
@@ -1544,6 +1854,27 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                             regaliaOpcArr.push({ tipo: extra.tipo, opcao: extra.opcao });
                         }
                         updated.regaliasOpcionais = regaliaOpcArr;
+                    }
+                } else if (tipo === 'profissao_hab') {
+                    // Adicionar habilidade de profissão à ficha (agrupando por profissão)
+                    if (extra.profNome && extra.habNome) {
+                        const regProf = [...(prev.regalias_de_profissao || [])];
+                        const existingIdx = regProf.findIndex(r => r.nome === extra.profNome);
+                        if (existingIdx >= 0) {
+                            const existing = { ...regProf[existingIdx] };
+                            const habs = Array.isArray(existing.habilidades) ? [...existing.habilidades] : (existing.habilidades ? [existing.habilidades] : []);
+                            if (!habs.includes(extra.habNome)) habs.push(extra.habNome);
+                            existing.habilidades = habs;
+                            regProf[existingIdx] = existing;
+                        } else {
+                            regProf.push({
+                                nome: extra.profNome,
+                                habilidades: [extra.habNome],
+                                descricao: extra.habData?.descricao || '',
+                                efeitos: extra.habData?.efeitos || [],
+                            });
+                        }
+                        updated.regalias_de_profissao = regProf;
                     }
                 } else if (tipo === 'especie_extra') {
                     // Regalias extras de espécie — cada uma é comprada individualmente, sem exclusividade
@@ -1574,6 +1905,8 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                         updated.regalias_de_especie = regEspecie;
                     }
                 }
+                // Recalcular classe exibida com base na hierarquia
+                updated.classe = determinarClasseAtual(updated);
                 // Auto-save ao backend
                 autoSave(updated);
                 return updated;
@@ -1630,12 +1963,14 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Tab label={`Espécie${especieCount ? ` (${especieCount})` : ''}`} />
                     <Tab label={`Profissão${profissaoCount ? ` (${profissaoCount})` : ''}`} />
                     <Tab label={`Classe${classeCount ? ` (${classeCount})` : ''}`} />
+                    <Tab label={`Especialização${espCount ? ` (${espCount})` : ''}`} />
                 </Tabs>
                 <Box role="tabpanel">
                     {activeTab === 0 && renderRegaliasAprendiz()}
                     {activeTab === 1 && renderRegaliasEspecie()}
                     {activeTab === 2 && renderRegaliasProfissao()}
                     {activeTab === 3 && renderRegaliasClasse()}
+                    {activeTab === 4 && renderRegaliasEspecializacao()}
                 </Box>
             </CardContent>
 

@@ -431,8 +431,8 @@ export const INTERACOES_ELEMENTAIS = {
     // Tipos físicos (sem interação elemental especial)
     cortante: { neutro: true, descricao: 'Dano físico cortante' },
     perfurante: { neutro: true, descricao: 'Dano físico perfurante' },
-    contundente: { neutro: true, descricao: 'Dano físico contundente' },
-    impacto: { neutro: true, descricao: 'Dano de impacto (combate desarmado)' }
+    impacto: { neutro: true, descricao: 'Dano de impacto' },
+    veneno: { neutro: true, descricao: 'Dano de veneno' }
 };
 
 /**
@@ -1413,9 +1413,9 @@ export const getLimitesComArcanatec = (arcanatec) => {
 // ============================================================================
 
 export const TIPOS_DANO = [
-    'cortante', 'perfurante', 'contundente', 'fogo', 'gelo', 'eletrico',
-    'acido', 'veneno', 'necrotico', 'radiante', 'psiquico', 'arcano',
-    'sagrado', 'profano', 'sonico', 'forca'
+    'cortante', 'perfurante', 'impacto', 'fogo', 'gelo', 'raio',
+    'terra', 'veneno', 'necrotico', 'sombrio', 'arcano',
+    'sagrado'
 ];
 
 /**

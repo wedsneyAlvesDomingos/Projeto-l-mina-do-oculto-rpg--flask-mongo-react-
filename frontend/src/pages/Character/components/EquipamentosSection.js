@@ -4,7 +4,7 @@ import {
     Card, CardContent, CardHeader,
     Dialog, DialogTitle, DialogContent, DialogActions,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-    Tooltip, TextField,
+    Tooltip, TextField, MenuItem, Grid,
     Accordion, AccordionSummary, AccordionDetails,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -12,12 +12,36 @@ import CapacidadeCargaPanel from './CapacidadeCargaPanel';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import EditIcon from '@mui/icons-material/Edit';
 import ShieldIcon from '@mui/icons-material/Shield';
 import EditableField from './EditableField';
 import { EquipmentShopTab } from './creation';
 import { categories as equipmentCatalog } from '../../../data/constants';
+
+const CATEGORIAS_ITEM = [
+    'Armas Simples', 'Armas Marciais', 'Armas Exóticas', 'Armas de Fogo',
+    'Armaduras Leves', 'Armaduras Médias', 'Armaduras Pesadas', 'Escudos',
+    'Equipamento de Viagem', 'Munições', 'Equipamento Geral', 'Kits',
+    'Montarias', 'Poções', 'Venenos', 'Pergaminhos', 'Jóias', 'Materiais',
+    'Produção (Ferreiro)', 'Produção (Carpinteiro)', 'Produção (Alfaiate)',
+    'Produção (Arcanista)', 'Produção (Herbalista)', 'Produção (Joalheiro)',
+    'Produção (Inventor)', 'Produção (Cozinheiro)', 'Outros',
+];
+
+const TIPOS_DANO = [
+    'Cortante', 'Perfurante', 'Impacto', 'Fogo', 'Gelo', 'Raio', 'Terra',
+    'Sombrio', 'Sagrado', 'Arcano', 'Necrótico', 'Veneno',
+];
+
+const EMPTY_CUSTOM_ITEM = {
+    name: '', category: '', quantity: 1, price: 0,
+    dano: '', critico: '', defesa: '', bonusDefesa: '',
+    tipo: '', tipoDano: '', alcance: '', maos: '',
+    peso: '', forca: '', description: '',
+};
 
 /* ── Helpers de tipo ────────────────────────────────── */
 const isArma     = (item) => item.dano || item.category?.toLowerCase().includes('arma') || item.category?.toLowerCase().includes('weapon');
@@ -35,6 +59,10 @@ const EquipamentosSection = ({
     const moedas = character.moedas || { platina: 0, ouro: 0, prata: 0, cobre: 0 };
     const [shopOpen, setShopOpen] = useState(false);
     const [descItem, setDescItem] = useState(null); // item com descrição aberta
+    const [createOpen, setCreateOpen] = useState(false);
+    const [customItem, setCustomItem] = useState({ ...EMPTY_CUSTOM_ITEM });
+    const [editIdx, setEditIdx] = useState(null); // índice do item em edição
+    const editingItem = editIdx !== null ? equipamentos[editIdx] : null;
 
     /* ── Dinheiro total em M.O. (ouro) ──────────────── */
     const dinheiroTotal = useMemo(() =>
@@ -113,6 +141,35 @@ const EquipamentosSection = ({
         setShopOpen(false);
     }, [selectedItems, totalSpent, dinheiroTotal, moedas, equipamentos, updateField]);
 
+    /* ── Criar item customizado ── */
+    const handleCreateItem = useCallback(() => {
+        if (!customItem.name?.trim()) return;
+        const newItem = {
+            key: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            name: customItem.name.trim(),
+            category: customItem.category || 'Outros',
+            quantity: parseInt(customItem.quantity) || 1,
+            price: parseFloat(customItem.price) || 0,
+            dano: customItem.dano || '',
+            critico: customItem.critico || '',
+            defesa: customItem.defesa || '',
+            bonusDefesa: customItem.bonusDefesa || '',
+            tipo: customItem.tipo || '',
+            tipoDano: customItem.tipoDano || '',
+            alcance: customItem.alcance || '',
+            maos: customItem.maos || '',
+            peso: customItem.peso || '',
+            forca: customItem.forca || '',
+            description: customItem.description || '',
+            propriedades: [],
+            efeitosEspeciais: [],
+            custom: true,
+        };
+        updateField('equipamentos', [...equipamentos, newItem]);
+        setCustomItem({ ...EMPTY_CUSTOM_ITEM });
+        setCreateOpen(false);
+    }, [customItem, equipamentos, updateField]);
+
     /* CRUD local */
     const handleRemoveEquipamento = (index) => { const ne = [...equipamentos]; ne.splice(index, 1); updateField('equipamentos', ne); };
     const handleUpdateEquipamento = (index, field, value) => { const ne = [...equipamentos]; ne[index] = { ...ne[index], [field]: value }; updateField('equipamentos', ne); };
@@ -174,6 +231,17 @@ const EquipamentosSection = ({
                                 }}
                             >
                                 Loja de Itens
+                            </Button>
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                onClick={() => { setCustomItem({ ...EMPTY_CUSTOM_ITEM }); setCreateOpen(true); }}
+                                startIcon={<AddCircleOutlineIcon fontSize="small" />}
+                                sx={{
+                                    borderColor: '#756A34', fontFamily: 'Esteban, serif',color: 'var(--text-light)',
+                                }}
+                            >
+                                Criar Item
                             </Button>
                         </Box>
                     </Box>
@@ -349,6 +417,15 @@ const EquipamentosSection = ({
                                                             <InfoOutlinedIcon fontSize="small" />
                                                         </IconButton>
                                                     </Tooltip>
+
+                                                    {/* Editar */}
+                                                    {editMode && (
+                                                        <Tooltip title="Editar item">
+                                                            <IconButton size="small" onClick={() => setEditIdx(idx)} sx={{ color: '#756A34' }}>
+                                                                <EditIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
 
                                                     {/* Equipar / Desequipar */}
                                                     {equipStatus.equipavel && (
@@ -595,6 +672,351 @@ const EquipamentosSection = ({
                         </Button>
                     </Box>
                 )}
+            </Dialog>
+
+            {/* ── Modal Criar Item Customizado ── */}
+            <Dialog
+                open={createOpen}
+                onClose={() => setCreateOpen(false)}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{ sx: { borderRadius: 3, border: '2px solid #756A34' } }}
+            >
+                <DialogTitle component="div" sx={{
+                    background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
+                    color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    py: 1.5, fontFamily: 'Esteban, serif',
+                }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <AddCircleOutlineIcon />
+                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Criar Item / Equipamento</Typography>
+                    </Box>
+                    <IconButton onClick={() => setCreateOpen(false)} sx={{ color: '#fff' }} size="small">
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent sx={{ backgroundColor: 'var(--surface-raised)', pt: 2 }}>
+                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth size="small" label="Nome do Item *"
+                                value={customItem.name}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, name: e.target.value }))}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth size="small" label="Categoria" select
+                                value={customItem.category}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, category: e.target.value }))}
+                            >
+                                {CATEGORIAS_ITEM.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Quantidade" type="number"
+                                value={customItem.quantity}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, quantity: e.target.value }))}
+                                inputProps={{ min: 1 }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Preço (M.O.)" type="number"
+                                value={customItem.price}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, price: e.target.value }))}
+                                inputProps={{ min: 0, step: 0.01 }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Peso (kg)"
+                                value={customItem.peso}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, peso: e.target.value }))}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Força mín."
+                                value={customItem.forca}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, forca: e.target.value }))}
+                            />
+                        </Grid>
+
+                        {/* Stats de combate */}
+                        <Grid item xs={12}>
+                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 13, color: 'var(--text-primary)', mt: 1 }}>
+                                ⚔️ Atributos de Combate (preencha conforme necessário)
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Dano (ex: 1d8)"
+                                value={customItem.dano}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, dano: e.target.value }))}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Crítico (ex: 19-20)"
+                                value={customItem.critico}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, critico: e.target.value }))}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Tipo de Dano" select
+                                value={customItem.tipoDano}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, tipoDano: e.target.value }))}
+                            >
+                                <MenuItem value="">Nenhum</MenuItem>
+                                {TIPOS_DANO.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Alcance"
+                                value={customItem.alcance}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, alcance: e.target.value }))}
+                                placeholder="ex: 9/36m"
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Mãos" select
+                                value={customItem.maos}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, maos: e.target.value }))}
+                            >
+                                <MenuItem value="">—</MenuItem>
+                                <MenuItem value="1">1 mão</MenuItem>
+                                <MenuItem value="2">2 mãos</MenuItem>
+                                <MenuItem value="1 ou 2">Versátil</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Defesa (pesada)"
+                                value={customItem.defesa}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, defesa: e.target.value }))}
+                                placeholder="ex: 18"
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Bônus Defesa (+)"
+                                value={customItem.bonusDefesa}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, bonusDefesa: e.target.value }))}
+                                placeholder="ex: +3"
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={3}>
+                            <TextField
+                                fullWidth size="small" label="Tipo (Leve/Média/Pesada)"
+                                value={customItem.tipo}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, tipo: e.target.value }))}
+                            />
+                        </Grid>
+
+                        {/* Descrição */}
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth size="small" label="Descrição / Efeitos Especiais" multiline rows={3}
+                                value={customItem.description}
+                                onChange={(e) => setCustomItem(prev => ({ ...prev, description: e.target.value }))}
+                                placeholder="Descreva o item, seus efeitos especiais, encantamentos, etc."
+                            />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions sx={{ backgroundColor: 'var(--surface-raised)', borderTop: '1px solid #756A3444', px: 2, py: 1 }}>
+                    <Button onClick={() => setCreateOpen(false)} sx={{ color: 'var(--text-primary)', fontFamily: 'Esteban, serif' }}>Cancelar</Button>
+                    <Button
+                        variant="contained"
+                        disabled={!customItem.name?.trim()}
+                        onClick={handleCreateItem}
+                        sx={{
+                            backgroundColor: '#2F3C29', fontFamily: 'Esteban, serif',
+                            '&:hover': { backgroundColor: '#454E30' },
+                            '&.Mui-disabled': { backgroundColor: '#ccc' },
+                        }}
+                    >
+                        ✅ Adicionar ao Inventário
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* ── Modal Editar Item ── */}
+            <Dialog
+                open={editIdx !== null}
+                onClose={() => setEditIdx(null)}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{ sx: { borderRadius: 3, border: '2px solid #756A34' } }}
+            >
+                <DialogTitle component="div" sx={{
+                    background: 'linear-gradient(135deg, #162A22 0%, #40150A 100%)',
+                    color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    py: 1.5, fontFamily: 'Esteban, serif',
+                }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <EditIcon />
+                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                            Editar: {editingItem?.name || 'Item'}
+                        </Typography>
+                    </Box>
+                    <IconButton onClick={() => setEditIdx(null)} sx={{ color: '#fff' }} size="small">
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                {editingItem && (
+                    <DialogContent sx={{ backgroundColor: 'var(--surface-raised)', pt: 2 }}>
+                        <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth size="small" label="Nome do Item"
+                                    value={editingItem.name || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'name', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth size="small" label="Categoria" select
+                                    value={editingItem.category || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'category', e.target.value)}
+                                >
+                                    {CATEGORIAS_ITEM.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Quantidade" type="number"
+                                    value={editingItem.quantity || 1}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'quantity', parseInt(e.target.value) || 1)}
+                                    inputProps={{ min: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Preço (M.O.)" type="number"
+                                    value={editingItem.price || 0}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'price', parseFloat(e.target.value) || 0)}
+                                    inputProps={{ min: 0, step: 0.01 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Peso (kg)"
+                                    value={editingItem.peso || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'peso', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Força mín."
+                                    value={editingItem.forca || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'forca', e.target.value)}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: 13, color: 'var(--text-primary)', mt: 1 }}>
+                                    ⚔️ Atributos de Combate
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Dano (ex: 1d8)"
+                                    value={editingItem.dano || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'dano', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Crítico (ex: 19-20)"
+                                    value={editingItem.critico || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'critico', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Tipo de Dano" select
+                                    value={editingItem.tipoDano || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'tipoDano', e.target.value)}
+                                >
+                                    <MenuItem value="">Nenhum</MenuItem>
+                                    {TIPOS_DANO.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Alcance"
+                                    value={editingItem.alcance || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'alcance', e.target.value)}
+                                    placeholder="ex: 9/36m"
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Mãos" select
+                                    value={editingItem.maos || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'maos', e.target.value)}
+                                >
+                                    <MenuItem value="">—</MenuItem>
+                                    <MenuItem value="1">1 mão</MenuItem>
+                                    <MenuItem value="2">2 mãos</MenuItem>
+                                    <MenuItem value="1 ou 2">Versátil</MenuItem>
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Defesa (pesada)"
+                                    value={editingItem.defesa || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'defesa', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Bônus Defesa (+)"
+                                    value={editingItem.bonusDefesa || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'bonusDefesa', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Tipo (Leve/Média/Pesada)"
+                                    value={editingItem.tipo || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'tipo', e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <TextField
+                                    fullWidth size="small" label="Ataque"
+                                    value={editingItem.ataque || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'ataque', e.target.value)}
+                                    placeholder="ex: 3"
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth size="small" label="Descrição / Efeitos Especiais" multiline rows={3}
+                                    value={editingItem.description || ''}
+                                    onChange={(e) => handleUpdateEquipamento(editIdx, 'description', e.target.value)}
+                                    placeholder="Descreva o item, seus efeitos especiais, encantamentos, etc."
+                                />
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                )}
+                <DialogActions sx={{ backgroundColor: 'var(--surface-raised)', borderTop: '1px solid #756A3444', px: 2, py: 1 }}>
+                    <Button
+                        onClick={() => setEditIdx(null)}
+                        sx={{ color: 'var(--text-primary)', fontFamily: 'Esteban, serif' }}
+                    >
+                        Fechar
+                    </Button>
+                </DialogActions>
             </Dialog>
         </Card>
     );

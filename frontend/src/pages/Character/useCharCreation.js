@@ -1687,7 +1687,7 @@ export default function useCharCreation() {
 
         const payload = {
             nome_personagem: charName.trim(),
-            classe: '',
+            classe: 'Aprendiz',
             image: image,
             nível: 1,
             pontos_de_regalia: totalPontosDeRegalia,

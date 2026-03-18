@@ -1,3 +1,5 @@
+import especializacoesData from './especializacoesData';
+
 /**
  * Dados centralizados de Regalias do sistema Lâmina do Oculto
  * Este arquivo contém as regalias de aprendiz, regalias opcionais,
@@ -1995,168 +1997,10 @@ export const classesPrimarias = [
 ];
 
 // ============================================================================
-// ESPECIALIZAÇÕES DE CLASSE (requerem 10 regalias na classe primária)
+// ESPECIALIZAÇÕES DE CLASSE (requerem regalias na classe primária)
 // ============================================================================
 
-export const especializacoes = [
-    // -------- DO COMBATENTE --------
-    {
-        id: 'cavaleiro',
-        nome: 'Cavaleiro(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 10 } },
-        bonusPorRegalia: { pv: 6, estamina: 3, magia: 1 },
-        descricao: 'Especialização em combate montado, liderança e proteção.'
-    },
-    {
-        id: 'assassino',
-        nome: 'Assassino(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 10 } },
-        bonusPorRegalia: { pv: 4, estamina: 6, magia: 0 },
-        descricao: 'Especialização em furtividade, venenos e dano preciso.'
-    },
-    {
-        id: 'cacador',
-        nome: 'Caçador(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 10 } },
-        bonusPorRegalia: { pv: 5, estamina: 4, magia: 1 },
-        descricao: 'Especialização em rastreamento, companheiro animal e combate natural.'
-    },
-    {
-        id: 'barbaro',
-        nome: 'Bárbaro(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 10 } },
-        bonusPorRegalia: { pv: 8, estamina: 2, magia: 0 },
-        descricao: 'Especialização em fúria, resistência e combate brutal.'
-    },
-    {
-        id: 'monge',
-        nome: 'Monge',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 7, novico_primario: 3 } },
-        bonusPorRegalia: { pv: 4, estamina: 4, magia: 2 },
-        descricao: 'Especialização em ki, chakras e combate desarmado.'
-    },
-    // -------- DO NOVIÇO --------
-    {
-        id: 'sacerdote',
-        nome: 'Sacerdote',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { novico_primario: 10 } },
-        bonusPorRegalia: { pv: 4, estamina: 0, magia: 6 },
-        descricao: 'Especialização em cura avançada, ressurreição e proteção divina.'
-    },
-    {
-        id: 'exorcista',
-        nome: 'Exorcista',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { novico_primario: 10 } },
-        bonusPorRegalia: { pv: 5, estamina: 0, magia: 5 },
-        descricao: 'Especialização em purificação, dano sagrado e combate contra corruptores.'
-    },
-    {
-        id: 'inquisidor',
-        nome: 'Inquisidor',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { combatente_primario: 5, novico_primario: 5 } },
-        bonusPorRegalia: { pv: 5, estamina: 3, magia: 2 },
-        descricao: 'Especialização em combate divino, armadura de fé e punição sagrada.'
-    },
-    {
-        id: 'profano',
-        nome: 'Profano',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 5, novico_primario: 5 } },
-        bonusPorRegalia: { pv: 3, estamina: 0, magia: 7 },
-        descricao: 'Especialização em magia necrótica, corrupção divina e heresia.',
-        restricoes: ['deidade_maligna_ou_neutra']
-    },
-    // -------- DO INICIADO --------
-    {
-        id: 'mago',
-        nome: 'Mago(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { iniciado_primario: 10 } },
-        bonusPorRegalia: { pv: 4, estamina: 0, magia: 5 },
-        descricao: 'Especialização em magia avançada, evocação e teletransporte.'
-    },
-    {
-        id: 'professor',
-        nome: 'Professor(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { iniciado_primario: 10 } },
-        bonusPorRegalia: { pv: 3, estamina: 0, magia: 6 },
-        descricao: 'Especialização em construtos arcanos, suporte e magias versáteis.'
-    },
-    {
-        id: 'cavaleiro_arcano',
-        nome: 'Cavaleiro(a) Arcano',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { iniciado_primario: 5, combatente_primario: 5 } },
-        bonusPorRegalia: { pv: 5, estamina: 2, magia: 3 },
-        descricao: 'Especialização em combate mágico-marcial, armas arcanas e teletransporte tático.'
-    },
-    {
-        id: 'erudito',
-        nome: 'Erudito',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { iniciado_primario: 5, novico_primario: 5 } },
-        bonusPorRegalia: { pv: 4, estamina: 0, magia: 6 },
-        descricao: 'Especialização em engenharia divina, energia sagrada e sabedoria mista.'
-    },
-    {
-        id: 'invocador',
-        nome: 'Invocador',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { iniciado_primario: 5, feiticeiro_primario: 5 } },
-        bonusPorRegalia: { pv: 3, estamina: 0, magia: 7 },
-        descricao: 'Especialização em invocações, elementais e invocações de combate.'
-    },
-    // -------- DO FEITICEIRO --------
-    {
-        id: 'metamorfo',
-        nome: 'Metamorfo',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 10 } },
-        bonusPorRegalia: { pv: 7, estamina: 0, magia: 3 },
-        descricao: 'Especialização em formas licantrópicas, elixires e metamorfose animal.'
-    },
-    {
-        id: 'elementalista',
-        nome: 'Elementalista',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 10 } },
-        bonusPorRegalia: { pv: 3, estamina: 0, magia: 6 },
-        descricao: 'Especialização em controle elemental avançado e magia de área devastadora.'
-    },
-    {
-        id: 'xama',
-        nome: 'Xamã',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 10 } },
-        bonusPorRegalia: { pv: 3, estamina: 0, magia: 7 },
-        descricao: 'Especialização em necromancia, espíritos e controle de mortos-vivos.'
-    },
-    {
-        id: 'bruxo',
-        nome: 'Bruxo(a)',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 10 } },
-        bonusPorRegalia: { pv: 2, estamina: 0, magia: 8 },
-        descricao: 'Especialização em familiar, natureza, ilusões e contratos.'
-    },
-    {
-        id: 'cacador_demonios',
-        nome: 'Caçador(a) de Demônios',
-        tipo: 'especializacao',
-        preRequisitos: { regaliasPrimarias: { feiticeiro_primario: 3, combatente_primario: 7 } },
-        bonusPorRegalia: { pv: 3, estamina: 3, magia: 4 },
-        descricao: 'Especialização em caça a corruptores, votos de caçada e combate sombrio.'
-    }
-];
+export const especializacoes = especializacoesData;
 
 // ============================================================================
 // TABELA DE PONTOS DE REGALIA POR NÍVEL
@@ -2309,6 +2153,15 @@ export const getRegaliaAvulsa = (classePrimariaId, regaliaId) => {
     const classe = getClassePrimaria(classePrimariaId);
     if (!classe) return null;
     return classe.regaliasAvulsas.find(r => r.id === regaliaId) || null;
+};
+
+/**
+ * Busca uma regalia avulsa dentro de uma especialização
+ */
+export const getRegaliaAvulsaEsp = (espId, regaliaId) => {
+    const esp = getEspecializacao(espId);
+    if (!esp) return null;
+    return (esp.regaliasAvulsas || []).find(r => r.id === regaliaId) || null;
 };
 
 // ============================================================================

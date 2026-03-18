@@ -88,6 +88,9 @@ const CharacterSheet = () => {
                     handleDragOver={h.handleDragOver}
                     handleImageButtonClick={h.handleImageButtonClick}
                     handleImageFileChange={h.handleImageFileChange}
+                    levelSnapshots={h.levelSnapshots}
+                    handleRegressLevel={h.handleRegressLevel}
+                    handleLevelUp={h.handleLevelUp}
                 />
 
                 {/* Vitais & Combate (componente unificado) */}

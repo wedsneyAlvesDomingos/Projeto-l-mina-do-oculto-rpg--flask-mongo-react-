@@ -27,7 +27,9 @@ import {
     calcularPontosRegaliaTotal,
     validarPreRequisitosRegalia,
     especies,
+    profissoes,
 } from '../../../data/constants';
+import WorkIcon from '@mui/icons-material/Work';
 
 /* ─── Constantes de cor — derivadas do design token do tema escuro ─── */
 const CORES_TIPO = {
@@ -36,6 +38,7 @@ const CORES_TIPO = {
     opcional:       colors.olive,
     primaria:       colors.bronze,
     especializacao: colors.garnet,
+    profissao:      '#8B6914',
 };
 
 /* ─── Labels legíveis para habilidades ─── */
@@ -58,6 +61,8 @@ const labelHab = (key) => HABILIDADE_LABELS[key] || key;
 /* ─── Helpers para chaves compostas ─── */
 export const arvoreKey = (classeId, arvoreId, nivel) => `arvore:${classeId}:${arvoreId}:${nivel}`;
 export const avulsaKey = (classeId, avulsaId) => `avulsa:${classeId}:${avulsaId}`;
+export const espAvulsaKey = (espId, avulsaId) => `esp_avulsa:${espId}:${avulsaId}`;
+export const profissaoKey = (profNome, habNome) => `profissao:${profNome}:${habNome}`;
 
 export const calcularPontosGastos = (regaliasCompradas) =>
     Object.values(regaliasCompradas || {}).reduce((acc, v) => acc + (typeof v === 'number' ? v : 1), 0);
@@ -240,6 +245,22 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
     }, [nivel, regaliasCompradasComAprendiz, pontosGastos, contarRegaliasClasse]);
 
     // Seções
+    // Habilidades de profissão já compradas (de qualquer profissão)
+    const profHabsCompradas = useMemo(() => {
+        const result = {};
+        Object.keys(regaliasCompradas).forEach(k => {
+            if (k.startsWith('profissao:')) result[k] = regaliasCompradas[k];
+        });
+        // Inclui habilidades obtidas na criação
+        (character?.regalias_de_profissao || []).forEach(regProf => {
+            if (regProf?.nome && regProf?.habilidades) {
+                const habs = Array.isArray(regProf.habilidades) ? regProf.habilidades : [regProf.habilidades];
+                habs.forEach(h => { result[profissaoKey(regProf.nome, h)] = 1; });
+            }
+        });
+        return result;
+    }, [regaliasCompradas, character?.regalias_de_profissao]);
+
     const secoes = useMemo(() => {
         const aprendizOwned = regaliasDeAprendiz.filter(r => regaliasCompradasComAprendiz[r.id]).length;
         const primariaOwned = classesPrimarias.filter(c => regaliasCompradasComAprendiz[c.id]).length;
@@ -248,14 +269,18 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
         const totalOpcoes = (regaliasOpcionais.regalias_opcionais || []).reduce((acc, r) => acc + (r.opcoes?.length || 0), 0);
         const ownedShopOpcoes = regaliasOpcCompradas.filter(r => r?.tipo && r?.opcao).length;
         const ownedCreationOpcoes = (character?.regalias_de_especie || []).reduce((acc, g) => acc + (g?.regalias?.length || 0), 0);
+        // Profissão: total de habilidades (todas) e compradas
+        const totalHabsProf = profissoes.reduce((acc, p) => acc + (p.habilidades?.length || 0), 0);
+        const ownedHabsProf = Object.keys(profHabsCompradas).length;
         return [
             { id: 'aprendiz', label: 'Regalias de Aprendiz', icon: <SchoolIcon />, cor: CORES_TIPO.aprendiz, total: regaliasDeAprendiz.length, owned: aprendizOwned },
             { id: 'especie_subraca', label: `Regalias de Espécie${especieData ? ` — ${especieData.nome}` : ''}`, icon: <PersonIcon />, cor: CORES_TIPO.especie, total: extrasEspecie.length, owned: extrasEspecie.filter(e => !!regaliasCompradas[`especie_extra:${e.id}`]).length },
             { id: 'opcional', label: 'Regalias de Espécie Variante', icon: <ScienceIcon />, cor: CORES_TIPO.opcional, total: totalOpcoes, owned: ownedShopOpcoes + ownedCreationOpcoes },
+            { id: 'profissao', label: 'Regalias de Profissão', icon: <WorkIcon />, cor: CORES_TIPO.profissao, total: totalHabsProf, owned: ownedHabsProf },
             { id: 'primaria', label: 'Classes Primárias', icon: <MilitaryTechIcon />, cor: CORES_TIPO.primaria, total: classesPrimarias.length, owned: primariaOwned },
             { id: 'especializacao', label: 'Especializações', icon: <AutoAwesomeIcon />, cor: CORES_TIPO.especializacao, total: especializacoes.length, owned: especOwned },
         ];
-    }, [regaliasCompradas, regaliasCompradasComAprendiz, regaliasOpcCompradas, character?.regalias_de_especie, extrasEspecie, especieData]);
+    }, [regaliasCompradas, regaliasCompradasComAprendiz, regaliasOpcCompradas, character?.regalias_de_especie, extrasEspecie, especieData, profHabsCompradas]);
 
     const handleBuy = useCallback((tipo, id, extra = {}) => { if (!readOnly) setConfirmDialog({ tipo, id, extra }); }, [readOnly]);
     const confirmBuy = useCallback(() => { if (confirmDialog && onPurchase) onPurchase(confirmDialog.tipo, confirmDialog.id, confirmDialog.extra); setConfirmDialog(null); }, [confirmDialog, onPurchase]);
@@ -266,7 +291,8 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
         const custo = extra?.custo || 1;
         if (tipo === 'arvore_nivel') return `Comprar ${extra?.arvoreNome || ''} Nível ${extra?.nivel || '?'} (${custo} pt${custo !== 1 ? 's' : ''})`;
         if (tipo === 'avulsa') return `Comprar ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
-        if (tipo === 'especie_extra') return `Comprar Regalia de Espécie: ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
+        if (tipo === 'esp_avulsa') return `Comprar ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;        if (tipo === 'especie_extra') return `Comprar Regalia de Espécie: ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
+        if (tipo === 'profissao_hab') return `Comprar habilidade de profissão: ${extra?.nome || ''} (${custo} pt${custo !== 1 ? 's' : ''})`;
         if (tipo === 'primaria') return `Entrar na classe (${custo} pt) — você ganha a habilidade de classe automaticamente`;
         return `Comprar regalia (${custo} pt${custo !== 1 ? 's' : ''})`;
     };
@@ -458,6 +484,180 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                     </Box>
                                 )}
 
+                                {/* ── Regalias de Profissão ── */}
+                                {secao.id === 'profissao' && (
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                                        {profissoes.map((prof) => {
+                                            const profOwned = Object.keys(profHabsCompradas).some(k => k.startsWith(`profissao:${prof.nome}:`));
+                                            return (
+                                            <Accordion key={prof.nome} defaultExpanded={profOwned}
+                                                sx={{ backgroundColor: derived.bgDarkAlt, border: `1px solid ${CORES_TIPO.profissao}33`, '&:before': { display: 'none' }, borderRadius: '8px !important', overflow: 'hidden' }}>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: CORES_TIPO.profissao }} />}
+                                                    sx={{ '& .MuiAccordionSummary-content': { alignItems: 'center', gap: 1, flexWrap: 'wrap' } }}>
+                                                    <WorkIcon sx={{ fontSize: 16, color: CORES_TIPO.profissao }} />
+                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px', color: CORES_TIPO.profissao }}>
+                                                        {prof.nome}
+                                                    </Typography>
+                                                    {prof.rendaPorDia > 0 && (
+                                                        <Chip label={`💰 ${prof.rendaPorDia} M.O./dia`} size="small"
+                                                            sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao, fontWeight: 'bold' }} />
+                                                    )}
+                                                    {prof.chanceDeRisco && (
+                                                        <Chip label={`⚠️ ${prof.chanceDeRisco}`} size="small"
+                                                            sx={{ height: '18px', fontSize: '10px', backgroundColor: `${colors.garnet}22`, color: colors.garnet, fontWeight: 'bold' }} />
+                                                    )}
+                                                    {profOwned && (
+                                                        <Chip label="✓" size="small"
+                                                            sx={{ height: '18px', fontSize: '10px', backgroundColor: `${colors.forest}44`, color: colors.forest, fontWeight: 'bold' }} />
+                                                    )}
+                                                </AccordionSummary>
+                                                <AccordionDetails sx={{ pt: 0, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                                                    {/* Descrição */}
+                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>
+                                                        {prof.descricao}
+                                                    </Typography>
+                                                    {prof.beneficiosFixos?.length > 0 && (
+                                                        <Box>
+                                                            <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark, fontSize: '10px' }}>Benefícios Fixos:</Typography>
+                                                            {prof.beneficiosFixos.map((b, i) => (
+                                                                <Typography key={i} variant="caption" sx={{ display: 'block', ml: 1, fontSize: '10px', color: derived.textOnDarkMuted }}>• {b}</Typography>
+                                                            ))}
+                                                        </Box>
+                                                    )}
+
+                                                    {/* Lista de habilidades/regalias */}
+                                                    <Grid container spacing={1.5}>
+                                                        {(prof.habilidades || []).map((hab) => {
+                                                            const key = profissaoKey(prof.nome, hab.nome);
+                                                            const isOwned = !!profHabsCompradas[key];
+                                                            const custo = hab.custoRegalia || 1;
+                                                            const canAfford = pontosRestantes >= custo;
+                                                            return (
+                                                                <Grid item xs={12} md={6} key={hab.nome}>
+                                                                    <RegaliaCard
+                                                                        nome={hab.nome}
+                                                                        descricao={hab.descricao}
+                                                                        custo={isOwned ? undefined : custo}
+                                                                        cor={CORES_TIPO.profissao}
+                                                                        owned={isOwned}
+                                                                        locked={!isOwned && !canAfford}
+                                                                        lockMsg="Pontos insuficientes"
+                                                                        onBuy={!isOwned && canAfford && !readOnly
+                                                                            ? () => handleBuy('profissao_hab', key, {
+                                                                                profNome: prof.nome,
+                                                                                habNome: hab.nome,
+                                                                                nome: hab.nome,
+                                                                                custo,
+                                                                                habData: hab,
+                                                                            })
+                                                                            : null}
+                                                                    >
+                                                                        {hab.efeitos?.length > 0 && (
+                                                                            <Box sx={{ mt: 0.5 }}>
+                                                                                <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark, fontSize: '10px' }}>Efeitos:</Typography>
+                                                                                {hab.efeitos.map((ef, i) => (
+                                                                                    <Typography key={i} variant="caption" sx={{ display: 'block', ml: 1, fontSize: '10px', color: derived.textOnDarkMuted }}>• {ef}</Typography>
+                                                                                ))}
+                                                                            </Box>
+                                                                        )}
+                                                                    </RegaliaCard>
+                                                                </Grid>
+                                                            );
+                                                        })}
+                                                    </Grid>
+
+                                                    {/* Tabelas de sucesso/materiais se existirem */}
+                                                    {prof.chanceDeSucesso?.length > 0 && (
+                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>📊 Chances de Sucesso</Typography>
+                                                            {prof.chanceDeSucesso.map((cs, i) => (
+                                                                <Typography key={i} variant="caption" sx={{ display: 'block', fontSize: '10px', color: derived.textOnDarkMuted }}>
+                                                                    • {cs.produto || cs.acao || cs.tentativa}: {cs.chance} ({cs.dificuldadeRolagem || cs.rolagem})
+                                                                </Typography>
+                                                            ))}
+                                                        </Paper>
+                                                    )}
+                                                    {prof.tiposDeDano?.length > 0 && (
+                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>🔥 Tipos de Dano Elemental</Typography>
+                                                            <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                                                                {prof.tiposDeDano.map(t => (
+                                                                    <Chip key={t} label={t} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao }} />
+                                                                ))}
+                                                            </Box>
+                                                        </Paper>
+                                                    )}
+                                                    {prof.materiaisEspeciais?.length > 0 && (
+                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>🪨 Materiais Especiais</Typography>
+                                                            <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                                                                {prof.materiaisEspeciais.map(m => (
+                                                                    <Chip key={m} label={m} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao }} />
+                                                                ))}
+                                                            </Box>
+                                                        </Paper>
+                                                    )}
+                                                    {/* Poções do Herbalista */}
+                                                    {prof.pocoes?.length > 0 && (
+                                                        <Accordion sx={{ backgroundColor: derived.bgDarkAlt, '&:before': { display: 'none' } }}>
+                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                                <Typography className="esteban" sx={{ fontSize: '12px', fontWeight: 'bold', color: CORES_TIPO.profissao }}>
+                                                                    🧪 Poções ({prof.pocoes.length})
+                                                                </Typography>
+                                                            </AccordionSummary>
+                                                            <AccordionDetails sx={{ pt: 0 }}>
+                                                                {prof.pocoes.map((p, i) => (
+                                                                    <Box key={i} sx={{ mb: 1, pl: 1, borderLeft: `2px solid ${CORES_TIPO.profissao}44` }}>
+                                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                                                                            <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark, fontSize: '11px' }}>{p.nome}</Typography>
+                                                                            <Chip label={p.custo} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao }} />
+                                                                            {p.magica && <Chip label="Mágica" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: `${colors.midnight}44`, color: derived.textOnDark }} />}
+                                                                            {p.alquimia && <Chip label="Alquimia" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: `${colors.forest}44`, color: derived.textOnDark }} />}
+                                                                        </Box>
+                                                                        <Typography variant="caption" sx={{ fontSize: '10px', color: derived.textOnDarkMuted }}>{p.efeito} ({p.duracao})</Typography>
+                                                                </Box>
+                                                            ))}
+                                                        </AccordionDetails>
+                                                    </Accordion>
+                                                )}
+                                                    {/* Venenos do Herbalista */}
+                                                    {(prof.venenos?.length > 0 || prof.plantas?.length > 0 || prof.monstros?.length > 0) && (
+                                                        <Accordion sx={{ backgroundColor: derived.bgDarkAlt, '&:before': { display: 'none' } }}>
+                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                                <Typography className="esteban" sx={{ fontSize: '12px', fontWeight: 'bold', color: CORES_TIPO.profissao }}>
+                                                                    ☠️ Venenos ({(prof.venenos?.length || 0) + (prof.plantas?.length || 0) + (prof.monstros?.length || 0)})
+                                                                </Typography>
+                                                            </AccordionSummary>
+                                                            <AccordionDetails sx={{ pt: 0 }}>
+                                                                {[
+                                                                    { label: '🐍 Animais', items: prof.venenos },
+                                                                    { label: '🌿 Plantas', items: prof.plantas },
+                                                                    { label: '🐉 Monstros', items: prof.monstros },
+                                                                ].filter(g => g.items?.length > 0).map(grupo => (
+                                                                    <Box key={grupo.label} sx={{ mb: 1 }}>
+                                                                        <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark, fontSize: '11px' }}>{grupo.label}</Typography>
+                                                                        {grupo.items.map((v, i) => (
+                                                                            <Box key={i} sx={{ ml: 1, mb: 0.5, pl: 1, borderLeft: `2px solid ${colors.garnet}44` }}>
+                                                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                                                                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: derived.textOnDark, fontSize: '10px' }}>{v.nome}</Typography>
+                                                                                    <Chip label={v.custo} size="small" sx={{ height: '16px', fontSize: '9px' }} />
+                                                                                    {v.testeFortitude && <Chip label={`Fort ≥${v.testeFortitude}`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: `${colors.garnet}22`, color: colors.garnet }} />}
+                                                                                </Box>
+                                                                                <Typography variant="caption" sx={{ fontSize: '10px', color: derived.textOnDarkMuted }}>{v.efeito}</Typography>
+                                                                            </Box>
+                                                                        ))}
+                                                                    </Box>
+                                                                ))}
+                                                            </AccordionDetails>
+                                                        </Accordion>
+                                                    )}
+                                                </AccordionDetails>
+                                            </Accordion>
+                                            );
+                                        })}
+                                    </Box>
+                                )}
+
                                 {/* ── Classes Primárias (compra progressiva) ── */}
                                 {secao.id === 'primaria' && (
                                     <Grid container spacing={1.5}>
@@ -580,10 +780,11 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                         {especializacoes.map(esp => {
                                             const owned = !!regaliasCompradasComAprendiz[esp.id];
                                             const validation = validarPreRequisitosRegalia(fichaState, esp.id);
+                                            const cor = CORES_TIPO.especializacao;
                                             return (
                                                 <Grid item xs={12} key={esp.id}>
-                                                    <RegaliaCard nome={esp.nome} descricao={esp.habilidadeClasse?.descricao || esp.descricao || ''} custo={1}
-                                                        cor={CORES_TIPO.especializacao} owned={owned} locked={!validation.valido && !owned} lockMsg={validation.mensagem}
+                                                    <RegaliaCard nome={esp.nome} descricao={esp.regaliaObrigatoria?.habilidadeClasse?.descricao || esp.descricao || ''} custo={1}
+                                                        cor={cor} owned={owned} locked={!validation.valido && !owned} lockMsg={validation.mensagem}
                                                         onBuy={!owned && pontosRestantes >= 1 ? () => handleBuy('especializacao', esp.id, { custo: 1 }) : null}
                                                         bonus={esp.bonusPorRegalia}>
                                                         {esp.preRequisitos?.regaliasPrimarias && (
@@ -602,6 +803,46 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                             </Box>
                                                         )}
                                                     </RegaliaCard>
+
+                                                    {/* Se comprou a especialização → mostrar habilidade auto + avulsas */}
+                                                    {owned && (
+                                                        <Box sx={{ ml: 2, mt: 1, borderLeft: `3px solid ${cor}`, pl: 2 }}>
+                                                            {/* Habilidade obrigatória (sem custo extra) */}
+                                                            {esp.regaliaObrigatoria?.habilidadeClasse && (
+                                                                <Paper sx={{ p: 1.5, mb: 1.5, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
+                                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                                                                        <CardGiftcardIcon sx={{ fontSize: 16, color: colors.forest }} />
+                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: colors.forest }}>
+                                                                            {esp.regaliaObrigatoria.habilidadeClasse.nome}
+                                                                        </Typography>
+                                                                        <Chip label="Automática — sem custo" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.forest, color: derived.textOnDark }} />
+                                                                    </Box>
+                                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>{esp.regaliaObrigatoria.habilidadeClasse.descricao}</Typography>
+                                                                </Paper>
+                                                            )}
+
+                                                            {/* Avulsas — compráveis individualmente */}
+                                                            {esp.regaliasAvulsas?.length > 0 && (
+                                                                <Box sx={{ mb: 1 }}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: derived.textOnDark, mb: 0.5 }}>⚔️ Regalias de Especialização</Typography>
+                                                                    <Grid container spacing={1}>
+                                                                        {esp.regaliasAvulsas.map(ra => {
+                                                                            const key = espAvulsaKey(esp.id, ra.id);
+                                                                            const raOwned = !!regaliasCompradas[key];
+                                                                            const canBuy = pontosRestantes >= ra.custo;
+                                                                            return (
+                                                                                <Grid item xs={12} sm={6} key={ra.id}>
+                                                                                    <RegaliaCard nome={ra.nome} descricao={ra.descricao || ''} custo={ra.custo} cor={cor}
+                                                                                        owned={raOwned} locked={!canBuy && !raOwned} lockMsg={`Necessário ${ra.custo} pt${ra.custo !== 1 ? 's' : ''}`}
+                                                                                        onBuy={!raOwned && canBuy ? () => handleBuy('esp_avulsa', key, { espId: esp.id, avulsaId: ra.id, nome: ra.nome, custo: ra.custo, avulsaData: ra }) : null} />
+                                                                                </Grid>
+                                                                            );
+                                                                        })}
+                                                                    </Grid>
+                                                                </Box>
+                                                            )}
+                                                        </Box>
+                                                    )}
                                                 </Grid>
                                             );
                                         })}

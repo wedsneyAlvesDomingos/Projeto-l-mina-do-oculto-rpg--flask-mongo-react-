@@ -12,8 +12,10 @@ import CasinoIcon from '@mui/icons-material/Casino';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import HotelIcon from '@mui/icons-material/Hotel';
-import { calcularVantagemDesvantagem } from '../../../data/constants';
+import { calcularVantagemDesvantagem, TIPOS_DANO, calcularDanoElemental } from '../../../data/constants';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import HealingIcon from '@mui/icons-material/Healing';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
 /* ── Espaçamentos padronizados ─────────────────── */
 const SP = { gap: 1.5, p: 1.5, radius: 2 };
@@ -108,6 +110,221 @@ const SmallStat = ({ icon, label, value, sub, color, bgColor }) => (
         {sub && <Typography variant="caption" sx={{ color: 'var(--text-primary)', fontSize: 9, display: 'block', opacity: .7 }}>{sub}</Typography>}
     </Paper>
 );
+
+/* ── Label legível para tipo de dano ── */
+const DANO_LABELS = {
+    cortante: 'Cortante', perfurante: 'Perfurante', impacto: 'Impacto',
+    fogo: 'Fogo', gelo: 'Gelo', raio: 'Raio',
+    terra: 'Terra', veneno: 'Veneno', necrotico: 'Necrótico',
+    sombrio: 'Sombrio', arcano: 'Arcano', sagrado: 'Sagrado',
+};
+
+/* ── Elementos válidos para afinidade do personagem (encantamento de armadura) ── */
+const ELEMENTOS_PERSONAGEM = [
+    { value: '', label: 'Nenhum' },
+    { value: 'fogo', label: '🔥 Fogo' },
+    { value: 'gelo', label: '❄️ Gelo' },
+    { value: 'raio', label: '⚡ Raio' },
+    { value: 'terra', label: '🪨 Terra' },
+    { value: 'sombrio', label: '🌑 Sombrio' },
+    { value: 'sagrado', label: '✨ Sagrado' },
+    { value: 'necrotico', label: '💀 Necrótico' },
+    { value: 'arcano', label: '🔮 Arcano' },
+];
+
+/* ── HealDamageBar — input + botões Curar / Sofrer Dano ── */
+const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField, onLive, isDark }) => {
+    const [valor, setValor]         = React.useState('');
+    const [tipoDano, setTipoDano]   = React.useState('');
+    const [menuOpen, setMenuOpen]   = React.useState(false);
+    const [feedback, setFeedback]   = React.useState(null);
+
+    const numValor = Math.max(0, parseInt(valor) || 0);
+
+    const aplicarCura = () => {
+        if (numValor <= 0) return;
+        const novo = Math.min(pvAtual + numValor, pvMax);
+        updateField('pv_atual', novo);
+        onLive?.('pv_atual', novo);
+        setValor('');
+        setFeedback(null);
+    };
+
+    const aplicarDano = () => {
+        if (numValor <= 0 || !tipoDano) return;
+
+        // Calcular dano com interação elemental
+        const resultado = calcularDanoElemental(numValor, tipoDano, elementoPersonagem);
+        const danoCalculado = resultado.danoFinal;
+
+        // Se o resultado é cura (ex: necrótico vs necrótico)
+        if (resultado.modificador === 'cura') {
+            const novo = Math.min(pvAtual + Math.abs(danoCalculado), pvMax);
+            updateField('pv_atual', novo);
+            onLive?.('pv_atual', novo);
+            setFeedback({ tipo: 'cura', texto: resultado.descricao });
+            setValor('');
+            setTipoDano('');
+            return;
+        }
+
+        // Se imune
+        if (resultado.modificador === 'imune') {
+            setFeedback({ tipo: 'imune', texto: resultado.descricao });
+            setValor('');
+            setTipoDano('');
+            return;
+        }
+
+        // Feedback de modificador
+        if (resultado.descricao) {
+            setFeedback({
+                tipo: resultado.modificador,
+                texto: `${resultado.descricao} → ${danoCalculado} de dano`,
+            });
+        } else {
+            setFeedback(null);
+        }
+
+        let danoRestante = danoCalculado;
+        let novoTemp = pvTemp;
+        // Dano absorvido primeiro pela vida temporária
+        if (novoTemp > 0) {
+            const absorvido = Math.min(novoTemp, danoRestante);
+            novoTemp -= absorvido;
+            danoRestante -= absorvido;
+            updateField('pv_temp', novoTemp);
+            onLive?.('pv_temp', novoTemp);
+        }
+        const novoPv = Math.max(0, pvAtual - danoRestante);
+        updateField('pv_atual', novoPv);
+        onLive?.('pv_atual', novoPv);
+        setValor('');
+        setTipoDano('');
+    };
+
+    // Limpar feedback após 4s
+    React.useEffect(() => {
+        if (!feedback) return;
+        const t = setTimeout(() => setFeedback(null), 4000);
+        return () => clearTimeout(t);
+    }, [feedback]);
+
+    return (
+        <Paper sx={{
+            p: SP.p, borderRadius: SP.radius,
+            backgroundColor: isDark ? 'var(--surface-default)' : '#f9f6f2',
+            border: '1px solid var(--panel-border)',
+            display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap',
+        }}>
+            {/* Botão Curar */}
+            <Button
+                size="small" variant="contained"
+                startIcon={<HealingIcon sx={{ fontSize: 16 }} />}
+                disabled={numValor <= 0 || pvAtual >= pvMax}
+                onClick={aplicarCura}
+                sx={{
+                    backgroundColor: '#2e7d32', fontFamily: 'Esteban, serif', fontSize: 12,
+                    textTransform: 'none', order: { xs: 2, sm: 1 },
+                    '&:hover': { backgroundColor: '#1b5e20' },
+                    '&.Mui-disabled': { backgroundColor: isDark ? '#1a2e1a' : '#c8e6c9', color: isDark ? '#555' : '#a5d6a7' },
+                }}
+            >
+                Curar
+            </Button>
+
+            {/* Input de valor */}
+            <TextField
+                type="number"
+                size="small"
+                placeholder="Valor"
+                value={valor}
+                onChange={e => setValor(e.target.value)}
+                onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                        if (tipoDano) aplicarDano();
+                        else if (numValor > 0) aplicarCura();
+                    }
+                }}
+                inputProps={{ min: 0, style: { textAlign: 'center', padding: '6px 8px', fontFamily: 'Esteban, serif' } }}
+                sx={{ width: 90, order: { xs: 1, sm: 2 }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+            />
+
+            {/* Select tipo de dano + Botão Sofrer Dano */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, order: { xs: 3, sm: 3 } }}>
+                <FormControl size="small" sx={{ minWidth: 130 }}>
+                    <InputLabel sx={{ fontFamily: 'Esteban, serif', fontSize: 13 }}>Tipo de Dano</InputLabel>
+                    <Select
+                        value={tipoDano}
+                        label="Tipo de Dano"
+                        open={menuOpen}
+                        onOpen={() => setMenuOpen(true)}
+                        onClose={() => setMenuOpen(false)}
+                        onChange={e => setTipoDano(e.target.value)}
+                        sx={{ fontSize: 12, fontFamily: 'Esteban, serif', backgroundColor: isDark ? 'var(--input-bg)' : 'white' }}
+                    >
+                        {TIPOS_DANO.map(t => (
+                            <MenuItem key={t} value={t} sx={{ fontSize: 12, fontFamily: 'Esteban, serif' }}>
+                                {DANO_LABELS[t] || t}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <Button
+                    size="small" variant="contained"
+                    startIcon={<LocalFireDepartmentIcon sx={{ fontSize: 16 }} />}
+                    disabled={numValor <= 0 || !tipoDano}
+                    onClick={aplicarDano}
+                    sx={{
+                        backgroundColor: '#931C4A', fontFamily: 'Esteban, serif', fontSize: 12,
+                        textTransform: 'none',
+                        '&:hover': { backgroundColor: '#7a1640' },
+                        '&.Mui-disabled': { backgroundColor: isDark ? '#2e1020' : '#f8d7e3', color: isDark ? '#555' : '#e1a3b8' },
+                    }}
+                >
+                    Sofrer Dano
+                </Button>
+            </Box>
+
+            {/* Elemento do Personagem */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, order: { xs: 4, sm: 4 } }}>
+                <FormControl size="small" sx={{ minWidth: 150 }}>
+                    <InputLabel sx={{ fontFamily: 'Esteban, serif', fontSize: 13 }}>Elemento</InputLabel>
+                    <Select
+                        value={elementoPersonagem || ''}
+                        label="Elemento"
+                        onChange={e => {
+                            updateField('elemento_personagem', e.target.value);
+                            onLive?.('elemento_personagem', e.target.value);
+                        }}
+                        sx={{ fontSize: 12, fontFamily: 'Esteban, serif', backgroundColor: isDark ? 'var(--input-bg)' : 'white' }}
+                    >
+                        {ELEMENTOS_PERSONAGEM.map(el => (
+                            <MenuItem key={el.value} value={el.value} sx={{ fontSize: 12, fontFamily: 'Esteban, serif' }}>
+                                {el.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
+
+            {/* Feedback elemental */}
+            {feedback && (
+                <Typography className="esteban" sx={{
+                    width: '100%', order: 5, fontSize: 11, fontWeight: 'bold', px: 1, py: 0.5,
+                    borderRadius: 1, textAlign: 'center',
+                    ...(feedback.tipo === 'forte' && { color: '#d32f2f', backgroundColor: isDark ? '#3a1010' : '#ffebee' }),
+                    ...(feedback.tipo === 'fraco' && { color: '#1565c0', backgroundColor: isDark ? '#0d1a2e' : '#e3f2fd' }),
+                    ...(feedback.tipo === 'imune' && { color: '#6a1b9a', backgroundColor: isDark ? '#1a102e' : '#f3e5f5' }),
+                    ...(feedback.tipo === 'cura' && { color: '#2e7d32', backgroundColor: isDark ? '#102e1a' : '#e8f5e9' }),
+                }}>
+                    {feedback.texto}
+                </Typography>
+            )}
+        </Paper>
+    );
+};
 
 /* ════════════════════════════════════════════════════════════
    CombatVitalSection — Layout compacto em flexbox
@@ -314,6 +531,16 @@ const CombatVitalSection = ({
                         sub={`Agi ${agilidade} + Per ${percepcao}`}
                     />
                 </Box>
+
+                {/* ═══ Cura / Dano rápido ═══ */}
+                <HealDamageBar
+                    pvAtual={pvAtual} pvMax={pvMax}
+                    pvTemp={character.pv_temp || 0}
+                    elementoPersonagem={character.elemento_personagem || ''}
+                    updateField={updateField}
+                    onLive={handleLive}
+                    isDark={isDark}
+                />
 
                 {/* Alerta: penalidade de forca em armadura pesada */}
                 {penalidadesForca && !penalidadesForca.atendido && (
