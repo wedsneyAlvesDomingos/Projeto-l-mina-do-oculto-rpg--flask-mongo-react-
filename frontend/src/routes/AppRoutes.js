@@ -1,13 +1,19 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RequireAuth from "../utils/RequireAuth";
 import RedirectIfLoggedIn from "../utils/RedirectIfLoggedIn";
+import { Box, CircularProgress } from "@mui/material";
 
 // unprotectedRoutes
 import { auth_routes } from "./UnProtectedRoutes";
 // protectedRoutes
 import { general_routes } from "./GeneralRoutes";
 
+const Loading = () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <CircularProgress sx={{ color: '#2F3C29' }} />
+    </Box>
+);
 
 const AppRoutes = () => {
     const protectedRoutes = [
@@ -18,7 +24,8 @@ const AppRoutes = () => {
 
     return (
         <BrowserRouter>
-            <Routes>
+            <Suspense fallback={<Loading />}>
+                <Routes>
                 {
                     unprotectedRoutes.map((e) => {
                         return (
@@ -56,6 +63,7 @@ const AppRoutes = () => {
                     })
                 }
             </Routes>
+            </Suspense>
         </BrowserRouter>
     );
 };

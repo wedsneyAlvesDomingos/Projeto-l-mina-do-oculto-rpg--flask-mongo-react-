@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import AppFooter from '../../componentes/Footer/Footer';
-import { Typography, Box, Autocomplete, Tab, Tabs } from '@mui/material';
+import { Typography, Box, Autocomplete, Tab, Tabs, Drawer, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import "./wiki.css";
@@ -53,6 +54,9 @@ const PATH_TO_TAB = {
 
 const WikiPage = () => {
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [activeTab, setActiveTab] = useState(0);
     // Track which tabs have ever been visited (lazy-mount + keep-alive)
     const [mounted, setMounted] = useState(() => new Set([0]));
@@ -73,6 +77,7 @@ const WikiPage = () => {
     const handleTabChange = (_, newValue) => {
         setActiveTab(newValue);
         setMounted(prev => new Set([...prev, newValue]));
+        if (isMobile) setDrawerOpen(false);
     };
 
     const handleTabByPath = (path) => {
@@ -428,122 +433,175 @@ const WikiPage = () => {
         }
     };
 
+    /* ── Sidebar content (shared between permanent & drawer) ── */
+    const sidebarContent = (
+        <Box
+            sx={{
+                width: 220,
+                display: 'flex',
+                flexDirection: 'column',
+                pt: 2,
+                pb: 2,
+                height: '100%',
+                overflowY: 'auto',
+            }}
+        >
+            {/* Title */}
+            <Typography
+                className="esteban"
+                variant="h5"
+                sx={{ textAlign: 'center', mb: 2, color: 'var(--text-primary)', fontWeight: 700, letterSpacing: 1 }}
+            >
+                Wiki
+            </Typography>
+
+            {/* Search */}
+            <Box sx={{ px: 1, mb: 2, display: 'flex', gap: 0.5 }}>
+                <Autocomplete
+                    freeSolo
+                    options={query.length > 0 ? searchKeyWords : []}
+                    getOptionLabel={(option) => option.label}
+                    inputValue={query}
+                    onInputChange={(_, v) => setQuery(v)}
+                    onChange={(_, newValue) => {
+                        if (newValue && newValue.path) {
+                            handleTabByPath(newValue.path);
+                            setQuery('');
+                        }
+                    }}
+                    sx={{ flex: 1 }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            placeholder="Pesquisar"
+                            size="small"
+                            variant="outlined"
+                            sx={{ background: 'var(--input-bg)' }}
+                            onKeyPress={handleKeyPress}
+                        />
+                    )}
+                />
+                <Button
+                    sx={{ minWidth: 0, p: '6px', background: 'var(--action-bg)', color: '#fff' }}
+                    onClick={handleSearch}
+                >
+                    <img src={search} alt="Buscar" style={{ width: 16 }} />
+                </Button>
+            </Box>
+
+            {/* Vertical tabs */}
+            <Tabs
+                orientation="vertical"
+                value={activeTab}
+                onChange={handleTabChange}
+                aria-label="Wiki navigation"
+                sx={{
+                    '& .MuiTab-root': {
+                        fontFamily: '"Esteban", serif',
+                        fontSize: '13px',
+                        textTransform: 'none',
+                        alignItems: 'flex-start',
+                        textAlign: 'left',
+                        pl: 2,
+                        minHeight: 44,
+                    },
+                    '& .Mui-selected': {
+                        color: 'var(--text-accent, #756A34) !important',
+                        fontWeight: 700,
+                        background: 'var(--surface-raised, rgba(117,106,52,0.12))',
+                    },
+                    '& .MuiTabs-indicator': {
+                        left: 0,
+                        right: 'unset',
+                        width: 3,
+                        backgroundColor: 'var(--text-accent, #756A34)',
+                    },
+                }}
+            >
+                {WIKI_TABS.map((tab, i) => (
+                    <Tab key={i} label={tab.label} id={`wiki-tab-${i}`} aria-controls={`wiki-panel-${i}`} />
+                ))}
+            </Tabs>
+        </Box>
+    );
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
 
-            {/* ── Main row: sidebar + content ── */}
-            <Box sx={{ display: 'flex', flex: 1 }}>
-
-            {/* ── Sidebar ── */}
-            <Box
-                component="nav"
-                sx={{
-                    width: 200,
-                    flexShrink: 0,
-                    position: 'sticky',
-                    top: 0,
-                    height: '100vh',
-                    overflowY: 'auto',
-                    borderRight: '1px solid var(--panel-border, #2F3C29)',
-                    background: 'var(--panel-bg)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    pt: 2,
-                    pb: 2,
-                }}
-            >
-                {/* Title */}
-                <Typography
-                    className="esteban"
-                    variant="h5"
-                    sx={{ textAlign: 'center', mb: 2, color: 'var(--text-primary)', fontWeight: 700, letterSpacing: 1 }}
-                >
-                    Wiki
-                </Typography>
-
-                {/* Search */}
-                <Box sx={{ px: 1, mb: 2, display: 'flex', gap: 0.5 }}>
-                    <Autocomplete
-                        freeSolo
-                        options={query.length > 0 ? searchKeyWords : []}
-                        getOptionLabel={(option) => option.label}
-                        inputValue={query}
-                        onInputChange={(_, v) => setQuery(v)}
-                        onChange={(_, newValue) => {
-                            if (newValue && newValue.path) {
-                                handleTabByPath(newValue.path);
-                                setQuery('');
-                            }
-                        }}
-                        sx={{ flex: 1 }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Pesquisar"
-                                size="small"
-                                variant="outlined"
-                                sx={{ background: 'var(--input-bg)' }}
-                                onKeyPress={handleKeyPress}
-                            />
-                        )}
-                    />
-                    <Button
-                        sx={{ minWidth: 0, p: '6px', background: 'var(--action-bg)', color: '#fff' }}
-                        onClick={handleSearch}
-                    >
-                        <img src={search} alt="Buscar" style={{ width: 16 }} />
-                    </Button>
-                </Box>
-
-                {/* Vertical tabs */}
-                <Tabs
-                    orientation="vertical"
-                    value={activeTab}
-                    onChange={handleTabChange}
-                    aria-label="Wiki navigation"
+            {/* ── Mobile top bar with hamburger ── */}
+            {isMobile && (
+                <Box
                     sx={{
-                        '& .MuiTab-root': {
-                            fontFamily: '"Esteban", serif',
-                            fontSize: '13px',
-                            textTransform: 'none',
-                            alignItems: 'flex-start',
-                            textAlign: 'left',
-                            pl: 2,
-                            minHeight: 44,
-                        },
-                        '& .Mui-selected': {
-                            color: 'var(--text-accent, #756A34) !important',
-                            fontWeight: 700,
-                            background: 'var(--surface-raised, rgba(117,106,52,0.12))',
-                        },
-                        '& .MuiTabs-indicator': {
-                            left: 0,
-                            right: 'unset',
-                            width: 3,
-                            backgroundColor: 'var(--text-accent, #756A34)',
-                        },
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        px: 1,
+                        py: 0.5,
+                        borderBottom: '1px solid var(--panel-border, #2F3C29)',
+                        background: 'var(--panel-bg)',
                     }}
                 >
-                    {WIKI_TABS.map((tab, i) => (
-                        <Tab key={i} label={tab.label} id={`wiki-tab-${i}`} aria-controls={`wiki-panel-${i}`} />
-                    ))}
-                </Tabs>
-            </Box>
+                    <IconButton onClick={() => setDrawerOpen(true)} aria-label="Abrir menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography className="esteban" variant="h6" sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                        Wiki
+                    </Typography>
+                </Box>
+            )}
 
-            {/* ── Content area ── */}
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-                {WIKI_TABS.map(({ Component }, i) => (
+            {/* ── Mobile drawer ── */}
+            <Drawer
+                anchor="left"
+                open={drawerOpen && isMobile}
+                onClose={() => setDrawerOpen(false)}
+                ModalProps={{ keepMounted: true }}
+                PaperProps={{
+                    sx: {
+                        background: 'var(--panel-bg, #fff)',
+                        borderRight: '1px solid var(--panel-border, #2F3C29)',
+                    },
+                }}
+            >
+                {sidebarContent}
+            </Drawer>
+
+            {/* ── Main row: sidebar (desktop) + content ── */}
+            <Box sx={{ display: 'flex', flex: 1 }}>
+
+                {/* ── Permanent sidebar (desktop only) ── */}
+                {!isMobile && (
                     <Box
-                        key={i}
-                        role="tabpanel"
-                        id={`wiki-panel-${i}`}
-                        aria-labelledby={`wiki-tab-${i}`}
-                        sx={{ display: activeTab === i ? 'block' : 'none' }}
+                        component="nav"
+                        sx={{
+                            width: 220,
+                            flexShrink: 0,
+                            position: 'sticky',
+                            top: 0,
+                            height: '100vh',
+                            overflowY: 'auto',
+                            borderRight: '1px solid var(--panel-border, #2F3C29)',
+                            background: 'var(--panel-bg)',
+                        }}
                     >
-                        {mounted.has(i) && <Component />}
+                        {sidebarContent}
                     </Box>
-                ))}
-            </Box>
+                )}
+
+                {/* ── Content area ── */}
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                    {WIKI_TABS.map(({ Component }, i) => (
+                        <Box
+                            key={i}
+                            role="tabpanel"
+                            id={`wiki-panel-${i}`}
+                            aria-labelledby={`wiki-tab-${i}`}
+                            sx={{ display: activeTab === i ? 'block' : 'none' }}
+                        >
+                            {mounted.has(i) && <Component />}
+                        </Box>
+                    ))}
+                </Box>
 
             </Box>{/* end main row */}
 

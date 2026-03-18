@@ -4608,7 +4608,19 @@ const ClassesPage = () => {
 
   return (
     <Box sx={{ minHeight: '700px', width: '100%' }} >
-      <Tabs value={thisvalue} onChange={handleTABChange} aria-label="Info and Classes Tabs">
+      <Tabs
+        value={thisvalue}
+        onChange={handleTABChange}
+        aria-label="Info and Classes Tabs"
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+        sx={{
+          '& .MuiTabs-flexContainer': {
+            flexWrap: { xs: 'wrap', lg: 'nowrap' },
+          },
+        }}
+      >
         <Tab label="Informações Gerais" className="tabs" />
         <Tab label="Aprendiz" className="tabs" />
         <Tab label="Classes Primárias" className="tabs" />
@@ -4621,12 +4633,12 @@ const ClassesPage = () => {
 
       {/* Info MUI Tab Content */}
       {thisvalue === 0 && (
-        <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
+        <Box sx={{ width: { xs: '95%', md: '80%' }, mx: 'auto', my: 4 }}>
           <Typography variant="h3" className="boxTextTitle">
             CLASSES
           </Typography>
           <Grid container spacing={1} sx={{ my: 4 }}>
-            <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+            <Grid item xs={12} md={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
               <Paragraph title="Regalias e Pontos de Regalia" text={`
                     No sistema de Regalias, o personagem pode adquirir Regalias de Classe, Regalias de Profissão, Proficiências ou Regalias de Espécie usando Pontos de Regalia. O personagem recebe pontos de Regalia ao passar de nível com seu personagem.
 
@@ -4642,9 +4654,9 @@ const ClassesPage = () => {
                 `} />
             </Grid>
             
-            <Grid item xs={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
+            <Grid item xs={12} md={6} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
               <Box sx={{ mx: 'auto', width: '100%', display:'flex', justifyContent:'end' }}>
-                <img src={classes} alt="Classes Image" style={{ width: '80%'}}/>
+                <img src={classes} alt="Classes Image" style={{ width: '80%', maxWidth: '100%' }}/>
               </Box>
             </Grid>
             <Grid item xs={12} sx={{ p: 2, display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between' }}>
@@ -4661,13 +4673,13 @@ const ClassesPage = () => {
             </Grid>
           </Grid>
 
-          <Box sx={{ display: 'flex', my: 4, justifyContent: 'space-between', alignItems: 'center' }}>
-            <Grid item xs={3} sx={{ width: '55%' }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, my: 4, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ width: { xs: '100%', md: '55%' } }}>
               <Box>
                 <img src={diagram} alt="Classes Diagram" style={{ width: '100%' }} />
               </Box>
-            </Grid>
-            <Grid item xs={6} sx={{ width: '40%' }}>
+            </Box>
+            <Box sx={{ width: { xs: '100%', md: '40%' } }}>
               <Typography variant="h5" className="boxTextTitle">
                 Aprendiz
               </Typography>
@@ -4714,7 +4726,7 @@ const ClassesPage = () => {
                 <li>Bruxo (10 fei)</li>
                 <li>Caçador(a) de Demônios (3/7 fei/com)</li>
               </ul>
-            </Grid>
+            </Box>
           </Box>
         </Box>
       )}
@@ -4722,15 +4734,15 @@ const ClassesPage = () => {
       {/* Aprendiz Tab Content (Empty for now) */}
       {thisvalue === 1 && (
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Box sx={{ width: "80%", mx: "auto", }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }} >
-              <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", }}>
+            <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }} >
+              <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <Typography className="boxTextTitle" variant="h3" gutterBottom >
                   {aprenticeSkillsData.titulo}
                 </Typography>
                 <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>{aprenticeSkillsData.descricao}</Typography>
               </Box>
-              <img src={aprendiz} style={{ width: "30%", height: '30%' }}></img>
+              <img src={aprendiz} style={{ maxWidth: "30%", height: "auto" }}></img>
             </Box>
 
             {aprenticeSkillsData.habilidades.map((skill, index) =>
@@ -4747,7 +4759,7 @@ const ClassesPage = () => {
           <Typography className="MainTitleC" variant="h3" sx={{ my: 8 }}>
             Classes primárias
           </Typography>
-          <Box className="bigBoxTextClasses" sx={{ width: "80%", mx: 'auto', my: 4 }}>
+          <Box className="bigBoxTextClasses" sx={{ width: { xs: '95%', md: '80%' }, mx: 'auto', my: 4 }}>
             Em Lâmina do Oculto (LDO), a classe primária representa a segunda etapa da evolução do personagem, após o desenvolvimento inicial. Ao alcançar o nível 3, o personagem pode começar a escolher sua classe primária, mas para isso, é necessário que ele tenha a regalia de aprendiz correspondente à classe que deseja seguir. As classes primárias trazem habilidades poderosas e específicas, mas é importante entender como elas funcionam no sistema de regalias.
 
             Cada classe primária pode incluir uma ou mais habilidades, mas, para adquirir cada habilidade adicional dentro de uma classe, o personagem precisará comprar a regalia correspondente à habilidade desejada. Isso significa que, ao escolher uma classe primária, o jogador pode precisar investir em várias regalias ao longo da evolução do personagem, conforme as habilidades se tornam acessíveis. Cada nova habilidade dentro de uma classe primária é tratada como uma compra separada.
@@ -4759,10 +4771,10 @@ const ClassesPage = () => {
             Essa estrutura de regalias e classes primárias cria uma abordagem progressiva, permitindo que o personagem cresça de maneira controlada, mas ao mesmo tempo aberta a diferentes possibilidades de personalização.
           </Box>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Box sx={{ width: "80%", mx: "auto" }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
               {/* Título e Descrição */}
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {combatenteSkillsData.titulo}
                   </Typography>
@@ -4770,7 +4782,7 @@ const ClassesPage = () => {
                     {combatenteSkillsData.descricao}
                   </Typography>
                 </Box>
-                <img src={classes} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                <img src={classes} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
               </Box>
               <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
                 Habilidade de Classe
@@ -4787,11 +4799,11 @@ const ClassesPage = () => {
             </Box>
           </Box>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Box sx={{ width: "80%", mx: "auto" }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
               {/* Título e Descrição */}
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                <img src={novice} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                <img src={novice} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {novicoSkillsData.titulo}
                   </Typography>
@@ -4817,10 +4829,10 @@ const ClassesPage = () => {
 
           </Box>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Box sx={{ width: "80%", mx: "auto" }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
               {/* Título e Descrição */}
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {iniciadoSkillsData.titulo}
                   </Typography>
@@ -4828,7 +4840,7 @@ const ClassesPage = () => {
                     {iniciadoSkillsData.descricao}
                   </Typography>
                 </Box>
-                <img src={iniciado} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
+                <img src={iniciado} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
               </Box>
               <Typography variant="h4" className="boxTextTitle" sx={{ my: 3 }}>
                 Habilidade de Classe
@@ -4845,11 +4857,11 @@ const ClassesPage = () => {
             </Box>
           </Box>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-            <Box sx={{ width: "80%", mx: "auto" }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
               {/* Título e Descrição */}
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                <img src={feiticeiro} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                <img src={feiticeiro} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <Typography className="boxTextTitle" variant="h3" gutterBottom>
                     {feiticeiroSkillsData.titulo}
                   </Typography>
@@ -4879,11 +4891,11 @@ const ClassesPage = () => {
         <Box>
           {EspecializacaoCombatenteSkillsData.map((especializacao, idx) =>
             <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-              <Box sx={{ width: "80%", mx: "auto" }}>
+              <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
                 {/* Título e Descrição */}
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                  <img src={especializacao.img} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
                     </Typography>
@@ -5082,11 +5094,11 @@ const ClassesPage = () => {
         <Box>
           {EspecializacaoIniciadoSkillsData.map((especializacao, idx) =>
             <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-              <Box sx={{ width: "80%", mx: "auto" }}>
+              <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
                 {/* Título e Descrição */}
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                  <img src={especializacao.img} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
                     </Typography>
@@ -5285,11 +5297,11 @@ const ClassesPage = () => {
         <Box>
           {EspecializacaoNovicoSkillsData.map((especializacao, idx) =>
             <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-              <Box sx={{ width: "80%", mx: "auto" }}>
+              <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
                 {/* Título e Descrição */}
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                  <img src={especializacao.img} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
                     </Typography>
@@ -5488,11 +5500,11 @@ const ClassesPage = () => {
         <Box>
           {EspecializacaoFeiticeiroSkillsData.map((especializacao, idx) =>
             <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-              <Box sx={{ width: "80%", mx: "auto" }}>
+              <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
                 {/* Título e Descrição */}
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                  <img src={especializacao.img} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
                     </Typography>
@@ -5690,11 +5702,11 @@ const ClassesPage = () => {
         <Box>
           {EspecializacaoMistaSkillsData.map((especializacao, idx) =>
             <Box key={idx} sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
-              <Box sx={{ width: "80%", mx: "auto" }}>
+              <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto" }}>
                 {/* Título e Descrição */}
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
-                  <img src={especializacao.img} style={{ width: "30%", height: '30%' }} alt="Imagem do Combatente" />
-                  <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }}>
+                  <img src={especializacao.img} style={{ maxWidth: "30%", height: "auto" }} alt="Imagem do Combatente" />
+                  <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Typography className="boxTextTitle" variant="h3" gutterBottom>
                       {especializacao.titulo}
                     </Typography>

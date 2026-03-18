@@ -5,7 +5,6 @@ import { Paper, Typography, Box, Grid, Chip, Tooltip, IconButton } from '@mui/ma
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import { PieChart } from '@mui/x-charts/PieChart';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./char.css";
@@ -482,7 +481,7 @@ const CharPage = () => {
 
     return (
 
-        <Box sx={{ minHeight: '100vh', width: '100%', pb: 8 }}>
+        <Box sx={{ minHeight: '100vh', width: '100%', pb: 8, display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
                 <Typography className="esteban" variant="h4" sx={{ textAlign: 'center', my: '30px', color: 'var(--text-primary)' }}>
                     Meus Personagens
@@ -494,7 +493,7 @@ const CharPage = () => {
                 </Grid>
 
             </Grid>
-            <AppFooter position="fixed" />
+            <AppFooter />
         </Box>
 
     );

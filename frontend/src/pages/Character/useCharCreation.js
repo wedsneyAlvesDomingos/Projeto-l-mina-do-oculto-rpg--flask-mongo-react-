@@ -1618,6 +1618,20 @@ export default function useCharCreation() {
             errors.regalias = 'Selecione pelo menos uma regalia de aprendiz (aba: Aprendiz)';
         }
 
+        // Validar que todos os pontos de habilidade foram gastos
+        const totalSkillUsed = Object.entries(allValues).reduce((acc, [title, val]) => {
+            const auto = autoIncrementedValues[title] || 0;
+            return acc + calculateCustoEscalonado(val - auto);
+        }, 0);
+        if (totalSkillUsed < MAX_POINTS) {
+            errors.habilidades = `Você deve gastar todos os ${MAX_POINTS} pontos de habilidade (restam ${MAX_POINTS - totalSkillUsed}) (aba: Habilidades)`;
+        }
+
+        // Validar que todos os pontos de proficiência foram gastos
+        if (remainingProfPoints > 0) {
+            errors.proficiencias = `Você deve gastar todos os ${MAX_PROF_POINTS} pontos de proficiência (restam ${remainingProfPoints}) (aba: Proficiências)`;
+        }
+
         setFormErrors(errors);
         return errors;
     };

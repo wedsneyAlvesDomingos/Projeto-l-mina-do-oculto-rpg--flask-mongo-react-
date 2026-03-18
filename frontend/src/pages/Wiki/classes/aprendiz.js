@@ -177,15 +177,15 @@ const AprendizPage = () => {
             <a href="/wiki" style={{position: 'absolute', top:'1%', left:'1%', textDecoration:'none',color:"black", fontFamily:'esteban'}}>↤ Voltar</a>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-                <Box sx={{ width: "80%", mx: "auto", }}>
-                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }} >
-                        <Box sx={{ width: "60%", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", }}>
+                    <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2, my: 2 }} >
+                        <Box sx={{ width: { xs: "100%", md: "60%" }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                             <Typography className="boxTextTitle" variant="h3" gutterBottom >
                                 {aprenticeSkillsData.titulo}
                             </Typography>
                             <Typography className="bigBoxTextClasses" paragraph sx={{ textAlign: 'justify' }}>{aprenticeSkillsData.descricao}</Typography>
                         </Box>
-                        <img src={aprendiz} style={{ width: "30%", height: '30%' }}></img>
+                        <img src={aprendiz} style={{ maxWidth: "30%", height: "auto" }}></img>
                     </Box>
 
                     {aprenticeSkillsData.habilidades.map((skill, index) =>

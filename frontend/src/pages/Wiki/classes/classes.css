@@ -48,3 +48,16 @@
 .estebanText{
     font-family: "Esteban", serif !important;
 }
+
+@media (max-width: 900px) {
+    .bigBoxTextClasses {
+        font-size: 14px !important;
+        text-indent: 10px !important;
+    }
+    .tabs {
+        font-size: 11px !important;
+        margin-left: 0 !important;
+        padding: 6px 8px !important;
+        min-width: auto !important;
+    }
+}

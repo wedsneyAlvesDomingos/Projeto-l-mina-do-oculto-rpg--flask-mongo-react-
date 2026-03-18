@@ -205,7 +205,7 @@ Cansaço Desesperador:o personagem está completamente esgotado,. -7 em todas as
     }
     return (
         <Box sx={{ minHeight: '700px', width: '100%' }} >
-            <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                 <Condicoes />
             </Box>
 

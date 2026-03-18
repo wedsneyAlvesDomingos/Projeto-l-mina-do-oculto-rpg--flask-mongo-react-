@@ -1009,7 +1009,7 @@ const EquipmentPage = () => {
 
             {/* Info MUI Tab Content */}
             {equipmentValue === 0 && (
-                <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                     <Box>
                         {/* Título Principal */}
                         <Typography variant="h3" className="MainTitleC">
@@ -1081,7 +1081,7 @@ const EquipmentPage = () => {
 
             {/*  Armas*/}
             {equipmentValue === 1 && (
-                <Box id="armas" sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box id="armas" sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                     <Box>
                         {/* Título Principal */}
                         <Typography variant="h3" className="MainTitleC">
@@ -1205,7 +1205,7 @@ const EquipmentPage = () => {
 
             {/*Armaduras*/}
             {equipmentValue === 2 && (
-                <Box id="armaduras" sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box id="armaduras" sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                     <Typography className="MainTitleC" variant="h3" gutterBottom>Armaduras</Typography>
                     <Typography className="bigBoxTextClasses" variant="body1" paragraph sx={{ pt: 4 }}>
                         <strong>Atenção:</strong> Armaduras pesadas requerem um mínimo de força. Se usadas sem esse pré-requisito, sofre as seguintes penalidades:
@@ -1241,12 +1241,12 @@ const EquipmentPage = () => {
             )}
             {/*Itens gerais*/}
             {equipmentValue === 3 && (
-                <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                     <EquipmentTable />
                 </Box>
             )}
             {equipmentValue === 4 && (
-                <Box id="veiculos-e-montarias" sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box id="veiculos-e-montarias" sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                     <MontariaTable title="Montarias" headers={["Montaria", "Preço", "Velocidade de Movimento", "Capacidade de Carga"]} data={mountData} />
                     <MontariaTable title="Itens" headers={["Item", "Preço", "Peso"]} data={itemData} />
                     <MontariaTable title="Veículos Marinhos" headers={["Veículo", "Preço", "Velocidade"]} data={shipData} />
@@ -1260,7 +1260,7 @@ const EquipmentPage = () => {
                 </Box>
             )}
             {equipmentValue === 5 && (
-                <Box id="kits" sx={{ width: "80%", mx: 'auto', my: 4 }}>
+                <Box id="kits" sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
 
                     <Typography className="MainTitleC" variant="h4" gutterBottom align="center">
                         Kits de equipamentos e ferramentas

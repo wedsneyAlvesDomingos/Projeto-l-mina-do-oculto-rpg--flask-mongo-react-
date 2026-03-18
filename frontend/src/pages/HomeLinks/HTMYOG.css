@@ -35,3 +35,19 @@
     font-family: "Esteban", serif !important;
     font-size: 18px !important;
 }
+
+@media (max-width: 600px) {
+    .bigBoxTextGUIATG {
+        font-size: 15px !important;
+        text-indent: 10px !important;
+    }
+    .boxTextTitleText {
+        font-size: 1rem !important;
+    }
+    .boxTextTitle {
+        font-size: 1.3rem !important;
+    }
+    .esteban {
+        font-size: 15px !important;
+    }
+}

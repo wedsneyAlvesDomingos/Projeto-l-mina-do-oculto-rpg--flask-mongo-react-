@@ -15,7 +15,9 @@ const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderCol
             sx={{
                 padding: 2,
                 mx: 0,
-                width: "19.5%",
+                flex: '1 1 250px',
+                minWidth: '250px',
+                maxWidth: { xs: '100%', lg: '19.5%' },
                 my: 1,
                 borderBottom: `10px solid ${borderColor}`
             }}
@@ -43,7 +45,7 @@ const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderCol
                         }}
                     >
                         <Tooltip title={item.description} arrow placement="right">
-                            <Typography sx={{ width: "200px", textAlign: "start" }} className="bigBoxTextClasses">
+                            <Typography sx={{ flex: 1, minWidth: '100px', textAlign: "start" }} className="bigBoxTextClasses">
                                 {item.title}
                             </Typography>
                         </Tooltip>
@@ -53,7 +55,7 @@ const AtributoBox = ({ title, data, values, onChange, remainingPoints, borderCol
                             size="small"
                             value={values[item.title]}
                             onChange={(e) => onChange(item.title, e.target.value)}
-                            sx={{ width: "100px" }}
+                            sx={{ width: "80px", flexShrink: 0 }}
                             inputProps={{
                                 min: 0,
                                 max: values[item.title] + remainingPoints
@@ -162,7 +164,7 @@ const AtributoContainer = ({
     };
 
     return (
-        <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'space-between', width: '100%' }}>
+        <Box display="flex" flexWrap="wrap" gap={1} sx={{ justifyContent: 'center', width: '100%' }}>
             {grupos.map((grupo, index) => (
                 <AtributoBox
                     key={index}

@@ -34,3 +34,22 @@
     font-family: "Esteban", serif !important;
     font-size: 18px !important;
 }
+
+@media (max-width: 600px) {
+    .MainTitleMC {
+        font-size: 1.8rem !important;
+    }
+    .bigBoxTextGUIAMC {
+        font-size: 15px !important;
+        text-indent: 10px !important;
+    }
+    .boxTextTitleText {
+        font-size: 1rem !important;
+    }
+    .boxTextTitle {
+        font-size: 1.2rem !important;
+    }
+    .esteban {
+        font-size: 15px !important;
+    }
+}

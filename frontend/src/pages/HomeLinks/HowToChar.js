@@ -47,11 +47,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1, }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: Habilidades e Testes
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -115,11 +115,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1, }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: Habilidades Físicas
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -178,11 +178,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1, }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: Habilidades de Conhecimento
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -247,11 +247,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1, }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: Habilidades de Exploração
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -305,11 +305,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1 }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: ARCANA
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -363,11 +363,11 @@ const HowToMakeCharPage = () => {
         ];
 
         return (
-            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: '50%', my: 1 }}>
+            <Paper elevation={3} sx={{ padding: 2, maxWidth: 500, mx: "auto", width: { xs: '95%', sm: '70%', md: '50%' }, my: 1 }}>
                 <Typography className="esteban" variant="h6" gutterBottom>
                     Resumo: Habilidades Sociais
                 </Typography>
-                <List sx={{ overflowY: 'scroll', height: "400px" }}>
+                <List sx={{ overflowY: 'scroll', height: { xs: '300px', sm: '400px' } }}>
                     {data.map((item, index) => (
                         <Accordion key={index} divider sx={{ mt: 0 }}>
                             <AccordionSummary
@@ -388,11 +388,11 @@ const HowToMakeCharPage = () => {
     };
 
     return (
-        <Box >
-            <Box sx={{ minHeight: '700px', width: '80%', mx: 'auto' }}>
-                <Typography variant="h2" className="MainTitleMC" sx={{ my: 8 }}>Guia de criação de personagens</Typography>
-                <Box sx={{ width: "20%", margin: "auto" }}>
-                    <img style={{ width: "100%" }} src={knight} />
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ minHeight: '100vh', width: { xs: '95%', sm: '90%', md: '80%' }, mx: 'auto', px: { xs: 1, sm: 2 } }}>
+                <Typography variant="h2" className="MainTitleMC" sx={{ my: { xs: 4, sm: 8 }, fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3.75rem' } }}>Guia de criação de personagens</Typography>
+                <Box sx={{ width: { xs: '40%', sm: '25%', md: '20%' }, margin: "auto" }}>
+                    <img style={{ width: "100%" }} src={knight} alt="knight" />
                 </Box>
                 <Typography variant="h5" className="boxTextTitleText" sx={{ margin: "auto" }}>
                     Bem-vindo ao guia passo a passo para criar seu personagem! Aqui, você aprenderá a construir um personagem único, escolhendo suas habilidades, espécie, profissão e classe. Este sistema permite uma personalização profunda, garantindo que seu personagem evolua conforme suas escolhas ao longo da aventura.

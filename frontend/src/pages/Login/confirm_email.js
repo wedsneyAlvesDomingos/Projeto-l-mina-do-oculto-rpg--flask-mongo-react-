@@ -45,24 +45,23 @@ const ConfirmEmailPage = () => {
     }, [navigate]);
 
     return (
-        <>
-            <Container component='main' maxWidth='xs'>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Container component='main' maxWidth={false} sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
                 <Box
                     sx={{
-                        position: 'absolute',
-                        left: '50%',
-                        top: '40%',
-                        transform: 'translate(-50%, -50%)',
-                        padding: '30px',
+                        padding: { xs: '16px', sm: '30px' },
                         display: 'flex',
                         borderRadius: '10px',
                         flexFlow: 'column',
                         textAlign: 'center',
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        width: '100%',
+                        maxWidth: { xs: '80vw', md: '50vw' },
+                        minWidth: '300px',
                     }}
                 >
-                    <img src={logo} style={{ margin: '10px', width: '70%', }} alt="logo" />
+                    <img src={logo} style={{ margin: '10px auto', display: 'block', width: '100%', height: 'auto' }} alt="logo" />
                     <img src={decoration} style={{ margin: '10px', width: '30%', }} alt="logo" />
                     <Typography variant="h6" className="bigBoxTextClasses">{status}</Typography>
                     <img src={decoration} style={{ margin: '10px', width: '30%', transform: "scaleY(-1)" }} alt="logo" />
@@ -71,8 +70,8 @@ const ConfirmEmailPage = () => {
                     </Button>
                 </Box>
             </Container>
-            <AppFooter position="absolute" />
-        </>
+            <AppFooter />
+        </Box>
     );
 };
 

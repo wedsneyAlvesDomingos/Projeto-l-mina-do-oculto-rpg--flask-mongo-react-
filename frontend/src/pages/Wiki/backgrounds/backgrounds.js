@@ -39,7 +39,7 @@ const AntecendetesPage = () => {
     return (
         <Box sx={{ minHeight: '700px', width: '100%' }} >
 
-            <Box sx={{ width: "80%", mx: 'auto', my: 4 }}>
+            <Box sx={{ width: { xs: "95%", md: "80%" }, mx: "auto", my: 4 }}>
                 <Typography className="MainTitleC" variant="h4" gutterBottom >
                     Antecedentes
                 </Typography>

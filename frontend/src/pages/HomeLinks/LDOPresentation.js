@@ -51,11 +51,11 @@ const WhatIsLDO = () => {
 
     return (
 
-        <Box className="esteban" sx={{ minHeight: '700px', width: '100%' }}>
-            <Box sx={{ width: "80%", mx: 'auto' }}>
+        <Box className="esteban" sx={{ minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ width: { xs: '95%', sm: '90%', md: '80%' }, mx: 'auto', px: { xs: 1, sm: 2 } }}>
                 {/* Título Principal */}
                 <Box my={4}>
-                    <Typography className="boxTextTitle" variant="h1" align="center" gutterBottom>
+                    <Typography className="boxTextTitle" variant="h1" align="center" gutterBottom sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3.5rem', lg: '4rem' } }}>
                         Desbravando os Mundos dos Jogos de RPG de Mesa
                     </Typography>
                 </Box>
@@ -77,7 +77,7 @@ const WhatIsLDO = () => {
                     </Grid>
                     <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
 
-                        <img style={{ width: "80%" }} src={welcomeToLDOImage} />
+                        <img style={{ width: '80%', maxWidth: '100%' }} src={welcomeToLDOImage} alt="Welcome to LDO" />
 
                     </Grid>
                 </Grid>
@@ -86,7 +86,7 @@ const WhatIsLDO = () => {
                 <Grid container spacing={4} my={4}>
                     <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                         {/* Espaço para Ilustração */}
-                        <img style={{ width: "80%", left: 0 }} src={becomePartOftheWorld} />
+                        <img style={{ width: '80%', maxWidth: '100%' }} src={becomePartOftheWorld} alt="Become part of the world" />
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Box sx={{ p: 3 }}>
@@ -118,7 +118,7 @@ const WhatIsLDO = () => {
                     </Grid>
                     <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                         {/* Espaço para Ilustração */}
-                        <img style={{ width: "80%", left: 0 }} src={simpleSystemReally} />
+                        <img style={{ width: '80%', maxWidth: '100%' }} src={simpleSystemReally} alt="Simple system" />
                     </Grid>
                 </Grid>
 
@@ -128,7 +128,7 @@ const WhatIsLDO = () => {
                     </Typography>
                     <Grid container spacing={3}>
                         {pilares.map((pilar, index) => (
-                            <Grid item xs={8} sm={4} md={4} key={index}>
+                            <Grid item xs={12} sm={6} md={4} key={index}>
                                 <Card className="overflow-hidden" sx={{ border: 'none', boxShadow: 'none' }}>
                                     <CardMedia
                                         component="img"
@@ -162,8 +162,8 @@ const WhatIsLDO = () => {
                         </Box>
                     </Grid>
                 </Grid>
-                <Box sx={{m:'auto', width:'30%'}}>
-                    <img style={{ width: "100%", m:'auto' }} src={logo} />
+                <Box sx={{ m: 'auto', width: { xs: '50%', sm: '40%', md: '30%' } }}>
+                    <img style={{ width: '100%' }} src={logo} alt="logo" />
                 </Box>
 
             </Box>

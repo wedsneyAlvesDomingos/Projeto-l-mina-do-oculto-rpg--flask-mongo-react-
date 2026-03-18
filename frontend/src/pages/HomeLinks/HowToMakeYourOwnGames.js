@@ -16,11 +16,11 @@ const HowToMakeYourOwnGames = () => {
 
 
     return (
-        <Box className="esteban" sx={{ minHeight: '700px', width: '100%' }}>
-            <Box className="esteban" sx={{ minHeight: '700px', width: '80%', margin: 'auto' }}>
-                <Box sx={{ padding: 4, width: '80%', m: 'auto' }}>
+        <Box className="esteban" sx={{ minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box className="esteban" sx={{ minHeight: '100vh', width: { xs: '95%', sm: '90%', md: '80%' }, margin: 'auto' }}>
+                <Box sx={{ padding: { xs: 2, sm: 4 }, width: { xs: '100%', sm: '90%', md: '80%' }, m: 'auto' }}>
                     {/* Título da Página */}
-                    <Typography variant="h2" className="boxTextTitleText" gutterBottom align="center">
+                    <Typography variant="h2" className="boxTextTitleText" gutterBottom align="center" sx={{ fontSize: { xs: '1.6rem', sm: '2.2rem', md: '3rem' } }}>
                         Como Criar uma História de RPG
                     </Typography>
 

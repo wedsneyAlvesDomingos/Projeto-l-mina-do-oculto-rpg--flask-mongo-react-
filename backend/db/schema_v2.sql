@@ -501,6 +501,11 @@ CREATE TABLE IF NOT EXISTS characters (
     created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
+    -- ── CAMPOS LEGADOS (retrocompatibilidade) ──────────────────────────────
+    race                TEXT,
+    character_class     TEXT,
+    regalia_points      INTEGER,
+
     -- ── IDENTIDADE DE CONSTRUÇÃO ───────────────────────────────────────────
     especie_id          INTEGER     REFERENCES catalog_especies(id)      ON DELETE SET NULL,
     subespecie_id       INTEGER     REFERENCES catalog_subespecies(id)   ON DELETE SET NULL,

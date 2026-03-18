@@ -82,7 +82,7 @@ const CharCreationPage = () => {
 
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
-            <Box sx={{ width: '90%', mx: 'auto' }}>
+            <Box sx={{ width: { xs: '95%', md: '90%' }, mx: 'auto' }}>
                 <Typography variant="h4" className="MainTitleC" sx={{ mt: 4 }}>
                     Criação de personagem
                 </Typography>

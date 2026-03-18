@@ -23,8 +23,10 @@ const SignUpPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [loginError, setLoginError] = useState(false);
     const [rememberMe, setRememberMe] = useState(false); // Novo estado para "Lembre-se de mim"
@@ -37,6 +39,7 @@ const SignUpPage = () => {
         e.preventDefault();
         setUsernameError("");
         setPasswordError("");
+        setConfirmPasswordError("");
 
         if (username === "") {
             setLoginError(false);
@@ -47,6 +50,11 @@ const SignUpPage = () => {
         if (password === "") {
             setLoginError(false);
             setPasswordError("Por favor, insira sua senha.");
+            return;
+        }
+        if (confirmPassword !== password) {
+            setLoginError(false);
+            setConfirmPasswordError("As senhas não coincidem.");
             return;
         }
         if (email === "") {
@@ -82,6 +90,7 @@ const SignUpPage = () => {
                 setUsername("");
                 setEmail("");
                 setPassword("");
+                setConfirmPassword("");
             } else {
                 // Lida com erros de cadastro vindos do backend
                 const errorMessage = result.error || result.message || "Erro desconhecido ao criar usuário.";
@@ -104,28 +113,29 @@ const SignUpPage = () => {
 
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
     return (
-        <>
-            <Container component='main' maxWidth='xs'>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Container component='main' maxWidth={false} sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
                 <Box
                     sx={{
-                        position: 'absolute',
-                        left: '50%',
-                        top: '40%',
-                        transform: 'translate(-50%, -50%)',
-                        padding: '30px',
+                        padding: { xs: '16px', sm: '30px' },
                         display: 'flex',
                         borderRadius: '10px',
                         flexFlow: 'column',
                         textAlign: 'center',
+                        width: '100%',
+                        maxWidth: { xs: '80vw', md: '50vw' },
+                        minWidth: '300px',
                     }}
                 >
-                    <img src={logo} style={{ margin: '10px' }} alt="logo" />
+                    <img src={logo} style={{ margin: '10px auto', display: 'block', width: '100%', height: 'auto' }} alt="logo" />
                     {feedbackMessage && (
                         <Box
                             sx={{
@@ -142,7 +152,7 @@ const SignUpPage = () => {
                         </Box>
                     )}
 
-                    <form style={{ width: '70%', margin: 'auto', display: 'flex', flexFlow: 'column wrap' }}>
+                    <form style={{ width: '100%', margin: 'auto', display: 'flex', flexFlow: 'column wrap' }}>
                         <TextField
                             error={usernameError !== "" || loginError}
                             helperText={usernameError}
@@ -189,6 +199,31 @@ const SignUpPage = () => {
                                 ),
                             }}
                         />
+                        <TextField
+                            error={confirmPasswordError !== ""}
+                            helperText={confirmPasswordError}
+                            value={confirmPassword}
+                            size="small"
+                            label="Confirmar Senha"
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            fullWidth
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            sx={{ mb: 1 }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle confirm password visibility"
+                                            onClick={handleClickShowConfirmPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
 
                         <Box sx={{ display: 'flex' }}>
                             <Button id="buttonSigIn" variant="contained" onClick={submitSignup} sx={{ background: '#162A22' }}>Cadastrar</Button>
@@ -198,8 +233,8 @@ const SignUpPage = () => {
                 </Box>
 
             </Container>
-            <AppFooter position="absolute" />
-        </>
+            <AppFooter />
+        </Box>
     );
 };
 

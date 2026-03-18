@@ -1,8 +1,10 @@
-import ConfirmEmailPage from "../pages/Login/confirm_email";
-import LoginPage from "../pages/Login/LoginPage";
-import SignUpPage from "../pages/Login/SignupPage";
-import ForgotPasswordPage from "../pages/Login/ForgotPasswordPage";
-import ResetPasswordPage from "../pages/Login/ResetPasswordPage";
+import React from "react";
+
+const ConfirmEmailPage = React.lazy(() => import("../pages/Login/confirm_email"));
+const LoginPage = React.lazy(() => import("../pages/Login/LoginPage"));
+const SignUpPage = React.lazy(() => import("../pages/Login/SignupPage"));
+const ForgotPasswordPage = React.lazy(() => import("../pages/Login/ForgotPasswordPage"));
+const ResetPasswordPage = React.lazy(() => import("../pages/Login/ResetPasswordPage"));
 
 export const auth_routes = [
     { 

@@ -100,23 +100,22 @@ const LoginPage = () => {
     };
 
     return (
-        <>
-            <Container component='main' maxWidth='xs'>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Container component='main' maxWidth={false} sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
                 <Box
                     sx={{
-                        position: 'absolute',
-                        left: '50%',
-                        top: '40%',
-                        transform: 'translate(-50%, -50%)',
-                        padding: '30px',
+                        padding: { xs: '16px', sm: '30px' },
                         display: 'flex',
                         borderRadius: '10px',
                         flexFlow: 'column',
                         textAlign: 'center',
+                        width: '100%',
+                        maxWidth: { xs: '80vw', md: '50vw' },
+                        minWidth: '300px',
                     }}
                 >
-                    <img src={logo} style={{ margin: '10px' }} alt="logo" />
-                    <form style={{ width: '70%', margin: 'auto', display: 'flex', flexFlow: 'column wrap' }}>
+                    <img src={logo} style={{ margin: '10px auto', display: 'block', width: '100%', height: 'auto' }} alt="logo" />
+                    <form style={{ width: '100%', margin: 'auto', display: 'flex', flexFlow: 'column wrap' }}>
                         <TextField
                             error={usernameError !== "" || loginError}
                             helperText={usernameError}
@@ -183,8 +182,8 @@ const LoginPage = () => {
                     </form>
                 </Box>
             </Container>
-            <AppFooter position="absolute" />
-        </>
+            <AppFooter />
+        </Box>
     );
 };
 

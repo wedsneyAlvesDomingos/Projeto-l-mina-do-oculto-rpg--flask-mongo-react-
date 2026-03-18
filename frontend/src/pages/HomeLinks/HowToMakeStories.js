@@ -51,11 +51,11 @@ const StoryPage = () => {
     
 
     return (
-        <Box maxWidth="lg" sx={{ margin: 'auto', width: '100%',display:"flex",flexFlow:'column',alignItems:'center' }}>
-            <Typography variant="h3" gutterBottom className="boxTextTitle">
+        <Box maxWidth="lg" sx={{ margin: 'auto', width: { xs: '95%', sm: '90%', md: '100%' }, minHeight: '100vh', display: 'flex', flexFlow: 'column', alignItems: 'center', px: { xs: 1, sm: 2 } }}>
+            <Typography variant="h3" gutterBottom className="boxTextTitle" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '3rem' } }}>
                 Criando Histórias Engajantes com Foco nas Habilidades de Exploração
             </Typography>
-            <img style={{margin:'40px', width:'30%'}} src={CoverImg}/>
+            <img style={{ margin: '40px 0', width: '30%', maxWidth: '300px', minWidth: '150px' }} src={CoverImg} alt="cover" />
             <Box sx={{  width: "100%" }}>
 
                 <Typography className="esteban" paragraph sx={{textIndent:'20px'}} >
