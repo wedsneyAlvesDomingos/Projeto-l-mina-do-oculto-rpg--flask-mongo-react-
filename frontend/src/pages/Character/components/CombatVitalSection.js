@@ -13,6 +13,7 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import HotelIcon from '@mui/icons-material/Hotel';
 import { calcularVantagemDesvantagem, TIPOS_DANO, calcularDanoElemental } from '../../../data/constants';
+import { atualizarPersonagem } from '../../../services/apiV2';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import HealingIcon from '@mui/icons-material/Healing';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
@@ -349,15 +350,11 @@ const CombatVitalSection = ({
 
     /* ── Auto-save individual ── */
     const handleLive = React.useCallback(async (field, value) => {
-        if (!character?.id || !baseUrl) return;
+        if (!character?.id) return;
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...character, [field]: value }),
-            });
+            await atualizarPersonagem(character.id, { ...character, [field]: value });
         } catch (e) { console.error('Erro save:', e); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     if (!statsDerivados) return null;
 

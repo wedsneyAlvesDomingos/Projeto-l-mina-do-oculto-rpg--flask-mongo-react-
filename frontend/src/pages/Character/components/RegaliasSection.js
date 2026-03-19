@@ -18,6 +18,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import CasinoIcon from '@mui/icons-material/Casino';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { atualizarPersonagem } from '../../../services/apiV2';
 import { EditableField } from './EditableField';
 import {
     getRegaliaAprendiz, getOpcaoRegalia,
@@ -356,17 +357,13 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
     /* ── Auto-save: persiste ao backend ── */
     const autoSave = useCallback(async (updatedChar) => {
-        if (!updatedChar?.id || !baseUrl) return;
+        if (!updatedChar?.id) return;
         try {
-            await fetch(`${baseUrl}/personagens/${updatedChar.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedChar),
-            });
+            await atualizarPersonagem(updatedChar.id, updatedChar);
         } catch (err) {
             console.error('Erro ao auto-salvar regalia:', err);
         }
-    }, [baseUrl]);
+    }, []);
 
     /* ── Usar habilidade: pré-computa rolls, aplica estado, abre modal → snackbar ── */
     const handleUsarHabilidade = useCallback((hab, opcoes = {}) => {

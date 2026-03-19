@@ -5,6 +5,7 @@
  */
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { criarPersonagem } from '../../services/apiV2';
 
 import {
     habilidadesFisico as fisico,
@@ -101,11 +102,57 @@ const loadDraft = () => {
 };
 
 // ============================================================================
+// MAPEAMENTO — chaves normalizadas (bonusEstruturado) → nomes de exibição
+// ============================================================================
+const HAB_KEY_MAP = {
+    acrobacia:          'Acrobacia',
+    agilidade:          'Agilidade',
+    alquimia:           'Alquimia',
+    arcanatec:          'Arcanatec',
+    arcanismo:          'Arcanismo',
+    armadilhas:         'Armadilhas',
+    atletismo:          'Atletismo',
+    destreza:           'Destreza',
+    enganacao:          'Enganação',
+    forca:              'Força',
+    fortitude:          'Fortitude',
+    furtividade:        'Furtividade',
+    historia:           'História',
+    intimidacao:        'Intimidação',
+    intuicao:           'Intuição',
+    investigacao:       'Investigação',
+    jurisprudencia:     'Jurisprudência (Política e leis)',
+    lidar_com_animais:  'Lidar com animais',
+    medicina:           'Medicina',
+    natureza:           'Natureza',
+    navegacao:          'Navegação',
+    negociacao:         'Negociação',
+    ocultismo:          'Ocultismo',
+    percepcao:          'Percepção',
+    performance:        'Performance',
+    persuasao:          'Persuasão',
+    rastreamento:       'Rastreamento',
+    ritualismo:         'Ritualismo',
+    seducao:            'Sedução',
+    sobrevivencia:      'Sobrevivência',
+    tecnologia:         'Tecnologia',
+    teologia:           'Teologia',
+};
+
+const PROF_KEY_MAP = {
+    linguas_antigas:              'Proficiência em Línguas Antigas',
+    disfarce:                     'Proficiência em Disfarce',
+    ferramentas_de_ladrao:        'Ferramentas de ladrão',
+    conducao_veiculos_terrestres: 'Condução de Veículos Terrestres',
+    veiculos_aquaticos:           'Condução de Veículos Aquáticos',
+    arqueologo:                   'Proficiência em Arqueologia',
+};
+
+// ============================================================================
 // HOOK PRINCIPAL
 // ============================================================================
 export default function useCharCreation() {
     const navigate = useNavigate();
-    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const fileInputRef = useRef();
     const [draft] = useState(() => loadDraft());
 
@@ -483,374 +530,70 @@ export default function useCharCreation() {
     // HANDLER — Antecedente (Seleção e Remoção)
     // ============================================================
     const handleAntecedenteChange = (antecedente) => {
+        const ant = antecedentes.find(a => a.nome === antecedente.nome);
+
+        // Efeitos colaterais por antecedente: itens de loja, modais, dinheiro.
+        // Os bônus de habilidade/proficiência são aplicados via bonusEstruturado/proficienciasGanhas
+        // usando HAB_KEY_MAP e PROF_KEY_MAP definidos no módulo.
+        // Nota: pontos negativos em bonusEstruturado são aplicados com setAutoIncrementedValueByName
+        // (consistente com o padrão original do ABENÇOADO), sem clamping a zero.
+        const EFEITOS = {
+            'ACÓLITO':                   { select: () => handleChangeShopBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 1), deselect: () => handleRemoveBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 1) },
+            'AMNÉSICO':                  { select: () => setOpen(true), deselect: () => { clearGroups([group2], [setGroup2], 1); clearGroups([group1], [setGroup1], 2); } },
+            'ARQUEOLOGISTA':             { select: () => handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1) },
+            'ARTESÃO':                   { select: () => { setModalAberto(true); handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1); }, deselect: () => { setModalAberto(false); setSelectedIdModal(''); setProfessionRegAntecedente([]); handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1); } },
+            'ASSISTENTE DE LABORATÓRIO': { select: () => setOpenMutatioModal(true), deselect: () => { setEspecieSelecionadaLista([]); setOpenMutatioModal(false); } },
+            'ASTRÔNOMO':                 { select: () => handleChangeShopBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1) },
+            'ATOR':                      { select: () => handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1) },
+            'AVENTUREIRO':               { select: () => { handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1); handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); }, deselect: () => { handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1); handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); } },
+            'BANDIDO':                   { select: () => handleChangeShopBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1) },
+            'BARBEIRO':                  { select: () => handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1) },
+            'BATEDOR':                   { select: () => { handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1); }, deselect: () => { handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1); } },
+            'CAÇADOR DE RECOMPENSAS':    { select: () => handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1) },
+            'CAPANGA':                   { select: () => handleChangeShopBG("Kits", { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45 }, 1) },
+            'CARTEIRO':                  { select: () => { handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); handleChangeShopBG("Kits", { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30 }, 1); handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1); }, deselect: () => { handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1); handleRemoveBG("Kits", { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30 }, 1); handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1); } },
+            'CHARLATÃO':                 { select: () => handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1) },
+            'CIRCENSE':                  { select: () => setOpenMutatioModal(true), deselect: () => { setEspecieSelecionadaLista([]); setOpenMutatioModal(false); } },
+            'COMERCIANTE':               { select: () => handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1) },
+            'CORTESÃO':                  { select: () => handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1), deselect: () => handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1) },
+            'CURANDEIRO':                { select: () => { handleChangeShopBG("Kits", { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50 }, 1); handleChangeShopBG("Kits", { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20 }, 1); }, deselect: () => { handleRemoveBG("Kits", { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50 }, 1); handleRemoveBG("Kits", { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20 }, 1); } },
+            'DETETIVE':                  { select: () => handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1) },
+            'EREMITA':                   { select: () => handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1) },
+            'ESCUDEIRO':                 { select: () => handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1) },
+            'ESPIÃO':                    { select: () => { handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1); handleChangeShopBG("Kits", { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70 }, 1); }, deselect: () => { handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1); handleRemoveBG("Kits", { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70 }, 1); } },
+            'HERDEIRO':                  { select: () => { handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1); setInicialMoney(650); }, deselect: () => { handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1); setInicialMoney(DEFAULT_MONEY); } },
+            'MÉDICO DE BECO':            { select: () => handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1) },
+            'MENESTREL':                 { select: () => { handleChangeShopBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1); handleChangeShopBG("Kits", { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55 }, 1); }, deselect: () => { handleRemoveBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1); handleRemoveBG("Kits", { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55 }, 1); } },
+            'MINERADOR':                 { select: () => handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1) },
+            'NOBRE':                     { select: () => { handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1); handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1); setInicialMoney(600); }, deselect: () => { handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1); handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1); setInicialMoney(DEFAULT_MONEY); } },
+            'NÔMADE':                    { select: () => handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1), deselect: () => handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1) },
+        };
+
         if (antecedenteSelecionado?.nome === antecedente.nome) {
             setChosenAntecedentes(prev => {
                 const newSet = new Set(prev);
                 newSet.delete(antecedente);
                 return newSet;
             });
-            switch (antecedente.nome) {
-                case 'ABENÇOADO':
-                    removeAutoIncrementedValueByName('Teologia', 2);
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Ritualismo', -1);
-                    removeAutoIncrementedValueByName('Ocultismo', -1);
-                    break;
-                case 'ACADÊMICO':
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                    removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
-                    break;
-                case 'ACÓLITO':
-                    removeAutoIncrementedValueByName('Teologia', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                    handleRemoveBG({ name: "Símbolo santo", price: 0.7 });
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    break;
-                case 'ACROBATA':
-                    removeAutoIncrementedValueByName('Acrobacia', 2);
-                    removeAutoIncrementedValueByName('Performance', 2);
-                    removeAutoIncrementedValueByName('Destreza', 1);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    break;
-                case 'ADESTRADOR DE ANIMAIS':
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Lidar com animais', 2);
-                    removeAutoIncrementedValueByName('Natureza', 1);
-                    removeAutoIncrementedValueByName('Armadilhas', 1);
-                    break;
-                case 'AMALDIÇOADO':
-                    removeAutoIncrementedValueByName('Percepção', 2);
-                    removeAutoIncrementedValueByName('Ocultismo', 2);
-                    removeAutoIncrementedValueByName('Intimidação', 2);
-                    removeAutoIncrementedValueByName('Ritualismo', 2);
-                    setAutoIncrementedValueByName('Intuição', 1);
-                    setAutoIncrementedValueByName('Persuasão', 1);
-                    break;
-                case 'AMNÉSICO':
-                    clearGroups([group2], [setGroup2], 1);
-                    clearGroups([group1], [setGroup1], 2);
-                    break;
-                case 'ARQUEOLOGISTA':
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Investigação', 1);
-                    removeAutoIncrementedValueByName('Percepção', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                    break;
-                case 'ARTESÃO':
-                    removeAutoIncrementedValueByName('Arcanatec', 2);
-                    removeAutoIncrementedValueByName('Tecnologia', 2);
-                    removeAutoIncrementedValueByName('Negociação', 1);
-                    removeAutoIncrementedValueByName('Destreza', 1);
-                    setModalAberto(false);
-                    setSelectedIdModal('');
-                    setProfessionRegAntecedente([]);
-                    handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                    break;
-                case 'ASSISTENTE DE ACADEMIA':
-                    removeAutoIncrementedValueByName('Alquimia', 2);
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('Medicina', 1);
-                    removeAutoIncrementedValueByName('Investigação', 1);
-                    break;
-                case 'ASSISTENTE DE LABORATÓRIO':
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('Alquimia', 2);
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Arcanismo', 1);
-                    setEspecieSelecionadaLista([]);
-                    setOpenMutatioModal(false);
-                    break;
-                case 'ASTRÔNOMO':
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Percepção', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1);
-                    break;
-                case 'ATOR':
-                    removeAutoIncrementedValueByName('Performance', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 2);
-                    removeAutoIncrementedValueByName('Sedução', 1);
-                    removeAutoIncrementedValueByName('Enganação', 1);
-                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                    break;
-                case 'BANDIDO':
-                    removeAutoIncrementedValueByName('Intimidação', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 2);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    removeAutoIncrementedValueByName('Percepção', 1);
-                    handleRemoveBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1);
-                    break;
-                case 'BARBEIRO':
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Negociação', 2);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    removeAutoIncrementedValueByName('Destreza', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                    break;
-                case 'BATEDOR':
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 1);
-                    removeAutoIncrementedValueByName('Percepção', 1);
-                    removeAutoIncrementedProfByName('Ferramentas de ladrão', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                    break;
-                case 'AVENTUREIRO':
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Percepção', 2);
-                    removeAutoIncrementedValueByName('Navegação', 1);
-                    removeAutoIncrementedValueByName('Atletismo', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                    break;
-                case 'BIBLIOTECÁRIO':
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                    removeAutoIncrementedValueByName('Teologia', 1);
-                    removeAutoIncrementedValueByName('Natureza', 1);
-                    removeAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
-                    break;
-                case 'CAÇADOR DE RECOMPENSAS':
-                    removeAutoIncrementedValueByName('Rastreamento', 2);
-                    removeAutoIncrementedValueByName('Investigação', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 1);
-                    removeAutoIncrementedValueByName('Negociação', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                    break;
-                case 'CAPANGA':
-                    removeAutoIncrementedValueByName('Negociação', 2);
-                    removeAutoIncrementedValueByName('Intimidação', 2);
-                    removeAutoIncrementedValueByName('Fortitude', 1);
-                    removeAutoIncrementedValueByName('Força', 1);
-                    handleRemoveBG("Kits", { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45 }, 1);
-                    break;
-                case 'CARTEIRO':
-                    removeAutoIncrementedValueByName('Percepção', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30 }, 1);
-                    removeAutoIncrementedProfByName('Condução de Veículos Terrestres', 1);
-                    handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
-                    break;
-                case 'CAMPONÊS':
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Lidar com animais', 2);
-                    removeAutoIncrementedValueByName('Fortitude', 1);
-                    removeAutoIncrementedValueByName('Destreza', 1);
-                    removeAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
-                    break;
-                case 'CHARLATÃO':
-                    removeAutoIncrementedValueByName('Performance', 2);
-                    removeAutoIncrementedValueByName('Enganação', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 1);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                    break;
-                case 'CIRCENSE':
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Performance', 2);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    removeAutoIncrementedValueByName('Acrobacia', 1);
-                    setEspecieSelecionadaLista([]);
-                    setOpenMutatioModal(false);
-                    break;
-                case 'COMERCIANTE':
-                    removeAutoIncrementedValueByName('Negociação', 2);
-                    removeAutoIncrementedValueByName('Arcanatec', 2);
-                    removeAutoIncrementedValueByName('Enganação', 1);
-                    removeAutoIncrementedValueByName('Persuasão', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                    break;
-                case 'CORTESÃO':
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 2);
-                    removeAutoIncrementedValueByName('Sedução', 1);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                    break;
-                case 'CURANDEIRO':
-                    removeAutoIncrementedValueByName('Medicina', 2);
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('Sobrevivência', 1);
-                    removeAutoIncrementedValueByName('Alquimia', 1);
-                    handleRemoveBG("Kits", { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20 }, 1);
-                    break;
-                case 'DETETIVE':
-                    removeAutoIncrementedValueByName('Investigação', 2);
-                    removeAutoIncrementedValueByName('Rastreamento', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                    break;
-                case 'EREMITA':
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 1);
-                    removeAutoIncrementedValueByName('Lidar com Animais', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                    break;
-                case 'ESCUDEIRO':
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Atletismo', 2);
-                    removeAutoIncrementedValueByName('Fortitude', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                    break;
-                case 'ESPIÃO':
-                    removeAutoIncrementedValueByName('Furtividade', 2);
-                    removeAutoIncrementedValueByName('Investigação', 2);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    removeAutoIncrementedValueByName('Enganação', 1);
-                    removeAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70 }, 1);
-                    break;
-                case 'ESTUDANTE DE MAGIA':
-                    removeAutoIncrementedValueByName('Arcanismo', 2);
-                    removeAutoIncrementedValueByName('Alquimia', 2);
-                    removeAutoIncrementedValueByName('Arcanatec', 1);
-                    removeAutoIncrementedValueByName('Natureza', 1);
-                    break;
-                case 'FANÁTICO':
-                    removeAutoIncrementedValueByName('Ocultismo', 2);
-                    removeAutoIncrementedValueByName('Ritualismo', 2);
-                    removeAutoIncrementedValueByName('Arcanismo', 1);
-                    removeAutoIncrementedValueByName('Teologia', 1);
-                    break;
-                case 'FORASTEIRO':
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Negociação', 1);
-                    break;
-                case 'GLADIADOR':
-                    removeAutoIncrementedValueByName('Atletismo', 2);
-                    removeAutoIncrementedValueByName('Acrobacia', 2);
-                    removeAutoIncrementedValueByName('Fortitude', 1);
-                    break;
-                case 'GUARDA':
-                    removeAutoIncrementedValueByName('Atletismo', 2);
-                    removeAutoIncrementedValueByName('Acrobacia', 2);
-                    break;
-                case 'HERDEIRO':
-                    removeAutoIncrementedValueByName('Persuasão', 2);
-                    removeAutoIncrementedValueByName('História', 2);
-                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                    setInicialMoney(DEFAULT_MONEY);
-                    break;
-                case 'HEROICO':
-                    removeAutoIncrementedValueByName('Acrobacia', 2);
-                    removeAutoIncrementedValueByName('Medicina', 2);
-                    removeAutoIncrementedValueByName('Atletismo', 1);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    break;
-                case 'JORNALEIRO':
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Investigação', 2);
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Navegação', 1);
-                    break;
-                case 'MARUJO':
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Investigação', 2);
-                    removeAutoIncrementedValueByName('História', 1);
-                    removeAutoIncrementedValueByName('Navegação', 1);
-                    break;
-                case 'MÉDICO DE BECO':
-                    removeAutoIncrementedValueByName('Medicina', 2);
-                    removeAutoIncrementedValueByName('Alquimia', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 1);
-                    removeAutoIncrementedValueByName('Enganação', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                    break;
-                case 'MENESTREL':
-                    removeAutoIncrementedValueByName('Performance', 2);
-                    removeAutoIncrementedValueByName('Sedução', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 1);
-                    removeAutoIncrementedValueByName('Enganação', 1);
-                    handleRemoveBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1);
-                    handleRemoveBG("Kits", { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55 }, 1);
-                    break;
-                case 'MINERADOR':
-                    removeAutoIncrementedValueByName('Natureza', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 1);
-                    removeAutoIncrementedValueByName('Força', 1);
-                    removeAutoIncrementedProfByName('Ferramentas de ladrão', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                    break;
-                case 'NAVEGADOR':
-                    removeAutoIncrementedValueByName('Percepção', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Investigação', 1);
-                    removeAutoIncrementedValueByName('História', 1);
-                    break;
-                case 'NOBRE':
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                    removeAutoIncrementedValueByName('História', 2);
-                    handleRemoveBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                    handleRemoveBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
-                    setInicialMoney(DEFAULT_MONEY);
-                    break;
-                case 'NÔMADE':
-                    removeAutoIncrementedValueByName('Lidar com animais', 2);
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('Investigação', 1);
-                    removeAutoIncrementedValueByName('Sobrevivência', 1);
-                    handleRemoveBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                    break;
-                case 'ÓRFÃO':
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Enganação', 2);
-                    removeAutoIncrementedValueByName('Furtividade', 1);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    break;
-                case 'PEREGRINO':
-                    removeAutoIncrementedValueByName('Navegação', 2);
-                    removeAutoIncrementedValueByName('História', 2);
-                    removeAutoIncrementedValueByName('Teologia', 1);
-                    removeAutoIncrementedValueByName('Percepção', 1);
-                    break;
-                case 'PRISIONEIRO':
-                    removeAutoIncrementedValueByName('Furtividade', 2);
-                    removeAutoIncrementedValueByName('Intimidação', 2);
-                    removeAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                    removeAutoIncrementedValueByName('Agilidade', 1);
-                    break;
-                case 'REFUGIADO':
-                    removeAutoIncrementedValueByName('Sobrevivência', 2);
-                    removeAutoIncrementedValueByName('Persuasão', 2);
-                    removeAutoIncrementedValueByName('Intuição', 1);
-                    removeAutoIncrementedValueByName('História', 1);
-                    break;
-                case 'TAVERNEIRO':
-                    removeAutoIncrementedValueByName('Negociação', 2);
-                    removeAutoIncrementedValueByName('Intuição', 2);
-                    removeAutoIncrementedValueByName('Intimidação', 1);
-                    removeAutoIncrementedValueByName('Destreza', 1);
-                    break;
-                default:
-                    break;
+            if (ant) {
+                ant.bonusEstruturado.forEach(({ habilidade, pontos }) => {
+                    const nome = HAB_KEY_MAP[habilidade];
+                    if (nome) removeAutoIncrementedValueByName(nome, pontos);
+                });
+                ant.proficienciasGanhas.forEach(({ proficiencia, pontos }) => {
+                    const nome = PROF_KEY_MAP[proficiencia];
+                    if (nome) removeAutoIncrementedProfByName(nome, pontos);
+                });
             }
+            EFEITOS[antecedente.nome]?.deselect?.();
             // Desfazer escolhas do modal de antecedente (Força/Destreza, Proficiências etc.)
             antecedenteEscolhas.habilidades.forEach(h => removeAutoIncrementedValueByName(h.nome, h.pontos));
             antecedenteEscolhas.proficiencias.forEach(p => removeAutoIncrementedProfByName(p.nome, p.pontos));
             setAntecedenteEscolhas({ habilidades: [], proficiencias: [] });
-
             setAntecedenteSelecionado(null);
             return;
         }
+
         setAntecedenteSelecionado(antecedente);
         if (chosenAntecedentes.has(antecedente)) {
             console.log(`${antecedente.nome} já selecionado, sem incremento`);
@@ -858,355 +601,17 @@ export default function useCharCreation() {
         }
         setChosenAntecedentes(prev => new Set(prev).add(antecedente));
 
-        switch (antecedente.nome) {
-            case 'ABENÇOADO':
-                setAutoIncrementedValueByName('Teologia', 2);
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Ritualismo', -1);
-                setAutoIncrementedValueByName('Ocultismo', -1);
-                break;
-            case 'ACADÊMICO':
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
-                break;
-            case 'ACÓLITO':
-                setAutoIncrementedValueByName('Teologia', 2);
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Intuição', 1);
-                handleChangeShopBG("Equipamento Geral", { name: "Símbolo santo", price: 0.7 }, 1);
-                break;
-            case 'ACROBATA':
-                setAutoIncrementedValueByName('Acrobacia', 2);
-                setAutoIncrementedValueByName('Performance', 2);
-                setAutoIncrementedValueByName('Destreza', 1);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                break;
-            case 'ADESTRADOR DE ANIMAIS':
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Lidar com animais', 2);
-                setAutoIncrementedValueByName('Natureza', 1);
-                setAutoIncrementedValueByName('Armadilhas', 1);
-                break;
-            case 'AMALDIÇOADO':
-                setAutoIncrementedValueByName('Percepção', 2);
-                setAutoIncrementedValueByName('Ocultismo', 2);
-                setAutoIncrementedValueByName('Intimidação', 2);
-                setAutoIncrementedValueByName('Ritualismo', 2);
-                removeAutoIncrementedValueByName('Intuição', 1);
-                removeAutoIncrementedValueByName('Persuasão', 1);
-                break;
-            case 'AMNÉSICO':
-                setOpen(true);
-                break;
-            case 'ARQUEOLOGISTA':
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Investigação', 1);
-                setAutoIncrementedValueByName('Percepção', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                break;
-            case 'ARTESÃO':
-                setAutoIncrementedValueByName('Arcanatec', 2);
-                setAutoIncrementedValueByName('Tecnologia', 2);
-                setAutoIncrementedValueByName('Negociação', 1);
-                setAutoIncrementedValueByName('Destreza', 1);
-                setModalAberto(true);
-                handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                break;
-            case 'ASSISTENTE DE ACADEMIA':
-                setAutoIncrementedValueByName('Alquimia', 2);
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('Medicina', 1);
-                setAutoIncrementedValueByName('Investigação', 1);
-                break;
-            case 'ASSISTENTE DE LABORATÓRIO':
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('Alquimia', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Arcanismo', 1);
-                setOpenMutatioModal(true);
-                break;
-            case 'ASTRÔNOMO':
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Percepção', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Cartografia", description: "Contém instrumentos de medição, papéis especiais e canetas de precisão para elaborar mapas.", price: 30 }, 1);
-                break;
-            case 'ATOR':
-                setAutoIncrementedValueByName('Performance', 2);
-                setAutoIncrementedValueByName('Persuasão', 2);
-                setAutoIncrementedValueByName('Sedução', 1);
-                setAutoIncrementedValueByName('Enganação', 1);
-                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                break;
-            case 'BANDIDO':
-                setAutoIncrementedValueByName('Intimidação', 2);
-                setAutoIncrementedValueByName('Furtividade', 2);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                setAutoIncrementedValueByName('Percepção', 1);
-                handleChangeShopBG("Kits", { name: "Ferramentas de ladrão", description: "Inclui gazuas, pé de cabra pequeno, lima de metal e outros instrumentos para abrir fechaduras.", price: 45 }, 1);
-                break;
-            case 'BARBEIRO':
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Negociação', 2);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                setAutoIncrementedValueByName('Destreza', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                break;
-            case 'BATEDOR':
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Furtividade', 1);
-                setAutoIncrementedValueByName('Percepção', 1);
-                setAutoIncrementedProfByName('Ferramentas de ladrão', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                break;
-            case 'AVENTUREIRO':
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Percepção', 2);
-                setAutoIncrementedValueByName('Navegação', 1);
-                setAutoIncrementedValueByName('Atletismo', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                break;
-            case 'BIBLIOTECÁRIO':
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                setAutoIncrementedValueByName('Teologia', 1);
-                setAutoIncrementedValueByName('Natureza', 1);
-                setAutoIncrementedProfByName('Proficiência em Línguas Antigas', 1);
-                break;
-            case 'CAÇADOR DE RECOMPENSAS':
-                setAutoIncrementedValueByName('Rastreamento', 2);
-                setAutoIncrementedValueByName('Investigação', 2);
-                setAutoIncrementedValueByName('Persuasão', 1);
-                setAutoIncrementedValueByName('Negociação', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                break;
-            case 'CAPANGA':
-                setAutoIncrementedValueByName('Negociação', 2);
-                setAutoIncrementedValueByName('Intimidação', 2);
-                setAutoIncrementedValueByName('Fortitude', 1);
-                setAutoIncrementedValueByName('Força', 1);
-                handleChangeShopBG("Kits", { name: "Ferramentas de ladrão", description: "Contém ferramentas especializadas, como pés de cabra, brocas manuais e chave de fenda para abrir fechaduras.", price: 45 }, 1);
-                break;
-            case 'CARTEIRO':
-                setAutoIncrementedValueByName('Percepção', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                setAutoIncrementedValueByName('Intuição', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Cartografia", description: "Inclui pergaminhos, pena, tinta e outros itens para desenhar mapas e fazer anotações.", price: 30 }, 1);
-                setAutoIncrementedProfByName('Condução de Veículos Terrestres', 1);
-                handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
-                break;
-            case 'CAMPONÊS':
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Lidar com animais', 2);
-                setAutoIncrementedValueByName('Fortitude', 1);
-                setAutoIncrementedValueByName('Destreza', 1);
-                setAutoIncrementedProfByName('Condução de Veículos Terrestres', 2);
-                break;
-            case 'CHARLATÃO':
-                setAutoIncrementedValueByName('Performance', 2);
-                setAutoIncrementedValueByName('Enganação', 2);
-                setAutoIncrementedValueByName('Persuasão', 1);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                break;
-            case 'CIRCENSE':
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Performance', 2);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                setAutoIncrementedValueByName('Acrobacia', 1);
-                setOpenMutatioModal(true);
-                break;
-            case 'COMERCIANTE':
-                setAutoIncrementedValueByName('Negociação', 2);
-                setAutoIncrementedValueByName('Arcanatec', 2);
-                setAutoIncrementedValueByName('Enganação', 1);
-                setAutoIncrementedValueByName('Persuasão', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                break;
-            case 'CORTESÃO':
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Persuasão', 2);
-                setAutoIncrementedValueByName('Sedução', 1);
-                setAutoIncrementedValueByName('Intuição', 1);
-                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                break;
-            case 'CURANDEIRO':
-                setAutoIncrementedValueByName('Medicina', 2);
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('Sobrevivência', 1);
-                setAutoIncrementedValueByName('Alquimia', 1);
-                handleChangeShopBG("Kits", { name: "Kit Médico", description: "Inclui bandagens, anti sépticos, tesoura médica e outros itens para primeiros socorros.", price: 50 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Herborista", description: "Contém ervas medicinais, pilão, mortalha e outros itens para preparar remédios naturais.", price: 20 }, 1);
-                break;
-            case 'DETETIVE':
-                setAutoIncrementedValueByName('Investigação', 2);
-                setAutoIncrementedValueByName('Rastreamento', 2);
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                setAutoIncrementedValueByName('Intuição', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Explorador", description: "Inclui bússola, mapa, binóculos e outros itens para exploração e orientação em território desconhecido.", price: 35 }, 1);
-                break;
-            case 'EREMITA':
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Furtividade', 1);
-                setAutoIncrementedValueByName('Lidar com Animais', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                break;
-            case 'ESCUDEIRO':
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Atletismo', 2);
-                setAutoIncrementedValueByName('Fortitude', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                break;
-            case 'ESPIÃO':
-                setAutoIncrementedValueByName('Furtividade', 2);
-                setAutoIncrementedValueByName('Investigação', 2);
-                setAutoIncrementedValueByName('Intuição', 1);
-                setAutoIncrementedValueByName('Enganação', 1);
-                setAutoIncrementedProfByName('Proficiência em Disfarce', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Disfarces", description: "Contém roupas variadas, perucas, maquiagem e outros itens para se disfarçar e passar despercebido.", price: 50 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Venenos", description: "Contém frascos de veneno, luvas, aplicadores e outros itens para lidar com substâncias tóxicas.", price: 70 }, 1);
-                break;
-            case 'ESTUDANTE DE MAGIA':
-                setAutoIncrementedValueByName('Arcanismo', 2);
-                setAutoIncrementedValueByName('Alquimia', 2);
-                setAutoIncrementedValueByName('Arcanatec', 1);
-                setAutoIncrementedValueByName('Natureza', 1);
-                break;
-            case 'FANÁTICO':
-                setAutoIncrementedValueByName('Ocultismo', 2);
-                setAutoIncrementedValueByName('Ritualismo', 2);
-                setAutoIncrementedValueByName('Arcanismo', 1);
-                setAutoIncrementedValueByName('Teologia', 1);
-                break;
-            case 'FORASTEIRO':
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Negociação', 1);
-                break;
-            case 'GLADIADOR':
-                setAutoIncrementedValueByName('Atletismo', 2);
-                setAutoIncrementedValueByName('Acrobacia', 2);
-                setAutoIncrementedValueByName('Fortitude', 1);
-                break;
-            case 'GUARDA':
-                setAutoIncrementedValueByName('Atletismo', 2);
-                setAutoIncrementedValueByName('Acrobacia', 2);
-                break;
-            case 'HERDEIRO':
-                setAutoIncrementedValueByName('Persuasão', 2);
-                setAutoIncrementedValueByName('História', 2);
-                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                setInicialMoney(650);
-                break;
-            case 'HEROICO':
-                setAutoIncrementedValueByName('Acrobacia', 2);
-                setAutoIncrementedValueByName('Medicina', 2);
-                setAutoIncrementedValueByName('Atletismo', 1);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                break;
-            case 'JORNALEIRO':
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Investigação', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Navegação', 1);
-                break;
-            case 'MARUJO':
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Investigação', 2);
-                setAutoIncrementedValueByName('História', 1);
-                setAutoIncrementedValueByName('Navegação', 1);
-                break;
-            case 'MÉDICO DE BECO':
-                setAutoIncrementedValueByName('Medicina', 2);
-                setAutoIncrementedValueByName('Alquimia', 2);
-                setAutoIncrementedValueByName('Furtividade', 1);
-                setAutoIncrementedValueByName('Enganação', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Ferramentas", description: "Contém martelo, chave de fenda, alicate e outros itens úteis para consertar e construir objetos.", price: 25 }, 1);
-                break;
-            case 'MENESTREL':
-                setAutoIncrementedValueByName('Performance', 2);
-                setAutoIncrementedValueByName('Sedução', 2);
-                setAutoIncrementedValueByName('Persuasão', 1);
-                setAutoIncrementedValueByName('Enganação', 1);
-                handleChangeShopBG("Equipamento geralEquipamento Geral", { name: "Instrumento musical", price: 1 }, 1);
-                handleChangeShopBG("Kits", { name: "Kit de Músico", description: "Inclui instrumentos musicais, partituras, cordas de reposição e outros itens para tocar música.", price: 55 }, 1);
-                break;
-            case 'MINERADOR':
-                setAutoIncrementedValueByName('Natureza', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Furtividade', 1);
-                setAutoIncrementedValueByName('Força', 1);
-                setAutoIncrementedProfByName('Ferramentas de ladrão', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Escalada", description: "Contém cordas, mosquetões, ganchos e outros itens para escalada e rapel.", price: 40 }, 1);
-                break;
-            case 'NAVEGADOR':
-                setAutoIncrementedValueByName('Percepção', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Investigação', 1);
-                setAutoIncrementedValueByName('História', 1);
-                break;
-            case 'NOBRE':
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 2);
-                setAutoIncrementedValueByName('História', 2);
-                handleChangeShopBG("Equipamento Geral", { name: "Vestuário fino", price: 10 }, 1);
-                handleChangeShopBG("Montaria", { name: "Cavalo", price: 50, velocidade: "12m", carga: 270 }, 1);
-                setInicialMoney(600);
-                break;
-            case 'NÔMADE':
-                setAutoIncrementedValueByName('Lidar com animais', 2);
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('Investigação', 1);
-                setAutoIncrementedValueByName('Sobrevivência', 1);
-                handleChangeShopBG("Kits", { name: "Kit de Sobrevivência", description: "Inclui faca, corda, fósforos, cantil e outros itens essenciais para sobreviver ao ar livre.", price: 30 }, 1);
-                break;
-            case 'ÓRFÃO':
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Enganação', 2);
-                setAutoIncrementedValueByName('Furtividade', 1);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                break;
-            case 'PEREGRINO':
-                setAutoIncrementedValueByName('Navegação', 2);
-                setAutoIncrementedValueByName('História', 2);
-                setAutoIncrementedValueByName('Teologia', 1);
-                setAutoIncrementedValueByName('Percepção', 1);
-                break;
-            case 'PRISIONEIRO':
-                setAutoIncrementedValueByName('Furtividade', 2);
-                setAutoIncrementedValueByName('Intimidação', 2);
-                setAutoIncrementedValueByName('Jurisprudência (Política e leis)', 1);
-                setAutoIncrementedValueByName('Agilidade', 1);
-                break;
-            case 'REFUGIADO':
-                setAutoIncrementedValueByName('Sobrevivência', 2);
-                setAutoIncrementedValueByName('Persuasão', 2);
-                setAutoIncrementedValueByName('Intuição', 1);
-                setAutoIncrementedValueByName('História', 1);
-                break;
-            case 'TAVERNEIRO':
-                setAutoIncrementedValueByName('Negociação', 2);
-                setAutoIncrementedValueByName('Intuição', 2);
-                setAutoIncrementedValueByName('Intimidação', 1);
-                setAutoIncrementedValueByName('Destreza', 1);
-                break;
-            default:
-                break;
+        if (ant) {
+            ant.bonusEstruturado.forEach(({ habilidade, pontos }) => {
+                const nome = HAB_KEY_MAP[habilidade];
+                if (nome) setAutoIncrementedValueByName(nome, pontos);
+            });
+            ant.proficienciasGanhas.forEach(({ proficiencia, pontos }) => {
+                const nome = PROF_KEY_MAP[proficiencia];
+                if (nome) setAutoIncrementedProfByName(nome, pontos);
+            });
         }
+        EFEITOS[antecedente.nome]?.select?.();
 
         // Abrir modal de escolha se o antecedente possuir escolhasHabilidades ou escolhasProficiencias
         if (
@@ -1753,39 +1158,23 @@ export default function useCharCreation() {
         };
 
         try {
-            const response = await fetch(`${baseUrl}/users/${userId}/personagens`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            const data = await criarPersonagem(userId, payload);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_KEY);
                 setSnackbar({ open: true, message: `Personagem "${charName}" criado com sucesso! (ID: ${data.id})`, severity: 'success' });
-                setTimeout(() => handleNavigateToCharPage(), 1500);
-            } else {
-                let errorMessage = 'Erro ao criar personagem';
-                if (data.error) {
-                    if (/nome.*já.*existe/i.test(data.error)) {
-                        errorMessage = 'Já existe um personagem com este nome';
-                    } else if (/inválid[oa]/i.test(data.error)) {
-                        errorMessage = 'Dados inválidos: ' + data.error;
-                    } else if (/obrigatóri[oa]/i.test(data.error)) {
-                        errorMessage = 'Campo obrigatório faltando: ' + data.error;
-                    } else {
-                        errorMessage = data.error;
-                    }
-                }
-                setSnackbar({ open: true, message: errorMessage, severity: 'error' });
-            }
+            setTimeout(() => handleNavigateToCharPage(), 1500);
         } catch (error) {
             console.error('Erro de requisição:', error);
-            let errorMessage = 'Erro de conexão com o servidor';
-            if (/network/i.test(error.message)) {
+            let errorMessage = error.message || 'Erro de conexão com o servidor';
+            if (/nome.*já.*existe/i.test(errorMessage)) {
+                errorMessage = 'Já existe um personagem com este nome';
+            } else if (/inválid[oa]/i.test(errorMessage)) {
+                errorMessage = 'Dados inválidos: ' + errorMessage;
+            } else if (/obrigatóri[oa]/i.test(errorMessage)) {
+                errorMessage = 'Campo obrigatório faltando: ' + errorMessage;
+            } else if (/network/i.test(errorMessage)) {
                 errorMessage = 'Sem conexão com o servidor. Verifique sua internet.';
-            } else if (/timeout/i.test(error.message)) {
+            } else if (/timeout/i.test(errorMessage)) {
                 errorMessage = 'A requisição demorou muito. Tente novamente.';
             }
             setSnackbar({ open: true, message: errorMessage, severity: 'error' });

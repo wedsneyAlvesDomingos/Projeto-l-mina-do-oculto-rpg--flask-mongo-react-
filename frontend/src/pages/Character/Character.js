@@ -23,6 +23,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { colors } from '../../componentes/themes/tokens';
 import { determinarClasseAtual } from '../../data/constants';
+import { fetchPersonagens, deletarPersonagem } from '../../services/apiV2';
 
 /* Mapa de abreviações para os nomes das habilidades */
 const ABREV_HAB = {
@@ -41,7 +42,6 @@ const ABREV_HAB = {
 };
 
 const CharPage = () => {
-    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
     const navigate = useNavigate();
     function irParaCriacaoDePersonagem() {
         navigate(`/criarPersonagem`);
@@ -74,8 +74,7 @@ const CharPage = () => {
 
         const handleDeletePersonagem = async (charId) => {
             try {
-                const response = await fetch(`${baseUrl}/personagens/${charId}`, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Erro ao remover personagem');
+                await deletarPersonagem(charId);
                 setPersonagens(prev => prev.filter(p => p.id !== charId));
                 setDeleteConfirm(null);
             } catch (error) {
@@ -88,20 +87,9 @@ const CharPage = () => {
         useEffect(() => {
             if (!userId) return;
 
-            fetch(`${baseUrl}/personagens/${userId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao buscar personagens');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    setPersonagens(data);
-                })
-                .catch(error => {
-                    console.error(error);
-                    setErro(error.message);
-                });
+            fetchPersonagens(userId)
+                .then(data => { setPersonagens(data); })
+                .catch(error => { console.error(error); setErro(error.message); });
         }, [userId]);
 
         const filteredPersonagens = personagens.filter(char => 

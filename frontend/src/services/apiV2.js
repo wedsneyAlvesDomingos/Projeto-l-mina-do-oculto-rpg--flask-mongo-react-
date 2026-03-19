@@ -212,6 +212,87 @@ export async function usarAbilityV2(personagemId, abilitySlug, userId = 0, conte
 }
 
 // =============================================================================
+// PERSONAGENS — CRUD v1
+// =============================================================================
+
+/**
+ * Lista todos os personagens de um usuário.
+ * @param {number} userId
+ */
+export async function fetchPersonagens(userId) {
+    return apiFetch(`${BASE}/personagens/${userId}`);
+}
+
+/**
+ * Cria um novo personagem para o usuário.
+ * @param {number} userId
+ * @param {object} data - Payload completo do personagem
+ */
+export async function criarPersonagem(userId, data) {
+    return apiFetch(`${BASE}/users/${userId}/personagens`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
+}
+
+/**
+ * Atualiza um personagem existente (PUT completo).
+ * @param {number} personagemId
+ * @param {object} data - Dados atualizados do personagem
+ */
+export async function atualizarPersonagem(personagemId, data) {
+    return apiFetch(`${BASE}/personagens/${personagemId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+}
+
+/**
+ * Deleta um personagem.
+ * @param {number} personagemId
+ */
+export async function deletarPersonagem(personagemId) {
+    return apiFetch(`${BASE}/personagens/${personagemId}`, { method: 'DELETE' });
+}
+
+// =============================================================================
+// USUÁRIOS — perfil v1
+// =============================================================================
+
+/**
+ * Busca dados públicos de um usuário (nome, email, avatar).
+ * @param {number} userId
+ */
+export async function fetchUsuario(userId) {
+    return apiFetch(`${BASE}/users/${userId}`);
+}
+
+/**
+ * Atualiza dados do perfil do usuário (avatar, nome, etc.).
+ * @param {number} userId
+ * @param {object} data - Campos a atualizar
+ */
+export async function atualizarUsuario(userId, data) {
+    return apiFetch(`${BASE}/users/${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+}
+
+/**
+ * Altera a senha do usuário.
+ * @param {number} userId
+ * @param {string} currentPassword
+ * @param {string} newPassword
+ */
+export async function atualizarSenha(userId, currentPassword, newPassword) {
+    return apiFetch(`${BASE}/users/${userId}/password`, {
+        method: 'PUT',
+        body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
+    });
+}
+
+// =============================================================================
 // SNAPSHOTS DE EVOLUÇÃO — Pontos de restauração por nível
 // =============================================================================
 

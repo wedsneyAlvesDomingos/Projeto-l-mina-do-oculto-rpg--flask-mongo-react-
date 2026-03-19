@@ -28,6 +28,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UIcon from "../../assets/images/userIcon.png";
 import "./navcss.css"
+import { fetchUsuario } from '../../services/apiV2';
 
 /* ── Ícone SVG de personagem reutilizável ── */
 const PersonagemIcon = () => (
@@ -50,7 +51,6 @@ function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
-    const baseUrl = process.env.REACT_APP_LISTEN_ADDRESS;
 
     // Sincroniza user com localStorage (mesmo tab e outras abas)
     React.useEffect(() => {
@@ -76,8 +76,7 @@ function ResponsiveAppBar() {
     React.useEffect(() => {
         const stored = JSON.parse(localStorage.getItem('user') || 'null');
         if (!stored?.id || stored?.avatar) return;
-        fetch(`${baseUrl}/users/${stored.id}`)
-            .then(r => r.ok ? r.json() : null)
+        fetchUsuario(stored.id)
             .then(data => {
                 if (data?.avatar) {
                     const updated = { ...stored, avatar: data.avatar };

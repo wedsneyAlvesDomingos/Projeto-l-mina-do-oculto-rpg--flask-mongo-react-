@@ -7,6 +7,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CasinoIcon from '@mui/icons-material/Casino';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { EditableField } from './EditableField';
+import { atualizarPersonagem } from '../../../services/apiV2';
 import { gruposHabilidades } from '../../../data/constants';
 
 /* ── GrupoHeader — Cabeçalho de cada grupo com checkbox ── */
@@ -132,12 +133,9 @@ const HabilidadesSection = React.memo(({
                 );
                 const updated = { ...prev, grupos_marcados: novosGrupos, habilidades: habSanitizadas };
                 /* Auto-save a remoção */
-                if (updated.id && baseUrl) {
-                    fetch(`${baseUrl}/personagens/${updated.id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(updated),
-                    }).catch(err => console.error('Erro ao auto-salvar downgrade grupo:', err));
+                if (updated.id) {
+                    atualizarPersonagem(updated.id, updated)
+                        .catch(err => console.error('Erro ao auto-salvar downgrade grupo:', err));
                 }
                 return updated;
             });
@@ -152,17 +150,13 @@ const HabilidadesSection = React.memo(({
 
     /* ── Auto-save dos grupos marcados ── */
     const autoSave = useCallback(async (updatedChar) => {
-        if (!updatedChar?.id || !baseUrl) return;
+        if (!updatedChar?.id) return;
         try {
-            await fetch(`${baseUrl}/personagens/${updatedChar.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedChar),
-            });
+            await atualizarPersonagem(updatedChar.id, updatedChar);
         } catch (err) {
             console.error('Erro ao auto-salvar grupos marcados:', err);
         }
-    }, [baseUrl]);
+    }, []);
 
     /* ── Toggle de grupo ── */
     const handleToggleGrupo = useCallback((grupoKey, novoStatus) => {

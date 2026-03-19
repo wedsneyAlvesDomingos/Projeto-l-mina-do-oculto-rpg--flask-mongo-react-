@@ -1,0 +1,1645 @@
+openapi: 3.0.3
+
+info:
+  title: Lâmina do Oculto — API
+  description: >
+    Contrato de API gerado a partir da análise completa do frontend React.
+    Cobre autenticação, usuários, personagens (CRUD e ações v2),
+    snapshots de evolução e catálogos de catálogos.
+  version: "2.0.0"
+  contact:
+    name: Projeto Lâmina do Oculto
+
+servers:
+  - url: http://localhost:5000
+    description: Desenvolvimento local
+
+# O frontend não usa tokens — autenticação é feita via userId na URL.
+# Todos os endpoints são marcados como sem segurança (security: []).
+security: []
+
+tags:
+  - name: auth
+    description: Autenticação e conta
+  - name: users
+    description: Gerenciamento de perfil
+  - name: personagens
+    description: CRUD de personagens
+  - name: personagens-v2
+    description: Ações calculadas sobre personagens (v2)
+  - name: snapshots
+    description: Snapshots de evolução por nível
+  - name: catalogs
+    description: Catálogos de dados do sistema (v2)
+
+# ==============================================================================
+# PATHS
+# ==============================================================================
+
+paths:
+
+  # ----------------------------------------------------------------------------
+  # AUTH
+  # ----------------------------------------------------------------------------
+
+  /login:
+    post:
+      tags: [auth]
+      summary: Login
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login efetuado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users:
+    post:
+      tags: [auth]
+      summary: Cadastro de novo usuário
+      operationId: signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: Usuário criado — aguardando confirmação de email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /confirm_email:
+    post:
+      tags: [auth]
+      summary: Confirmar email via token
+      operationId: confirmEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenBody'
+      responses:
+        '200':
+          description: >
+            Email confirmado. O campo `message` deve conter a palavra "sucesso"
+            para que o frontend exiba a tela de confirmação.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /forgot-password:
+    post:
+      tags: [auth]
+      summary: Solicitar redefinição de senha
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email em lowercase e trimmed
+      responses:
+        '200':
+          description: Email de redefinição enviado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /reset-password:
+    post:
+      tags: [auth]
+      summary: Redefinir senha com token
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, new_password]
+              properties:
+                token:
+                  type: string
+                new_password:
+                  type: string
+                  minLength: 6
+      responses:
+        '200':
+          description: Senha redefinida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  # ----------------------------------------------------------------------------
+  # USERS
+  # ----------------------------------------------------------------------------
+
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      tags: [users]
+      summary: Obter perfil do usuário
+      operationId: getUser
+      description: Usado por ProfilePage e Navbar para exibir nome e avatar.
+      responses:
+        '200':
+          description: Dados do perfil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [users]
+      summary: Atualizar perfil (nome ou avatar)
+      operationId: updateUser
+      description: >
+        O frontend faz PUTs parciais — envia somente o campo alterado.
+        Aceita `{ name }` para atualizar o nome, ou `{ avatar }` para atualizar a foto.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Campo atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/{userId}/password:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    put:
+      tags: [users]
+      summary: Alterar senha
+      operationId: changePassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '200':
+          description: Senha alterada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ----------------------------------------------------------------------------
+  # PERSONAGENS — CRUD
+  # Note: o frontend usa dois caminhos equivalentes para listar personagens:
+  #   GET /personagens/{userId}           — CharacterPage, useCharacterSheet
+  #   GET /users/{userId}/personagens     — CharacterContext (legado)
+  # Ambos devem retornar o mesmo formato.
+  # ----------------------------------------------------------------------------
+
+  # GET /personagens/{id} → lista personagens do userId
+  # PUT /personagens/{id} → atualiza personagem pelo charId
+  # DELETE /personagens/{id} → deleta personagem pelo charId
+  # O path é o mesmo padrão; o significado do parâmetro varia por método.
+  /personagens/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: |
+          **GET**: ID do usuário (lista seus personagens).
+          **PUT / DELETE**: ID do personagem a operar.
+    get:
+      tags: [personagens]
+      summary: Listar personagens do usuário
+      operationId: listPersonagens
+      responses:
+        '200':
+          description: Array de personagens do usuário
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonagemSummary'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [personagens]
+      summary: Atualizar personagem
+      operationId: updatePersonagem
+      description: >
+        O frontend faz PUT com o objeto completo do personagem em todas as
+        situações de persistência: salvar ficha, auto-save de campos de combate,
+        equipar/desequipar itens, atualizar moedas, salvar histórico de rolagens,
+        toggle de grupo de habilidades, level up / level down.
+        O backend deve aplicar merge parcial preservando campos não enviados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonagemCompleto'
+      responses:
+        '200':
+          description: Personagem atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [personagens]
+      summary: Deletar personagem
+      operationId: deletePersonagem
+      responses:
+        '200':
+          description: Personagem deletado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/{userId}/personagens:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      tags: [personagens]
+      summary: Listar personagens do usuário (alias legado)
+      operationId: listPersonagensAlias
+      description: Alias de GET /personagens/{userId} mantido para compatibilidade com CharacterContext.
+      responses:
+        '200':
+          description: Array de personagens do usuário
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonagemSummary'
+    post:
+      tags: [personagens]
+      summary: Criar personagem
+      operationId: createPersonagem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePersonagemRequest'
+      responses:
+        '201':
+          description: Personagem criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id]
+                properties:
+                  id:
+                    type: string
+                    description: ID do personagem criado
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  # Alias /personagens/{charId} → consolidado em /personagens/{id} acima.
+
+  # ----------------------------------------------------------------------------
+  # PERSONAGENS — v2 AÇÕES
+  # ----------------------------------------------------------------------------
+
+  /api/v2/personagens/{personagemId}/ficha:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+    get:
+      tags: [personagens-v2]
+      summary: Obter ficha calculada
+      operationId: getFicha
+      description: >
+        Retorna o personagem com todos os stats recalculados pelo backend,
+        incluindo modificadores de condições ativas.
+      responses:
+        '200':
+          description: Ficha calculada com stats e modificadores
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FichaCalculada'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v2/personagens/{personagemId}/condicoes:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+    post:
+      tags: [personagens-v2]
+      summary: Aplicar condição ao personagem
+      operationId: aplicarCondicao
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AplicarCondicaoRequest'
+      responses:
+        '200':
+          description: Condição aplicada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CondicaoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v2/personagens/{personagemId}/condicoes/{condicaoSlug}:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+      - name: condicaoSlug
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Slug da condição (ex. envenenado, atordoado)
+    delete:
+      tags: [personagens-v2]
+      summary: Remover condição do personagem
+      operationId: removerCondicao
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+      responses:
+        '200':
+          description: Condição removida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CondicaoResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v2/personagens/{personagemId}/descanso:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+    post:
+      tags: [personagens-v2]
+      summary: Realizar descanso
+      operationId: realizarDescanso
+      description: >
+        **Descanso curto:** restaura 50% de Estamina (PE), remove condições de curta duração.
+        **Descanso longo:** restaura PV, PE e PM ao máximo, remove todas as condições temporárias.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DescansoRequest'
+      responses:
+        '200':
+          description: Descanso realizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescansoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v2/personagens/{personagemId}/regalias:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+    post:
+      tags: [personagens-v2]
+      summary: Comprar regalia
+      operationId: comprarRegalia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComprarRegaliaRequest'
+      responses:
+        '200':
+          description: Regalia adquirida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComprarRegaliaResponse'
+        '400':
+          description: Pontos insuficientes ou pré-requisito não atendido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v2/personagens/{personagemId}/abilities/{abilitySlug}/usar:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+      - name: abilitySlug
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Slug da habilidade de classe
+    post:
+      tags: [personagens-v2]
+      summary: Usar habilidade de classe (ability)
+      operationId: usarAbility
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsarAbilityRequest'
+      responses:
+        '200':
+          description: Habilidade utilizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsarAbilityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ----------------------------------------------------------------------------
+  # SNAPSHOTS
+  # ----------------------------------------------------------------------------
+
+  /personagens/{personagemId}/snapshots:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+    get:
+      tags: [snapshots]
+      summary: Listar snapshots de evolução
+      operationId: listarSnapshots
+      responses:
+        '200':
+          description: Array de snapshots por nível
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Snapshot'
+    post:
+      tags: [snapshots]
+      summary: Criar snapshot manual
+      operationId: criarSnapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nivel]
+              properties:
+                nivel:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+      responses:
+        '201':
+          description: Snapshot criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  snapshot:
+                    $ref: '#/components/schemas/Snapshot'
+
+  /personagens/{personagemId}/snapshots/{nivel}/restaurar:
+    parameters:
+      - $ref: '#/components/parameters/personagemId'
+      - name: nivel
+        in: path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 20
+        description: Nível do snapshot a restaurar
+    post:
+      tags: [snapshots]
+      summary: Restaurar snapshot (regressão de nível)
+      operationId: restaurarSnapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id]
+              properties:
+                user_id:
+                  type: integer
+      responses:
+        '200':
+          description: Personagem restaurado ao estado do snapshot
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  personagem:
+                    $ref: '#/components/schemas/PersonagemCompleto'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ----------------------------------------------------------------------------
+  # CATÁLOGOS v2
+  # ----------------------------------------------------------------------------
+
+  /api/v2/catalogs:
+    get:
+      tags: [catalogs]
+      summary: Obter todos os catálogos em uma única requisição
+      operationId: getAllCatalogs
+      description: >
+        Endpoint consolidado — o frontend faz cache de 5 minutos em memória.
+        Retorna species, skills, conditions, regalias, classes, abilities, arvores, profissoes e items.
+      responses:
+        '200':
+          description: Todos os catálogos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllCatalogs'
+
+  /api/v2/catalogs/skills:
+    get:
+      tags: [catalogs]
+      summary: Listar habilidades (skills)
+      operationId: getSkills
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+            enum: [fisico, exploracao, conhecimento, arcana, social]
+      responses:
+        '200':
+          description: Array de habilidades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skill'
+
+  /api/v2/catalogs/species:
+    get:
+      tags: [catalogs]
+      summary: Listar espécies
+      operationId: getSpecies
+      parameters:
+        - name: subespecies
+          in: query
+          schema:
+            type: boolean
+          description: Se deve incluir sub-espécies/sub-raças
+      responses:
+        '200':
+          description: Array de espécies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Especie'
+
+  /api/v2/catalogs/conditions:
+    get:
+      tags: [catalogs]
+      summary: Listar condições
+      operationId: getConditions
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array de condições
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Condicao'
+
+  /api/v2/catalogs/items:
+    get:
+      tags: [catalogs]
+      summary: Listar itens e equipamentos
+      operationId: getItems
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+            description: Ex. armas, armaduras, kits, etc.
+        - name: subcategoria
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array de itens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+
+  /api/v2/catalogs/abilities:
+    get:
+      tags: [catalogs]
+      summary: Listar habilidades de classe (abilities)
+      operationId: getAbilities
+      parameters:
+        - name: tipo
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array de abilities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ability'
+
+  /api/v2/catalogs/classes:
+    get:
+      tags: [catalogs]
+      summary: Listar classes
+      operationId: getClasses
+      parameters:
+        - name: tipo
+          in: query
+          schema:
+            type: string
+            enum: [primaria, especializacao]
+      responses:
+        '200':
+          description: Array de classes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Classe'
+
+  /api/v2/catalogs/regalias:
+    get:
+      tags: [catalogs]
+      summary: Listar regalias
+      operationId: getRegalias
+      parameters:
+        - name: tipo
+          in: query
+          schema:
+            type: string
+            enum: [aprendiz, classe, especializacao, opcional]
+        - name: classe
+          in: query
+          schema:
+            type: string
+          description: Slug da classe para filtrar
+      responses:
+        '200':
+          description: Array de regalias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Regalia'
+
+  /api/v2/catalogs/arvores:
+    get:
+      tags: [catalogs]
+      summary: Listar árvores de regalias
+      operationId: getArvores
+      parameters:
+        - name: classe
+          in: query
+          schema:
+            type: string
+          description: Slug da classe para filtrar
+      responses:
+        '200':
+          description: Array de árvores de regalias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArvoreRegalias'
+
+  /api/v2/catalogs/profissoes:
+    get:
+      tags: [catalogs]
+      summary: Listar profissões
+      operationId: getProfissoes
+      responses:
+        '200':
+          description: Array de profissões
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profissao'
+
+# ==============================================================================
+# COMPONENTS
+# ==============================================================================
+
+components:
+
+  # ----------------------------------------------------------------------------
+  # PARAMETERS
+  # ----------------------------------------------------------------------------
+
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID do usuário (extraído do localStorage no frontend)
+
+    personagemId:
+      name: personagemId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID do personagem
+
+  # ----------------------------------------------------------------------------
+  # RESPONSES
+  # ----------------------------------------------------------------------------
+
+  responses:
+    BadRequest:
+      description: Dados inválidos ou validação falhou
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Credenciais inválidas ou não autorizado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Conflito (ex. email já cadastrado)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  # ----------------------------------------------------------------------------
+  # SCHEMAS
+  # ----------------------------------------------------------------------------
+
+  schemas:
+
+    # --- Genéricos ---
+
+    ErrorResponse:
+      type: object
+      description: >
+        O frontend verifica os campos nesta ordem: `error` → `erro` → `message`.
+        Use `error` como campo primário.
+      properties:
+        error:
+          type: string
+        erro:
+          type: string
+        message:
+          type: string
+
+    MessageResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+
+    TokenBody:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+
+    # --- Auth ---
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      required: [user]
+      properties:
+        message:
+          type: string
+        user:
+          type: object
+          required: [name, id]
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+            avatar:
+              type: string
+              nullable: true
+              description: Base64 data URI ou URL
+
+    SignupRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+
+    # --- Users ---
+
+    UserProfile:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        avatar:
+          type: string
+          nullable: true
+          description: Base64 data URI
+
+    UpdateUserRequest:
+      type: object
+      description: Envie apenas o campo a ser alterado (PUT parcial).
+      properties:
+        name:
+          type: string
+        avatar:
+          type: string
+          description: Base64 data URI
+
+    UpdateUserResponse:
+      type: object
+      description: Retorna somente o campo que foi atualizado.
+      properties:
+        name:
+          type: string
+        avatar:
+          type: string
+
+    ChangePasswordRequest:
+      type: object
+      required: [current_password, new_password]
+      properties:
+        current_password:
+          type: string
+        new_password:
+          type: string
+          minLength: 6
+
+    # --- Personagem ---
+
+    PersonagemSummary:
+      type: object
+      description: Dados mínimos exibidos na listagem de personagens.
+      required: [id, nome_personagem]
+      properties:
+        id:
+          type: string
+        nome_personagem:
+          type: string
+        classe:
+          type: string
+        especie:
+          type: string
+        nivel:
+          type: integer
+        habilidades:
+          type: object
+          additionalProperties:
+            type: number
+          description: Mapa nome_habilidade → valor
+        antecedente:
+          type: object
+          properties:
+            nome:
+              type: string
+        dinheiro:
+          oneOf:
+            - type: number
+            - type: string
+        image:
+          type: string
+          nullable: true
+          description: Base64 data URI
+
+    Habilidades:
+      type: object
+      description: As 35 habilidades do sistema. Valor é o nível investido.
+      properties:
+        Acrobacia:          { type: number, default: 0 }
+        Agilidade:          { type: number, default: 0 }
+        Alquimia:           { type: number, default: 0 }
+        Arcanatec:          { type: number, default: 0 }
+        Arcanismo:          { type: number, default: 0 }
+        Armadilhas:         { type: number, default: 0 }
+        Atletismo:          { type: number, default: 0 }
+        "Combate Arcano":   { type: number, default: 0 }
+        "Combate Corpo a Corpo": { type: number, default: 0 }
+        "Combate a Distância":   { type: number, default: 0 }
+        Destreza:           { type: number, default: 0 }
+        "Enganação":        { type: number, default: 0 }
+        Fortitude:          { type: number, default: 0 }
+        "Força":            { type: number, default: 0 }
+        Furtividade:        { type: number, default: 0 }
+        "História":         { type: number, default: 0 }
+        "Intimidação":      { type: number, default: 0 }
+        "Intuição":         { type: number, default: 0 }
+        "Investigação":     { type: number, default: 0 }
+        "Jurisprudência (Política e leis)": { type: number, default: 0 }
+        "Lidar com animais": { type: number, default: 0 }
+        Medicina:           { type: number, default: 0 }
+        Natureza:           { type: number, default: 0 }
+        "Navegação":        { type: number, default: 0 }
+        "Negociação":       { type: number, default: 0 }
+        Ocultismo:          { type: number, default: 0 }
+        "Percepção":        { type: number, default: 0 }
+        Performance:        { type: number, default: 0 }
+        "Persuasão":        { type: number, default: 0 }
+        Rastreamento:       { type: number, default: 0 }
+        Ritualismo:         { type: number, default: 0 }
+        "Sedução":          { type: number, default: 0 }
+        "Sobrevivência":    { type: number, default: 0 }
+        Tecnologia:         { type: number, default: 0 }
+        Teologia:           { type: number, default: 0 }
+
+    GruposMarcados:
+      type: object
+      description: Grupos de habilidades desbloqueados (marcar o grupo concede bônus de grupo).
+      properties:
+        fisico:       { type: boolean, default: false }
+        exploracao:   { type: boolean, default: false }
+        conhecimento: { type: boolean, default: false }
+        arcana:       { type: boolean, default: false }
+        social:       { type: boolean, default: false }
+
+    Recursos:
+      type: object
+      properties:
+        pv_atual:       { type: number }
+        pv_max:         { type: number }
+        pm_atual:       { type: number }
+        pm_max:         { type: number }
+        estamina_atual: { type: number }
+        estamina_max:   { type: number }
+
+    Defesa:
+      type: object
+      properties:
+        base:     { type: number, default: 7 }
+        agilidade: { type: number }
+        armadura:  { type: number, default: 0 }
+        escudo:    { type: number, default: 0 }
+        total:     { type: number }
+
+    Velocidade:
+      type: object
+      properties:
+        base_especie:   { type: number }
+        bonus_agilidade: { type: number }
+        total:           { type: number }
+
+    ItemEquipamento:
+      type: object
+      properties:
+        name:     { type: string }
+        price:    { type: number }
+        quantity: { type: integer, minimum: 1 }
+        category: { type: string }
+
+    Moedas:
+      type: object
+      properties:
+        ouro:  { type: number, default: 0 }
+        prata: { type: number, default: 0 }
+        cobre: { type: number, default: 0 }
+
+    HistoricoRolagem:
+      type: object
+      properties:
+        tipo:      { type: string, description: "Nome do dado ou habilidade" }
+        resultado: { type: number }
+        timestamp: { type: integer, description: "Date.now() em ms" }
+        detalhes:  { type: string, nullable: true }
+
+    PersonagemCompleto:
+      type: object
+      description: Objeto completo do personagem — usado em PUT e como retorno de restore snapshot.
+      properties:
+        id:                   { type: string }
+        nome_personagem:
+          type: string
+          pattern: '^[a-zA-Z0-9À-ÿ\s''.,-]{2,50}$'
+        classe:               { type: string }
+        especie:              { type: string, description: "Slug (humano, elfo, anao…)" }
+        nivel:                { type: integer, minimum: 1, maximum: 20 }
+        "nível":              { type: integer, description: "Alias de nivel, usado na criação" }
+        experiencia:          { type: number }
+        genero:               { type: string }
+        idade:                { type: integer, minimum: 10, maximum: 1000 }
+        altura:               { type: number }
+        descricao:
+          type: string
+          maxLength: 2000
+        image:
+          type: string
+          nullable: true
+          description: Base64 data URI
+        dinheiro:
+          oneOf:
+            - type: number
+            - type: string
+        pontos_de_regalia:    { type: number }
+        antecedente:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                nome: { type: string }
+        habilidades:
+          $ref: '#/components/schemas/Habilidades'
+        grupos_marcados:
+          $ref: '#/components/schemas/GruposMarcados'
+        "condições":
+          type: object
+          additionalProperties: true
+          description: Mapa slug → objeto condição ativa
+        proficiencias:
+          type: object
+          additionalProperties:
+            type: number
+          description: Mapa nome_proficiencia → nível (0-5)
+        regalias_de_especie:
+          type: array
+          items: {}
+        regalias_de_aprendiz:
+          type: object
+          additionalProperties: true
+        regalias_de_classe:
+          type: object
+          additionalProperties: true
+        regalias_de_especialization:
+          type: object
+          additionalProperties: true
+        regalias_de_profissao:
+          type: array
+          items: {}
+        regaliasCompradas:
+          type: object
+          additionalProperties:
+            type: number
+          description: Mapa regalia_id → custo em pontos
+        equipamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemEquipamento'
+        armas_equipadas:
+          type: array
+          maxItems: 2
+          items:
+            type: object
+            nullable: true
+            description: Arma equipada no slot (null = slot vazio)
+        armadura_equipada:
+          type: object
+          nullable: true
+        escudo_equipado:
+          type: object
+          nullable: true
+        recursos:
+          $ref: '#/components/schemas/Recursos'
+        pv_atual:             { type: number }
+        pe_atual:             { type: number }
+        pm_atual:             { type: number }
+        pv_temp:              { type: number }
+        pe_temp:              { type: number }
+        pm_temp:              { type: number }
+        pv_base_especie:      { type: number }
+        velocidade_base_especie: { type: number }
+        pv_regalia_classe:    { type: number }
+        pm_regalia_classe:    { type: number }
+        pe_regalia_classe:    { type: number }
+        defesa:
+          $ref: '#/components/schemas/Defesa'
+        velocidade:
+          $ref: '#/components/schemas/Velocidade'
+        iniciativa:
+          type: object
+          properties:
+            total: { type: number }
+        carga:
+          type: object
+          properties:
+            capacidade_max: { type: number }
+        elemento_personagem:
+          type: string
+          nullable: true
+        moedas:
+          $ref: '#/components/schemas/Moedas'
+        historico_rolagens:
+          type: array
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/HistoricoRolagem'
+
+    CreatePersonagemRequest:
+      allOf:
+        - $ref: '#/components/schemas/PersonagemCompleto'
+      description: >
+        Payload de criação. Todos os stats derivados (recursos, defesa, velocidade, iniciativa, carga)
+        devem ser pré-calculados pelo frontend e enviados junto.
+
+    # --- v2 ---
+
+    Modificadores:
+      type: object
+      properties:
+        defesa:       { type: number }
+        ataque:       { type: number }
+        velocidade:   { type: number }
+        percepcao:    { type: number }
+        vantagem:     { type: boolean }
+        desvantagem:  { type: boolean }
+
+    CondicaoAtiva:
+      type: object
+      properties:
+        slug:              { type: string }
+        nome:              { type: string }
+        duracao_turnos:
+          type: integer
+          nullable: true
+        turnos_restantes:
+          type: integer
+          nullable: true
+        fonte:
+          type: string
+          nullable: true
+
+    FichaCalculada:
+      type: object
+      properties:
+        personagem:
+          $ref: '#/components/schemas/PersonagemCompleto'
+        stats:
+          type: object
+          properties:
+            pv_max:          { type: number }
+            pe_max:          { type: number }
+            pm_max:          { type: number }
+            defesa_total:    { type: number }
+            velocidade_total: { type: number }
+            iniciativa:      { type: number }
+            carga_max:       { type: number }
+        condicoes_ativas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CondicaoAtiva'
+        modificadores:
+          $ref: '#/components/schemas/Modificadores'
+
+    AplicarCondicaoRequest:
+      type: object
+      required: [condicao_slug]
+      properties:
+        condicao_slug:
+          type: string
+        duracao_turnos:
+          type: integer
+          nullable: true
+        fonte:
+          type: string
+          nullable: true
+        user_id:
+          type: integer
+          default: 0
+
+    CondicaoResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        condicoes_ativas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CondicaoAtiva'
+        modificadores:
+          $ref: '#/components/schemas/Modificadores'
+
+    DescansoRequest:
+      type: object
+      required: [tipo]
+      properties:
+        tipo:
+          type: string
+          enum: [curto, longo]
+        user_id:
+          type: integer
+          default: 0
+
+    DescansoResponse:
+      type: object
+      properties:
+        message:          { type: string }
+        recursos:
+          $ref: '#/components/schemas/Recursos'
+        condicoes_removidas:
+          type: array
+          items:
+            type: string
+        condicoes_ativas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CondicaoAtiva'
+
+    ComprarRegaliaRequest:
+      type: object
+      required: [regalia_slug]
+      properties:
+        regalia_slug:
+          type: string
+        user_id:
+          type: integer
+          default: 0
+
+    ComprarRegaliaResponse:
+      type: object
+      properties:
+        message:           { type: string }
+        pontos_restantes:  { type: number }
+        regalia:
+          type: object
+          properties:
+            slug:   { type: string }
+            nome:   { type: string }
+            tipo:   { type: string }
+            custo:  { type: number }
+
+    UsarAbilityRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          default: 0
+        contexto:
+          type: object
+          additionalProperties: true
+          description: Contexto livre (alvo, posição, etc.)
+
+    UsarAbilityResponse:
+      type: object
+      properties:
+        message:  { type: string }
+        custo:
+          type: object
+          properties:
+            pm: { type: number }
+            pe: { type: number }
+        recursos_atualizados:
+          type: object
+          properties:
+            pm_atual: { type: number }
+            pe_atual: { type: number }
+        efeito:
+          type: string
+          description: Descrição narrativa do resultado
+
+    # --- Snapshots ---
+
+    Snapshot:
+      type: object
+      properties:
+        nivel:
+          type: integer
+        data_criacao:
+          type: string
+          format: date-time
+        dados:
+          $ref: '#/components/schemas/PersonagemCompleto'
+
+    # --- Catálogos ---
+
+    Skill:
+      type: object
+      required: [slug, nome, categoria]
+      properties:
+        slug:      { type: string }
+        nome:      { type: string }
+        categoria:
+          type: string
+          enum: [fisico, exploracao, conhecimento, arcana, social]
+        descricao: { type: string }
+
+    Especie:
+      type: object
+      required: [slug, nome]
+      properties:
+        slug:             { type: string }
+        nome:             { type: string }
+        pvBase:           { type: number }
+        velocidadeBase:   { type: number }
+        tamanho:          { type: string }
+        resistencias:
+          type: array
+          items: { type: string }
+        vulnerabilidades:
+          type: array
+          items: { type: string }
+        imunidades:
+          type: array
+          items: { type: string }
+        descricao:        { type: string }
+        obrigatorias:
+          type: array
+          items:
+            type: object
+            properties:
+              nome:     { type: string }
+              regalias: { type: array, items: {} }
+
+    Condicao:
+      type: object
+      required: [slug, id]
+      properties:
+        slug:        { type: string }
+        id:          { type: string }
+        descricao:   { type: string }
+        duracao:     { type: string }
+        cor:         { type: string, description: "Hex color" }
+        categoria:   { type: string }
+        penalidades:
+          type: object
+          additionalProperties: true
+        flags:
+          type: object
+          additionalProperties: true
+        danoRecorrente:
+          type: object
+          additionalProperties: true
+        stackRegra:  { type: string }
+        cura:        { type: string }
+        nivel:       { type: integer }
+        niveis:      { type: integer }
+        niveisDetalhes:
+          type: array
+          items: {}
+        condicoesImplicitas:
+          type: array
+          items: { type: string }
+
+    Regalia:
+      type: object
+      required: [slug, nome, tipo]
+      properties:
+        slug:        { type: string }
+        id:          { type: string }
+        nome:        { type: string }
+        tipo:
+          type: string
+          enum: [aprendiz, classe, especializacao, opcional]
+        descricao:   { type: string }
+        custo:       { type: number }
+        prerequisitos:
+          type: array
+          items: {}
+
+    Classe:
+      type: object
+      required: [slug, nome, tipo]
+      properties:
+        slug:      { type: string }
+        nome:      { type: string }
+        tipo:
+          type: string
+          enum: [primaria, especializacao]
+        descricao: { type: string }
+
+    Ability:
+      type: object
+      required: [slug, nome]
+      properties:
+        slug:      { type: string }
+        nome:      { type: string }
+        tipo:      { type: string }
+        descricao: { type: string }
+        custo_pm:  { type: number, default: 0 }
+        custo_pe:  { type: number, default: 0 }
+
+    ArvoreRegalias:
+      type: object
+      required: [slug, classe, nome]
+      properties:
+        slug:    { type: string }
+        classe:  { type: string }
+        nome:    { type: string }
+        regalias:
+          type: array
+          items:
+            type: string
+          description: Array de slugs de regalias na árvore
+
+    Profissao:
+      type: object
+      required: [slug, nome]
+      properties:
+        slug:            { type: string }
+        nome:            { type: string }
+        descricao:       { type: string }
+        ambienteEmprego: { type: string }
+        rendaPorDia:     { type: number }
+        chanceDeRisco:   { type: string }
+        beneficiosFixos:
+          type: array
+          items: { type: string }
+        habilidades:
+          type: array
+          items:
+            type: object
+            properties:
+              nome:        { type: string }
+              descricao:   { type: string }
+              custoRegalia: { type: number }
+              efeitos:
+                type: array
+                items: { type: string }
+
+    Item:
+      type: object
+      required: [slug, nome, categoria]
+      properties:
+        slug:        { type: string }
+        nome:        { type: string }
+        categoria:   { type: string }
+        subcategoria: { type: string }
+        preco:       { type: number }
+        peso:        { type: number }
+        descricao:   { type: string }
+
+    AllCatalogs:
+      type: object
+      description: >
+        O hook useCatalogs aceita tanto as chaves em inglês (species, skills, conditions)
+        quanto em português (especies, habilidades, condicoes) como aliases.
+        Use as chaves em inglês como primárias.
+      properties:
+        species:
+          type: array
+          items:
+            $ref: '#/components/schemas/Especie'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Condicao'
+        regalias:
+          type: array
+          items:
+            $ref: '#/components/schemas/Regalia'
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Classe'
+        abilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ability'
+        arvores:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArvoreRegalias'
+        profissoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Profissao'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'

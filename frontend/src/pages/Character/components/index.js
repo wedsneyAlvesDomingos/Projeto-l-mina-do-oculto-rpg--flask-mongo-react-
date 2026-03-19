@@ -11,6 +11,3 @@ export { default as DiceResultDisplay } from './DiceResultDisplay';
 export { default as DiceHistorySidebar } from './DiceHistorySidebar';
 export { default as DescansoPanel } from './DescansoPanel';
 export { default as EditableField } from './EditableField';
-
-// Legacy — mantido para retrocompatibilidade
-export { CharacterProvider, useCharacter } from './CharacterContext';

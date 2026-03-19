@@ -16,6 +16,8 @@ import {
     fetchFicha,
     listarSnapshots,
     restaurarSnapshot,
+    fetchPersonagens,
+    atualizarPersonagem,
 } from '../../services/apiV2';
 import {
     calcularPontosDeVida,
@@ -119,22 +121,16 @@ export default function useCharacterSheet() {
        ═══════════════════════════════════════════════════ */
     const salvarHistoricoRolagens = useCallback(async (novoHistorico) => {
         try {
-            await fetch(`${baseUrl}/personagens/${character?.id}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...character, historico_rolagens: novoHistorico.slice(0, 50) }),
-            });
+            await atualizarPersonagem(character?.id, { ...character, historico_rolagens: novoHistorico.slice(0, 50) });
         } catch (err) { console.error('Erro ao salvar histórico:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     const salvarMoedas = useCallback(async (novasMoedas) => {
         if (!character?.id) return;
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...character, moedas: novasMoedas }),
-            });
+            await atualizarPersonagem(character.id, { ...character, moedas: novasMoedas });
         } catch (err) { console.error('Erro ao salvar moedas:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     const atualizarMoeda = useCallback((tipo, valor) => {
         if (!character) return;
@@ -423,20 +419,14 @@ export default function useCharacterSheet() {
         // Fallback: PUT v1 para garantir sincronização de estado
         if (!v2Success || (toAdd.length === 0 && toRemove.length === 0)) {
             try {
-                const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
-                    method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...character, condicoes: newCondicoes }),
-                });
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    const errorMessage = errorData.message || errorData.error || 'Erro ao salvar condições';
-                    if (/inválid[oa]/i.test(errorMessage)) throw new Error('Condição inválida selecionada');
-                    if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
-                    throw new Error(errorMessage);
-                }
+                await atualizarPersonagem(character.id, { ...character, condicoes: newCondicoes });
             } catch (error) {
+                const msg = error.message || 'Erro ao salvar condições';
+                const friendly = /inválid[oa]/i.test(msg) ? 'Condição inválida selecionada'
+                    : /não encontrado/i.test(msg) ? 'Personagem não encontrado. Recarregue a página'
+                    : msg;
                 console.error(error);
-                setSnackbar({ open: true, message: error.message || 'Erro ao salvar condições', severity: 'error' });
+                setSnackbar({ open: true, message: friendly, severity: 'error' });
                 return;
             }
         }
@@ -445,7 +435,7 @@ export default function useCharacterSheet() {
         setOriginalCharacter(prev => ({ ...prev, condicoes: newCondicoes }));
         const condCount = Object.keys(newCondicoes).length;
         setSnackbar({ open: true, message: condCount > 0 ? `Condições atualizadas (${condCount} ativa${condCount > 1 ? 's' : ''})` : 'Condições removidas', severity: 'success' });
-    }, [baseUrl, character, userId]);
+    }, [character, userId]);
 
     const updateField = useCallback((path, value) => {
         setCharacter(prev => {
@@ -466,50 +456,50 @@ export default function useCharacterSheet() {
     const equiparArma = useCallback(async (arma, slot) => {
         const novasArmas = [...armasEquipadas]; novasArmas[slot] = arma; setArmasEquipadas(novasArmas);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armas_equipadas: novasArmas }) });
+            await atualizarPersonagem(character.id, { ...character, armas_equipadas: novasArmas });
             setCharacter(prev => ({ ...prev, armas_equipadas: novasArmas }));
         } catch (err) { console.error('Erro ao salvar arma equipada:', err); }
-    }, [armasEquipadas, character, baseUrl]);
+    }, [armasEquipadas, character]);
 
     const desequiparArma = useCallback(async (slot) => {
         const novasArmas = [...armasEquipadas]; novasArmas[slot] = null; setArmasEquipadas(novasArmas);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armas_equipadas: novasArmas }) });
+            await atualizarPersonagem(character.id, { ...character, armas_equipadas: novasArmas });
             setCharacter(prev => ({ ...prev, armas_equipadas: novasArmas }));
         } catch (err) { console.error('Erro ao desequipar arma:', err); }
-    }, [armasEquipadas, character, baseUrl]);
+    }, [armasEquipadas, character]);
 
     const equiparArmadura = useCallback(async (armadura) => {
         setArmaduraEquipada(armadura);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armadura_equipada: armadura }) });
+            await atualizarPersonagem(character.id, { ...character, armadura_equipada: armadura });
             setCharacter(prev => ({ ...prev, armadura_equipada: armadura }));
         } catch (err) { console.error('Erro ao salvar armadura:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     const desequiparArmadura = useCallback(async () => {
         setArmaduraEquipada(null);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, armadura_equipada: null }) });
+            await atualizarPersonagem(character.id, { ...character, armadura_equipada: null });
             setCharacter(prev => ({ ...prev, armadura_equipada: null }));
         } catch (err) { console.error('Erro ao desequipar armadura:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     const equiparEscudo = useCallback(async (escudo) => {
         setEscudoEquipado(escudo);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, escudo_equipado: escudo }) });
+            await atualizarPersonagem(character.id, { ...character, escudo_equipado: escudo });
             setCharacter(prev => ({ ...prev, escudo_equipado: escudo }));
         } catch (err) { console.error('Erro ao salvar escudo:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     const desequiparEscudo = useCallback(async () => {
         setEscudoEquipado(null);
         try {
-            await fetch(`${baseUrl}/personagens/${character.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...character, escudo_equipado: null }) });
+            await atualizarPersonagem(character.id, { ...character, escudo_equipado: null });
             setCharacter(prev => ({ ...prev, escudo_equipado: null }));
         } catch (err) { console.error('Erro ao desequipar escudo:', err); }
-    }, [character, baseUrl]);
+    }, [character]);
 
     /* ═══════════════════════════════════════════════════
        CALLBACKS — Save / Cancel / Tab
@@ -536,26 +526,21 @@ export default function useCharacterSheet() {
             );
         }
         try {
-            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(charToSave)
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                const errorMessage = errorData.message || errorData.error || 'Erro ao salvar personagem';
-                if (/nome.*já.*existe/i.test(errorMessage)) throw new Error('Este nome de personagem já está em uso');
-                if (/inválid[oa]/i.test(errorMessage)) throw new Error('Dados inválidos. Verifique os campos preenchidos');
-                if (/não encontrado/i.test(errorMessage)) throw new Error('Personagem não encontrado. Recarregue a página');
-                if (/permissão|autorização/i.test(errorMessage)) throw new Error('Você não tem permissão para editar este personagem');
-                throw new Error(errorMessage);
-            }
+            await atualizarPersonagem(character.id, charToSave);
             setOriginalCharacter(JSON.parse(JSON.stringify(character)));
             setEditMode(false);
             setSnackbar({ open: true, message: 'Personagem salvo com sucesso!', severity: 'success' });
         } catch (error) {
+            const msg = error.message || 'Erro ao salvar personagem';
+            const friendly = /nome.*já.*existe/i.test(msg) ? 'Este nome de personagem já está em uso'
+                : /inválid[oa]/i.test(msg) ? 'Dados inválidos. Verifique os campos preenchidos'
+                : /não encontrado/i.test(msg) ? 'Personagem não encontrado. Recarregue a página'
+                : /permissão|autorização/i.test(msg) ? 'Você não tem permissão para editar este personagem'
+                : msg;
             console.error(error);
-            setSnackbar({ open: true, message: error.message || 'Erro ao salvar personagem', severity: 'error' });
+            setSnackbar({ open: true, message: friendly, severity: 'error' });
         }
-    }, [character, originalCharacter, baseUrl]);
+    }, [character, originalCharacter]);
 
     const handleCancel = useCallback(() => {
         setCharacter(JSON.parse(JSON.stringify(originalCharacter)));
@@ -738,8 +723,7 @@ export default function useCharacterSheet() {
     useEffect(() => {
         if (!userId) return;
         setLoading(true);
-        fetch(`${baseUrl}/personagens/${userId}`)
-            .then(response => { if (!response.ok) throw new Error('Erro ao buscar personagens'); return response.json(); })
+        fetchPersonagens(userId)
             .then(data => {
                 const personagem = data.find(char => char.id === parseInt(characterId));
                 if (personagem) {
@@ -760,7 +744,7 @@ export default function useCharacterSheet() {
                 setLoading(false);
             })
             .catch(error => { console.error(error); setErro(error.message); setLoading(false); });
-    }, [userId, characterId, baseUrl]);
+    }, [userId, characterId]);
 
     /* ═══════════════════════════════════════════════════
        EFEITO — Carregar snapshots de evolução
@@ -786,15 +770,7 @@ export default function useCharacterSheet() {
         const novoNivel = nivelAtual + 1;
         const charAtualizado = { ...character, experiencia: xpNecessario, nivel: novoNivel };
         try {
-            const response = await fetch(`${baseUrl}/personagens/${character.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(charAtualizado),
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || errorData.error || 'Erro ao subir de nível');
-            }
+            await atualizarPersonagem(character.id, charAtualizado);
             setCharacter(charAtualizado);
             setOriginalCharacter(JSON.parse(JSON.stringify(charAtualizado)));
             // Recarregar snapshots
@@ -807,7 +783,7 @@ export default function useCharacterSheet() {
             setSnackbar({ open: true, message: err.message || 'Erro ao subir de nível', severity: 'error' });
             return { success: false };
         }
-    }, [character, baseUrl]);
+    }, [character]);
 
     /* ═══════════════════════════════════════════════════
        CALLBACK — Regredir nível (restaurar snapshot)

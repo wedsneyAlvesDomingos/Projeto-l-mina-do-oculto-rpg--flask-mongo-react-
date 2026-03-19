@@ -15,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import { colors, derived, gradients } from '../../componentes/themes/tokens';
+import { fetchUsuario, atualizarUsuario, atualizarSenha } from '../../services/apiV2';
 
 const BASE_URL = process.env.REACT_APP_LISTEN_ADDRESS;
 
@@ -87,8 +88,7 @@ export default function ProfilePage() {
     /* ── Carrega perfil ── */
     useEffect(() => {
         if (!userId) return;
-        fetch(`${BASE_URL}/users/${userId}`)
-            .then(r => r.json())
+        fetchUsuario(userId)
             .then(data => {
                 setProfile(data);
                 setNameValue(data.name || '');
@@ -121,14 +121,7 @@ export default function ProfilePage() {
     const handleSaveAvatar = async () => {
         setAvatarSaving(true);
         try {
-            const res = await fetch(`${BASE_URL}/users/${userId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ avatar: avatarPreview }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Erro ao salvar avatar');
-
+            const data = await atualizarUsuario(userId, { avatar: avatarPreview });
             setProfile(p => ({ ...p, avatar: data.avatar }));
             setAvatarDirty(false);
             // Sincroniza localStorage para o Navbar refletir o novo avatar
@@ -157,14 +150,7 @@ export default function ProfilePage() {
         }
         setNameSaving(true);
         try {
-            const res = await fetch(`${BASE_URL}/users/${userId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: nameValue.trim() }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Erro ao atualizar nome');
-
+            const data = await atualizarUsuario(userId, { name: nameValue.trim() });
             setProfile(p => ({ ...p, name: data.name }));
             // Sincroniza o localStorage para o Navbar refletir a mudança
             const stored = JSON.parse(localStorage.getItem('user') || '{}');
@@ -196,14 +182,7 @@ export default function ProfilePage() {
         }
         setPwdSaving(true);
         try {
-            const res = await fetch(`${BASE_URL}/users/${userId}/password`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ current_password: currentPwd, new_password: newPwd }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Erro ao atualizar senha');
-
+            await atualizarSenha(userId, currentPwd, newPwd);
             setCurrentPwd('');
             setNewPwd('');
             setConfirmPwd('');
