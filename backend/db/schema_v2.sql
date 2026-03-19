@@ -623,6 +623,86 @@ CREATE TABLE IF NOT EXISTS character_effects (
     snapshot            JSONB       NOT NULL DEFAULT '{}'::jsonb
 );
 
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 14. HABILIDADES DO PERSONAGEM (35 skills distribuídas)
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS character_skills_v2 (
+    id              SERIAL  PRIMARY KEY,
+    character_id    INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    skill_id        INTEGER NOT NULL REFERENCES catalog_skills(id) ON DELETE CASCADE,
+    valor           INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT uq_char_skill_v2 UNIQUE (character_id, skill_id)
+);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 15. PROFICIÊNCIAS DO PERSONAGEM
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS character_proficiencias_v2 (
+    id                  SERIAL  PRIMARY KEY,
+    character_id        INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    proficiencia_id     INTEGER NOT NULL REFERENCES catalog_proficiencias(id) ON DELETE CASCADE,
+    nivel               INTEGER NOT NULL DEFAULT 0,   -- pontos investidos
+    origem              TEXT,                         -- 'especie'|'antecedente'|'classe'|'regalia'|'manual'
+    CONSTRAINT uq_char_prof_v2 UNIQUE (character_id, proficiencia_id)
+);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 16. REGALIAS DO PERSONAGEM
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS character_regalias_v2 (
+    id              SERIAL      PRIMARY KEY,
+    character_id    INTEGER     NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    regalia_id      INTEGER     NOT NULL REFERENCES catalog_regalias(id) ON DELETE CASCADE,
+    -- Para regalias com opcoes_exclusivas: qual opção foi escolhida
+    opcao_escolhida TEXT,
+    -- Para regalias de árvore: nível (1, 2, 3)
+    nivel_arvore    INTEGER,
+    -- Para regalias de aprendiz: quantas vezes foi comprada
+    quantidade      INTEGER     NOT NULL DEFAULT 1,
+    comprado_em     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_char_regalia_v2 UNIQUE (character_id, regalia_id, opcao_escolhida)
+);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 17. ABILITIES ATIVAS DO PERSONAGEM (habilidades adquiridas via regalias)
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS character_abilities_v2 (
+    id              SERIAL      PRIMARY KEY,
+    character_id    INTEGER     NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    ability_id      INTEGER     NOT NULL REFERENCES catalog_abilities(id) ON DELETE CASCADE,
+    -- Controle de uso (cooldown)
+    usos_restantes  INTEGER,                          -- NULL = sem limite
+    ultimo_uso_rodada INTEGER,                        -- para cooldown por rodada
+    ultimo_uso_at   TIMESTAMPTZ,                      -- para cooldown por hora/dia
+    CONSTRAINT uq_char_ability_v2 UNIQUE (character_id, ability_id)
+);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 18. CONDIÇÕES ATIVAS DO PERSONAGEM
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS character_effects_v2 (
+    id                  SERIAL      PRIMARY KEY,
+    character_id        INTEGER     NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    condicao_id         INTEGER     REFERENCES catalog_condicoes(id) ON DELETE SET NULL,
+    -- Para efeitos sem catálogo (buffs/debuffs de habilidades)
+    effect_slug         TEXT,
+    display_name        TEXT,
+    nivel               INTEGER     NOT NULL DEFAULT 1,
+    fonte_tipo          TEXT,       -- 'habilidade'|'ataque'|'item'|'condicao'|'manual'
+    fonte_slug          TEXT,       -- slug da fonte (ability_slug, item_slug, etc.)
+    aplicada_em         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    expira_em           TIMESTAMPTZ,
+    duracao_tipo        TEXT,       -- 'rodadas'|'turnos'|'horas'|'ate_descanso_curto'|'ate_descanso_longo'|'permanente'
+    duracao_valor       INTEGER,
+    rodada_aplicacao    INTEGER,    -- rodada em que foi aplicada (para contagem)
+    -- Snapshot do efeito no momento da aplicação (para resolver sem FK)
+    snapshot            JSONB       NOT NULL DEFAULT '{}'::jsonb
+);
+
+
+
+
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 19. INVENTÁRIO DO PERSONAGEM
 -- ─────────────────────────────────────────────────────────────────────────────
