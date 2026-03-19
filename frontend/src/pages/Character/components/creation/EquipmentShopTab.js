@@ -45,7 +45,7 @@ const EquipmentShopTab = React.memo(function EquipmentShopTab({
                 <Box
                     sx={{
                         position: 'fixed',
-                        bottom: 16,
+                        bottom: 36,
                         right: 16,
                         border: '2px solid #7B3311',
                         padding: 2,
