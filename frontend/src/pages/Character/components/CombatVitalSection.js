@@ -374,6 +374,11 @@ const CombatVitalSection = ({
     const corpoACorpo = habilidades['Combate Corpo a Corpo'] || 0;
     const distancia   = habilidades['Combate a Distância'] || 0;
     const arcano      = habilidades['Combate Arcano'] || 0;
+    const ocultismo   = habilidades['Ocultismo']  || 0;
+    const ritualismo  = habilidades['Ritualismo'] || 0;
+
+    const isFeiticeiro = !!(character.regalias_de_classe?.feiticeiro_primario);
+    const pfMax = ocultismo + ritualismo + arcanismo;
 
     const atkCards = [
         { label: 'Corpo a Corpo', bonus: corpoACorpo, color: isDark ? 'var(--text-primary)' : '#7B3311', bg: isDark ? 'var(--surface-warm)'    : '#f5ebe3' },
@@ -477,6 +482,18 @@ const CombatVitalSection = ({
                         breakdown={`Arcanismo ${arcanismo}${arcanismo >= 10 ? ' + Bônus 5' : ''} + Classe ${regaliaClasseMagia}`}
                         editMode={editMode} updateField={updateField} onLive={handleLive}
                     />
+
+                    {isFeiticeiro && (
+                        <VitalCard
+                            icon={<NightsStayIcon sx={{ color: '#6a1b9a', fontSize: 22 }} />}
+                            label="FEITIÇARIA (PF)" atual={character.pf_atual || 0} max={pfMax}
+                            tempVal={character.pf_temp || 0}
+                            color={isDark ? 'var(--text-primary)' : '#6a1b9a'} bgColor={isDark ? 'var(--surface-alt)' : '#f3e5f5'}
+                            fieldAtual="pf_atual" fieldMax="pf_max" fieldTemp="pf_temp"
+                            breakdown={`Oct ${ocultismo} + Rit ${ritualismo} + Arc ${arcanismo}`}
+                            editMode={false} updateField={updateField} onLive={handleLive}
+                        />
+                    )}
 
                     {/* Defesa */}
                     <Paper sx={{

@@ -303,7 +303,7 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
         <Box sx={{ p: 2 }}>
             <PointsBar pontosTotal={pontosTotal} pontosGastos={pontosGastos} />
 
-            {nivel < 3 && <Alert severity="info" sx={{ mb: 2, fontSize: '12px', backgroundColor: `${colors.midnight}cc`, color: derived.textOnDark, '& .MuiAlert-icon': { color: colors.gold } }}>Classes Primárias e Especializações ficam disponíveis a partir do nível 3.</Alert>}
+            {nivel < 3 && <Alert severity="info" sx={{ mb: 2, fontSize: '12px', backgroundColor: `${colors.midnight}cc`, '& .MuiAlert-icon': { color: colors.gold } }}>Classes Primárias e Especializações ficam disponíveis a partir do nível 3.</Alert>}
 
             {secoes.map(secao => {
                 const isOpen = secaoAberta === secao.id;
@@ -315,7 +315,7 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                         }} onClick={() => setSecaoAberta(isOpen ? null : secao.id)}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 {secao.icon}
-                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px', color: derived.textOnDark }}>{secao.label}</Typography>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px' }}>{secao.label}</Typography>
                                 <Chip label={`${secao.owned}/${secao.total}`} size="small" sx={{
                                     height: '20px', fontSize: '11px',
                                     color: isOpen ? derived.textOnDark : secao.cor, fontWeight: 'bold',

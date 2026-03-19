@@ -647,7 +647,7 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
 
         return (
             <Paper elevation={3} sx={{
-                width: 260, minHeight: 270, display: 'flex', flexDirection: 'column',
+                maxWidth: 300, width: '100%', display: 'flex', flexDirection: 'column',
                 borderRadius: '10px', overflow: 'hidden', flexShrink: 0,
                 border: `2px solid ${tipoConf.border}`,
                 transition: 'transform 0.15s, box-shadow 0.15s',
@@ -655,30 +655,30 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                 ...overrideSx,
             }}>
                 {/* ── Banner topo: tipo + custo recurso ── */}
-                <Box sx={{ background: `linear-gradient(135deg, ${tipoConf.color} 0%, ${tipoConf.border} 100%)`, color: 'white', px: 1, py: 0.4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography className="esteban" sx={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: 0.5 }}>{tipoConf.label.toUpperCase()}</Typography>
+                <Box sx={{ background: `linear-gradient(135deg, ${tipoConf.color} 0%, ${tipoConf.border} 100%)`, color: 'white', px: 1.5, py: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography className="esteban" sx={{ fontWeight: 'bold', letterSpacing: 0.5 }}>{tipoConf.label.toUpperCase()}</Typography>
                     <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                        {custoTotal > 0 && <Chip icon={<AutoAwesomeIcon sx={{ fontSize: 10, color: '#fff !important' }} />} label={`${custoTotal} PM`} size="small" sx={{ height: 16, fontSize: '8px', '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
-                        {custoEstaminaTotal > 0 && <Chip icon={<BoltIcon sx={{ fontSize: 10, color: '#FFD54F !important' }} />} label={`${custoEstaminaTotal} PE`} size="small" sx={{ height: 16, fontSize: '8px', '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
+                        {custoTotal > 0 && <Chip icon={<AutoAwesomeIcon sx={{ color: '#fff !important' }} />} label={`${custoTotal} PM`} sx={{ '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
+                        {custoEstaminaTotal > 0 && <Chip icon={<BoltIcon sx={{ color: '#FFD54F !important' }} />} label={`${custoEstaminaTotal} PE`} sx={{ '& .MuiChip-icon': { ml: '2px', mr: '-2px' }, backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', fontWeight: 'bold' }} />}
                     </Box>
                 </Box>
                 {/* ── Nome ── */}
-                <Box sx={{ px: 1, py: 0.5, backgroundColor: `${tipoConf.border}22`, borderBottom: `1px solid ${tipoConf.border}44` }}>
-                    <Typography className="esteban" sx={{ fontSize: '11px', fontWeight: 'bold', color: tipoConf.border, lineHeight: 1.2 }}>{hab.nome}</Typography>
+                <Box sx={{ px: 1.5, py: 1, backgroundColor: `${tipoConf.border}22`, borderBottom: `1px solid ${tipoConf.border}44` }}>
+                    <Typography className="esteban" sx={{  fontWeight: 'bold', color: tipoConf.border, lineHeight: 1.2 }}>{hab.nome}</Typography>
                 </Box>
                 {/* ── Mecânicas: ação, tempo, alcance, duração, limite ── */}
-                <Box sx={{ display: 'flex', gap: '3px', flexWrap: 'wrap', px: 0.6, py: 0.4, backgroundColor: 'var(--surface-raised)', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.1))' }}>
-                    {acaoLabel && <Chip icon={<AccessTimeIcon sx={{ fontSize: 9 }} />} label={`Ação: ${acaoLabel}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
-                    {hab.tempoExecucao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Tempo: ${hab.tempoExecucao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
-                    {hab.alcance && <Chip icon={<GpsFixedIcon sx={{ fontSize: 9 }} />} label={`Alcance: ${hab.alcance}m`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
-                    {hab.duracao && <Chip icon={<TimerIcon sx={{ fontSize: 9 }} />} label={`Duração: ${hab.duracao}`} size="small" sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
-                    {hab.limiteUso && <Chip label={`Limite: ${hab.limiteUso}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
-                    {hab.cooldown && <Chip label={`CD: ${hab.cooldown}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
-                    {hab.limiteAcumulo && <Chip label={`Acúmulo: máx ${hab.limiteAcumulo}`} size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', px: 1.5, py: 1, backgroundColor: 'var(--surface-raised)', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.1))' }}>
+                    {acaoLabel && <Chip icon={<AccessTimeIcon />} label={`Ação: ${acaoLabel}`} sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
+                    {hab.tempoExecucao && <Chip icon={<TimerIcon />} label={`Tempo: ${hab.tempoExecucao}`} sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-primary)' }} />}
+                    {hab.alcance && <Chip icon={<GpsFixedIcon />} label={`Alcance: ${hab.alcance}m`} sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
+                    {hab.duracao && <Chip icon={<TimerIcon />} label={`Duração: ${hab.duracao}`} sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
+                    {hab.limiteUso && <Chip label={`Limite: ${hab.limiteUso}`} sx={{ backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
+                    {hab.cooldown && <Chip label={`CD: ${hab.cooldown}`} sx={{ backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />}
+                    {hab.limiteAcumulo && <Chip label={`Acúmulo: máx ${hab.limiteAcumulo}`} sx={{ backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />}
                 </Box>
                 {/* ── Descrição + controles interativos ── */}
-                <Box sx={{ px: 0.8, py: 0.6, flex: 1, overflowY: 'auto', '&::-webkit-scrollbar': { width: 3 }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#ccc', borderRadius: 2 } }}>
-                    <Typography className="esteban" sx={{ fontSize: '8.5px', color: 'var(--text-primary)', lineHeight: 1.4 }}>{hab.descricao}</Typography>
+                <Box sx={{ px: 1.5, py: 3, flex: 1, overflowY: 'auto', '&::-webkit-scrollbar': { width: 3 }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#ccc', borderRadius: 2 } }}>
+                    <Typography className="esteban" sx={{ color: 'var(--text-primary)', lineHeight: 1.4 }}>{hab.descricao}</Typography>
 
                     {/* ── Toggle de efeito opcional ── */}
                     {hasOptional && (
@@ -708,21 +708,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     {hasScalingMissile && (
                         <Box sx={{ mt: 0.5, pt: 0.4, borderTop: '1px dashed #ddd', display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
                             <Typography className="esteban" sx={{ fontSize: '8px', color: 'var(--text-primary)', flexShrink: 0 }}>Mísseis:</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { magiaExtra: Math.max(0, (cs.magiaExtra || 0) - missileCosto) })}
                                     disabled={(cs.magiaExtra || 0) <= 0}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1 }}
+                                    sx={{ fontWeight: 'bold' }}
                                 >−</Button>
-                                <Typography className="esteban" sx={{ fontSize: '10px', fontWeight: 'bold', minWidth: 22, textAlign: 'center' }}>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', minWidth: 28, textAlign: 'center' }}>
                                     {1 + misseisSelecionados}×
                                 </Typography>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { magiaExtra: (cs.magiaExtra || 0) + missileCosto })}
                                     disabled={misseisSelecionados >= maxMissilesExtra}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1 }}
+                                    sx={{ fontWeight: 'bold' }}
                                 >+</Button>
                             </Box>
                             <Typography className="esteban" sx={{ fontSize: '7px', color: 'var(--text-primary)' }}>
@@ -734,25 +732,23 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     {/* ── Escalamento: chance (Azaralhar etc.) ── */}
                     {hasScalingChance && (
                         <Box sx={{ mt: 0.5, pt: 0.4, borderTop: '1px dashed #ddd', display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
-                            <Typography className="esteban" sx={{ fontSize: '8px', color: 'var(--text-primary)', flexShrink: 0 }}>PM extra:</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                            <Typography className="esteban" sx={{ color: 'var(--text-primary)', flexShrink: 0 }}>PM extra:</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { magiaExtra: Math.max(0, (cs.magiaExtra || 0) - 1) })}
                                     disabled={(cs.magiaExtra || 0) <= 0}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1 }}
+                                    sx={{ fontWeight: 'bold' }}
                                 >−</Button>
-                                <Typography className="esteban" sx={{ fontSize: '10px', fontWeight: 'bold', minWidth: 18, textAlign: 'center' }}>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', minWidth: 24, textAlign: 'center' }}>
                                     {cs.magiaExtra || 0}
                                 </Typography>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { magiaExtra: (cs.magiaExtra || 0) + 1 })}
                                     disabled={(cs.magiaExtra || 0) >= pmDisponivel}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1 }}
+                                    sx={{ fontWeight: 'bold' }}
                                 >+</Button>
                             </Box>
-                            <Typography className="esteban" sx={{ fontSize: '7.5px', color: tipoConf.color, fontWeight: 'bold' }}>
+                            <Typography className="esteban" sx={{ color: tipoConf.color, fontWeight: 'bold' }}>
                                 → {chanceFinalPM}% ({chanceBase}% base)
                             </Typography>
                         </Box>
@@ -761,22 +757,20 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     {/* ── Escalamento: chance ou efeito por PE (Guarda-Costas, Desarmar, etc.) ── */}
                     {hasScalingPE && (
                         <Box sx={{ mt: 0.5, pt: 0.4, borderTop: '1px dashed #ddd', display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
-                            <Typography className="esteban" sx={{ fontSize: '8px', color: tipoConf.color, flexShrink: 0 }}>PE extra:</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                            <Typography className="esteban" sx={{  color: tipoConf.color, flexShrink: 0 }}>PE extra:</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { estaminaExtra: Math.max(0, (cs.estaminaExtra || 0) - 1) })}
                                     disabled={(cs.estaminaExtra || 0) <= 0}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1, color: tipoConf.color }}
+                                    sx={{ fontWeight: 'bold', color: tipoConf.color }}
                                 >−</Button>
-                                <Typography className="esteban" sx={{ fontSize: '10px', fontWeight: 'bold', minWidth: 18, textAlign: 'center', color: tipoConf.color }}>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', minWidth: 24, textAlign: 'center', color: tipoConf.color }}>
                                     {cs.estaminaExtra || 0}
                                 </Typography>
                                 <Button
-                                    size="small"
                                     onClick={() => setCardState(habKey, { estaminaExtra: (cs.estaminaExtra || 0) + 1 })}
                                     disabled={(cs.estaminaExtra || 0) >= maxPEExtra}
-                                    sx={{ minWidth: 18, width: 18, height: 18, p: 0, fontSize: '12px', fontWeight: 'bold', lineHeight: 1, color: tipoConf.color }}
+                                    sx={{ fontWeight: 'bold', color: tipoConf.color }}
                                 >+</Button>
                             </Box>
                             <Typography className="esteban" sx={{ fontSize: '7.5px', color: tipoConf.color, fontWeight: 'bold' }}>
@@ -788,43 +782,43 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     )}
                 </Box>
                 {/* ── Rodapé: efeitos + botão Usar ── */}
-                <Box sx={{ backgroundColor: 'var(--surface-raised)', borderTop: `2px solid ${tipoConf.border}33`, mt: 'auto', px: 0.6, py: 0.4 }}>
-                    <Box sx={{ display: 'flex', gap: '3px', flexWrap: 'wrap', mb: isUsable ? 0.4 : 0 }}>
+                <Box sx={{ backgroundColor: 'var(--surface-raised)', borderTop: `2px solid ${tipoConf.border}33`, mt: 'auto', px: 1.5, py: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: isUsable ? 1 : 0 }}>
                         {chanceFinal != null && (
-                            <Chip icon={<CasinoIcon sx={{ fontSize: 9 }} />} label={`Sucesso: ${chanceFinal}%`} size="small"
-                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
+                            <Chip icon={<CasinoIcon />} label={`Sucesso: ${chanceFinal}%`}
+                                sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
                         )}
                         {hab.efeito?.dano && (
                             <Chip
                                 label={`Dano: ${hab.efeito.dano}${hab.efeito.tipoDano ? ` (${hab.efeito.tipoDano === 'elemental_aleatorio' ? 'aleatório' : hab.efeito.tipoDano})` : ''}`}
-                                size="small" sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)', fontWeight: 'bold' }}
+                                sx={{ backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)', fontWeight: 'bold' }}
                             />
                         )}
                         {hab.efeito?.curaHP && (
-                            <Chip label={`Cura: ${hab.efeito.curaHP} PV`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />
+                            <Chip label={`Cura: ${hab.efeito.curaHP} PV`}
+                                sx={{ backgroundColor: 'var(--surface-warm)', color: 'var(--text-primary)' }} />
                         )}
                         {cs.opcional && hab.efeitoOpcional?.curaEstamina && (
-                            <Chip label={`+${hab.efeitoOpcional.curaEstamina} PE`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
+                            <Chip label={`+${hab.efeitoOpcional.curaEstamina} PE`}
+                                sx={{ backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
                         )}
                         {hab.efeito?.condicao && (
-                            <Chip label={`Causa: ${hab.efeito.condicao}`} size="small"
-                                sx={{ height: 17, fontSize: '8px', backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
+                            <Chip label={`Causa: ${hab.efeito.condicao}`}
+                                sx={{ backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)' }} />
                         )}
                         {hab.efeito?.tabelaDesconto && (
-                            <Chip icon={<CasinoIcon sx={{ fontSize: 9 }} />} label="Rola 1d20" size="small"
-                                sx={{ height: 17, fontSize: '8px', '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
+                            <Chip icon={<CasinoIcon />} label="Rola 1d20"
+                                sx={{ '& .MuiChip-icon': { ml: '2px' }, backgroundColor: 'var(--surface-alt)', color: 'var(--text-muted)', fontWeight: 'bold' }} />
                         )}
                     </Box>
                     {isUsable && (
                         <Button
-                            fullWidth size="small" variant="contained"
-                            startIcon={<PlayArrowIcon sx={{ fontSize: 14 }} />}
+                            fullWidth variant="contained"
+                            startIcon={<PlayArrowIcon />}
                             disabled={!canAfford}
                             onClick={() => handleUsarHabilidade(hab, { usarOpcional: cs.opcional, magiaExtra: cs.magiaExtra || 0, estaminaExtra: cs.estaminaExtra || 0 })}
                             sx={{
-                                height: 24, fontSize: '9px', fontWeight: 'bold', textTransform: 'none',
+                                fontWeight: 'bold', textTransform: 'none',
                                 borderRadius: '0 0 8px 8px',
                                 backgroundColor: canAfford ? tipoConf.color : 'var(--surface-alt)',
                                 '&:hover': { backgroundColor: canAfford ? tipoConf.border : 'var(--surface-alt)' },
