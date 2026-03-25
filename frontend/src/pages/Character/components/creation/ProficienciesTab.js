@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Paper, Tooltip, TextField } from '@mui/material';
+import { Box, Grid, Typography, Paper, Tooltip, TextField } from '@mui/material';
 
 // ============================================================
 // ProfBox — Caixa de proficiência individual
@@ -7,7 +7,7 @@ import { Box, Typography, Paper, Tooltip, TextField } from '@mui/material';
 const ProfBox = ({ nome, descricao, notas, niveis, value, onChange, remainingPoints, borderColor = '#7B3311' }) => (
     <Paper
         elevation={3}
-        sx={{ padding: 2, mx: 0, width: '24.5%', my: 1, borderBottom: `6px solid ${borderColor}` }}
+        sx={{ padding: 2, height: '100%', borderBottom: `6px solid ${borderColor}` }}
     >
         <Tooltip
             title={descricao}
@@ -103,11 +103,10 @@ const ProficienciesTab = React.memo(function ProficienciesTab({
     return (
         <>
             <Typography>Selecione proficiências iniciais.</Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Box display="flex" flexWrap="wrap" sx={{ justifyContent: 'start', gap: 1, width: '100%' }}>
-                    {proficiencias.map((prof, idx) => (
+            <Grid container spacing={2} sx={{ mt: 0 }}>
+                {proficiencias.map((prof, idx) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={idx}>
                         <ProfBox
-                            key={idx}
                             nome={prof.nome}
                             descricao={prof.descricao}
                             notas={prof.notas}
@@ -117,9 +116,9 @@ const ProficienciesTab = React.memo(function ProficienciesTab({
                             remainingPoints={remainingProfPoints}
                             borderColor={prof.borderColor}
                         />
-                    ))}
-                </Box>
-            </Box>
+                    </Grid>
+                ))}
+            </Grid>
         </>
     );
 });
