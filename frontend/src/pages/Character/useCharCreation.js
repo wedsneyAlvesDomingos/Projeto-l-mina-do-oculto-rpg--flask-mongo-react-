@@ -992,6 +992,77 @@ export default function useCharCreation() {
     };
 
     // ============================================================
+    // PROGRESSO DE PREENCHIMENTO (campos obrigatórios)
+    // ============================================================
+    const totalSkillUsed = useMemo(() => {
+        return Object.entries(allValues).reduce((acc, [title, val]) => {
+            const auto = autoIncrementedValues[title] || 0;
+            return acc + calculateCustoEscalonado(val - auto);
+        }, 0);
+    }, [allValues, autoIncrementedValues, calculateCustoEscalonado]);
+
+    const completionStatus = useMemo(() => {
+        const checks = [
+            {
+                id: 'nome',
+                label: 'Nome do Personagem',
+                tab: 0,
+                done: !!(charName && charName.trim() !== ''),
+            },
+            {
+                id: 'genero',
+                label: 'Gênero',
+                tab: 0,
+                done: !!(gender && gender.trim() !== ''),
+            },
+            {
+                id: 'especie',
+                label: 'Regalia de Espécie',
+                tab: 1,
+                done: !!(regaliaEscolhida && regaliaEscolhida.regalias && regaliaEscolhida.regalias.length > 0),
+            },
+            {
+                id: 'habilidades',
+                label: `Pontos de Habilidade (${totalSkillUsed}/${MAX_POINTS})`,
+                tab: 2,
+                done: totalSkillUsed >= MAX_POINTS,
+            },
+            {
+                id: 'proficiencias',
+                label: `Pontos de Proficiência (${MAX_PROF_POINTS - remainingProfPoints}/${MAX_PROF_POINTS})`,
+                tab: 3,
+                done: remainingProfPoints === 0,
+            },
+            {
+                id: 'antecedente',
+                label: 'Antecedente',
+                tab: 4,
+                done: !!antecedenteSelecionado,
+            },
+            {
+                id: 'aprendiz',
+                label: 'Regalias de Aprendiz (mín. 2)',
+                tab: 5,
+                done: RegaliasDeAprendiz.length >= 2,
+            },
+            {
+                id: 'profissao',
+                label: 'Profissão',
+                tab: 6,
+                done: !!(selectedId && selectedId !== ''),
+            },
+        ];
+
+        const completed = checks.filter(c => c.done).length;
+        const total = checks.length;
+        const percentage = Math.round((completed / total) * 100);
+        const missing = checks.filter(c => !c.done);
+
+        return { checks, completed, total, percentage, missing };
+    }, [charName, gender, regaliaEscolhida, totalSkillUsed, remainingProfPoints,
+        antecedenteSelecionado, RegaliasDeAprendiz, selectedId]);
+
+    // ============================================================
     // VALIDAÇÃO E SUBMISSÃO
     // ============================================================
     const validateForm = () => {
@@ -1272,6 +1343,9 @@ export default function useCharCreation() {
 
         // Stats e mutação
         statsDerivados, pontosDeRegalia, mutacaoData,
+
+        // Progresso
+        completionStatus,
 
         // Feedback
         snackbar, setSnackbar, isSubmitting, formErrors,

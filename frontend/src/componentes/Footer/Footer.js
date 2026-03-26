@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 /**
  * Footer padrão — Lâmina do Oculto
@@ -9,6 +10,8 @@ import { Box, Typography } from '@mui/material';
  *  - credit:   string opcional (ex: "Art by John D Batten")
  */
 const AppFooter = ({ credit }) => {
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
     return (
         <Box
             component="footer"
@@ -27,6 +30,22 @@ const AppFooter = ({ credit }) => {
                 gap: { xs: 0.5, sm: 1 },
             }}
         >
+            <Button
+                onClick={scrollToTop}
+                startIcon={<KeyboardArrowUpIcon />}
+                sx={{
+                    display: { xs: 'inline-flex', lg: 'none' },
+                    color: '#C4A265',
+                    fontSize: '10px',
+                    textTransform: 'none',
+                    minWidth: 'auto',
+                    py: 0,
+                    px: 1,
+                    '&:hover': { backgroundColor: 'rgba(196,162,101,0.15)' },
+                }}
+            >
+                Topo
+            </Button>
             <Typography sx={{ color: '#fff', fontSize: { xs: '9px', sm: '10px' }, textAlign: 'center' }}>
                 © 2024 Lâmina do oculto. All rights reserved.
             </Typography>

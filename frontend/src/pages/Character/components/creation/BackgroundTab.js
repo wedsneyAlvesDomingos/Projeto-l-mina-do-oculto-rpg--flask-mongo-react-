@@ -7,14 +7,14 @@ import { Box, Typography, Paper, CardContent, FormControl, RadioGroup, FormContr
 const AntecedenteCard = ({ antecedente, selected, onSelect }) => (
     <Paper
         sx={{
-            minWidth: 275,
+            minWidth: { xs: '100%', sm: 275 },
             my: 2,
             p: 2,
             borderTop: "4px solid #162A22",
             borderBottom: "8px solid #162A22",
-            height: '470px',
+            height: { xs: 'auto', md: '470px' },
             position: 'relative',
-            width: '23%'
+            width: { xs: '100%', sm: '48%', lg: '23%' },
         }}
         onClick={() => onSelect(antecedente)}
     >

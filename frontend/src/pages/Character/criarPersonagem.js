@@ -8,7 +8,8 @@ import AppFooter from '../../componentes/Footer/Footer';
 import dayjs from 'dayjs';
 import {
     Box, Tabs, Tab, Typography, Paper, Stack, Chip,
-    Button, Snackbar, Alert,
+    Button, Snackbar, Alert, useMediaQuery, useTheme,
+    LinearProgress,
 } from '@mui/material';
 
 import useCharCreation, { mutacaoData } from './useCharCreation';
@@ -50,27 +51,72 @@ function TabPanel({ children, value, index, ...other }) {
 // ============================================================
 // NavigationButtons (composição local simples)
 // ============================================================
-function NavigationButtons({ tabIndex, setTabIndex, handleCriarPersonagem }) {
+const TOTAL_STEPS = 8;
+const TAB_LABELS = [
+    'Informações Básicas', 'Espécie', 'Habilidades', 'Proficiências',
+    'Antecedente', 'Aprendiz', 'Profissão', 'Equipamentos',
+];
+
+function NavigationButtons({ tabIndex, setTabIndex, handleFinalize, completionStatus }) {
     const handleNext = () => { if (tabIndex < 7) setTabIndex(prev => prev + 1); };
     const handlePrevious = () => { if (tabIndex > 0) setTabIndex(prev => prev - 1); };
+    const pct = completionStatus.percentage;
 
     return (
-        <Stack direction="row" spacing={2} alignItems="center"
-            sx={{ display: 'flex', justifyContent: 'center', py: '1', my: 4 }}>
-            {tabIndex > 0 && (
-                <Button variant="outline" className="navagationButtons" onClick={handlePrevious}>
-                    Anterior
+        <Box>
+            {/* Barra de progresso */}
+            <Box sx={{ mb: 1, mt: 3 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                    <Typography variant="body2" className="esteban" sx={{ color: '#756A34' }}>
+                        Passo {tabIndex + 1} de {TOTAL_STEPS}: {TAB_LABELS[tabIndex]}
+                    </Typography>
+                    <Typography variant="body2" className="esteban"
+                        sx={{ color: pct === 100 ? '#2E7D32' : '#756A34', fontWeight: pct === 100 ? 'bold' : 'normal' }}>
+                        {pct}% completo
+                    </Typography>
+                </Box>
+                <LinearProgress
+                    variant="determinate"
+                    value={pct}
+                    sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        backgroundColor: '#756A3433',
+                        '& .MuiLinearProgress-bar': {
+                            backgroundColor: pct === 100 ? '#2E7D32' : '#756A34',
+                            borderRadius: 4,
+                            transition: 'width 0.4s ease, background-color 0.3s ease',
+                        },
+                    }}
+                />
+                {completionStatus.missing.length > 0 && (
+                    <Typography variant="caption" className="esteban" sx={{ color: '#B71C1C', mt: 0.5, display: 'block' }}>
+                        Faltam: {completionStatus.missing.map(m => m.label).join(', ')}
+                    </Typography>
+                )}
+            </Box>
+
+            <Stack direction="row" spacing={2} alignItems="center"
+                sx={{ display: 'flex', justifyContent: 'center', py: '1', my: 2 }}>
+                {tabIndex > 0 && (
+                    <Button variant="outline" className="navagationButtons" onClick={handlePrevious}
+                        sx={{ minHeight: { xs: 48, md: 40 }, px: { xs: 3, md: 2 } }}>
+                        Anterior
+                    </Button>
+                )}
+                {tabIndex < 7 && (
+                    <Button variant="outline" className="navagationButtons" onClick={handleNext}
+                        sx={{ minHeight: { xs: 48, md: 40 }, px: { xs: 3, md: 2 } }}>
+                        Próximo
+                    </Button>
+                )}
+                <Button variant="contained" id="criarCharButtom" onClick={handleFinalize}
+                    disabled={pct < 100}
+                    sx={{ minHeight: { xs: 48, md: 40 }, px: { xs: 3, md: 2 }, opacity: pct < 100 ? 0.6 : 1 }}>
+                    Finalizar
                 </Button>
-            )}
-            {tabIndex < 7 && (
-                <Button variant="outline" className="navagationButtons" onClick={handleNext}>
-                    Próximo
-                </Button>
-            )}
-            <Button variant="contained" id="criarCharButtom" onClick={handleCriarPersonagem}>
-                Finalizar
-            </Button>
-        </Stack>
+            </Stack>
+        </Box>
     );
 }
 
@@ -79,6 +125,23 @@ function NavigationButtons({ tabIndex, setTabIndex, handleCriarPersonagem }) {
 // ============================================================
 const CharCreationPage = () => {
     const h = useCharCreation();
+    const theme = useTheme();
+    const isMdDown = useMediaQuery(theme.breakpoints.down('lg'));
+
+    const handleFinalize = () => {
+        if (h.completionStatus.percentage < 100) {
+            const first = h.completionStatus.missing[0];
+            const missingLabels = h.completionStatus.missing.map(m => m.label).join('\n• ');
+            h.setSnackbar({
+                open: true,
+                message: `Campos obrigatórios pendentes:\n• ${missingLabels}`,
+                severity: 'warning',
+            });
+            h.setTabIndex(first.tab);
+            return;
+        }
+        h.handleCriarPersonagem();
+    };
 
     return (
         <Box sx={{ width: '100%', minHeight: '900px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', m: 'auto' }}>
@@ -90,7 +153,8 @@ const CharCreationPage = () => {
                 <NavigationButtons
                     tabIndex={h.tabIndex}
                     setTabIndex={h.setTabIndex}
-                    handleCriarPersonagem={h.handleCriarPersonagem}
+                    handleFinalize={handleFinalize}
+                    completionStatus={h.completionStatus}
                 />
 
                 {/* Painel de Stats Derivados — atualiza em tempo real (UI-001) */}
@@ -111,7 +175,11 @@ const CharCreationPage = () => {
 
                 {/* ============ TABS ============ */}
                 <Tabs value={h.tabIndex} onChange={h.handleTabChange}
-                    variant="scrollable" scrollButtons="auto" aria-label="character creation tabs">
+                    variant={isMdDown ? "fullWidth" : "scrollable"}
+                    scrollButtons={isMdDown ? false : "auto"}
+                    aria-label="character creation tabs"
+                    sx={isMdDown ? { '& .MuiTabs-flexContainer': { flexWrap: 'wrap' } } : {}}
+                >
                     <Tab className="tabs" label="Informações Básicas" id="character-tab-0" aria-controls="character-tabpanel-0" />
                     <Tab className="tabs" label="Espécie" id="character-tab-4" aria-controls="character-tabpanel-3" />
                     <Tab className="tabs" label="Habilidades" id="character-tab-1" aria-controls="character-tabpanel-1" />

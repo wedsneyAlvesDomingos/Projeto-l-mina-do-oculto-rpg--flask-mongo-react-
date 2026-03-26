@@ -70,6 +70,28 @@
   background-color: var(--color-scrollbar);
 }
 
+/* Scrollbar para tabelas de equipamentos */
+.equipTableScroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+.equipTableScroll::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+.equipTableScroll::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 5px;
+}
+.equipTableScroll::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 5px;
+}
+.equipTableScroll::-webkit-scrollbar-button {
+  display: none;
+}
+
 
 .MuiButtonBase-root {
   font-size: 12px !important;
@@ -242,6 +264,37 @@
   .edit-fab {
     bottom: 100px;
     right: 16px;
+  }
+
+  /* Touch targets: mínimo 48px para inputs e botões */
+  .MuiInputBase-root {
+    min-height: 48px !important;
+  }
+
+  .MuiButton-root {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+
+  .MuiFormControlLabel-root {
+    min-height: 48px;
+    padding: 4px 0;
+  }
+
+  .MuiCheckbox-root,
+  .MuiRadio-root {
+    padding: 12px !important;
+  }
+
+  /* Mais espaçamento entre campos no mobile */
+  .MuiGrid-item {
+    padding-top: 12px !important;
+  }
+
+  /* TabPanel com menos padding lateral no mobile */
+  [role="tabpanel"] > .MuiBox-root {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 }
 

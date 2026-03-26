@@ -17,7 +17,7 @@ const ApprenticeTab = React.memo(function ApprenticeTab({
             <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
                 <FormControl component="fieldset" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3 }}>
                     <FormLabel component="legend">Escolha até duas regalias de aprendiz</FormLabel>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: 3, width: '50%' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'nowrap', m: { xs: 1, md: 3 }, width: { xs: '100%', md: '50%' } }}>
                         {regaliasDeAprendiz.map((sc) => {
                             const checked = RegaliasDeAprendiz.includes(sc.id);
                             return (
