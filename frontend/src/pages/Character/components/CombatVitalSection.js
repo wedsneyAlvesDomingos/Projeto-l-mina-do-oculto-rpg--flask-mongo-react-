@@ -57,7 +57,7 @@ const VitalCard = ({
             p: SP.p, borderRadius: SP.radius, background: bgColor,
             border: `2px solid ${color}`, boxShadow: `0 3px 10px ${color}22`,
             display: 'flex', flexDirection: 'column', gap: 0.5,
-            flex: '1 1 0', minWidth: 150,
+            flex: { xs: '1 1 100%', sm: '1 1 0' }, minWidth: { xs: 0, sm: 150 },
         }}>
             {/* Cabeçalho */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
@@ -102,7 +102,7 @@ const SmallStat = ({ icon, label, value, sub, color, bgColor }) => (
     <Paper sx={{
         p: SP.p, borderRadius: SP.radius, background: bgColor,
         border: `2px solid ${color}`, textAlign: 'center',
-        flex: '1 1 0', minWidth: 110,
+        flex: { xs: '1 1 calc(50% - 8px)', sm: '1 1 0' }, minWidth: { xs: 0, sm: 110 },
         boxShadow: `0 3px 10px ${color}22`,
     }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: .5 }}>{icon}</Box>
@@ -227,6 +227,7 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
                 sx={{
                     backgroundColor: '#2e7d32', fontFamily: 'Esteban, serif', fontSize: 12,
                     textTransform: 'none', order: { xs: 2, sm: 1 },
+                    minHeight: 44,
                     '&:hover': { backgroundColor: '#1b5e20' },
                     '&.Mui-disabled': { backgroundColor: isDark ? '#1a2e1a' : '#c8e6c9', color: isDark ? '#555' : '#a5d6a7' },
                 }}
@@ -247,8 +248,8 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
                         else if (numValor > 0) aplicarCura();
                     }
                 }}
-                inputProps={{ min: 0, style: { textAlign: 'center', padding: '6px 8px', fontFamily: 'Esteban, serif' } }}
-                sx={{ width: 90, order: { xs: 1, sm: 2 }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                inputProps={{ min: 0, inputMode: 'numeric', style: { textAlign: 'center', padding: '6px 8px', fontFamily: 'Esteban, serif' } }}
+                sx={{ width: { xs: '100%', sm: 90 }, order: { xs: 1, sm: 2 }, '& .MuiOutlinedInput-root': { borderRadius: 2, minHeight: 44 } }}
             />
 
             {/* Select tipo de dano + Botão Sofrer Dano */}
@@ -279,7 +280,7 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
                     onClick={aplicarDano}
                     sx={{
                         backgroundColor: '#931C4A', fontFamily: 'Esteban, serif', fontSize: 12,
-                        textTransform: 'none',
+                        textTransform: 'none', minHeight: 44,
                         '&:hover': { backgroundColor: '#7a1640' },
                         '&.Mui-disabled': { backgroundColor: isDark ? '#2e1020' : '#f8d7e3', color: isDark ? '#555' : '#e1a3b8' },
                     }}
@@ -413,25 +414,29 @@ const CombatVitalSection = ({
         <Paper elevation={4} sx={{ ...sectionStyle, mb: 2, overflow: 'hidden' }}>
             {/* ─── Header ── */}
             <Box sx={cardHeaderStyle}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, gap: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CasinoIcon />
-                        <Typography className="esteban" variant="h6" component="div">
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, gap: 1, flexWrap: 'wrap' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0 }}>
+                        <CasinoIcon sx={{ flexShrink: 0 }} />
+                        <Typography className="esteban" variant="h6" component="div" noWrap
+                            sx={{ fontSize: { xs: '0.85rem', sm: '1.25rem' } }}>
                             Atributos Vitais &amp; Combate
                         </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 0.5 }}>
                         <Button
                             size="small"
                             variant="contained"
                             startIcon={<HotelIcon fontSize="small" />}
                             onClick={aplicarDescansoCurto}
                             sx={{
-                                backgroundColor: '#454E30', fontFamily: 'Esteban, serif', fontSize: 11,
+                                backgroundColor: '#454E30', fontFamily: 'Esteban, serif',
+                                fontSize: { xs: 10, sm: 11 },
+                                px: { xs: 1, sm: 1.5 },
+                                minWidth: 'auto',
                                 '&:hover': { backgroundColor: '#2F3C29' },
                             }}
                         >
-                            Descanso Curto
+                            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Descanso </Box>Curto
                         </Button>
                         <Button
                             size="small"
@@ -439,11 +444,14 @@ const CombatVitalSection = ({
                             startIcon={<HotelIcon fontSize="small" />}
                             onClick={aplicarDescansoLongo}
                             sx={{
-                                backgroundColor: '#162A22', fontFamily: 'Esteban, serif', fontSize: 11,
+                                backgroundColor: '#162A22', fontFamily: 'Esteban, serif',
+                                fontSize: { xs: 10, sm: 11 },
+                                px: { xs: 1, sm: 1.5 },
+                                minWidth: 'auto',
                                 '&:hover': { backgroundColor: '#0d1a15' },
                             }}
                         >
-                            Descanso Longo
+                            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Descanso </Box>Longo
                         </Button>
                     </Box>
                 </Box>

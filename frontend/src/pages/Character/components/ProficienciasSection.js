@@ -47,7 +47,8 @@ const ProficienciasSection = React.memo(({
                             <Tooltip title={getNivelTooltip(key, value)} placement="top" arrow enterDelay={300}
                                 componentsProps={{ tooltip: { sx: { bgcolor: 'rgba(22, 42, 34, 0.95)', '& .MuiTooltip-arrow': { color: 'rgba(22, 42, 34, 0.95)' }, maxWidth: 400 } } }}>
                                 <Box sx={{
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1,
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    p: { xs: 1.25, sm: 1 }, minHeight: { xs: 44, sm: 'auto' },
                                     borderRadius: 1, backgroundColor: value !== 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
                                     cursor: 'help', '&:hover': { backgroundColor: value !== 0 ? 'var(--surface-raised)' : 'var(--surface-default)' }
                                 }}>

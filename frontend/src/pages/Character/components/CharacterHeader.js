@@ -5,7 +5,7 @@ import {
     Modal, Backdrop, Fade, useMediaQuery, useTheme, Grid,
     LinearProgress, Button, Dialog, DialogTitle, DialogContent,
     DialogActions, List, ListItem, ListItemButton, ListItemText,
-    ListItemIcon,
+    ListItemIcon, Accordion, AccordionSummary, AccordionDetails,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -20,6 +20,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import UIcon from '../../../assets/images/userIcon.png';
 import { especiesMap, determinarTamanho, calcularNivel, TABELA_XP_POR_NIVEL, calcularPontosRegaliaTotal, determinarClasseAtual } from '../../../data/constants';
 import EditableField from './EditableField';
@@ -35,7 +36,7 @@ const MoedaInput = ({ label, value, onChange, color, bgColor }) => (
             type="number" size="small" variant="standard"
             value={value} onChange={(e) => onChange(e.target.value)}
             InputProps={{ disableUnderline: false, sx: { color: `${color} !important` } }}
-            inputProps={{ min: 0, style: { textAlign: 'center', fontWeight: 'bold', color, fontSize: 16 } }}
+            inputProps={{ min: 0, inputMode: 'numeric', style: { textAlign: 'center', fontWeight: 'bold', color, fontSize: 16 } }}
             sx={{
                 width: { xs: 44, sm: 55 },
                 '& input': { color: `${color} !important` },
@@ -74,6 +75,7 @@ const CharacterHeader = ({
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
     const isSmallScreen = useMediaQuery('(max-width:300px)');
+    const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
     const avatarSrc = character.image || UIcon;
     const tamanhoInfo = determinarTamanho(character.altura || 170);
@@ -131,7 +133,7 @@ const CharacterHeader = ({
                 <Grid container spacing={2} alignItems="flex-start">
 
                     {/* ── Avatar ── */}
-                    <Grid item xs={12} sm="auto"
+                    <Grid item xs="auto"
                         sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}
                     >
                         {editMode ? (
@@ -171,8 +173,8 @@ const CharacterHeader = ({
                                 <Box
                                     onClick={() => setAvatarModalOpen(true)}
                                     sx={{
-                                        width: 100, height: 100,
-                                        borderRadius: '10%', overflow: 'hidden',
+                                        width: { xs: 70, sm: 100 }, height: { xs: 70, sm: 100 },
+                                        borderRadius: { xs: '50%', lg: '10%' }, overflow: 'hidden',
                                         border: '3px solid #BB8130', cursor: 'pointer',
                                         position: 'relative',
                                         '&:hover .zoom-icon': { opacity: 1 },
@@ -231,7 +233,7 @@ const CharacterHeader = ({
                     </Grid>
 
                     {/* ── Dados básicos ── */}
-                    <Grid item xs={12} sm>
+                    <Grid item xs sm>
 
                         {/* Nome + Nível
                             xs: Nome(9 cols) | Nível(3 cols)
@@ -283,7 +285,7 @@ const CharacterHeader = ({
                                                             setLevelUpDialogOpen(true);
                                                         }
                                                     }}
-                                                    sx={{ color: '#BB8130' }}
+                                                    sx={{ color: isDark ? 'var(--text-primary)' : '#BB8130' }}
                                                 >
                                                     <KeyboardDoubleArrowUpIcon fontSize="small" />
                                                 </IconButton>
@@ -294,7 +296,7 @@ const CharacterHeader = ({
                                                 <IconButton
                                                     size="small"
                                                     onClick={() => setRegressDialogOpen(true)}
-                                                    sx={{ color: '#931C4A' }}
+                                                    sx={{ color: isDark ? 'var(--text-primary)' : '#931C4A' }}
                                                 >
                                                     <RestoreIcon fontSize="small" />
                                                 </IconButton>
@@ -351,13 +353,9 @@ const CharacterHeader = ({
                             </Box>
                         )}
 
-                        {/* Info chips: Classe | Espécie | Gênero | Idade | Altura
-                            xs:  Classe(12) Espécie(12) Gênero(12) Idade(6) Altura(6)  — campos altos empilhados, núm lado a lado
-                            sm:  Classe(4)  Espécie(4)  Gênero(4)  Idade(6) Altura(6)  — 3 + 2
-                            md:  Classe(3)  Espécie(3)  Gênero(2)  Idade(2) Altura(2)  — linha única (=12)
-                        */}
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} sm={4} md={3}>
+                        {/* Info chips — flex wrap: máximo de itens na mesma linha */}
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                            <Box sx={{ flex: '1 1 100px', minWidth: 80 }}>
                                 {editMode ? (
                                     <EditableField fullWidth label="Classe"
                                         value={character.classe || ''}
@@ -365,9 +363,9 @@ const CharacterHeader = ({
                                 ) : (
                                     <InfoChip label="Classe">{determinarClasseAtual(character)}</InfoChip>
                                 )}
-                            </Grid>
+                            </Box>
 
-                            <Grid item xs={12} sm={4} md={3}>
+                            <Box sx={{ flex: '1 1 100px', minWidth: 80 }}>
                                 {editMode ? (
                                     <FormControl fullWidth>
                                         <InputLabel>Espécie</InputLabel>
@@ -380,9 +378,9 @@ const CharacterHeader = ({
                                 ) : (
                                     <InfoChip label="Espécie">{especiesMap[character.especie] || character.especie}</InfoChip>
                                 )}
-                            </Grid>
+                            </Box>
 
-                            <Grid item xs={12} sm={4} md={2}>
+                            <Box sx={{ flex: '1 1 80px', minWidth: 70 }}>
                                 {editMode ? (
                                     <FormControl fullWidth>
                                         <InputLabel>Gênero</InputLabel>
@@ -395,9 +393,9 @@ const CharacterHeader = ({
                                 ) : (
                                     <InfoChip label="Gênero">{character.genero}</InfoChip>
                                 )}
-                            </Grid>
+                            </Box>
 
-                            <Grid item xs={6} sm={6} md={2}>
+                            <Box sx={{ flex: '1 1 60px', minWidth: 50 }}>
                                 {editMode ? (
                                     <EditableField fullWidth type="number" label="Idade"
                                         value={character.idade || 0}
@@ -405,9 +403,9 @@ const CharacterHeader = ({
                                 ) : (
                                     <InfoChip label="Idade">{character.idade} anos</InfoChip>
                                 )}
-                            </Grid>
+                            </Box>
 
-                            <Grid item xs={6} sm={6} md={2}>
+                            <Box sx={{ flex: '1 1 70px', minWidth: 60 }}>
                                 {editMode ? (
                                     <EditableField fullWidth type="number" label="Altura (cm)"
                                         value={character.altura || 170}
@@ -432,8 +430,8 @@ const CharacterHeader = ({
                                         </Box>
                                     </Tooltip>
                                 )}
-                            </Grid>
-                        </Grid>
+                            </Box>
+                        </Box>
 
                     </Grid>{/* fim Dados básicos */}
 
@@ -470,90 +468,181 @@ const CharacterHeader = ({
                     xs: empilhados (12 cada)
                     sm+: lado a lado (6 cada)
                 ═══ */}
-                <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
 
-                    <Grid item xs={12} sm={6}>
-                        <Paper sx={{
-                            p: { xs: 1, sm: SP.p }, px: { xs: 1, sm: 3 }, borderRadius: SP.radius,
-                            backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #AB6422',
-                            maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
-                        }}>
-                            <Typography className="esteban" sx={{
-                                display: 'flex', alignItems: 'center', gap: 0.5,
-                                fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
-                                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                    <Box sx={{ flex: '1 1 280px', minWidth: 0 }}>
+                        {isMdDown ? (
+                            <Accordion defaultExpanded={false} sx={{
+                                borderRadius: `${SP.radius * 4}px !important`, backgroundColor: 'var(--surface-default)',
+                                borderLeft: '3px solid #AB6422', '&:before': { display: 'none' },
+                                '&.Mui-expanded': { margin: 0 },
                             }}>
-                                <HistoryEduIcon sx={{ fontSize: 18, flexShrink: 0 }} />
-                                <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    Antecedente: {character.antecedente?.nome || 'Não definido'}
-                                </Box>
-                            </Typography>
-                            {editMode ? (
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                    <EditableField fullWidth label="Nome do Antecedente"
-                                        value={character.antecedente?.nome || ''}
-                                        onChange={(val) => updateField('antecedente.nome', val)} />
-                                    <EditableField fullWidth multiline rows={3} label="Descrição do Antecedente"
-                                        value={character.antecedente?.descricao || ''}
-                                        onChange={(val) => updateField('antecedente.descricao', val)} />
-                                </Box>
-                            ) : (
-                                <Typography className="esteban" variant="body2" sx={{
-                                    wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
-                                }}>
-                                    {character.antecedente?.descricao || 'Sem descrição'}
-                                </Typography>
-                            )}
-                            {character.antecedente?.habilidades && character.antecedente.habilidades.length > 0 && (
-                                <Box sx={{ mt: 1 }}>
-                                    <Typography className="esteban" variant="caption" sx={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: 10 }}>
-                                        Habilidades:
+                                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'var(--text-primary)' }} />}
+                                    sx={{ minHeight: 36, '&.Mui-expanded': { minHeight: 36 }, '& .MuiAccordionSummary-content': { margin: '6px 0' } }}>
+                                    <Typography className="esteban" sx={{
+                                        display: 'flex', alignItems: 'center', gap: 0.5,
+                                        fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13,
+                                        overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                                    }}>
+                                        <HistoryEduIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                        <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            Antecedente: {character.antecedente?.nome || 'Não definido'}
+                                        </Box>
                                     </Typography>
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
-                                        {character.antecedente.habilidades.map((hab, idx) => (
-                                            <Chip key={idx} label={hab} size="small"
-                                                sx={{
-                                                    backgroundColor: hab.includes('-') ? '#931C4A' : '#454E30',
-                                                    color: 'white', fontSize: 10, height: 22,
-                                                }} />
-                                        ))}
-                                    </Box>
-                                </Box>
-                            )}
-                        </Paper>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <Paper sx={{
-                            p: { xs: 1, sm: SP.p }, px: { xs: 1, sm: 3 }, borderRadius: SP.radius,
-                            backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #162A22',
-                            maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
-                        }}>
-                            <Typography className="esteban" sx={{
-                                display: 'flex', alignItems: 'center', gap: 0.5,
-                                fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
-                                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ pt: 0, px: 1.5, pb: 1.5 }}>
+                                    {editMode ? (
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                            <EditableField fullWidth label="Nome do Antecedente"
+                                                value={character.antecedente?.nome || ''}
+                                                onChange={(val) => updateField('antecedente.nome', val)} />
+                                            <EditableField fullWidth multiline rows={3} label="Descrição do Antecedente"
+                                                value={character.antecedente?.descricao || ''}
+                                                onChange={(val) => updateField('antecedente.descricao', val)} />
+                                        </Box>
+                                    ) : (
+                                        <Typography className="esteban" variant="body2" sx={{
+                                            wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                        }}>
+                                            {character.antecedente?.descricao || 'Sem descrição'}
+                                        </Typography>
+                                    )}
+                                    {character.antecedente?.habilidades && character.antecedente.habilidades.length > 0 && (
+                                        <Box sx={{ mt: 1 }}>
+                                            <Typography className="esteban" variant="caption" sx={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: 10 }}>
+                                                Habilidades:
+                                            </Typography>
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
+                                                {character.antecedente.habilidades.map((hab, idx) => (
+                                                    <Chip key={idx} label={hab} size="small"
+                                                        sx={{
+                                                            backgroundColor: hab.includes('-') ? '#931C4A' : '#454E30',
+                                                            color: 'white', fontSize: 10, height: 22,
+                                                        }} />
+                                                ))}
+                                            </Box>
+                                        </Box>
+                                    )}
+                                </AccordionDetails>
+                            </Accordion>
+                        ) : (
+                            <Paper sx={{
+                                p: SP.p, px: 3, borderRadius: SP.radius,
+                                backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #AB6422',
+                                maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
                             }}>
-                                <PersonIcon sx={{ fontSize: 18, flexShrink: 0 }} />
-                                <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    Descrição do Personagem
-                                </Box>
-                            </Typography>
-                            {editMode ? (
-                                <EditableField fullWidth multiline rows={5} label="Descrição"
-                                    value={character.descricao || ''}
-                                    onChange={(val) => updateField('descricao', val)} />
-                            ) : (
-                                <Typography className="esteban" variant="body2" sx={{
-                                    wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                <Typography className="esteban" sx={{
+                                    display: 'flex', alignItems: 'center', gap: 0.5,
+                                    fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
+                                    overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
                                 }}>
-                                    {character.descricao || 'Sem descrição'}
+                                    <HistoryEduIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                    <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        Antecedente: {character.antecedente?.nome || 'Não definido'}
+                                    </Box>
                                 </Typography>
-                            )}
-                        </Paper>
-                    </Grid>
+                                {editMode ? (
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                        <EditableField fullWidth label="Nome do Antecedente"
+                                            value={character.antecedente?.nome || ''}
+                                            onChange={(val) => updateField('antecedente.nome', val)} />
+                                        <EditableField fullWidth multiline rows={3} label="Descrição do Antecedente"
+                                            value={character.antecedente?.descricao || ''}
+                                            onChange={(val) => updateField('antecedente.descricao', val)} />
+                                    </Box>
+                                ) : (
+                                    <Typography className="esteban" variant="body2" sx={{
+                                        wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                    }}>
+                                        {character.antecedente?.descricao || 'Sem descrição'}
+                                    </Typography>
+                                )}
+                                {character.antecedente?.habilidades && character.antecedente.habilidades.length > 0 && (
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography className="esteban" variant="caption" sx={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: 10 }}>
+                                            Habilidades:
+                                        </Typography>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
+                                            {character.antecedente.habilidades.map((hab, idx) => (
+                                                <Chip key={idx} label={hab} size="small"
+                                                    sx={{
+                                                        backgroundColor: hab.includes('-') ? '#931C4A' : '#454E30',
+                                                        color: 'white', fontSize: 10, height: 22,
+                                                    }} />
+                                            ))}
+                                        </Box>
+                                    </Box>
+                                )}
+                            </Paper>
+                        )}
+                    </Box>
 
-                </Grid>{/* fim Linha 2 */}
+                    <Box sx={{ flex: '1 1 280px', minWidth: 0 }}>
+                        {isMdDown ? (
+                            <Accordion defaultExpanded={false} sx={{
+                                borderRadius: `${SP.radius * 4}px !important`, backgroundColor: 'var(--surface-default)',
+                                borderLeft: '3px solid #162A22', '&:before': { display: 'none' },
+                                '&.Mui-expanded': { margin: 0 },
+                            }}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'var(--text-primary)' }} />}
+                                    sx={{ minHeight: 36, '&.Mui-expanded': { minHeight: 36 }, '& .MuiAccordionSummary-content': { margin: '6px 0' } }}>
+                                    <Typography className="esteban" sx={{
+                                        display: 'flex', alignItems: 'center', gap: 0.5,
+                                        fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13,
+                                        overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                                    }}>
+                                        <PersonIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                        <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            Descrição do Personagem
+                                        </Box>
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ pt: 0, px: 1.5, pb: 1.5 }}>
+                                    {editMode ? (
+                                        <EditableField fullWidth multiline rows={5} label="Descrição"
+                                            value={character.descricao || ''}
+                                            onChange={(val) => updateField('descricao', val)} />
+                                    ) : (
+                                        <Typography className="esteban" variant="body2" sx={{
+                                            wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                        }}>
+                                            {character.descricao || 'Sem descrição'}
+                                        </Typography>
+                                    )}
+                                </AccordionDetails>
+                            </Accordion>
+                        ) : (
+                            <Paper sx={{
+                                p: SP.p, px: 3, borderRadius: SP.radius,
+                                backgroundColor: 'var(--surface-default)', borderLeft: '3px solid #162A22',
+                                maxHeight: 220, overflowY: 'auto', overflowX: 'hidden',
+                            }}>
+                                <Typography className="esteban" sx={{
+                                    display: 'flex', alignItems: 'center', gap: 0.5,
+                                    fontWeight: 'bold', color: 'var(--text-primary)', fontSize: 13, mb: 1,
+                                    overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                                }}>
+                                    <PersonIcon sx={{ fontSize: 18, flexShrink: 0 }} />
+                                    <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        Descrição do Personagem
+                                    </Box>
+                                </Typography>
+                                {editMode ? (
+                                    <EditableField fullWidth multiline rows={5} label="Descrição"
+                                        value={character.descricao || ''}
+                                        onChange={(val) => updateField('descricao', val)} />
+                                ) : (
+                                    <Typography className="esteban" variant="body2" sx={{
+                                        wordBreak: 'break-word', lineHeight: 1.6, color: 'var(--text-primary)', fontSize: 12,
+                                    }}>
+                                        {character.descricao || 'Sem descrição'}
+                                    </Typography>
+                                )}
+                            </Paper>
+                        )}
+                    </Box>
+
+                </Box>{/* fim Linha 2 */}
 
             </Box>
 

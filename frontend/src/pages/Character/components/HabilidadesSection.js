@@ -59,7 +59,10 @@ const HabilidadeBox = ({ name, value, borderColor, editMode, updateField, rollSk
         onClick={() => !editMode && rollSkillCheck(value, name)}
         sx={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            px: 1.5, py: 0.75, borderRadius: 1,
+            px: 1.5, py: { xs: 0.5, sm: 0.75 }, borderRadius: 1,
+            minHeight: { xs: 36, sm: 'auto' },
+            flex: { xs: '1 1 calc(50% - 4px)', lg: '1 1 auto' },
+            maxWidth: '100%',
             backgroundColor: value !== 0 ? 'var(--surface-raised)' : 'var(--surface-default)',
             border: `1px solid ${borderColor}33`,
             cursor: editMode ? 'default' : 'pointer',
@@ -283,7 +286,10 @@ const HabilidadesSection = React.memo(({
                                     nivel={nivel}
                                 />
                                 <Box sx={{
-                                    display: 'flex', flexDirection: 'column', gap: 0.5,
+                                    display: 'flex',
+                                    flexDirection: { xs: 'row', lg: 'column' },
+                                    flexWrap: { xs: 'wrap', lg: 'nowrap' },
+                                    gap: 0.5,
                                     p: 1, backgroundColor: 'var(--surface-default)',
                                 }}>
                                     {grupo.habilidadesDoGrupo.map(hab => (

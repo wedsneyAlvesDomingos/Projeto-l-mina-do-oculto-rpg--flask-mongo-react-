@@ -72,13 +72,13 @@ const PointsBar = ({ pontosTotal, pontosGastos }) => {
     const restantes = pontosTotal - pontosGastos;
     const pct = pontosTotal > 0 ? (pontosGastos / pontosTotal) * 100 : 0;
     return (
-        <Paper sx={{ p: 2, mb: 2, borderRadius: 2,    }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                <Typography  sx={{ fontWeight: 'bold', fontSize: '16px',    }}>⭐ Pontos de Regalia</Typography>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Chip label={`Gastos: ${pontosGastos}`} size="small" sx={{ border:2,borderColor: colors.olive, fontWeight: 'bold' }} />
-                    <Chip label={`Restantes: ${restantes}`} size="small" sx={{ border:2,borderColor: restantes > 0 ? colors.forest : colors.garnet, fontWeight: 'bold' }} />
-                    <Chip label={`Total: ${pontosTotal}`} size="small" sx={{ border:2,borderColor: colors.midnight }} />
+        <Paper sx={{ p: { xs: 1, sm: 1.5 }, mb: 1.5, borderRadius: 2,    }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5, flexWrap: 'wrap', gap: 0.5 }}>
+                <Typography  sx={{ fontWeight: 'bold', fontSize: { xs: '13px', sm: '14px' },    }}>⭐ Pontos de Regalia</Typography>
+                <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                    <Chip label={`Gastos: ${pontosGastos}`} size="small" sx={{ border:2,borderColor: colors.olive, fontWeight: 'bold', fontSize: { xs: '10px', sm: '11px' }, height: { xs: '22px', sm: '24px' } }} />
+                    <Chip label={`Restantes: ${restantes}`} size="small" sx={{ border:2,borderColor: restantes > 0 ? colors.forest : colors.garnet, fontWeight: 'bold', fontSize: { xs: '10px', sm: '11px' }, height: { xs: '22px', sm: '24px' } }} />
+                    <Chip label={`Total: ${pontosTotal}`} size="small" sx={{ border:2,borderColor: colors.midnight, fontSize: { xs: '10px', sm: '11px' }, height: { xs: '22px', sm: '24px' } }} />
                 </Box>
             </Box>
             <LinearProgress variant="determinate" value={Math.min(pct, 100)} sx={{
@@ -94,21 +94,21 @@ const RegaliaCard = ({ nome, descricao, custo, cor, owned, locked, lockMsg, onBu
     const [expanded, setExpanded] = useState(false);
     return (
         <Paper sx={{
-            p: 2, borderRadius: 2,
+            p: { xs: 1, sm: 1.25 }, borderRadius: 2,
             border: `2px solid ${owned || autoIncluded ? cor : locked ? colors.olive + '44' : cor + '66'}`,
             backgroundColor: owned || autoIncluded ? cor + '18' : locked ? derived.bgDarkAlt : derived.bgDarkSurface,
             opacity: locked && !owned ? 0.6 : 1,
             transition: 'all 0.2s ease',
             '&:hover': { transform: locked ? 'none' : 'translateY(-2px)', boxShadow: locked ? 0 : 3 },
         }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <Box sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: { xs: 'wrap', sm: 'nowrap' }, gap: { xs: 0.5, sm: 0 } }}>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5, flexWrap: 'wrap' }}>
-                        {autoIncluded ? <CardGiftcardIcon sx={{ fontSize: 18, color: cor }} />
-                            : owned ? <CheckCircleIcon sx={{ fontSize: 18, color: cor }} />
-                            : locked ? <LockIcon sx={{ fontSize: 18, color: derived.textOnDarkMuted }} />
-                            : <LockOpenIcon sx={{ fontSize: 18, color: cor }} />}
-                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px', color: owned || autoIncluded ? cor : derived.textOnDark }}>
+                        {autoIncluded ? <CardGiftcardIcon sx={{ fontSize: { xs: 16, sm: 16 }, color: cor }} />
+                            : owned ? <CheckCircleIcon sx={{ fontSize: { xs: 16, sm: 16 }, color: cor }} />
+                            : locked ? <LockIcon sx={{ fontSize: { xs: 16, sm: 16 }, color: derived.textOnDarkMuted }} />
+                            : <LockOpenIcon sx={{ fontSize: { xs: 16, sm: 16 }, color: cor }} />}
+                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '12px', sm: '13px' }, color: owned || autoIncluded ? cor : derived.textOnDark }}>
                             {nome}
                         </Typography>
                         {autoIncluded && <Chip label="Incluída" size="small" sx={{ height: '18px', fontSize: '9px', backgroundColor: colors.forest,    fontWeight: 'bold' }} />}
@@ -119,8 +119,8 @@ const RegaliaCard = ({ nome, descricao, custo, cor, owned, locked, lockMsg, onBu
                     )}
                 </Box>
                 {!owned && !locked && !autoIncluded && onBuy && (
-                    <Button variant="contained" size="small" startIcon={<ShoppingCartIcon sx={{ fontSize: 14 }} />} onClick={onBuy}
-                        sx={{ backgroundColor: cor,    fontSize: '11px', textTransform: 'none', '&:hover': { backgroundColor: cor, filter: 'brightness(1.25)' } }}>
+                    <Button variant="contained" size="small" startIcon={<ShoppingCartIcon sx={{ fontSize: 12 }} />} onClick={onBuy}
+                        sx={{ backgroundColor: cor,    fontSize: { xs: '10px', sm: '10px' }, textTransform: 'none', py: 0.5, px: 1, minWidth: 'auto', '&:hover': { backgroundColor: cor, filter: 'brightness(1.25)' } }}>
                         Comprar
                     </Button>
                 )}
@@ -138,7 +138,7 @@ const RegaliaCard = ({ nome, descricao, custo, cor, owned, locked, lockMsg, onBu
                 </Box>
             )}
             <Typography variant="body2" onClick={() => setExpanded(!expanded)} sx={{
-                mt: 0.5, fontSize: '12px', color: derived.textOnDarkMuted, cursor: 'pointer',
+                mt: 0.5, fontSize: { xs: '11px', sm: '11px' }, color: derived.textOnDarkMuted, cursor: 'pointer',
                 display: '-webkit-box', WebkitLineClamp: expanded ? 'unset' : 2, WebkitBoxOrient: 'vertical', overflow: expanded ? 'visible' : 'hidden',
             }}>
                 {descricao}
@@ -153,17 +153,17 @@ const NivelArvoreItem = ({ nv, cor, owned, canBuy, prevOwned, onBuy, ordemLivre 
     const locked = !owned && !ordemLivre && !prevOwned;
     return (
         <Box sx={{
-            display: 'flex', alignItems: 'center', gap: 1, py: 0.5,
+            display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 0.75 }, py: 0.5,
             borderLeft: `3px solid ${owned ? cor : locked ? colors.olive + '44' : cor + '88'}`,
-            pl: 1.5, ml: 1, mb: 0.5, backgroundColor: owned ? cor + '18' : 'transparent', borderRadius: '0 4px 4px 0',
+            pl: { xs: 1, sm: 1.5 }, ml: { xs: 0.5, sm: 1 }, mb: 0.5, backgroundColor: owned ? cor + '18' : 'transparent', borderRadius: '0 4px 4px 0',
         }}>
-            <Box sx={{ flex: 1 }}>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
                     {owned ? <CheckCircleIcon sx={{ fontSize: 14, color: cor }} /> : locked ? <LockIcon sx={{ fontSize: 14, color: derived.textOnDarkMuted }} /> : <LockOpenIcon sx={{ fontSize: 14, color: cor }} />}
                     <Chip label={`Nível ${nv.nivel}`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: owned ? cor + '33' : cor + '15', color: cor, fontWeight: 'bold' }} />
                     <Chip label={`${nv.custo} pt${nv.custo !== 1 ? 's' : ''}`} size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: `${colors.olive}22`, color: derived.textOnDarkMuted }} />
                 </Box>
-                <Typography variant="caption" component="div" sx={{ fontSize: '11px', color: derived.textOnDarkMuted, mt: 0.3 }}>
+                <Typography variant="caption" component="div" sx={{ fontSize: { xs: '10px', sm: '10px' }, color: derived.textOnDarkMuted, mt: 0.3, wordBreak: 'break-word' }}>
                     {nv.bonusHabilidades && Object.keys(nv.bonusHabilidades).length > 0 &&
                         Object.entries(nv.bonusHabilidades).map(([k, v]) => `+${v} ${labelHab(k)}`).join(', ')}
                     {nv.escolhasHabilidades?.map((e, i) =>
@@ -175,10 +175,10 @@ const NivelArvoreItem = ({ nv, cor, owned, canBuy, prevOwned, onBuy, ordemLivre 
             </Box>
             {!owned && canBuy && (ordemLivre || prevOwned) && onBuy && (
                 <Button variant="outlined" size="small" onClick={onBuy} sx={{
-                    fontSize: '10px', textTransform: 'none', minWidth: 'auto',
+                    fontSize: '10px', textTransform: 'none', minWidth: 'auto', whiteSpace: 'nowrap',
                     borderColor: cor, color: cor, '&:hover': { backgroundColor: cor + '22', borderColor: cor },
                 }}>
-                    Comprar Nv {nv.nivel}
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Comprar </Box>Nv {nv.nivel}
                 </Button>
             )}
         </Box>
@@ -300,32 +300,32 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
     if (!character) return null;
 
     return (
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: { xs: 1, sm: 1.5 } }}>
             <PointsBar pontosTotal={pontosTotal} pontosGastos={pontosGastos} />
 
-            {nivel < 3 && <Alert severity="info" sx={{ mb: 2, fontSize: '12px', backgroundColor: `${colors.midnight}cc`, '& .MuiAlert-icon': { color: colors.gold } }}>Classes Primárias e Especializações ficam disponíveis a partir do nível 3.</Alert>}
+            {nivel < 3 && <Alert severity="info" sx={{ mb: 1.5, fontSize: '11px', backgroundColor: `${colors.midnight}cc`, '& .MuiAlert-icon': { color: colors.gold } }}>Classes Primárias e Especializações ficam disponíveis a partir do nível 3.</Alert>}
 
             {secoes.map(secao => {
                 const isOpen = secaoAberta === secao.id;
                 return (
-                    <Box key={secao.id} sx={{ mb: 1.5 }}>
+                    <Box key={secao.id} sx={{ mb: 1 }}>
                         <Paper sx={{
-                            p: 1.5, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            p: { xs: 0.75, sm: 1 }, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                             borderRadius: 2, transition: 'all 0.2s'
                         }} onClick={() => setSecaoAberta(isOpen ? null : secao.id)}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1 }, flexWrap: 'wrap', minWidth: 0 }}>
                                 {secao.icon}
-                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px' }}>{secao.label}</Typography>
+                                <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '12px', sm: '13px' } }}>{secao.label}</Typography>
                                 <Chip label={`${secao.owned}/${secao.total}`} size="small" sx={{
-                                    height: '20px', fontSize: '11px',
+                                    height: '18px', fontSize: '10px',
                                     color: isOpen ? derived.textOnDark : secao.cor, fontWeight: 'bold',
                                 }} />
                             </Box>
                             <ExpandMoreIcon sx={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s' }} />
                         </Paper>
 
-                        <Collapse in={isOpen} timeout="auto">
-                            <Box sx={{ p: 1.5 }}>
+                                        <Collapse in={isOpen} timeout="auto">
+                            <Box sx={{ p: { xs: 0.5, sm: 0.75 } }}>
 
                                 {/* ── Aprendiz ── */}
                                 {secao.id === 'aprendiz' && (
@@ -366,7 +366,7 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                                         {/* Banner informativo com a sub-raça ativa (escolhida na criação) */}
                                         {especieData && (
-                                            <Paper sx={{ p: 1.5, mb: 0.5, backgroundColor: CORES_TIPO.especie + '18', borderLeft: `4px solid ${CORES_TIPO.especie}`, borderRadius: '0 8px 8px 0' }}>
+                                            <Paper sx={{ p: { xs: 1, sm: 1.25 }, mb: 0.5, backgroundColor: CORES_TIPO.especie + '18', borderLeft: `4px solid ${CORES_TIPO.especie}`, borderRadius: '0 8px 8px 0' }}>
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                                                     <PersonIcon sx={{ fontSize: 16, }} />
                                                     <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
@@ -378,7 +378,7 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                         sx={{ height: '20px', fontSize: '11px', backgroundColor: CORES_TIPO.especie + '33', color: CORES_TIPO.especie, fontWeight: 'bold' }}
                                                     />
                                                 </Box>
-                                                <Typography variant="body2" sx={{ fontSize: '11px', mt: 0.5 }}>
+                                                    <Typography variant="body2" sx={{ fontSize: { xs: '10px', sm: '10px' }, mt: 0.5 }}>
                                                     A sub-raça é escolhida na criação do personagem e não pode ser alterada aqui. Abaixo estão as Regalias extras de espécie que podem ser compradas com Pontos de Regalia.
                                                 </Typography>
                                             </Paper>
@@ -432,10 +432,10 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                             return (
                                                 <Box key={tipoKey}>
                                                     {/* Cabeçalho do tipo */}
-                                                    <Paper sx={{ p: 1.5, mb: 1.5, backgroundColor: CORES_TIPO.opcional + '18', borderLeft: `4px solid ${CORES_TIPO.opcional}`, borderRadius: '0 8px 8px 0' }}>
+                                                    <Paper sx={{ p: { xs: 1, sm: 1.25 }, mb: 1, backgroundColor: CORES_TIPO.opcional + '18', borderLeft: `4px solid ${CORES_TIPO.opcional}`, borderRadius: '0 8px 8px 0' }}>
                                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 0.5 }}>
                                                             <ScienceIcon sx={{ fontSize: 16, color: CORES_TIPO.opcional }} />
-                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '15px', color: CORES_TIPO.opcional }}>{tipoKey}</Typography>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '12px', sm: '13px' }, color: CORES_TIPO.opcional }}>{tipoKey}</Typography>
                                                             <Chip label={`${reg.custo} pts por opção`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.opcional + '22', color: CORES_TIPO.opcional, fontWeight: 'bold' }} />
                                                             {ownedCount > 0 && <Chip label={`${ownedCount} possuída${ownedCount !== 1 ? 's' : ''}`} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: colors.forest,    fontWeight: 'bold' }} />}
                                                         </Box>
@@ -493,9 +493,9 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                             <Accordion key={prof.nome} defaultExpanded={profOwned}
                                                 sx={{ backgroundColor: derived.bgDarkAlt, border: `1px solid ${CORES_TIPO.profissao}33`, '&:before': { display: 'none' }, borderRadius: '8px !important', overflow: 'hidden' }}>
                                                 <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: CORES_TIPO.profissao }} />}
-                                                    sx={{ '& .MuiAccordionSummary-content': { alignItems: 'center', gap: 1, flexWrap: 'wrap' } }}>
-                                                    <WorkIcon sx={{ fontSize: 16, color: CORES_TIPO.profissao }} />
-                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '14px', color: CORES_TIPO.profissao }}>
+                                                    sx={{ px: { xs: 1, sm: 1.5 }, '& .MuiAccordionSummary-content': { alignItems: 'center', gap: 0.5, flexWrap: 'wrap', minWidth: 0 } }}>
+                                                    <WorkIcon sx={{ fontSize: 14, color: CORES_TIPO.profissao }} />
+                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' }, color: CORES_TIPO.profissao }}>
                                                         {prof.nome}
                                                     </Typography>
                                                     {prof.rendaPorDia > 0 && (
@@ -511,9 +511,9 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                             sx={{ height: '18px', fontSize: '10px', backgroundColor: `${colors.forest}44`, color: colors.forest, fontWeight: 'bold' }} />
                                                     )}
                                                 </AccordionSummary>
-                                                <AccordionDetails sx={{ pt: 0, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                                                <AccordionDetails sx={{ pt: 0, px: { xs: 0.75, sm: 1.25 }, display: 'flex', flexDirection: 'column', gap: 1 }}>
                                                     {/* Descrição */}
-                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>
+                                                    <Typography variant="body2" sx={{ fontSize: { xs: '10px', sm: '10px' }, color: derived.textOnDarkMuted }}>
                                                         {prof.descricao}
                                                     </Typography>
                                                     {prof.beneficiosFixos?.length > 0 && (
@@ -568,8 +568,8 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
 
                                                     {/* Tabelas de sucesso/materiais se existirem */}
                                                     {prof.chanceDeSucesso?.length > 0 && (
-                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
-                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>📊 Chances de Sucesso</Typography>
+                                                        <Paper sx={{ p: { xs: 0.75, sm: 1 }, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '10px', sm: '11px' }, color: CORES_TIPO.profissao, mb: 0.5 }}>📊 Chances de Sucesso</Typography>
                                                             {prof.chanceDeSucesso.map((cs, i) => (
                                                                 <Typography key={i} variant="caption" sx={{ display: 'block', fontSize: '10px', color: derived.textOnDarkMuted }}>
                                                                     • {cs.produto || cs.acao || cs.tentativa}: {cs.chance} ({cs.dificuldadeRolagem || cs.rolagem})
@@ -578,8 +578,8 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                         </Paper>
                                                     )}
                                                     {prof.tiposDeDano?.length > 0 && (
-                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
-                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>🔥 Tipos de Dano Elemental</Typography>
+                                                        <Paper sx={{ p: { xs: 0.75, sm: 1 }, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '10px', sm: '11px' }, color: CORES_TIPO.profissao, mb: 0.5 }}>🔥 Tipos de Dano Elemental</Typography>
                                                             <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
                                                                 {prof.tiposDeDano.map(t => (
                                                                     <Chip key={t} label={t} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao }} />
@@ -588,8 +588,8 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                         </Paper>
                                                     )}
                                                     {prof.materiaisEspeciais?.length > 0 && (
-                                                        <Paper sx={{ p: 1.5, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
-                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '12px', color: CORES_TIPO.profissao, mb: 0.5 }}>🪨 Materiais Especiais</Typography>
+                                                        <Paper sx={{ p: { xs: 0.75, sm: 1 }, backgroundColor: derived.bgDarkAlt, borderRadius: 2 }}>
+                                                            <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '10px', sm: '11px' }, color: CORES_TIPO.profissao, mb: 0.5 }}>🪨 Materiais Especiais</Typography>
                                                             <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
                                                                 {prof.materiaisEspeciais.map(m => (
                                                                     <Chip key={m} label={m} size="small" sx={{ height: '18px', fontSize: '10px', backgroundColor: CORES_TIPO.profissao + '22', color: CORES_TIPO.profissao }} />
@@ -695,22 +695,22 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
 
                                                     {/* Se comprou a classe → mostrar habilidade auto + árvores + avulsas */}
                                                     {classOwned && (
-                                                        <Box sx={{ ml: 2, mt: 1, borderLeft: `3px solid ${cor}`, pl: 2 }}>
+                                                        <Box sx={{ ml: { xs: 0.5, sm: 1 }, mt: 1, borderLeft: `3px solid ${cor}`, pl: { xs: 0.75, sm: 1.5 } }}>
                                                             {/* Habilidade automática (sem custo) */}
                                                             {classe.habilidadeClasse && (
-                                                                <Paper sx={{ p: 1.5, mb: 1.5, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
+                                                                <Paper sx={{ p: { xs: 1, sm: 1.25 }, mb: 1, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
                                                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                                                                        <CardGiftcardIcon sx={{ fontSize: 16, color: colors.forest }} />
-                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: colors.forest }}>
+                                                                        <CardGiftcardIcon sx={{ fontSize: 14, color: colors.forest }} />
+                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' }, color: colors.forest }}>
                                                                             {classe.habilidadeClasse.nome}
                                                                         </Typography>
                                                                         <Chip label="Automática — sem custo" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.forest,    }} />
                                                                     </Box>
-                                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>{classe.habilidadeClasse.descricao}</Typography>
+                                                                    <Typography variant="body2" sx={{ fontSize: { xs: '10px', sm: '10px' }, color: derived.textOnDarkMuted }}>{classe.habilidadeClasse.descricao}</Typography>
                                                                     {classe.habilidadeClasse.subHabilidades?.map(sub => (
                                                                         <Box key={sub.nome} sx={{ ml: 1, mt: 0.5 }}>
-                                                                            <Typography variant="caption" sx={{ fontWeight: 'bold', color: colors.forest, fontSize: '11px' }}>• {sub.nome} ({sub.tipo})</Typography>
-                                                                            <Typography variant="caption" sx={{ display: 'block', ml: 1.5, fontSize: '10px', color: derived.textOnDarkMuted }}>{sub.descricao}</Typography>
+                                                                            <Typography variant="caption" sx={{ fontWeight: 'bold', color: colors.forest, fontSize: { xs: '10px', sm: '10px' } }}>• {sub.nome} ({sub.tipo})</Typography>
+                                                                            <Typography variant="caption" sx={{ display: 'block', ml: 1.5, fontSize: '9px', color: derived.textOnDarkMuted }}>{sub.descricao}</Typography>
                                                                         </Box>
                                                                     ))}
                                                                 </Paper>
@@ -718,13 +718,13 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
 
                                                             {/* Árvores — comprável nível a nível */}
                                                             {classe.arvoresRegalia?.length > 0 && (
-                                                                <Box sx={{ mb: 1.5 }}>
-                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px',    mb: 0.5 }}>🌳 Árvores de Progressão</Typography>
+                                                                <Box sx={{ mb: 1 }}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' },    mb: 0.5 }}>🌳 Árvores de Progressão</Typography>
                                                                     {classe.arvoresRegalia.map(arv => (
                                                                         <Accordion key={arv.id} sx={{ backgroundColor: derived.bgDarkAlt, mb: 0.5, '&:before': { display: 'none' } }}>
-                                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 36, '& .MuiAccordionSummary-content': { my: 0.5 } }}>
-                                                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                                                                    <Typography className="esteban" sx={{ fontSize: '12px', fontWeight: 'bold', color: cor }}>{arv.nome}</Typography>
+                                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 32, '& .MuiAccordionSummary-content': { my: 0.25 } }}>
+                                                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                                                                                    <Typography className="esteban" sx={{ fontSize: { xs: '11px', sm: '11px' }, fontWeight: 'bold', color: cor }}>{arv.nome}</Typography>
                                                                                     <Chip label={`${arv.niveis?.filter((_, i) => regaliasCompradas[arvoreKey(classe.id, arv.id, i + 1)]).length || 0}/${arv.niveis?.length || 0}`}
                                                                                         size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: cor + '22', color: cor }} />
                                                                                 </Box>
@@ -749,8 +749,8 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
                                                             {/* Avulsas — compráveis individualmente */}
                                                             {classe.regaliasAvulsas?.length > 0 && (
                                                                 <Box sx={{ mb: 1 }}>
-                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px',    mb: 0.5 }}>⚔️ Regalias Avulsas</Typography>
-                                                                    <Grid container spacing={1}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' },    mb: 0.5 }}>⚔️ Regalias Avulsas</Typography>
+                                                                    <Grid container spacing={0.75}>
                                                                         {classe.regaliasAvulsas.map(ra => {
                                                                             const key = avulsaKey(classe.id, ra.id);
                                                                             const raOwned = !!regaliasCompradas[key];
@@ -806,26 +806,26 @@ const RegaliasShop = ({ character, onPurchase, readOnly = false }) => {
 
                                                     {/* Se comprou a especialização → mostrar habilidade auto + avulsas */}
                                                     {owned && (
-                                                        <Box sx={{ ml: 2, mt: 1, borderLeft: `3px solid ${cor}`, pl: 2 }}>
+                                                        <Box sx={{ ml: { xs: 0.5, sm: 1 }, mt: 1, borderLeft: `3px solid ${cor}`, pl: { xs: 0.75, sm: 1.5 } }}>
                                                             {/* Habilidade obrigatória (sem custo extra) */}
                                                             {esp.regaliaObrigatoria?.habilidadeClasse && (
-                                                                <Paper sx={{ p: 1.5, mb: 1.5, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
+                                                                <Paper sx={{ p: { xs: 1, sm: 1.25 }, mb: 1, border: `1px solid ${colors.forest}`, borderRadius: 2, backgroundColor: `${colors.moss}44` }}>
                                                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                                                                        <CardGiftcardIcon sx={{ fontSize: 16, color: colors.forest }} />
-                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px', color: colors.forest }}>
+                                                                        <CardGiftcardIcon sx={{ fontSize: 14, color: colors.forest }} />
+                                                                        <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' }, color: colors.forest }}>
                                                                             {esp.regaliaObrigatoria.habilidadeClasse.nome}
                                                                         </Typography>
                                                                         <Chip label="Automática — sem custo" size="small" sx={{ height: '16px', fontSize: '9px', backgroundColor: colors.forest,    }} />
                                                                     </Box>
-                                                                    <Typography variant="body2" sx={{ fontSize: '11px', color: derived.textOnDarkMuted }}>{esp.regaliaObrigatoria.habilidadeClasse.descricao}</Typography>
+                                                                    <Typography variant="body2" sx={{ fontSize: { xs: '10px', sm: '10px' }, color: derived.textOnDarkMuted }}>{esp.regaliaObrigatoria.habilidadeClasse.descricao}</Typography>
                                                                 </Paper>
                                                             )}
 
                                                             {/* Avulsas — compráveis individualmente */}
                                                             {esp.regaliasAvulsas?.length > 0 && (
                                                                 <Box sx={{ mb: 1 }}>
-                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: '13px',    mb: 0.5 }}>⚔️ Regalias de Especialização</Typography>
-                                                                    <Grid container spacing={1}>
+                                                                    <Typography className="esteban" sx={{ fontWeight: 'bold', fontSize: { xs: '11px', sm: '12px' },    mb: 0.5 }}>⚔️ Regalias de Especialização</Typography>
+                                                                    <Grid container spacing={0.75}>
                                                                         {esp.regaliasAvulsas.map(ra => {
                                                                             const key = espAvulsaKey(esp.id, ra.id);
                                                                             const raOwned = !!regaliasCompradas[key];

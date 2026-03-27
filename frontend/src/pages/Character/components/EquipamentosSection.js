@@ -227,10 +227,12 @@ const EquipamentosSection = ({
                                 startIcon={<ShoppingCartIcon fontSize="small" />}
                                 sx={{
                                     backgroundColor: '#454E30', fontFamily: 'Esteban, serif',
+                                    minHeight: { xs: 40, sm: 'auto' },
+                                    fontSize: { xs: 11, sm: 13 },
                                     '&:hover': { backgroundColor: '#2F3C29' },
                                 }}
                             >
-                                Loja de Itens
+                                Loja
                             </Button>
                             <Button
                                 size="small"
@@ -238,10 +240,12 @@ const EquipamentosSection = ({
                                 onClick={() => { setCustomItem({ ...EMPTY_CUSTOM_ITEM }); setCreateOpen(true); }}
                                 startIcon={<AddCircleOutlineIcon fontSize="small" />}
                                 sx={{
-                                    borderColor: '#756A34', fontFamily: 'Esteban, serif',color: 'var(--text-light)',
+                                    borderColor: '#756A34', fontFamily: 'Esteban, serif', color: 'var(--text-light)',
+                                    minHeight: { xs: 40, sm: 'auto' },
+                                    fontSize: { xs: 11, sm: 13 },
                                 }}
                             >
-                                Criar Item
+                                Criar
                             </Button>
                         </Box>
                     </Box>
@@ -279,14 +283,14 @@ const EquipamentosSection = ({
                     </Typography>
                 ) : (
                     <TableContainer component={Paper} sx={{ border: '1px solid #756A3444', borderRadius: 2, overflow: 'auto' }}>
-                        <Table size="small" sx={{ minWidth: 460 }}>
+                        <Table size="small" sx={{ minWidth: { xs: 300, sm: 460 } }}>
                             <TableHead>
                                 <TableRow sx={{ backgroundColor: 'var(--footer-bg)' }}>
                                     <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Item</TableCell>
-                                    <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Categoria</TableCell>
+                                    <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap', display: { xs: 'none', md: 'table-cell' } }}>Categoria</TableCell>
                                     <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Qtd</TableCell>
                                     <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Atributos</TableCell>
-                                    <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Status</TableCell>
+                                    <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap', display: { xs: 'none', sm: 'table-cell' } }}>Status</TableCell>
                                     <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Ações</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -323,7 +327,7 @@ const EquipamentosSection = ({
                                             </TableCell>
 
                                             {/* Categoria */}
-                                            <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                                            <TableCell sx={{ whiteSpace: 'nowrap', display: { xs: 'none', md: 'table-cell' } }}>
                                                 <Chip
                                                     label={item.category || 'Outros'}
                                                     size="small"
@@ -393,7 +397,7 @@ const EquipamentosSection = ({
                                             </TableCell>
 
                                             {/* Status */}
-                                            <TableCell align="center" sx={{ whiteSpace: 'nowrap', width: 90 }}>
+                                            <TableCell align="center" sx={{ whiteSpace: 'nowrap', width: 90, display: { xs: 'none', sm: 'table-cell' } }}>
                                                 {equipStatus.equipado ? (
                                                     <Chip
                                                         size="small" label="✓ Equipado"

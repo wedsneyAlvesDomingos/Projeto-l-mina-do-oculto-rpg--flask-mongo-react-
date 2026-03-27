@@ -141,25 +141,25 @@ const CharacterSheet = () => {
                         scrollButtons="auto"
                         allowScrollButtonsMobile
                         sx={{
-                            minHeight: 40,
+                            minHeight: { xs: 48, sm: 40 },
                             '& .MuiTab-root': {
                                 fontFamily: '"Esteban", serif', fontWeight: 'bold', color: 'var(--text-primary)',
-                                minWidth: { xs: 60, sm: 90 },
-                                px: { xs: 0.75, sm: 1.5 },
+                                minWidth: { xs: 48, sm: 90 },
+                                px: { xs: 1, sm: 1.5 },
                                 fontSize: { xs: '10px', sm: 'inherit' },
-                                minHeight: 40,
+                                minHeight: { xs: 48, sm: 40 },
                                 py: 0.5,
                             },
                             '& .Mui-selected': { color: '#BB8130 !important' },
                             '& .MuiTabs-indicator': { backgroundColor: 'var(--panel-border)' },
-                            '& .MuiSvgIcon-root': { color: 'inherit', fontSize: { xs: '18px', sm: '20px' } },
+                            '& .MuiSvgIcon-root': { color: 'inherit', fontSize: { xs: '22px', sm: '20px' } },
                             '& .MuiTabs-flexContainer': { justifyContent: { sm: 'space-around' } },
                         }}
                     >
-                        <Tab className="esteban" icon={<FitnessCenterIcon />} iconPosition="start" label="Habilidades" />
-                        <Tab className="esteban" icon={<AutoAwesomeIcon />} iconPosition="start" label="Proficiências" />
-                        <Tab className="esteban" icon={<InventoryIcon />} iconPosition="start" label="Equipamentos" />
-                        <Tab className="esteban" icon={<StarIcon />} iconPosition="start" label="Regalias" />
+                        <Tab className="esteban" icon={<FitnessCenterIcon />} iconPosition="start" label={<Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Habilidades</Box>} aria-label="Habilidades" />
+                        <Tab className="esteban" icon={<AutoAwesomeIcon />} iconPosition="start" label={<Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Proficiências</Box>} aria-label="Proficiências" />
+                        <Tab className="esteban" icon={<InventoryIcon />} iconPosition="start" label={<Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Equipamentos</Box>} aria-label="Equipamentos" />
+                        <Tab className="esteban" icon={<StarIcon />} iconPosition="start" label={<Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Regalias</Box>} aria-label="Regalias" />
                     </Tabs>
                 </Paper>
 

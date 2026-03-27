@@ -92,6 +92,36 @@
   display: none;
 }
 
+/* ── Touch-friendly: ficha de personagem (md e menor) ── */
+@media (max-width: 900px) {
+  /* Botões e chips com área mínima de toque */
+  .MuiIconButton-root {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  .MuiChip-root {
+    min-height: 32px !important;
+  }
+  /* Selects e inputs com altura adequada */
+  .MuiSelect-select {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  /* Espaçamento entre links e botões para evitar cliques acidentais */
+  .MuiButton-root + .MuiButton-root,
+  .MuiIconButton-root + .MuiIconButton-root {
+    margin-left: 4px;
+  }
+}
+
+/* Fontes legíveis no mobile */
+@media (max-width: 600px) {
+  .esteban {
+    font-size: 13px !important;
+  }
+}
+
 
 .MuiButtonBase-root {
   font-size: 12px !important;

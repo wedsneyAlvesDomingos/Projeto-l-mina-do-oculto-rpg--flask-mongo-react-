@@ -861,11 +861,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Table size="small" sx={{ minWidth: 400 }}>
                         <TableHead>
                             <TableRow sx={{ background: 'linear-gradient(135deg, #162A22 0%, #2F3C29 100%)' }}>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Usar</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Regalia</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Bônus de Recursos</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Bônus & Proficiências</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Habilidades</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Detalhes</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -879,6 +879,28 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                         borderLeft: '3px solid #454E30',
                                     }}
                                 >
+                                    {/* Botão Usar */}
+                                    <TableCell align="center">
+                                        {fullData.habilidadesGanhas?.length > 0 ? (
+                                            <Button
+                                                size="small"
+                                                variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setAprendizDetail(fullData)}
+                                                sx={{
+                                                    fontSize: 10, py: 0.25, px: 1, minWidth: 'auto',
+                                                    backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif',
+                                                    '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' },
+                                                    '& .MuiButton-startIcon': { display: { xs: 'none', sm: 'flex' } },
+                                                }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
+                                    </TableCell>
+
                                     {/* Nome */}
                                     <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 160 }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -950,27 +972,6 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
-
-                                    {/* Botão Usar */}
-                                    <TableCell align="center">
-                                        {fullData.habilidadesGanhas?.length > 0 ? (
-                                            <Button
-                                                size="small"
-                                                variant="contained"
-                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
-                                                onClick={() => setAprendizDetail(fullData)}
-                                                sx={{
-                                                    fontSize: 10, py: 0.25, px: 1, minWidth: 'auto',
-                                                    backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif',
-                                                    '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' },
-                                                }}
-                                            >
-                                                Usar
-                                            </Button>
-                                        ) : (
-                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
-                                        )}
-                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -985,13 +986,14 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     PaperProps={{
                         sx: {
                             p: 0,
-                            overflow: 'visible',
+                            overflow: { xs: 'auto', lg: 'visible' },
                             background: 'transparent',
                             boxShadow: 'none',
+                            maxHeight: { xs: '85vh', lg: 'none' },
                         }
                     }}
                 >
-                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', flexDirection: { xs: 'column', lg: 'row' }, alignItems: { xs: 'center', lg: 'flex-start' } }}>
                         {/* Botão fechar flutuante */}
                         <IconButton
                             onClick={() => setAprendizDetail(null)}
@@ -1052,10 +1054,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Table size="small" sx={{ minWidth: 380 }}>
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#AB6422' }}>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Descrição</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Espécie</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Descrição</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -1065,11 +1067,18 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                     '&:hover': { backgroundColor: 'var(--surface-raised)' },
                                     borderLeft: '3px solid #AB6422',
                                 }}>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
-                                        {row.especie}
-                                    </TableCell>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13 }}>
-                                        {row.nome}
+                                    <TableCell align="center">
+                                        {row.habs?.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setEspecieUsar({ nomeRegalia: row.nome, habs: row.habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' }, '& .MuiButton-startIcon': { display: { xs: 'none', sm: 'flex' } } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
                                     </TableCell>
                                     <TableCell align="center">
                                         {row.desc ? (
@@ -1084,18 +1093,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
-                                    <TableCell align="center">
-                                        {row.habs?.length > 0 ? (
-                                            <Button size="small" variant="contained"
-                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
-                                                onClick={() => setEspecieUsar({ nomeRegalia: row.nome, habs: row.habs })}
-                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
-                                            >
-                                                Usar
-                                            </Button>
-                                        ) : (
-                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
-                                        )}
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+                                        {row.especie}
+                                    </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13 }}>
+                                        {row.nome}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -1127,10 +1129,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     onClose={() => setEspecieUsar(null)}
                     maxWidth={false}
                     PaperProps={{
-                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                        sx: { p: 0, overflow: { xs: 'auto', lg: 'visible' }, background: 'transparent', boxShadow: 'none', maxHeight: { xs: '85vh', lg: 'none' } }
                     }}
                 >
-                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', flexDirection: { xs: 'column', lg: 'row' }, alignItems: { xs: 'center', lg: 'flex-start' } }}>
                         <IconButton
                             onClick={() => setEspecieUsar(null)}
                             size="small"
@@ -1389,11 +1391,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Table size="small" sx={{ minWidth: 400 }}>
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#931C4A' }}>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Classe</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Tipo</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -1403,19 +1405,18 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                     '&:hover': { backgroundColor: 'var(--surface-raised)' },
                                     borderLeft: '3px solid #931C4A',
                                 }}>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
-                                        {classDisplayName}
-                                    </TableCell>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 180 }}>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: 13, fontFamily: 'Esteban, serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>
-                                            {rObj.nome}
-                                        </Typography>
-                                    </TableCell>
                                     <TableCell align="center">
-                                        {rObj.autoIncluded
-                                            ? <Chip label="Automática" size="small" sx={{ fontSize: 10, backgroundColor: '#4CAF50', color: 'white' }} />
-                                            : <Chip label="Comprada" size="small" sx={{ fontSize: 10, backgroundColor: '#931C4A22', color: '#931C4A' }} />
-                                        }
+                                        {habs.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setClasseUsar({ nomeRegalia: rObj.nome, habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' }, '& .MuiButton-startIcon': { display: { xs: 'none', sm: 'flex' } } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
                                     </TableCell>
                                     <TableCell align="center">
                                         {(rObj.descricao || (rObj.habilidades && rObj.habilidades.length > 0)) ? (
@@ -1430,18 +1431,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+                                        {classDisplayName}
+                                    </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 180 }}>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: 13, fontFamily: 'Esteban, serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>
+                                            {rObj.nome}
+                                        </Typography>
+                                    </TableCell>
                                     <TableCell align="center">
-                                        {habs.length > 0 ? (
-                                            <Button size="small" variant="contained"
-                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
-                                                onClick={() => setClasseUsar({ nomeRegalia: rObj.nome, habs })}
-                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
-                                            >
-                                                Usar
-                                            </Button>
-                                        ) : (
-                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
-                                        )}
+                                        {rObj.autoIncluded
+                                            ? <Chip label="Automática" size="small" sx={{ fontSize: 10, backgroundColor: '#4CAF50', color: 'white' }} />
+                                            : <Chip label="Comprada" size="small" sx={{ fontSize: 10, backgroundColor: '#931C4A22', color: '#931C4A' }} />
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -1490,10 +1492,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     onClose={() => setClasseUsar(null)}
                     maxWidth={false}
                     PaperProps={{
-                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                        sx: { p: 0, overflow: { xs: 'auto', lg: 'visible' }, background: 'transparent', boxShadow: 'none', maxHeight: { xs: '85vh', lg: 'none' } }
                     }}
                 >
-                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', flexDirection: { xs: 'column', lg: 'row' }, alignItems: { xs: 'center', lg: 'flex-start' } }}>
                         <IconButton
                             onClick={() => setClasseUsar(null)}
                             size="small"
@@ -1547,11 +1549,11 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     <Table size="small" sx={{ minWidth: 400 }}>
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#6A1B9A' }}>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
+                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Especialização</TableCell>
                                 <TableCell sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Regalia</TableCell>
                                 <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Tipo</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Detalhes</TableCell>
-                                <TableCell align="center" sx={{ color: '#fff', fontFamily: 'Esteban, serif', fontWeight: 'bold' }}>Usar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -1561,19 +1563,18 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                     '&:hover': { backgroundColor: 'var(--surface-raised)' },
                                     borderLeft: '3px solid #6A1B9A',
                                 }}>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
-                                        {espDisplayName}
-                                    </TableCell>
-                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 180 }}>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: 13, fontFamily: 'Esteban, serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>
-                                            {rObj.nome}
-                                        </Typography>
-                                    </TableCell>
                                     <TableCell align="center">
-                                        {rObj.autoIncluded
-                                            ? <Chip label="Automática" size="small" sx={{ fontSize: 10, backgroundColor: '#4CAF50', color: 'white' }} />
-                                            : <Chip label="Comprada" size="small" sx={{ fontSize: 10, backgroundColor: '#6A1B9A22', color: '#6A1B9A' }} />
-                                        }
+                                        {habs.length > 0 ? (
+                                            <Button size="small" variant="contained"
+                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
+                                                onClick={() => setEspUsar({ nomeRegalia: rObj.nome, habs })}
+                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' }, '& .MuiButton-startIcon': { display: { xs: 'none', sm: 'flex' } } }}
+                                            >
+                                                Usar
+                                            </Button>
+                                        ) : (
+                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
+                                        )}
                                     </TableCell>
                                     <TableCell align="center">
                                         {rObj.descricao ? (
@@ -1588,18 +1589,19 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                                             <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
                                         )}
                                     </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontSize: 12, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+                                        {espDisplayName}
+                                    </TableCell>
+                                    <TableCell sx={{ fontFamily: 'Esteban, serif', fontWeight: 'bold', fontSize: 13, maxWidth: 180 }}>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: 13, fontFamily: 'Esteban, serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>
+                                            {rObj.nome}
+                                        </Typography>
+                                    </TableCell>
                                     <TableCell align="center">
-                                        {habs.length > 0 ? (
-                                            <Button size="small" variant="contained"
-                                                startIcon={<PlayArrowIcon sx={{ fontSize: 13 }} />}
-                                                onClick={() => setEspUsar({ nomeRegalia: rObj.nome, habs })}
-                                                sx={{ fontSize: 10, py: 0.25, px: 1, backgroundColor: 'var(--color-forest, #454E30)', fontFamily: 'Esteban, serif', '&:hover': { backgroundColor: 'var(--color-moss, #2F3C29)' } }}
-                                            >
-                                                Usar
-                                            </Button>
-                                        ) : (
-                                            <Typography sx={{ fontSize: 11, color: 'var(--text-primary)' }}>—</Typography>
-                                        )}
+                                        {rObj.autoIncluded
+                                            ? <Chip label="Automática" size="small" sx={{ fontSize: 10, backgroundColor: '#4CAF50', color: 'white' }} />
+                                            : <Chip label="Comprada" size="small" sx={{ fontSize: 10, backgroundColor: '#6A1B9A22', color: '#6A1B9A' }} />
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -1635,10 +1637,10 @@ const RegaliasSection = React.memo(({ character, editMode, sectionStyle, cardHea
                     onClose={() => setEspUsar(null)}
                     maxWidth={false}
                     PaperProps={{
-                        sx: { p: 0, overflow: 'visible', background: 'transparent', boxShadow: 'none' }
+                        sx: { p: 0, overflow: { xs: 'auto', lg: 'visible' }, background: 'transparent', boxShadow: 'none', maxHeight: { xs: '85vh', lg: 'none' } }
                     }}
                 >
-                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', flexDirection: { xs: 'column', lg: 'row' }, alignItems: { xs: 'center', lg: 'flex-start' } }}>
                         <IconButton
                             onClick={() => setEspUsar(null)}
                             size="small"

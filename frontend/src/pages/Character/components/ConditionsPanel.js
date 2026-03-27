@@ -189,7 +189,7 @@ const ConditionCard = ({ condKey, value, condObj, isAuto, fonteAuto, onRemove, o
         <Paper
             className="condition-card"
             sx={{
-                p: 1.5,
+                p: { xs: 2, sm: 1.5 },
                 backgroundColor: condObj?.cor || '#931C4A',
                 color: 'white',
                 borderRadius: 2,
@@ -416,9 +416,10 @@ const ConditionPicker = ({ condicoesAtivas, onToggle, onSetLevel }) => {
                     <Box key={cat.nome} sx={{ mb: 1 }}>
                         <Paper
                             sx={{
-                                p: 1.5,
+                                p: { xs: 2, sm: 1.5 },
                                 cursor: 'pointer',
                                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                minHeight: { xs: 48, sm: 'auto' },
                                 backgroundColor: isOpen ? cat.cor : 'var(--surface-default)',
                                 color: isOpen ? 'white' : 'var(--text-primary)',
                                 borderRadius: 1.5,
