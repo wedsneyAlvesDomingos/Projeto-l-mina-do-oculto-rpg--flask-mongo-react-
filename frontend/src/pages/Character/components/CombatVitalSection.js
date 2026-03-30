@@ -57,7 +57,7 @@ const VitalCard = ({
             p: SP.p, borderRadius: SP.radius, background: bgColor,
             border: `2px solid ${color}`, boxShadow: `0 3px 10px ${color}22`,
             display: 'flex', flexDirection: 'column', gap: 0.5,
-            flex: { xs: '1 1 100%', sm: '1 1 0' }, minWidth: { xs: 0, sm: 150 },
+            flex: { xs: '1 1 calc(50% - 8px)', sm: '1 1 0' }, minWidth: { xs: 0, sm: 120 },
         }}>
             {/* Cabeçalho */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
@@ -102,7 +102,7 @@ const SmallStat = ({ icon, label, value, sub, color, bgColor }) => (
     <Paper sx={{
         p: SP.p, borderRadius: SP.radius, background: bgColor,
         border: `2px solid ${color}`, textAlign: 'center',
-        flex: { xs: '1 1 calc(50% - 8px)', sm: '1 1 0' }, minWidth: { xs: 0, sm: 110 },
+        flex: { xs: '1 1 calc(50% - 8px)', sm: '1 1 0' }, minWidth: { xs: 0, sm: 80 },
         boxShadow: `0 3px 10px ${color}22`,
     }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: .5 }}>{icon}</Box>
@@ -216,45 +216,63 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
             p: SP.p, borderRadius: SP.radius,
             backgroundColor: isDark ? 'var(--surface-default)' : '#f9f6f2',
             border: '1px solid var(--panel-border)',
-            display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap',
+            display: 'flex', flexDirection: 'column', gap: 1.5,
         }}>
-            {/* Botão Curar */}
-            <Button
-                size="small" variant="contained"
-                startIcon={<HealingIcon sx={{ fontSize: 16 }} />}
-                disabled={numValor <= 0 || pvAtual >= pvMax}
-                onClick={aplicarCura}
-                sx={{
-                    backgroundColor: '#2e7d32', fontFamily: 'Esteban, serif', fontSize: 12,
-                    textTransform: 'none', order: { xs: 2, sm: 1 },
-                    minHeight: 44,
-                    '&:hover': { backgroundColor: '#1b5e20' },
-                    '&.Mui-disabled': { backgroundColor: isDark ? '#1a2e1a' : '#c8e6c9', color: isDark ? '#555' : '#a5d6a7' },
-                }}
-            >
-                Curar
-            </Button>
+            {/* Linha 1: Curar | Input | Sofrer Dano */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
+                {/* Botão Curar */}
+                <Button
+                    size="small" variant="contained"
+                    startIcon={<HealingIcon sx={{ fontSize: 16 }} />}
+                    disabled={numValor <= 0 || pvAtual >= pvMax}
+                    onClick={aplicarCura}
+                    sx={{
+                        backgroundColor: '#2e7d32', fontFamily: 'Esteban, serif', fontSize: 12,
+                        textTransform: 'none', minHeight: 44, flex: '0 0 auto',
+                        '&:hover': { backgroundColor: '#1b5e20' },
+                        '&.Mui-disabled': { backgroundColor: isDark ? '#1a2e1a' : '#c8e6c9', color: isDark ? '#555' : '#a5d6a7' },
+                    }}
+                >
+                    Curar
+                </Button>
 
-            {/* Input de valor */}
-            <TextField
-                type="number"
-                size="small"
-                placeholder="Valor"
-                value={valor}
-                onChange={e => setValor(e.target.value)}
-                onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                        if (tipoDano) aplicarDano();
-                        else if (numValor > 0) aplicarCura();
-                    }
-                }}
-                inputProps={{ min: 0, inputMode: 'numeric', style: { textAlign: 'center', padding: '6px 8px', fontFamily: 'Esteban, serif' } }}
-                sx={{ width: { xs: '100%', sm: 90 }, order: { xs: 1, sm: 2 }, '& .MuiOutlinedInput-root': { borderRadius: 2, minHeight: 44 } }}
-            />
+                {/* Input de valor */}
+                <TextField
+                    type="number"
+                    size="small"
+                    placeholder="Valor"
+                    value={valor}
+                    onChange={e => setValor(e.target.value)}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            if (tipoDano) aplicarDano();
+                            else if (numValor > 0) aplicarCura();
+                        }
+                    }}
+                    inputProps={{ min: 0, inputMode: 'numeric', style: { textAlign: 'center', padding: '6px 8px', fontFamily: 'Esteban, serif' } }}
+                    sx={{ flex: '1 1 60px', minWidth: 60, '& .MuiOutlinedInput-root': { borderRadius: 2, minHeight: 44 } }}
+                />
 
-            {/* Select tipo de dano + Botão Sofrer Dano */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, order: { xs: 3, sm: 3 } }}>
-                <FormControl size="small" sx={{ minWidth: 130 }}>
+                {/* Botão Sofrer Dano */}
+                <Button
+                    size="small" variant="contained"
+                    startIcon={<LocalFireDepartmentIcon sx={{ fontSize: 16 }} />}
+                    disabled={numValor <= 0 || !tipoDano}
+                    onClick={aplicarDano}
+                    sx={{
+                        backgroundColor: '#931C4A', fontFamily: 'Esteban, serif', fontSize: 12,
+                        textTransform: 'none', minHeight: 44, flex: '0 0 auto',
+                        '&:hover': { backgroundColor: '#7a1640' },
+                        '&.Mui-disabled': { backgroundColor: isDark ? '#2e1020' : '#f8d7e3', color: isDark ? '#555' : '#e1a3b8' },
+                    }}
+                >
+                    Sofrer Dano
+                </Button>
+            </Box>
+
+            {/* Linha 2: Tipo de Dano | Elemento — sempre na mesma linha */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'nowrap', width: '100%' }}>
+                <FormControl size="small" sx={{ flex: '1 1 0', minWidth: 0 }}>
                     <InputLabel sx={{ fontFamily: 'Esteban, serif', fontSize: 13 }}>Tipo de Dano</InputLabel>
                     <Select
                         value={tipoDano}
@@ -273,25 +291,7 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
                     </Select>
                 </FormControl>
 
-                <Button
-                    size="small" variant="contained"
-                    startIcon={<LocalFireDepartmentIcon sx={{ fontSize: 16 }} />}
-                    disabled={numValor <= 0 || !tipoDano}
-                    onClick={aplicarDano}
-                    sx={{
-                        backgroundColor: '#931C4A', fontFamily: 'Esteban, serif', fontSize: 12,
-                        textTransform: 'none', minHeight: 44,
-                        '&:hover': { backgroundColor: '#7a1640' },
-                        '&.Mui-disabled': { backgroundColor: isDark ? '#2e1020' : '#f8d7e3', color: isDark ? '#555' : '#e1a3b8' },
-                    }}
-                >
-                    Sofrer Dano
-                </Button>
-            </Box>
-
-            {/* Elemento do Personagem */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, order: { xs: 4, sm: 4 } }}>
-                <FormControl size="small" sx={{ minWidth: 150 }}>
+                <FormControl size="small" sx={{ flex: '1 1 0', minWidth: 0 }}>
                     <InputLabel sx={{ fontFamily: 'Esteban, serif', fontSize: 13 }}>Elemento</InputLabel>
                     <Select
                         value={elementoPersonagem || ''}
@@ -314,7 +314,7 @@ const HealDamageBar = ({ pvAtual, pvMax, pvTemp, elementoPersonagem, updateField
             {/* Feedback elemental */}
             {feedback && (
                 <Typography className="esteban" sx={{
-                    width: '100%', order: 5, fontSize: 11, fontWeight: 'bold', px: 1, py: 0.5,
+                    width: '100%', fontSize: 11, fontWeight: 'bold', px: 1, py: 0.5,
                     borderRadius: 1, textAlign: 'center',
                     ...(feedback.tipo === 'forte' && { color: '#d32f2f', backgroundColor: isDark ? '#3a1010' : '#ffebee' }),
                     ...(feedback.tipo === 'fraco' && { color: '#1565c0', backgroundColor: isDark ? '#0d1a2e' : '#e3f2fd' }),
@@ -506,7 +506,7 @@ const CombatVitalSection = ({
                     {/* Defesa */}
                     <Paper sx={{
                         p: SP.p, borderRadius: SP.radius, background: isDark ? 'var(--surface-warm)' : '#e5e8e4',
-                        border: '2px solid #2F3C29', flex: '1 1 0', minWidth: 150,
+                        border: '2px solid #2F3C29', flex: '1 1 0', minWidth: 120,
                         display: 'flex', flexDirection: 'column', gap: 0.5,
                         boxShadow: '0 3px 10px #2F3C2922',
                     }}>
@@ -598,7 +598,8 @@ const CombatVitalSection = ({
                                 <FormControl size="small" sx={{ flex: '1 1 120px' }}>
                                     <InputLabel>Arma Principal</InputLabel>
                                     <Select value={armasEquipadas[0]?.name || ''} label="Arma Principal"
-                                        onChange={e => equiparArma(armasDisponiveis.find(x => x.name === e.target.value) || null, 0)}>
+                                        onChange={e => equiparArma(armasDisponiveis.find(x => x.name === e.target.value) || null, 0)}
+                                        sx={{ '& .MuiSelect-select': { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }}>
                                         <MenuItem value="">Nenhuma</MenuItem>
                                         {armasDisponiveis.map((a, i) => <MenuItem key={i} value={a.name}>{a.name}</MenuItem>)}
                                     </Select>
@@ -606,7 +607,8 @@ const CombatVitalSection = ({
                                 <FormControl size="small" sx={{ flex: '1 1 120px' }}>
                                     <InputLabel>Arma Secundária</InputLabel>
                                     <Select value={armasEquipadas[1]?.name || ''} label="Arma Secundária"
-                                        onChange={e => equiparArma(armasDisponiveis.find(x => x.name === e.target.value) || null, 1)}>
+                                        onChange={e => equiparArma(armasDisponiveis.find(x => x.name === e.target.value) || null, 1)}
+                                        sx={{ '& .MuiSelect-select': { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }}>
                                         <MenuItem value="">Nenhuma</MenuItem>
                                         {armasDisponiveis.map((a, i) => <MenuItem key={i} value={a.name}>{a.name}</MenuItem>)}
                                     </Select>
@@ -616,7 +618,8 @@ const CombatVitalSection = ({
                                 <FormControl size="small" sx={{ flex: '1 1 120px' }}>
                                     <InputLabel>Armadura</InputLabel>
                                     <Select value={armaduraEquipada?.name || ''} label="Armadura"
-                                        onChange={e => equiparArmadura(armadurasDisponiveis.find(x => x.name === e.target.value) || null)}>
+                                        onChange={e => equiparArmadura(armadurasDisponiveis.find(x => x.name === e.target.value) || null)}
+                                        sx={{ '& .MuiSelect-select': { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }}>
                                         <MenuItem value="">Nenhuma</MenuItem>
                                         {armadurasDisponiveis.map((a, i) => <MenuItem key={i} value={a.name}>{a.name} (+{a.defesa || 0})</MenuItem>)}
                                     </Select>
@@ -624,7 +627,8 @@ const CombatVitalSection = ({
                                 <FormControl size="small" sx={{ flex: '1 1 120px' }}>
                                     <InputLabel>Escudo</InputLabel>
                                     <Select value={escudoEquipado?.name || ''} label="Escudo"
-                                        onChange={e => equiparEscudo(escudosDisponiveis.find(x => x.name === e.target.value) || null)}>
+                                        onChange={e => equiparEscudo(escudosDisponiveis.find(x => x.name === e.target.value) || null)}
+                                        sx={{ '& .MuiSelect-select': { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }}>
                                         <MenuItem value="">Nenhum</MenuItem>
                                         {escudosDisponiveis.map((a, i) => <MenuItem key={i} value={a.name}>{a.name} (+{a.defesa || 0})</MenuItem>)}
                                     </Select>

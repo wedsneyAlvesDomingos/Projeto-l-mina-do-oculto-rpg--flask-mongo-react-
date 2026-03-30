@@ -2,6 +2,15 @@ import React, { useState, useEffect, memo } from 'react';
 import { TextField, IconButton } from '@mui/material';
 import CasinoIcon from '@mui/icons-material/Casino';
 
+/* Estilos de truncate para inputs de texto (não multiline) */
+const truncateSx = {
+    '& .MuiInputBase-input:not(:focus)': {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
+};
+
 // Componente de Input controlado que evita re-renders excessivos
 export const EditableField = memo(({ 
     value, 
@@ -33,6 +42,8 @@ export const EditableField = memo(({
         setLocalValue(newValue);
     };
 
+    const mergedSx = multiline ? sx : { ...truncateSx, ...sx };
+
     return (
         <TextField
             type={type}
@@ -45,7 +56,7 @@ export const EditableField = memo(({
             onChange={handleChange}
             onBlur={handleBlur}
             InputProps={InputProps}
-            sx={sx}
+            sx={mergedSx}
             inputProps={inputProps}
         />
     );
